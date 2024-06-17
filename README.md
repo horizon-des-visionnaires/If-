@@ -12,6 +12,7 @@ et Beekeeper pour voir les données dans la BDD
   - CSS/JS
   - MySQL
   - Docker
+  - Beekeeper
 
 # Prerequisites
 
