@@ -1,9 +1,9 @@
 # Project Details
 
-on utilise docker pour run le projet,
-on utilise l'architecture MVC pour une meilleure organisation du code,
-Twig et un moteur de templates pour l'affichage des données,
-et Beekeeper pour voir les données dans la BDD
+ - on utilise docker pour run le projet,
+ - on utilise l'architecture MVC pour une meilleure organisation du code,
+ - Twig et un moteur de templates pour l'affichage des données,
+ - Beekeeper pour voir les données dans la BDD
 
 # Technologie
 
