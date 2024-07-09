@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {% block title %}{% endblock %}
+        {% block title %}Ifà{% endblock %}
     </title>
-    {% block stylesheet %}
+    {% block stylesheets %}
     {% endblock %}
 </head>
 
 <header>
     {% block header %}{% endblock %}
 </header>
-
 <body>
-    {% block body %}{% endblock %}
+    <div class="container"> <!-- diviser en 3 blocs -->
+        {% block content %}{% endblock %}
+    </div>
+    
 </body>
 
 <footer>
