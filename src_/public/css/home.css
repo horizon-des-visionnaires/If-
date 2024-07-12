@@ -1,0 +1,246 @@
+
+.PostButton {
+    margin-top: 10em;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #d8efd9;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 2em;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#formAddPost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#formAddPost input {
+    margin-bottom: 1em;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.inputField {
+    width: 20em;
+    height: 1.5em;
+    border-radius: 10em;
+    border: 2px solid #223f27;
+    background-color: #80c886;
+    font-family: 'Montserrat', sans-serif;
+    padding: 1em;
+    color: black;
+}
+
+.inputField2 {
+    width: 20em;
+    height: 3em;
+    border-radius: 10em;
+    border: 2px solid #223f27;
+    background-color: #80c886;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    margin-top: 2em;
+}
+
+#addPost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    font-size: 2em;
+}
+
+#login {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+    border-radius: 2em;
+}
+
+#submit {
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 2em;
+    color: black;
+    font-weight: bolder;
+    background-color: #80c886;
+    border: 2px solid #223f27;
+    cursor: pointer;
+    margin-top: 1em;
+    font-size: 1em;
+    height: 2em;
+}
+
+.newPost {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.newPost button {
+    background-color: #673232;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.newPost button:hover {
+    background-color: #982727;
+}
+
+
+
+.feed {
+    flex: 1;
+    margin-right: 25%;
+    margin-left: 25%;
+    overflow-y: scroll; /* Permettre le défilement */
+    padding: 20px;
+    background: #255a48;
+    border-radius: 10px;
+    scrollbar-width: none; /* Pour Firefox */
+    -ms-overflow-style: none;  /* Pour Internet Explorer et Edge */
+}
+
+.feed::-webkit-scrollbar {
+    display: none; /* Pour Chrome, Safari et Opera */
+}
+
+.new_post, .list_post {
+    margin-bottom: 20px;
+}
+
+.new_post_body {
+    display: flex;
+    align-items: center;
+}
+
+.new_post_body img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.userpfppost {
+    width: 110px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.searchInput {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+}
+
+.NewPostbutton {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.new_media button, .post_button button {
+    background: #997c50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.new_media button:hover, .post_button button:hover {
+    background: #4c8867;
+}
+
+.post {
+    background: #3c6650;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.post-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-info {
+    flex: 1;
+}
+
+.post-content {
+    margin-top: 10px;
+}
+
+
+
+
+/* Media queries pour ajuster les éléments lors de la réduction de la fenêtre */
+@media screen and (max-width: 1200px) {
+    
+
+    .feed {
+        margin: 0;
+        width: 100%;
+    }
+}
+
+/* Styles pour les éléments cachés en vue réduite */
+@media screen and (max-width: 768px) { /*minimun sur mon navigateur*/
+    
+
+    .feed {
+        width: calc(100% - 100px); /* Ajuster la largeur du feed */
+        margin-left: 50px; /* Garder un espace pour la barre de gauche */
+    }
+
+  
+}
+
+

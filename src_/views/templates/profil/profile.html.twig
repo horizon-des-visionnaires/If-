@@ -1,0 +1,66 @@
+{% extends "default.html.twig" %}
+
+{% block title %}Profile de {{ user.FirstName }} {{ user.LastName }}{% endblock %}
+
+{% block stylesheet %}
+<link href="/projet/src/public/css/profile.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="ProfilContainer">
+    <div class="profil">
+        <div class="profilPictureName">
+            <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+            <h1>{{ user.FirstName }} {{ user.LastName }}</h1>
+        </div>
+        {% if isConnected and userId == user.IdUser %}
+            <div class="profilButton">
+                <button id="openModalButton" class="boton-elegante">Edit Profile</button>
+            </div>
+        {% endif %}
+    </div>
+    <div class="description">
+        <p>{{ user.ProfilDescription | nl2br }}</p>
+    </div>
+    <div class="link-container">
+        {% for LinkUser in userLink %}
+            <div class="link">
+                <a href="/projet/src/index.php/{{ LinkUser.Link }}">{{ LinkUser.LinkName }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    
+</div>
+
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/projet/src/index.php/profile-{{ user.IdUser }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
+            <input type="text" name="FirstName" placeholder="FirstName" id="inputField">
+
+            <input type="text" name="LastName" placeholder="LastName" id="inputField">
+
+            <div style="position: relative;">
+                <textarea name="ProfilDescription" placeholder="ProfilDescription" id="inputFieldDesc"
+                    maxlength="255"></textarea>
+                <div id="charCount" class="char-count">0/255</div>
+            </div>
+
+            <input type="file" id="images" name="ProfilPicture" />
+
+            <button type="submit" name="updateProfile" id="inputField2">Update Profile</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/projet/src/public/js/modalUser.js"></script>
+<script src="/projet/src/public/js/profilDesc.js"></script>
+{% endblock %}

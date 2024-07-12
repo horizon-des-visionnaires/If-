@@ -1,0 +1,181 @@
+{% extends "default.html.twig" %}
+
+{% block stylesheet %}
+<link href="/projet/src/public/css/header.css" rel="stylesheet">
+<link href="/projet/src/public/css/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+
+    <aside class="left-sidebar">
+        <div class="top-logo">
+            <a href ="/projet/src/index.php/" class="top-logo">
+                <img src="/projet/src/public/image/logo.jpg" alt="logo du site" id="logo">
+            </a>
+        </div>
+
+        <div class="functionality-list">
+            <a href = "/projet/src/index.php/" class = "no">
+                <button class="func-icon">
+                    <img src="/projet/src/public/image/icon/home.png" alt="icon" class="icons">
+                    <div class="text">Home</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon">
+                    <img src="/projet/src/public/image/icon/loupe.png" alt="icon" class="icons">
+                    <div class="text">Search</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon">
+                    <img src="/projet/src/public/image/icon/message.png" alt="icon" class="icons">
+                    <div class="text">Message</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon">
+                    <img src="/projet/src/public/image/icon/saved.png" alt="icon" class="icons">
+                    <div class="text">Saved Post</div>
+                </button>
+            </a>
+            {% if isConnected %} 
+            <a href = "/projet/src/index.php/profile-{{ userId }}" class = "no">
+            {% else %}
+            <a href = "/projet/src/index.php/login" class = "no">
+            {% endif %}
+                <button class="func-icon">
+                    <img src="/projet/src/public/image/icon/user.png" alt="icon" class="icons">
+                    <div class="text">Profil</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon">
+                    <img src="/projet/src/public/image/icon/post.png" alt="icon" class="icons">
+                    <div class="text">Post</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon" >
+                    <img src="/projet/src/public/image/icon/notif.png" alt="icon" class="icons">
+                    <div class="text">Notification</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon" >
+                    <img src="/projet/src/public/image/icon/3dots.png" alt="icon" class="icons">
+                    <div class="text">Other</div>
+                </button>
+            </a>
+            <a href = "" class = "no">
+                <button class="func-icon" >
+                    <img src="/projet/src/public/image/icon/setting.png" alt="icon" class="icons">
+                    <div class="text">Settings</div>
+                </button>
+            
+            <!-- Ajoutez plus de boutons ici -->
+        </div>
+
+        
+        {% if isConnected %}
+        <div class="bottom-pfp">
+             <!-- src="data:image;base64,{{user.ProfilPicture}}" -->
+            <a href="/projet/src/index.php/profile-{{ userId }}" id="profile">
+                <img id="icon" src="/projet/src/pizza.jpg" alt="icon">
+            </a>
+            <div class="profile-info">
+                <p>{{ User.FirstName }} {{ User.LastName }}</p>
+            </div>
+            <div>
+                <form action="/projet/src/index.php/" method="post">
+                    <button class="Btn" type="submit" name="logOut" id="logout">
+                        <div class="sign">
+                            <svg viewBox="0 0 512 512">
+                                <path
+                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+                            </svg>
+                        </div>
+                        <div class="text2">Deconnexion</div>
+                    </button>
+                </form>
+            </div>
+        </div>
+            
+        {% else %}
+        <div>
+            <a href="/projet/src/index.php/register" id="register" class = "no">
+                <button class="Btn2">
+                    Inscription
+                    <div class="arrow-wrapper">
+                        <div class="arrow"></div>
+                    </div>
+                </button>
+            </a>
+        </div>
+        <div>
+            <a href="/projet/src/index.php/login" class = "no">
+                <button class="Btn3" id="login">
+                    Connexion
+                    <div class="arrow-wrapper">
+                        <div class="arrow"></div>
+                    </div>
+                </button>
+            </a>
+        </div>
+        {% endif %}
+    </aside>
+
+    <aside class="right-sidebar">
+        <div class="searchBox">
+            <input class="searchInput" type="text" name="" placeholder="Search something">
+            <button class="searchButton" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
+                    <g clip-path="url(#clip0_2_17)">
+                        <g filter="url(#filter0_d_2_17)">
+                            <path d="M23.7953 23.9182L19.0585 19.1814M19.0585 19.1814C19.8188 18.4211 20.4219 17.5185 20.8333 16.5251C21.2448 15.5318 21.4566 14.4671 21.4566 13.3919C21.4566 12.3167 21.2448 11.252 20.8333 10.2587C20.4219 9.2653 19.8188 8.36271 19.0585 7.60242C18.2982 6.84214 17.3956 6.23905 16.4022 5.82759C15.4089 5.41612 14.3442 5.20435 13.269 5.20435C12.1938 5.20435 11.1291 5.41612 10.1358 5.82759C9.1424 6.23905 8.23981 6.84214 7.47953 7.60242C5.94407 9.13789 5.08145 11.2204 5.08145 13.3919C5.08145 15.5634 5.94407 17.6459 7.47953 19.1814C9.01499 20.7168 11.0975 21.5794 13.269 21.5794C15.4405 21.5794 17.523 20.7168 19.0585 19.1814Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" shape-rendering="crispEdges"></path>
+                        </g>
+                    </g>
+                    <defs>
+                        <filter id="filter0_d_2_17" x="-0.418549" y="3.70435" width="29.7139" height="29.7139" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dy="4"></feOffset>
+                            <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+                            <feComposite in2="hardAlpha" operator="out"></feComposite>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2_17"></feBlend>
+                            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2_17" result="shape"></feBlend>
+                        </filter>
+                        <clipPath id="clip0_2_17">
+                            <rect width="28.0702" height="28.0702" fill="white" transform="translate(0.403503 0.526367)"></rect>
+                        </clipPath>
+                    </defs>
+                </svg>
+            </button>
+        </div>
+        <div class="suggestions">
+            <h2>Tendances</h2>
+            {% for post in trending_posts %}
+            <div class="post">
+                <div class="post-title">
+                    <b>{{ post.title }}</b>
+                    <p>{{ post.time_ago }}</p>
+                </div>
+                <div class="post-stat">
+                    <p>{{ post.likes }} likes</p>
+                    <p>{{ post.views }} views</p>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- Ajoutez plus de posts de tendances ici -->
+        </div>
+        <div class="bottom-messages">
+            <button>Messages</button>
+        </div>
+    </aside>
+
+ 
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

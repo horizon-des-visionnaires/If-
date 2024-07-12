@@ -1,0 +1,559 @@
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.left-sidebar, .right-sidebar {
+    width:18%;
+    padding: 15px;
+    border-radius: 10px;
+    background: #255a48;
+    overflow: hidden; 
+}
+
+.left-sidebar {
+    margin-left: 3%;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.top-logo, .bottom-pfp {
+    display: flex;
+    justify-content: center; /* Centrage horizontal */
+    align-items: center; /* Centrage vertical */
+    flex-direction: column;
+}
+
+.top-logo img {
+    width: 110px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 50%;
+    box-shadow: none;
+}
+
+.bottom-pfp img {
+    width: 70px;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: none ;
+    margin-left: 0 auto;
+    margin-bottom: 5px;
+}
+
+
+
+
+.profile-info {
+    width: 100%;
+    align-items: center; /* Centre horizontalement */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.functionality-list {
+    width: 100%; /* Assure que les boutons prennent une largeur raisonnable */
+    display: flex;
+    flex-direction: column;
+}
+
+.functionality-list button {
+    background: #306b5b;/*28662f*/
+    border: none;
+    color: white;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    height: 1.8em;
+}
+
+.functionality-list button:hover {
+    background: #4c8867;
+}
+
+.func-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;  /* Ajouter du padding pour plus d'espace autour du contenu */
+    height: 50px; 
+    border: none;  
+    background: #3c6650;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px 0;
+    width: 100%;  /* S'assurer que les boutons prennent toute la largeur disponible */
+}
+.no {
+    text-decoration: none;
+}
+
+.func-icon .text {
+    text-align: center;
+    font-size: 16px; /* ou la taille de police que vous souhaitez */
+}
+
+.func-icon .icons {
+    width: 20px; 
+    height: auto; 
+    margin-right: 10px;  /* Espace entre l'icône et le texte */
+    box-shadow: none;
+}
+
+.right-sidebar {
+    right: 20px;
+    margin-right: 3%;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+}
+
+.searchBox {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+}
+
+.searchButton {
+    background: #3c6650;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchButton:hover {
+    background: #d1b07f; /* Couleur de fond au survol */
+}
+
+.searchButton svg {
+    fill: #997c50
+}
+
+.suggestions {
+    flex: 1;
+    overflow-y: scroll; /* Activer le défilement */
+    margin-bottom: 20px;
+    scrollbar-width: none; /* Pour Firefox */
+    -ms-overflow-style: none;  /* Pour Internet Explorer et Edge */
+}
+
+.suggestions::-webkit-scrollbar {
+    display: none; /* Pour Chrome, Safari et Opera */
+}
+
+.suggestions h2 {
+    margin-bottom: 10px;
+}
+
+.suggestions .post {
+    background: #3c6650;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.post-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-stat {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom-messages {
+    background: #3c6650;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.bottom-messages button {
+    background: #3c6650;
+    border: none;
+    color: white;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.bottom-messages button:hover {
+    background: #4c8867;
+}
+
+
+
+
+.searchBox {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.searchBox input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.searchBox button {
+    background-color: #997c50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.searchBox button:hover {
+    background-color: #997c50;
+}
+
+
+
+
+
+
+/* Media queries pour ajuster les éléments lors de la réduction de la fenêtre */
+@media screen and (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-sidebar, .right-sidebar {
+        position: static;
+        width: 100%;
+        margin: 0;
+    }
+
+   
+
+    
+}
+
+/* Styles pour les éléments cachés en vue réduite */
+@media screen and (max-width: 768px) { /*minimun sur mon navigateur*/
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-sidebar {
+        width: 70px; /* Réduire la largeur */
+        padding: 10px;
+        align-items: center;
+    }
+
+    .right-sidebar {
+        display: none;
+    }
+
+    .functionality-list {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .functionality-list button {
+        padding: 5px;
+        margin: 5px 0;
+        font-size: 12px;
+        flex-direction: column; /* Aligner les icônes verticalement */
+        justify-content: center;
+    }
+
+    .functionality-list button span {
+        display: none; /* Masquer les labels */
+    }
+
+    .functionality-list button::before {
+        content: attr(data-icon-short); /* Utiliser le nom court pour les icônes */
+        font-size: 24px;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .bottom-pfp {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .bottom-pfp img {
+        width: 50px;
+        height: auto;
+    }
+
+    .top-logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .profile-info {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .top-logo img, .bottom-pfp img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .functionality-list {
+        flex-direction: column;
+    }
+
+    .functionality-list button {
+        padding: 5px;
+        margin: 5px 0;
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+    background-color: rgb(255, 65, 65);
+}
+
+.sign {
+    width: 100%;
+    transition-duration: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign svg {
+    width: 16px;
+}
+
+.sign svg path {
+    fill: white;
+}
+
+.text2 {
+    position: absolute;
+    right: 0%;
+    width: 0%;
+    opacity: 0;
+    color: white;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition-duration: .3s;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.Btn:hover {
+    width: 160px;
+    border-radius: 40px;
+    transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+    width: 30%;
+    transition-duration: .3s;
+}
+
+.Btn:hover .text2 {
+    opacity: 1;
+    width: 70%;
+    transition-duration: .3s;
+    padding-right: 13px;
+}
+
+.Btn:active {
+    transform: translate(2px, 2px);
+}
+
+
+#img2 {
+    margin-right: 5px;
+}
+
+.Btn2 {
+    --primary-color: #645bff;
+    --secondary-color: #fff;
+    --hover-color: #111;
+    --arrow-width: 10px;
+    --arrow-stroke: 2px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 20px;
+    color: var(--secondary-color);
+    padding: 1em 1.8em;
+    background: var(--primary-color);
+    display: flex;
+    transition: 0.2s background;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    justify-content: center; /* Centrage horizontal */
+    margin-left: 0 auto;
+}
+
+.Btn2 .arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Btn2 .arrow {
+    margin-top: 1px;
+    width: var(--arrow-width);
+    background: var(--primary-color);
+    height: var(--arrow-stroke);
+    position: relative;
+    transition: 0.2s;
+}
+
+.Btn2 .arrow::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    border: solid var(--secondary-color);
+    border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+    display: inline-block;
+    top: -3px;
+    right: 3px;
+    transition: 0.2s;
+    padding: 3px;
+    transform: rotate(-45deg);
+}
+
+.Btn2:hover {
+    background-color: var(--hover-color);
+}
+
+.Btn2:hover .arrow {
+    background: var(--secondary-color);
+}
+
+.Btn2:hover .arrow:before {
+    right: 0;
+}
+
+#register {
+    margin-right: 30px;
+}
+
+.Btn3 {
+    --primary-color: #ff5b5b;
+    --secondary-color: #fff;
+    --hover-color: #111;
+    --arrow-width: 10px;
+    --arrow-stroke: 2px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 20px;
+    color: var(--secondary-color);
+    padding: 1em 1.8em;
+    background: var(--primary-color);
+    display: flex;
+    transition: 0.2s background;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    justify-content: center; /* Centrage horizontal */
+    margin-left: 0 auto;
+}
+
+.Btn3 .arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Btn3 .arrow {
+    margin-top: 1px;
+    width: var(--arrow-width);
+    background: var(--primary-color);
+    height: var(--arrow-stroke);
+    position: relative;
+    transition: 0.2s;
+}
+
+.Btn3 .arrow::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    border: solid var(--secondary-color);
+    border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+    display: inline-block;
+    top: -3px;
+    right: 3px;
+    transition: 0.2s;
+    padding: 3px;
+    transform: rotate(-45deg);
+}
+
+.Btn3:hover {
+    background-color: var(--hover-color);
+}
+
+.Btn3:hover .arrow {
+    background: var(--secondary-color);
+}
+
+.Btn3:hover .arrow:before {
+    right: 0;
+}

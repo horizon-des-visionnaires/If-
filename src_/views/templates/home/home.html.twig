@@ -1,0 +1,100 @@
+{% extends 'default.html.twig' %}
+
+{% block title %}home{% endblock %}
+
+{% block stylesheet %}
+<link href="/projet/src/public/css/home.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <section class="feed">
+
+            <div class="new_post">
+            <!-- glisser un if conect -->
+                <div class="new_post_body">
+                    {% if isConnected %}
+                    <a href ="/projet/src/index.php/profile-{{ userId }}" class="userpfppost">
+                        <img id="icon" src="/projet/src/pizza.jpg" alt="profilpicture">
+                    <!-- src="data:image;base64,{{user.ProfilPicture}}" -->
+                    </a>
+                    {% else %}
+                    <a href ="/projet/src/index.php/login" class="userpfppost">
+                        <img src="/projet/src/public/image/user.jpg" alt="logo du site" id="logo">
+                    </a>
+                    {% endif %}
+                    <input class="searchInput" type="text" name="" placeholder="Quoi de neuf ?">
+                </div>
+                
+                <div class="NewPostbutton">
+                    <div class="new_media">
+                        <button>Photo ?</button><!-- les icons -->
+                    </div>
+                    <div class="post_button">
+                        <button>Poster</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list_post">
+                {% for Post in postData %}
+                <div class="post">
+                    <div class="post-header">
+                        <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                        <div class="user-info">
+                            <h3>{{ Post.FirstName }} {{ Post.LastName }}</h3>
+                            <p>{{ Post.RelativeDatePost }}</p>
+                        </div>
+                    </div>
+                    <div class="contentPost">
+                        <h2>{{ Post.TitlePost }}</h2>
+                        <p>
+                            {% set contentLines = Post.ContentPost | split("\n") %}
+                            {% for i in 0..2 %}
+                            {{ contentLines[i] }}<br>
+                            {% endfor %}
+                            <a href="/projet/src/index.php/post-{{ Post.IdPost }}" id="profile">Voir plus</a>
+                        </p>
+                    </div>
+                    {% for picture in Post.PicturesPost %}
+                    <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        
+        
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form action="/" method="post" id="formAddPost" enctype="multipart/form-data">
+                <input type="text" name="TitlePost" placeholder="TitlePost" class="inputField" required>
+
+                <textarea name="ContentPost" placeholder="ContentPost" class="inputFieldDesc" required></textarea>
+
+                <input type="file" id="images" name="PicturePost[]" multiple accept="image/*"
+                    onchange="validateFiles(this)">
+
+                <button type="submit" name="addPost" class="inputField2">Add Post</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/projet/src/public/js/modalUser.js"></script>
+<script src="/projet/src/public/js/viewMore.js"></script>
+{% endblock %}
+

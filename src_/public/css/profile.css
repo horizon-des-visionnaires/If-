@@ -1,0 +1,220 @@
+.ProfilContainer {
+    background-color: #255a48;
+    margin-top: 8em;
+    height: 20em;
+    width: 60em;
+    margin-left: 25%;
+    margin-right: 25%;
+    border-radius: 2em;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* overflow: auto; */
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #d8efd9;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 2em;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.profil {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 1em;
+    padding-left: 1em;
+}
+
+.profilPictureName {
+    display: flex;
+    flex-direction: row;
+}
+
+.profilPictureName img{
+    border-radius: 50%;
+    width: 10px;
+    height: auto;
+}
+
+.profilPictureName h1 {
+    padding-left: 1em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#icon {
+    height: 6em;
+    width : auto;
+}
+
+.boton-elegante {
+    padding: 8px 12px;
+    border: 2px solid #223f27;
+    background-color: #80c886;
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.4s ease;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    font-weight: bold;
+    margin-right: 0.5em;
+    margin-top: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.boton-elegante::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle,
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0) 70%);
+    transform: scale(0);
+    transition: transform 0.5s ease;
+}
+
+.boton-elegante:hover::after {
+    transform: scale(4);
+}
+
+.boton-elegante:hover {
+    border-color: #223f27;
+    background: #3c9048;
+}
+
+#formUpdateUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#formUpdateUser input {
+    margin-bottom: 1em;
+    color: black;
+}
+
+#inputField {
+    width: 20em;
+    height: 1.5em;
+    border-radius: 10em;
+    border: 2px solid #223f27;
+    background-color: #80c886;
+    font-family: 'Montserrat', sans-serif;
+    padding: 1em;
+    color: black;
+}
+
+#inputField2 {
+    width: 20em;
+    height: 3em;
+    border-radius: 10em;
+    border: 2px solid #223f27;
+    background-color: #80c886;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    margin-top: 2em;
+}
+
+#inputFieldDesc {
+    border-radius: 1em;
+    border: 2px solid #223f27;
+    background-color: #80c886;
+    padding: 1em;
+    box-sizing: border-box;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin-bottom: 1em;
+    min-width: 30em;
+    min-height: 15em;
+    max-width: 20em;
+    max-height: 15em;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+}
+
+.char-count {
+    position: absolute;
+    bottom: 25px;
+    right: 10px;
+    font-size: 0.8em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#inputField::placeholder,
+#inputFieldDesc::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+::selection {
+    background: #80c886;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.description {
+    padding-left: 2em;
+    padding-top: 1em;
+}
+
+input[type=file]::file-selector-button {
+    margin-right: 8px;
+    border: none;
+    background: #80c886;
+    padding: 8px 12px;
+    color: black;
+    cursor: pointer;
+    border-radius: 10em;
+    border: 2px solid #223f27;
+}
+
+.link-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.link {
+    flex: 1 1 calc(20% - 1em);
+    margin-left: 3em;
+    margin-top: 1em;
+}
+
+.link a {
+    display: block;
+    color: black;
+    font-size: 1.1em;
+    font-family: 'Montserrat', sans-serif;
+}
