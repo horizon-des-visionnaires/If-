@@ -1,34 +1,48 @@
 .homePost {
-    width: 30em;
-    height: 30em;
-    margin-top: 10em;
+    flex: 1;
+    margin-top: 7%;
+    margin-right: 28%;
+    margin-left: -15%;
+    overflow-y: scroll; /* Permettre le défilement */
+    /*border: 2px solid black;*/
+    padding: 20px;
+    border-radius: 10px;
+    scrollbar-width: none; /* Pour Firefox */
+    -ms-overflow-style: none;  /* Pour Internet Explorer et Edge */
+    color: black;
 }
+
+    
 
 .post {
-    padding: 1em;
-    background-color: #b0dfb3;
+    background-color: #eeeeee;
     margin-bottom: 2em;
     border-radius: 3em;
+    color: black;
 }
 
-.user-info {
+.post-user-info {
     display: flex;
     flex-direction: row;
 }
 
-.user-info h1 {
+.post-user-info h1 {
     font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+}
+
+.datePost{
+    font-size: 0.9em;
 }
 
 .user-picture {
-    height: 3em;
-    padding: 1em;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
-.datePost {
-    padding-left: 5em;
-    margin-top: -1em;
-}
+
 
 .contentPost {
     padding: 1em;

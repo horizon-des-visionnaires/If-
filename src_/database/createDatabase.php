@@ -33,7 +33,7 @@ $createTablePost = ("CREATE TABLE IF NOT EXISTS
     `IdUser` int(11) DEFAULT NULL,
     PRIMARY KEY (`IdPost`),
     CONSTRAINT fk_User_UserPost FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE utf8mb4_unicode_ci");
 $dsn->exec($createTablePost);
 
 $createTablePicturePost = ("CREATE TABLE IF NOT EXISTS

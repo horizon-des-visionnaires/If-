@@ -28,9 +28,22 @@ class homeController
         session_start();
 
         $isConnected = false;
+        $userId=null;
+        $userPfp= null;
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
+
+            $userModel = new \profile\profileModel();
+            $user = $userModel->getUserById($userId);
+            $userPfp = $user['ProfilPicture'];
+            $userFirstName =$_SESSION['FirstName'];
+            $userLastName = $_SESSION['LastName'];
+        }
+
+        $IsAdmin = false;
+        if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin'] == 1) {
+            $IsAdmin = true;
         }
 
         $this->logOut();
@@ -39,11 +52,15 @@ class homeController
         }
 
         $postData = $this->homeModel->getPost();
+        
 
         echo $this->twig->render('home/home.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
-            'postData' => $postData
+            'postData' => $postData,
+            'userPfp' => $userPfp,
+            'userFirstName' => $user['FirstName'],
+            'userLastName' => $user['LastName']
         ]);
     }
 
@@ -83,3 +100,6 @@ class homeController
         }
     }
 }
+
+
+

@@ -1,5 +1,5 @@
 .ProfilContainer {
-    background-color: #255a48;
+    background-color: #eeeeee;
     margin-top: 8em;
     height: 20em;
     width: 60em;
@@ -50,6 +50,7 @@
     justify-content: space-between;
     padding-top: 1em;
     padding-left: 1em;
+    color: black;
 }
 
 .profilPictureName {
@@ -58,14 +59,15 @@
 }
 
 .profilPictureName img{
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    width: 10px;
-    height: auto;
 }
 
 .profilPictureName h1 {
     padding-left: 1em;
     font-family: 'Open Sans', sans-serif;
+    margin-top: 20px;
 }
 
 #icon {
@@ -76,9 +78,9 @@
 .boton-elegante {
     padding: 8px 12px;
     border: 2px solid #223f27;
-    background-color: #80c886;
-    color: #ffffff;
-    font-size: 1.2rem;
+    background-color: #eeeeee;
+    color: #000000;
+    font-size: 1rem;
     cursor: pointer;
     border-radius: 30px;
     transition: all 0.4s ease;
@@ -186,8 +188,11 @@
 }
 
 .description {
+    margin-top: 5px;
+    margin-left: 50px;
     padding-left: 2em;
     padding-top: 1em;
+    color: black;
 }
 
 input[type=file]::file-selector-button {

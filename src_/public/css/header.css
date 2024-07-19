@@ -6,17 +6,83 @@
     text-decoration: none;
 }
 
+.top {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ffffff; /* Vous pouvez ajuster la couleur de fond selon vos besoins */
+    
+    display: flex;
+    justify-content: space-between; /* Espace les éléments de manière égale */
+    align-items: center; /* Centre verticalement les éléments */
+    padding: 0 20px; /* Ajoutez un peu de padding pour espacer les éléments des bords */
+    border-bottom: 2px solid #818080;
+}
+
+
+.searchBox {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    position: fixed;
+    margin-left: 32%;
+}
+
+.searchInput {
+    width: 350px;
+    padding: 10px;
+    background-color: rgba(6, 123, 4, 0.204);
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+.searchInput input[type="text"] {
+    color: #ffffff; /* Changez cette couleur pour celle que vous souhaitez */
+}
+
+
+
+.searchIcon {
+    background: rgba(6, 123, 4, 0.204);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px;  /* Ajouter du padding pour plus d'espace autour du contenu */
+    border: none;  
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;  /* S'assurer que les boutons prennent toute la largeur disponible */
+}
+
+.searchIcon:hover {
+    background: #5a9878; /* Couleur de fond au survol */
+}
+
+.searchIcon .search-icon {
+    width: 18px; 
+    height: auto; 
+    box-shadow: none;
+}
+
+
+
+
+
+
+
+
 .left-sidebar, .right-sidebar {
-    width:18%;
+    margin-top: 6%;
     padding: 15px;
     border-radius: 10px;
-    background: #255a48;
+    background: #eeeeee;
     overflow: hidden; 
 }
 
 .left-sidebar {
-    margin-left: 3%;
-    left: 20px;
+    width:11%;
+    left: 1px;
     top: 0;
     bottom: 0;
     position: fixed;
@@ -27,13 +93,14 @@
 
 .top-logo, .bottom-pfp {
     display: flex;
-    justify-content: center; /* Centrage horizontal */
     align-items: center; /* Centrage vertical */
-    flex-direction: column;
+    flex-direction: row;
 }
 
-.top-logo img {
-    width: 110px;
+
+
+.top-logo img , .bottom-pfp img{
+    width: 70px;
     height: auto;
     margin: 0 auto;
     border-radius: 50%;
@@ -41,12 +108,12 @@
 }
 
 .bottom-pfp img {
-    width: 70px;
+    width: 50px;
     height: auto;
     border-radius: 50%;
     box-shadow: none ;
-    margin-left: 0 auto;
-    margin-bottom: 5px;
+    margin-left: 10px;
+    margin-top: 5px;
 }
 
 
@@ -61,15 +128,14 @@
 }
 
 .functionality-list {
-    width: 100%; /* Assure que les boutons prennent une largeur raisonnable */
+    width: 1;
     display: flex;
     flex-direction: column;
 }
 
 .functionality-list button {
-    background: #306b5b;/*28662f*/
-    border: none;
-    color: white;
+    background: #eeeeee;/*28662f*/
+    border: 2px solid #3c6650;
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
@@ -88,13 +154,9 @@
     align-items: center;
     justify-content: center;
     padding: 10px;  /* Ajouter du padding pour plus d'espace autour du contenu */
-    height: 50px; 
     border: none;  
-    background: #3c6650;
-    color: white;
     cursor: pointer;
     border-radius: 5px;
-    margin: 5px 0;
     width: 100%;  /* S'assurer que les boutons prennent toute la largeur disponible */
 }
 .no {
@@ -113,9 +175,29 @@
     box-shadow: none;
 }
 
+
+.support button {
+    background: #eeeeee;/*28662f*/
+    border: 2px solid #3a3a3a;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    text-align: center;
+    height: 1.8em;
+}
+.support button:hover {
+    background: #3a3a3a79;
+}
+
+
+
+
 .right-sidebar {
-    right: 20px;
-    margin-right: 3%;
+    width:18%;
+    border: 2px solid #3c6650;
+    right: 4.5em;
     top: 0;
     bottom: 0;
     display: flex;
@@ -124,38 +206,7 @@
     position: fixed;
 }
 
-.searchBox {
-    display: flex;
-    margin-bottom: 20px;
-}
 
-.searchInput {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    margin-right: 10px;
-}
-
-.searchButton {
-    background: #3c6650;
-    border: none;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.searchButton:hover {
-    background: #d1b07f; /* Couleur de fond au survol */
-}
-
-.searchButton svg {
-    fill: #997c50
-}
 
 .suggestions {
     flex: 1;
@@ -212,34 +263,6 @@
     background: #4c8867;
 }
 
-
-
-
-.searchBox {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.searchBox input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-}
-
-.searchBox button {
-    background-color: #997c50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.searchBox button:hover {
-    background-color: #997c50;
-}
 
 
 
@@ -557,3 +580,9 @@
 .Btn3:hover .arrow:before {
     right: 0;
 }
+
+
+
+
+
+

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const textarea = document.getElementById("inputFieldDesc");
     const charCount = document.getElementById("charCount");
-    const maxBytes = 255;
+    const maxBytes =300;
 
     function getByteLength(str) {
         return new TextEncoder().encode(str).length;

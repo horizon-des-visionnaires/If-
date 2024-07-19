@@ -1,7 +1,4 @@
 
-.PostButton {
-    margin-top: 10em;
-}
 
 .modal {
     display: none;
@@ -16,11 +13,12 @@
 }
 
 .modal-content {
-    background-color: #d8efd9;
+    background-color: #eeeeee;
     margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
+    /*border: 1px solid #888;*/
     width: 50%;
+    height: 70%;
     border-radius: 2em;
 }
 
@@ -29,6 +27,8 @@
     float: right;
     font-size: 28px;
     font-weight: bold;
+    margin-right: 10px;
+    padding: 10px;
 }
 
 .close:hover,
@@ -51,26 +51,58 @@
 }
 
 .inputField {
+    margin-top: 1em;
     width: 20em;
     height: 1.5em;
     border-radius: 10em;
-    border: 2px solid #223f27;
-    background-color: #80c886;
+    border: 2px solid #3c6650;
+    background-color: #eeeeee;
     font-family: 'Montserrat', sans-serif;
     padding: 1em;
     color: black;
 }
-
+.inputField:hover{
+    background: rgba(6, 123, 4, 0.204);
+}
 .inputField2 {
     width: 20em;
     height: 3em;
     border-radius: 10em;
-    border: 2px solid #223f27;
-    background-color: #80c886;
+    background-color: #eeeeee;
+    border: 2px solid #3c6650;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    margin-top: 15em;
+}
+
+.inputField2:hover{
+    background: #4c8867;
+}
+
+.pictures_post_selector{
+    width: 20em;
+    height: 3em;
+    border-radius: 10em;
+    background-color: #eeeeee;
+    border: 2px solid #00ff7b;
     font-family: 'Montserrat', sans-serif;
     color: black;
     margin-top: 2em;
 }
+
+.inputFieldDesc{
+    margin-left: 8%;
+    width: 100%;
+    height: 5em;
+    border-radius: 10em;
+    background-color: #eeeeee;
+    border: 2px solid #3c6650;
+    font-family: 'Montserrat', sans-serif;
+    resize: none;
+    margin-top: 2em;
+    color: black;
+}
+
 
 #addPost {
     display: flex;
@@ -124,78 +156,36 @@
 
 .feed {
     flex: 1;
-    margin-right: 25%;
-    margin-left: 25%;
+    margin-top: 5%;
+    margin-right: 28%;
+    margin-left: 22%;
     overflow-y: scroll; /* Permettre le défilement */
     padding: 20px;
-    background: #255a48;
+    background: #eeeeee;
     border-radius: 10px;
     scrollbar-width: none; /* Pour Firefox */
     -ms-overflow-style: none;  /* Pour Internet Explorer et Edge */
+    color: black;
+    
 }
 
 .feed::-webkit-scrollbar {
     display: none; /* Pour Chrome, Safari et Opera */
 }
 
-.new_post, .list_post {
+.list_post {
     margin-bottom: 20px;
 }
 
-.new_post_body {
-    display: flex;
-    align-items: center;
-}
 
-.new_post_body img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.userpfppost {
-    width: 110px;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 50%;
-    box-shadow: none;
-}
-
-.searchInput {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    margin-right: 10px;
-}
-
-.NewPostbutton {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.new_media button, .post_button button {
-    background: #997c50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    margin: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.new_media button:hover, .post_button button:hover {
-    background: #4c8867;
-}
 
 .post {
-    background: #3c6650;
+    background: #eeeeee;
     padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    /*border-radius: 10px;*/
+    margin-bottom: 10px;
+    border-bottom: 2px solid  rgba(163, 163, 163, 0.588);
+    /*border: 2px solid black;*/
 }
 
 .post-header {
@@ -214,9 +204,85 @@
     flex: 1;
 }
 
-.post-content {
-    margin-top: 10px;
+.contentPost {
+    margin-top: 5px;
+    margin-left: 60px;
 }
+
+.ImagePost{/* Media queries pour ajuster taille image ? */
+    max-width: 300px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    margin-top: 5px;
+    margin-left: 60px;
+    border-radius: 5%;
+}
+
+.LinkMore{
+    border: 1px thin #223f27;
+    border-radius: 25%;
+    padding : 5px;
+}
+
+.More{
+    width: 15px;
+    height: auto;
+    
+}
+
+
+
+
+.swipe {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    max-height: 400px;
+    min-height: 200px;
+    margin: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.swipe-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.swipe-item {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    display: none;
+}
+
+.swipe-item.active {
+    display: block;
+    opacity: 1;
+}
+
+.swipe-control-prev, .swipe-control-next {
+    position: sticky;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.swipe-control-prev {
+    left: 10px;
+}
+
+.swipe-control-next {
+    right: 10px;
+    margin-left: 60px;
+}
+
+
 
 
 

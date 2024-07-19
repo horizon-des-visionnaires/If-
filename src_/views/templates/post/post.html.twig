@@ -14,11 +14,13 @@
 <div class="homePost">
     {% for Post in postData %}
     <div class="post">
-        <div class="user-info">
+        <div class="post-user-info">
             <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
-            <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
+            <div class="info">
+                <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+            </div>
         </div>
-        <p class="datePost">{{ Post.RelativeDatePost }}</p>
         <div class="contentPost">
             <h2>{{ Post.TitlePost }}</h2>
             <p>

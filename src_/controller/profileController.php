@@ -27,6 +27,7 @@ class profileController
         session_start();
 
         $isConnected = false;
+        $userId = null;
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
@@ -47,7 +48,9 @@ class profileController
             'user' => $user,
             'isConnected' => $isConnected,
             'userId' => $userId,
-            'userLink' => $userLink
+            'userLink' => $userLink,
+            'userFirstName' => $user['FirstName'],
+            'userLastName' => $user['LastName']
         ]);
     }
 
