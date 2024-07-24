@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block stylesheet %}
-<link href="/projet/src/public/css/register.css" rel="stylesheet">
+<link href="/ifadev/src/public/css/register.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
@@ -13,7 +13,7 @@
 
 {% block body %}
 <div class="container-form">
-    <form class="form" action="/projet/src/index.php/register" method="post">
+    <form class="form" action="/ifadev/src/index.php/register" method="post">
         <h1 class="title">Inscription</h1>
         <p class="message">Créez votre compte pour profiter de toute les fonctionnalités.</p>
         <div class="flex">
@@ -47,7 +47,7 @@
             <div class="error-message">{{ error }}</div>
         {% endif %}
         <button class="submit" name="submit" type="submit">Inscription</button>
-        <p class="signin">Vous avez déjà un compte ? <a href="/projet/src/index.php/login">Connexion</a> </p>
+        <p class="signin">Vous avez déjà un compte ? <a href="/login">Connexion</a> </p>
     </form>
 </div>
 {% endblock %}
@@ -55,6 +55,6 @@
 {% block footer %}{% endblock %}
 
 {% block scripts %}
-<script src="/projet/src/public/js/checkPassword.js"></script>
-<script src="/projet/src/public/js/showPassword.js"></script>
+<script src="/ifadev/src/public/js/checkPassword.js"></script>
+<script src="/ifadev/src/public/js/showPassword.js"></script>
 {% endblock %}

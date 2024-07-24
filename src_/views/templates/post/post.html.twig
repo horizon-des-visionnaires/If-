@@ -3,7 +3,7 @@
 {% block title %}Post de {{ firstName }} {{ lastName }}{% endblock %}
 
 {% block stylesheet %}
-<link href="/projet/src/public/css/post.css" rel="stylesheet">
+<link href="/ifadev/src/public/css/post.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
@@ -11,36 +11,70 @@
 {% endblock %}
 
 {% block body %}
-<div class="homePost">
+<div class="PagePost">
     {% for Post in postData %}
     <div class="post">
-        <div class="post-user-info">
+        <div class="user-info">
             <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
-            <div class="info">
-                <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
-                <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            </div>
+            <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
         </div>
+        <p class="datePost">{{ Post.RelativeDatePost }}</p>
         <div class="contentPost">
             <h2>{{ Post.TitlePost }}</h2>
             <p>
                 {% set contentLines = Post.ContentPost | split("\n") %}
                 {% for i in 0..2 %}
-                    {{ contentLines[i] }}<br>
+                {{ contentLines[i] }}<br>
                 {% endfor %}
                 {% if contentLines | length > 3 %}
-                    <span id="moreContent{{ loop.index }}" style="display:none;">
-                        {% for i in 3..(contentLines | length - 1) %}
-                            {{ contentLines[i] }}<br>
-                        {% endfor %}
-                    </span>
-                    <button id="btn-voir-plus-{{ loop.index }}" class="btn-voir-plus" onclick="toggleVisibility('moreContent{{ loop.index }}', 'btn-voir-plus-{{ loop.index }}')">Voir plus</button>
+                <span id="moreContentPost{{ loop.index }}" style="display:none;">
+                    {% for i in 3..(contentLines | length - 1) %}
+                    {{ contentLines[i] }}<br>
+                    {% endfor %}
+                </span>
+                <button id="btn-voir-plus-post-{{ loop.index }}" class="btn-voir-plus"
+                    onclick="toggleVisibility('moreContentPost{{ loop.index }}', 'btn-voir-plus-post-{{ loop.index }}')">Voir
+                    plus</button>
                 {% endif %}
             </p>
         </div>
         {% for picture in Post.PicturesPost %}
-            <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+        <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
         {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+{% if isConnected %}
+<div class="CommentButton">
+    <button id="openModalButton" class="boton-elegante">Add Comment</button>
+</div>
+{% endif %}
+
+{% for Post in postData %}
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/ifadev/src/index.php/post-{{ Post.IdPost }}" method="post" id="formAddComment" enctype="multipart/form-data">
+            <textarea name="ContentComment" placeholder="ContentComment" class="inputFieldDesc" required></textarea>
+            <input type="hidden" name="IdUser" value="{{ userId }}">
+            <button type="submit" name="addComment" class="inputField2">Add Comment</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+<div class="commentContainer">
+    {% for Comment in commentsData %}
+    <div class="comment">
+        <div class="user-info">
+            <img class="user-picture" src="data:image;base64,{{ Comment.ProfilPicture }}" alt="profile picture">
+            <h1>{{ Comment.FirstName }} {{ Comment.LastName }}</h1>
+        </div>
+        <p class="dateComment">{{ Comment.RelativeDateComment }}</p>
+        <div class="contentComment">
+            <p>{{ Comment.ContentComment | nl2br }}</p>
+        </div>
     </div>
     {% endfor %}
 </div>
@@ -49,5 +83,6 @@
 {% block footer %}{% endblock %}
 
 {% block scripts %}
-<script src="/projet/src/public/js/viewMore.js"></script>
+<script src="/ifadev/src/public/js/modalUser.js"></script>
+<script src="/ifadev/src/public/js/viewMore.js"></script>
 {% endblock %}

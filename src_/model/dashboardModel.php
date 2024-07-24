@@ -18,7 +18,7 @@ class dashboardModel
 
     public function connectDB()
     {
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
+        $this->dsn = new PDO("mysql:host=localhost;dbname=ifa_database", "ifa_user", "ifa_password");
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -81,7 +81,7 @@ class dashboardModel
 
             $this->dsn->commit();
 
-            header("Location: /dashboard");
+            header("Location: /ifadev/src/index.php/dashboard");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();

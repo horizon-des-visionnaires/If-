@@ -5,7 +5,7 @@ namespace register;
 use PDO;
 use PDOException;
 
-require_once __DIR__ .'/../database/connectDB.php';
+require_once 'database/connectDB.php';
 
 class registerModel
 {
@@ -41,7 +41,7 @@ class registerModel
                 $stmt2->bindParam(':UserPassword', $hased_password);
 
                 if ($stmt2->execute()) {
-                    header("Location: /projet/src/index.php/login");
+                    header("Location: /ifadev/src/index.php/login");
                     exit;
                 } else {
                     return 'Erreur lors de l\'inscription';

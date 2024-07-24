@@ -18,17 +18,17 @@ class postDetailsModel
 
     public function connectDB()
     {
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
+        $this->dsn = new PDO("mysql:host=localhost;dbname=ifa_database", "ifa_user", "ifa_password");
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     public function getPost($idPost)
     {
         $stmt = $this->dsn->prepare(
-            "SELECT Post.IdPost, Post.IdUser, Post.TitlePost, Post.ContentPost, Post.DatePost, User.FirstName, User.LastName, User.ProfilPicture, User.IsPro 
-            FROM Post 
-            JOIN User ON Post.IdUser = User.IdUser
-            WHERE Post.IdPost = :idPost"
+            "SELECT Post.IdPost, Post.IdUser, Post.TitlePost, Post.ContentPost, Post.DatePost, Post.Views, User.FirstName, User.LastName, User.ProfilPicture, User.IsPro 
+        FROM Post 
+        JOIN User ON Post.IdUser = User.IdUser
+        WHERE Post.IdPost = :idPost"
         );
         $stmt->bindParam(':idPost', $idPost, PDO::PARAM_INT);
         $stmt->execute();
@@ -141,7 +141,7 @@ class postDetailsModel
             $comment->bindParam(':IdPost', $idPost);
             $comment->execute();
 
-            $deleteLike = "DELETE FROM `Like` WHERE IdPost = :IdPost";
+            $deleteLike = "DELETE FROM `LikeFavorites` WHERE IdPost = :IdPost";
             $like = $this->dsn->prepare($deleteLike);
             $like->bindParam(':IdPost', $idPost);
             $like->execute();
@@ -153,7 +153,7 @@ class postDetailsModel
 
             $this->dsn->commit();
 
-            header("Location: /");
+            header("Location: /ifadev/src/index.php/");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -174,7 +174,7 @@ class postDetailsModel
 
             $this->dsn->commit();
 
-            header("Location: /postDetails-$idPost");
+            header("Location: /ifadev/src/index.php/postDetails-$idPost");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -205,7 +205,7 @@ class postDetailsModel
             $execUpdateLike->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateLike->execute()) {
-                header("Location: /postDetails-$IdPost");
+                header("Location: /ifadev/src/index.php/postDetails-$IdPost");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du like.";
@@ -262,7 +262,7 @@ class postDetailsModel
             $execUpdateFavorite->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateFavorite->execute()) {
-                header("Location: /postDetails-$IdPost");
+                header("Location: /ifadev/src/index.php/postDetails-$IdPost");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du favori.";

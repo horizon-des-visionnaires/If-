@@ -1,9 +1,11 @@
-{% extends 'default.html.twig' %}
+{% extends "default.html.twig" %}
 
 {% block title %}home{% endblock %}
 
 {% block stylesheet %}
-<link href="/projet/src/public/css/home.css" rel="stylesheet">
+<link href="/ifadev/src/public/css/home.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block header %}
@@ -11,85 +13,70 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <section class="feed">
-
-            
-
-
-            <div class="list_post">
-                {% for Post in postData |reverse%}
-                <div class="post">
-                    <div class="post-header">
-                        <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
-                        <div class="user-info">
-                            <h3>{{ Post.FirstName }} {{ Post.LastName }}</h3>
-                            <p>{{ Post.RelativeDatePost }}</p>
-                        </div>
-                    </div>
-                    <div class="contentPost">
-                        <!-- <h2>{{ Post.TitlePost }}</h2>  -->
-                        <p>
-                            {% set contentLines = Post.ContentPost | split("\n") %}
-                            {% for i in 0..2 %}
-                            {{ contentLines[i] }}<br>
-                            {% endfor %}
-                            <a href="/projet/src/index.php/post-{{ Post.IdPost }}" id="profile" class ="LinkMore">
-                                <img src="/projet/src/public/image/icon/3dots.png"  class="More">
-                            </a>
-                        </p>
-                    </div>
-                    <div class="swipe">
-                        {% if Post.PicturesPost|length > 1  %}
-                        <a class="swipe-control-prev" href="#" role="button">
-                            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-                        </a>
-                        {% endif %}
-                        <div class="swipe-inner">
-                            {% for picture in Post.PicturesPost %}
-                            <div class="swipe-item {% if loop.first %}active{% endif %}">
-                                <img class="ImagePost" src="data:image;base64,{{ picture }}">
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% if Post.PicturesPost|length > 1  %}
-                        <a class="swipe-control-next" href="#" role="button">
-                            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-                        </a>
-                        {% endif %}
-                    </div>
+<div class="ProfilContainer">
+    <h1>Découvrez des professionnel</h1>
+    <div class="allProfil">
+        {% for user in userProData %}
+        <a href="profile-{{ user.IdUser }}">
+            <div class="profil">
+                <div class="profilPictureName">
+                    <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"
+                        class="fas fa-check-circle"></i>
                 </div>
-                {% endfor %}
+                <div class="description">
+                    {% set truncatedDescription = user.ProfilDescription[:35] %}
+                    <p>
+                        {{ truncatedDescription }}
+                        {% if user.ProfilDescription|length > 35 %}...{% endif %}
+                    </p>
+                </div>
             </div>
-        </section>
+        </a>
+        {% endfor %}
+        <a href="/ifadev/src/index.php/research" class="beautiful-button">Découvrir d'autres professionnels</a>
     </div>
+</div>
 
-    {% if isConnected %}
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form action="/projet/src/index.php/" method="post" id="formAddPost" enctype="multipart/form-data">
-                <input type="text" name="TitlePost" placeholder="Titre du Post" class="inputField" required>
-
-                <textarea name="Content Post" placeholder="Content Post" class="inputFieldDesc" required></textarea>
-
-                <input type="file" id="images" name="PicturePost[]" multiple accept="image/*"
-                    onchange="validateFiles(this)" class = "pictures_post_selector">
-
-                <button type="submit" name="addPost" class="inputField2">Add Post</button>
-            </form>
-        </div>
+<div class="postContainer">
+    <h1>Posts populaires</h1>
+    <div class="allPosts">
+        {% for post in randomPosts %}
+        <a href="postDetails-{{ post.IdPost }}">
+            <div class="post">
+                <div class="user-details">
+                    <img id="icon" src="data:image;base64,{{ post.ProfilPicture }}" alt="icon">
+                    {% if post.IsPro == 1 %}
+                    <h1 class= "name1">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <i id="certifIcon" class="fas fa-check-circle"></i>
+                    {% set truncatedPromo = post.ContentPost[:50] %}
+                    <p> Je peux t'aider à 
+                        {{ truncatedPromo }}
+                        {% if post.ContentPost|length > 50 %}...{% endif %}
+                    </p>
+                    {% else %}
+                    <h1 class= "name2">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    {% endif %}
+                </div>
+                <p id="date">{{ post.RelativeDatePost }}</p>
+                <p id="views">{{ post.Views }} vus</p>
+                <div class="contentPost">
+                    <!--<h2>{{ post.TitlePost }}</h2> -->
+                    {% set truncatedDescription = post.ContentPost[:50] %}
+                    <p>
+                        {{ truncatedDescription }}
+                        {% if post.ContentPost|length > 50 %}...{% endif %}
+                    </p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        <a href="/ifadev/src/index.php/allPost" class="beautiful-button">Découvrir d'autres posts</a>
     </div>
-    {% endif %}
-
-
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block scripts %}
-<script src="/projet/src/public/js/modalUser.js"></script>
-<script src="/projet/src/public/js/viewMore.js"></script>
-<script src="/projet/src/public/js/swipePicturePost.js"></script>
 {% endblock %}
-

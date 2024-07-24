@@ -5,7 +5,7 @@ namespace login;
 use PDO;
 use PDOException;
 
-require_once __DIR__ .'/../database/connectDB.php';
+require_once 'database/connectDB.php';
 
 class loginModel
 {
@@ -38,8 +38,10 @@ class loginModel
                 $_SESSION['Email'] = $userData['Email'];
                 $_SESSION['UserPassword'] = $userData['UserPassword'];
                 $_SESSION['IsPro'] = $userData['IsPro'];
+                $_SESSION['IsPro'] = $userData['IsPro'];
+                $_SESSION['IsAdmin'] = $userData['IsAdmin'];
 
-                header("Location: /projet/src/index.php/");
+                header("Location: /ifadev/src/index.php/");
                 exit;
             } else {
                 return "email ou mot de passe incorrect";

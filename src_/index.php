@@ -3,9 +3,12 @@ require_once __DIR__ . '/controller/homeController.php';
 require_once __DIR__ . '/controller/registerController.php';
 require_once __DIR__ . '/controller/loginController.php';
 require_once __DIR__ . '/controller/profileController.php';
-require_once __DIR__ . '/controller/postController.php';
 require_once __DIR__ . '/controller/postDetailsController.php';
 require_once __DIR__ . '/controller/dashboardController.php';
+require_once __DIR__ . '/controller/allPostController.php';
+require_once __DIR__ . '/controller/researchController.php';
+require_once __DIR__ . '/controller/adviceController.php';
+
 
 require_once __DIR__ . '/database/createDatabase.php';
 
@@ -14,12 +17,14 @@ $routes = [
   '/register' => ['controller' => 'register\registerController', 'method' => 'register'],
   '/login' => ['controller' => 'login\loginController', 'method' => 'login'],
   '/dashboard' => ['controller' => 'dashboard\dashboardController', 'method' => 'dashboard'],
+  '/allPost' => ['controller' => 'allPost\allPostController', 'method' => 'allPost'],
+  '/research' => ['controller' => 'research\researchContoller', 'method' => 'research'],
+  '/advice' => ['controller' => 'advice\adviceController', 'method' => 'advice'],
 ];
 
 $requestParts = explode('?', $_SERVER['REQUEST_URI'], 2);
 //$path = $requestParts[0];
-
-$baseUri = '/projet/src/index.php';
+$baseUri = '/ifadev/src/index.php';
 $path = str_replace($baseUri, '', $requestParts[0]); // Remove the base URI
 
 if (array_key_exists($path, $routes)) {
@@ -32,11 +37,11 @@ if (array_key_exists($path, $routes)) {
 
   $controller->$methodName();
 } else {
-  if (preg_match('/^\/profile-(\d+)$/', $path , $matches)) {
+  if (preg_match('/^\/profile-(\d+)$/', $path, $matches)) {
     $controller = new profile\profileController();
     $controller->profile($matches[1]);
-  } else if (preg_match('/^\/post-(\d+)$/', $path, $matches)) {
-    $controller = new post\postController();
+  } else if (preg_match('/^\/postDetails-(\d+)$/', $path, $matches)) {
+    $controller = new postDetails\postDetailsController();
     $controller->post($matches[1]);
   } else {
     http_response_code(404);

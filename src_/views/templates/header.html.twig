@@ -1,32 +1,109 @@
 {% extends "default.html.twig" %}
 
 {% block stylesheet %}
-<link href="/projet/src/public/css/header.css" rel="stylesheet">
-<link href="/projet/src/public/css/index.css" rel="stylesheet">
+<link href="/ifadev/src/public/css/header.css" rel="stylesheet">
+<link href="/ifadev/src/public/css/index.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
-    <div class = "top">
-        <div class="top-logo">
-            <a href ="/projet/src/index.php/" class="top-logo">
-                <img src="/projet/src/public/image/logo2.png" alt="logo du site" id="logo">
-            </a>
-        </div>
 
-        <div class="searchBox">
-            <input class="searchInput" type="text" name="" placeholder="Search something">
-            <a href = "#" >
-                <button class="searchIcon">
-                    <img src="/projet/src/public/image/icon/loupe2.png" alt="icon" class="search-icon">
-                </button>
-            </a>
-        </div>
+<nav class="menu"> 
+    
 
 
+    <ul>
+        <a href="/ifadev/src/index.php/">
+            <img src="/ifadev/src/public/image/logo2.png" alt="logo du site" id="logo">
+        </a>
         {% if isConnected %}
-        <div class="bottom-pfp">
-            <div>
-                <form action="/projet/src/index.php/" method="post">
+        <div class="bar_connect"> 
+            <li>
+                <div class="dropdown">
+                    <button class="item" onclick="toggleDropdown(event)">
+                        Menu
+                        <img src="/ifadev/src/public/image/menu.png" id="img2">
+                    </button>
+                    <div class="dropdown-content" id="myDropdown">
+                        <a href = "/ifadev/src/index.php/" class = "no">
+                            <img src="/ifadev/src/public/image/icon/home.png" alt="icon" class="icons">Home
+                        </a>
+                        <a href = "/ifadev/src/index.php/research" class = "no">
+                            <img src="/ifadev/src/public/image/icon/loupe.png" alt="icon" class="icons">Search
+                        </a>
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/message.png" alt="icon" class="icons">Message
+                        </a>
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/post.png" alt="icon" class="icons">Post
+                        </a>
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/saved.png" alt="icon" class="icons">Saved Post
+                        </a>
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/notif.png" alt="icon" class="icons">Notification
+                        </a>
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/3dots.png" alt="icon" class="icons">Other
+                        </a>
+                        {% if IsAdmin %}
+                        <a href = "/ifadev/src/index.php/dashboard" class = "no">
+                            <img src="/ifadev/src/public/image/icon/dashboard.png" alt="icon" class="icons">Dashboard
+                        </a>
+                        {% endif %}
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/setting.png" alt="icon" class="icons">Settings
+                        </a>
+                        <a href = "#" class = "no">
+                            <img src="/ifadev/src/public/image/icon/support.png" alt="icon" class="icons">Support
+                        </a>
+                    </div>
+                </div>
+                
+
+            </li>
+            <li>
+                <a href="/ifadev/src/index.php/allPost" id="Post">
+                    <div class="item" id="item">
+                        Post
+                        <img src="/ifadev/src/public/image/post.png" id="img2">
+                    </div>
+                </a>
+            </li>
+            <li>
+                <div class="searchBar">
+                    <form action="/ifadev/src/index.php/allPost" method="get" class="search-form">
+                        <div class="group">
+                            <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
+                                <g>
+                                    <path
+                                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                                    </path>
+                                </g>
+                            </svg>
+                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <li>
+                <a href="/ifadev/src/index.php/advice" id="Post">
+                    <div class="item" id="item">
+                        Conseil
+                        <img src="/ifadev/src/public/image/meeting.png" id="img2">
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/ifadev/src/index.php/profile-{{ userId }}" id="profile">
+                    <div class="item" id="item">
+                        Profil
+                        <img src="/ifadev/src/public/image/user.png" id="img2">
+                    </div>
+                </a>
+            </li>
+
+            <li>
+                <form action="/ifadev/src/index.php/" method="post">
                     <button class="Btn" type="submit" name="logOut" id="logout">
                         <div class="sign">
                             <svg viewBox="0 0 512 512">
@@ -34,177 +111,71 @@
                                     d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
                             </svg>
                         </div>
-                        <div class="text2">Deconnexion</div>
+                        <div class="text">Deconnexion</div>
                     </button>
                 </form>
-            </div>
-            <div class= "user-infos">
-                    <!-- src="data:image;base64,{{user.ProfilPicture}}" -->
-                <a href="/projet/src/index.php/profile-{{ userId }}" id="profile">
-                    <img class="user-picture" src="data:image;base64,{{ userPfp }}" alt="profile picture">
-                </a>
-                <div class="profile-info">
-                    <!-- <p>{{ userFirstName }} {{ userLastName }}</p> -->
-                </div>
-            </div>
-        </div>
-            
+            </li>
+        </div> 
         {% else %}
-        <div>
-            <a href="/projet/src/index.php/login" class = "no">
-                <button class="Btn3" id="login">
-                    Connexion
-                    <div class="arrow-wrapper">
-                        <div class="arrow"></div>
+        <div class="bar_disconnect"> 
+            <!--<li>
+                <a href="/ifadev/src/index.php/register" id="register">
+                    <button class="Btn2">
+                        Inscription
+                        <div class="arrow-wrapper">
+                            <div class="arrow"></div>
+                        </div>
+                    </button>
+                </a>
+            </li>--> 
+            <li>
+                <a href="/ifadev/src/index.php/allPost" id="Post">
+                    <div class="item" id="item">
+                        Post
+                        <img src="/ifadev/src/public/image/post.png" id="img2">
                     </div>
-                </button>
-            </a>
+                </a>
+            </li>
+            <li>
+                <div class="searchBar">
+                    <form action="/ifadev/src/index.php/allPost" method="get" class="search-form">
+                        <div class="group">
+                            <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
+                                <g>
+                                    <path
+                                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                                    </path>
+                                </g>
+                            </svg>
+                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <li>
+                <a href="/ifadev/src/index.php/advice" id="Post">
+                    <div class="item" id="item">
+                        Conseil
+                        <img src="/ifadev/src/public/image/meeting.png" id="img2">
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="/ifadev/src/index.php/login">
+                    <button class="Btn3" id="login">
+                        Connexion
+                        <div class="arrow-wrapper">
+                            <div class="arrow"></div>
+                        </div>
+                    </button>
+                </a>
+            </li>
         </div>
         {% endif %}
-    </div>
-
-
-
-
-    <aside class="left-sidebar">
-        
-
-        <div class="functionality-list">
-            <a href = "/projet/src/index.php/" class = "no">
-                <button class="func-icon">
-                    <img src="/projet/src/public/image/icon/home.png" alt="icon" class="icons">
-                    <div class="text">Home</div>
-                </button>
-            </a>
-            <a href = "#" class = "no">
-                <button class="func-icon">
-                    <img src="/projet/src/public/image/icon/loupe.png" alt="icon" class="icons">
-                    <div class="text">Search</div>
-                </button>
-            </a>
-            {% if isConnected %}
-            <a href = "#" class = "no">
-                <button class="func-icon">
-                    <img src="/projet/src/public/image/icon/message.png" alt="icon" class="icons">
-                    <div class="text">Message</div>
-                </button>
-            </a>
-            {% if isConnected %} <!-- isPro aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-->  
-            <button class="func-icon" id="openModalButton">
-                <img src="/projet/src/public/image/icon/post.png" alt="icon" class="icons">
-                <div class="text">Post</div>
-            </button>
-            {% endif %}
-            <a href = "#" class = "no">
-                <button class="func-icon" >
-                    <img src="/projet/src/public/image/icon/saved.png" alt="icon" class="icons">
-                    <div class="text">Saved Post</div>
-                </button>
-            </a>
-            <a href = "#" class = "no">
-                <button class="func-icon" >
-                    <img src="/projet/src/public/image/icon/notif.png" alt="icon" class="icons">
-                    <div class="text">Notification</div>
-                </button>
-            </a>
-            <a href = "#" class = "no">
-                <button class="func-icon" >
-                    <img src="/projet/src/public/image/icon/3dots.png" alt="icon" class="icons">
-                    <div class="text">Other</div>
-                </button>
-            </a>
-            <a href = "#" class = "no">
-                <button class="func-icon" >
-                    <img src="/projet/src/public/image/icon/setting.png" alt="icon" class="icons">
-                    <div class="text">Settings</div>
-                </button>
-            </a>
-            {% endif %}
-            
-            {% if isConnected %} 
-            <a href = "/projet/src/index.php/profile-{{ userId }}" class = "no">
-            {% else %}
-            <a href = "/projet/src/index.php/login" class = "no">
-            {% endif %}
-                <button class="func-icon">
-                    <img src="/projet/src/public/image/icon/user.png" alt="icon" class="icons">
-                    <div class="text">Profil</div>
-                </button>
-            </a>
-            <!-- Ajoutez plus de boutons ici -->
-        </div>
-
-        <div class = "support">
-            <a href = "#" class = "no">
-                <button class="func-icon" >
-                    <img src="/projet/src/public/image/icon/support.png" alt="icon" class="icons">
-                    <div class="text">Support</div>
-                </button>
-            </a>
-        </div>
-        
-
-
-
-
-        
-    </aside>
-    <!-- 
-
-    <aside class="right-sidebar">
-        
-        <div class="suggestions">
-            <h2>Tendances</h2>
-            {% for post in trending_posts %}
-            <div class="post">
-                <div class="post-title">
-                    <b>{{ post.title }}</b>
-                    <p>{{ post.time_ago }}</p>
-                </div>
-                <div class="post-stat">
-                    <p>{{ post.likes }} likes</p>
-                    <p>{{ post.views }} views</p>
-                </div>
-            </div>
-            {% endfor %}
-           
-        </div>
-        {% if isConnected %} 
-        <div class="bottom-messages">
-            <button>Messages</button>
-        </div>
-        {% endif %}
-    </aside>
-
--->
-
-
-
-    {% if isConnected %}
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form action="/projet/src/index.php/" method="post" id="formAddPost" enctype="multipart/form-data">
-                <input type="text" name="TitlePost" placeholder="TitlePost" class="inputField" required>
-
-                <textarea name="ContentPost" placeholder="ContentPost" class="inputFieldDesc" required></textarea>
-
-                <input type="file" id="images" name="PicturePost[]" multiple accept="image/*"
-                    onchange="validateFiles(this)">
-
-                <button type="submit" name="addPost" class="inputField2">Add Post</button>
-            </form>
-        </div>
-    </div>
-    {% endif %}
-    
-    
-
-
-
- 
+    </ul>
+</nav>
 {% endblock %}
 
 {% block scripts %}
-<script src="/projet/src/public/js/modalUser.js"></script>
+<script src="/ifadev/src/public/js/dropdownMenu.js"></script>
 {% endblock %}

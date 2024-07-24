@@ -5,7 +5,7 @@ namespace home;
 use PDO;
 use PDOException;
 
-require_once __DIR__ .'/../database/connectDB.php';
+require_once 'database/connectDB.php';
 
 class homeModel
 {
@@ -22,63 +22,77 @@ class homeModel
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function addPost($TitlePost, $ContentPost, $PicturesPost, $IdUser)
+    public function get5UserProRandom()
     {
         try {
-            $this->dsn->beginTransaction();
+            $stmt = $this->dsn->query("
+                SELECT 
+                    IdUser,
+                    FirstName, 
+                    LastName, 
+                    ProfilPicture, 
+                    ProfilDescription
+                FROM User
+                WHERE IsPro = 1
+                ORDER BY RAND()
+                LIMIT 5
+            ");
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $this->dsn->prepare("INSERT INTO Post (TitlePost, ContentPost, IdUser) VALUES (:TitlePost, :ContentPost, :IdUser)");
-            $stmt->bindParam(':TitlePost', $TitlePost);
-            $stmt->bindParam(':ContentPost', $ContentPost);
-            $stmt->bindParam(':IdUser', $IdUser);
-            $stmt->execute();
-            $IdPost = $this->dsn->lastInsertId();
-
-            $stmt = $this->dsn->prepare("INSERT INTO PicturePost (IdPost, PicturePost) VALUES (:IdPost, :PicturePost)");
-            foreach ($PicturesPost as $PicturePost) {
-                $stmt->bindParam(':IdPost', $IdPost);
-                $stmt->bindParam(':PicturePost', $PicturePost, PDO::PARAM_LOB);
-                $stmt->execute();
+            foreach ($results as &$row) {
+                if (!is_null($row['ProfilPicture'])) {
+                    $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
+                }
             }
 
-            $this->dsn->commit();
-            return $IdPost;
+            return $results;
         } catch (PDOException $e) {
-            $this->dsn->rollBack();
-            echo "Error: " . $e->getMessage();
+            $error = "error: " . $e->getMessage();
+            echo $error;
         }
     }
 
-    public function getPost()
+    public function get5RandomPostsFromTop10()
     {
-        $stmt = $this->dsn->prepare(
-            "SELECT Post.IdPost, Post.TitlePost, Post.ContentPost, Post.DatePost, User.FirstName, User.LastName, User.ProfilPicture 
-            FROM Post 
-            JOIN User ON Post.IdUser = User.IdUser"
-        );
-        $stmt->execute();
-        $getPostData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $this->dsn->query("
+            SELECT 
+                Post.IdPost, 
+                Post.TitlePost, 
+                Post.ContentPost, 
+                Post.DatePost, 
+                Post.Views, 
+                Post.IdUser,
+                User.FirstName,
+                User.LastName,
+                User.ProfilPicture,
+                User.IsPro
+            FROM Post
+            INNER JOIN User ON Post.IdUser = User.IdUser
+            ORDER BY Post.Views DESC
+            LIMIT 10
+        ");
+            $top10Posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($getPostData as &$post) {
-            if ($post['ProfilPicture'] !== null) {
-                $post['ProfilPicture'] = base64_encode($post['ProfilPicture']);
+            if (count($top10Posts) > 5) {
+                $randomKeys = array_rand($top10Posts, 5);
+                $randomPosts = array_intersect_key($top10Posts, array_flip($randomKeys));
             } else {
-                $post['ProfilPicture'] = '';
+                $randomPosts = $top10Posts;
             }
-            $post['RelativeDatePost'] = $this->getRelativeTime($post['DatePost']);
 
-            $stmtPictures = $this->dsn->prepare("SELECT PicturePost FROM PicturePost WHERE IdPost = :IdPost");
-            $stmtPictures->bindParam(':IdPost', $post['IdPost']);
-            $stmtPictures->execute();
-            $pictures = $stmtPictures->fetchAll(PDO::FETCH_COLUMN, 0);
-
-            foreach ($pictures as &$picture) {
-                $picture = base64_encode($picture);
+            foreach ($randomPosts as &$post) {
+                if (!is_null($post['ProfilPicture'])) {
+                    $post['ProfilPicture'] = base64_encode($post['ProfilPicture']);
+                }
+                $post['RelativeDatePost'] = $this->getRelativeTime($post['DatePost']);
             }
-            $post['PicturesPost'] = $pictures;
+
+            return $randomPosts;
+        } catch (PDOException $e) {
+            $error = "error: " . $e->getMessage();
+            echo $error;
         }
-
-        return $getPostData;
     }
 
     private function getRelativeTime($date)

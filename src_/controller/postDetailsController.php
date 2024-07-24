@@ -5,8 +5,7 @@ namespace postDetails;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require_once __DIR__ . '/../../vendor/autoload.php'; // Charge automatiquement les classes installées via Composer.
-
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 require_once __DIR__ . '/../model/postDetailsModel.php';
 
@@ -87,7 +86,7 @@ class postDetailsController
             $IdComment = $this->postDetailsModel->addComment($idPost, $ContentComment, $IdUser);
 
             if ($IdComment) {
-                header("Location: /postDetails-$idPost");
+                header("Location: /ifadev/src/index.php/postDetails-$idPost");
                 exit();
             }
         }

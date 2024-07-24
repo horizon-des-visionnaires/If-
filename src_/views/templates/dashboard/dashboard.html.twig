@@ -3,7 +3,7 @@
 {% block title %}Panel Admin{% endblock %}
 
 {% block stylesheet %}
-<link href="/../public/css/dashboard.css" rel="stylesheet">
+<link href="/ifadev/src/public/css/dashboard.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
@@ -37,13 +37,13 @@
         </div>
         <div class="button">
             <div class="buttonValid">
-                <form action="/dashboard" method="post">
+                <form action="/ifadev/src/index.php/dashboard" method="post">
                     <input type="hidden" name="IdRequest" value="{{ RequestPassPro.IdRequest }}">
                     <button name="requestValid" type="submit" id="inputField2">Valider la demande</button>
                 </form>
             </div>
             <div class="buttonInvalid">
-                <form action="/dashboard" method="post">
+                <form action="/ifadev/src/index.php/dashboard" method="post">
                     <input type="hidden" name="IdRequest" value="{{ RequestPassPro.IdRequest }}">
                     <button name="requestInvalid" type="submit" id="inputField2">Refuser la demande</button>
                 </form>
@@ -62,5 +62,5 @@
 {% block footer %}{% endblock %}
 
 {% block scripts %}
-<script src="/../public/js/modalImageRequest.js"></script>
+<script src="/ifadev/src/public/js/modalImageRequest.js"></script>
 {% endblock %}

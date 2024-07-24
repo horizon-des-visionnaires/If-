@@ -5,7 +5,7 @@ namespace profile;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require_once __DIR__ . '/../../vendor/autoload.php'; // Charge automatiquement les classes installées via Composer.
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 require_once __DIR__ . '/../model/profileModel.php';
 
@@ -26,15 +26,20 @@ class profileController
     {
         session_start();
 
-        $isConnected = false;
-        $userId = null;
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
+        } else {
+            $isConnected = false;
+            $userId = null;
+        }
+
+        $IsAdmin = false;
+        if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin'] == 1) {
+            $IsAdmin = true;
         }
 
         $user = $this->profileModel->getUserById($id);
-        $userLink = $this->profileModel->getLinkUserData($id);
 
         if ($user === null) {
             http_response_code(404);
@@ -43,14 +48,23 @@ class profileController
         }
 
         $this->updateUserData($id);
+        $userPost = $this->profileModel->getUserPosts($id);
+        $this->getDeletePostData();
+        $this->getRequestPassProData();
+        $this->getDataAddLike();
+        $this->getDataAddFavorite();
+        $this->getAddViewsData();
+
+        $postFav = $this->profileModel->getUserFavorites($id);
+
 
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
             'isConnected' => $isConnected,
             'userId' => $userId,
-            'userLink' => $userLink,
-            'userFirstName' => $user['FirstName'],
-            'userLastName' => $user['LastName']
+            'IsAdmin' => $IsAdmin,
+            'userPost' => $userPost,
+            'postFav' => $postFav
         ]);
     }
 
@@ -69,6 +83,68 @@ class profileController
             }
 
             $this->profileModel->updateUserData($id, $FirstName, $LastName, $ProfilDescription, $ProfilPicture);
+        }
+    }
+
+    public function getDeletePostData()
+    {
+        if (isset($_POST['deletePost'])) {
+            $idPost = $_POST['idPost'];
+            $idUser = $_POST['idUser'];
+            $this->profileModel->deletePost($idPost, $idUser);
+        }
+    }
+
+    public function getRequestPassProData()
+    {
+        if (isset($_POST['pushRequest'])) {
+            $Job = $_POST['Job'];
+            $Age = $_POST['Age'];
+            $Description = $_POST['Description'];
+            $idUser = $_POST['idUser'];
+
+            $identityCardRecto = null;
+            $identityCardVerso = null;
+
+            if (isset($_FILES["identityCardRecto"]) && $_FILES["identityCardRecto"]["error"] == UPLOAD_ERR_OK) {
+                $identityCardRecto = file_get_contents($_FILES["identityCardRecto"]["tmp_name"]);
+            }
+            if (isset($_FILES["identityCardVerso"]) && $_FILES["identityCardVerso"]["error"] == UPLOAD_ERR_OK) {
+                $identityCardVerso = file_get_contents($_FILES["identityCardVerso"]["tmp_name"]);
+            }
+
+            $this->profileModel->insertRequestPassProData($Job, $Age, $Description, $idUser, $identityCardRecto, $identityCardVerso);
+        }
+    }
+
+    public function getDataAddLike()
+    {
+        if (isset($_POST['AddLike'])) {
+            if (isset($_SESSION['IdUser'])) {
+                $IdUser = $_SESSION['IdUser'];
+                $IdPost = $_POST['IdPost'];
+                $this->profileModel->LikeData($IdUser, $IdPost);
+            }
+        }
+    }
+
+    public function getDataAddFavorite()
+    {
+        if (isset($_POST['AddFavorite'])) {
+            if (isset($_SESSION['IdUser'])) {
+                $IdUser = $_SESSION['IdUser'];
+                $IdPost = $_POST['IdPost'];
+                $this->profileModel->FavoriteData($IdUser, $IdPost);
+            }
+        }
+    }
+
+    public function getAddViewsData()
+    {
+        if (isset($_POST['viewMore'])) {
+            $idPost = $_POST['idPost'];
+
+            $this->profileModel->updateViews($idPost);
         }
     }
 }

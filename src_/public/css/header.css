@@ -1,373 +1,205 @@
-.container {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    text-decoration: none;
+#logo {
+    height: 4.5em;
 }
 
-.top {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #ffffff; /* Vous pouvez ajuster la couleur de fond selon vos besoins */
-    
-    display: flex;
-    justify-content: space-between; /* Espace les éléments de manière égale */
-    align-items: center; /* Centre verticalement les éléments */
-    padding: 0 20px; /* Ajoutez un peu de padding pour espacer les éléments des bords */
-    border-bottom: 2px solid #818080;
-}
-
-
-.searchBox {
-    display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    position: fixed;
-    margin-left: 32%;
-}
-
-.searchInput {
-    width: 350px;
-    padding: 10px;
-    background-color: rgba(6, 123, 4, 0.204);
-    border: none;
-    border-radius: 5px;
-    margin-right: 5px;
-}
-.searchInput input[type="text"] {
-    color: #ffffff; /* Changez cette couleur pour celle que vous souhaitez */
-}
-
-
-
-.searchIcon {
-    background: rgba(6, 123, 4, 0.204);
+header .buttons {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 9px;  /* Ajouter du padding pour plus d'espace autour du contenu */
-    border: none;  
-    cursor: pointer;
-    border-radius: 5px;
-    width: 100%;  /* S'assurer que les boutons prennent toute la largeur disponible */
+    justify-content: flex-end;
+    width: 100%;
+    margin: 8px;
 }
 
-.searchIcon:hover {
-    background: #5a9878; /* Couleur de fond au survol */
-}
-
-.searchIcon .search-icon {
-    width: 18px; 
-    height: auto; 
-    box-shadow: none;
-}
-
-
-
-
-
-
-
-
-.left-sidebar, .right-sidebar {
-    margin-top: 6%;
-    padding: 15px;
-    border-radius: 10px;
-    background: #eeeeee;
-    overflow: hidden; 
-}
-
-.left-sidebar {
-    width:11%;
-    left: 1px;
-    top: 0;
-    bottom: 0;
-    position: fixed;
+nav {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    margin-right: 30px;
+}
+
+nav ul {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+}
+
+
+nav li {
+    display: flex;
+    align-items: center;
+    margin-left: 3.5em;
+}
+
+.bar_connect{
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 2.9rem 2.9rem;
+    list-style: none;
 }
 
-.top-logo, .bottom-pfp {
-    display: flex;
-    align-items: center; /* Centrage vertical */
-    flex-direction: row;
-}
-
-
-
-.top-logo img , .bottom-pfp img{
-    width: 70px;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 50%;
-    box-shadow: none;
-}
-
-.bottom-pfp img {
-    width: 50px;
-    height: auto;
-    border-radius: 50%;
-    box-shadow: none ;
-    margin-left: 10px;
-    margin-top: 5px;
-}
-
-
-
-
-.profile-info {
-    width: 100%;
-    align-items: center; /* Centre horizontalement */
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-}
-
-.functionality-list {
-    width: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.functionality-list button {
-    background: #eeeeee;/*28662f*/
-    border: 2px solid #3c6650;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    text-align: center;
-    height: 1.8em;
-}
-
-.functionality-list button:hover {
-    background: #4c8867;
-}
-
-.func-icon {
+.bar_disconnect{
+    margin-left: 9em;
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 10px;  /* Ajouter du padding pour plus d'espace autour du contenu */
-    border: none;  
-    cursor: pointer;
-    border-radius: 5px;
-    width: 100%;  /* S'assurer que les boutons prennent toute la largeur disponible */
+    justify-content: space-between;
+    gap: 7.2rem 7.2rem;
+    list-style: none;
 }
+
+.item,
+.item a,
+.item button {
+    display: flex;
+    flex-direction: row-reverse;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    color: black;
+    text-decoration: none;
+    align-items: center;
+    border: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.item img {
+    width: 45px;
+}
+
+.item #profil button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.group {
+    display: flex;
+    line-height: 28px;
+    align-items: center;
+    position: relative;
+}
+
+.search {
+    width: 20em;
+    height: 40px;
+    line-height: 28px;
+    padding: 0 1rem;
+    padding-left: 2.5rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    outline: none;
+    background-color: #f3f3f4;
+    color: #0d0c22;
+    transition: .3s ease;
+    border: 1px solid #b0dfb3;
+}
+
+.search::placeholder {
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+}
+
+.search:focus,
+.search:hover {
+    outline: none;
+    border-color: #b0dfb3;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+}
+
+.iconSearch {
+    position: absolute;
+    left: 1rem;
+    fill: #9e9ea7;
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Sélection */
+::selection {
+    background: #80c886;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+}
+
+ /* Style du conteneur du menu */
+ .dropdown {
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    
+}
+
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: transparent;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+
+    margin-left: -5.5em;
+}
+
+/* Style des liens du menu */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+
+    border: 2px solid #3c6650;
+    margin-top: 4px;
+}
+
+/* Effet de survol pour les liens du menu */
+.dropdown-content a:hover {
+    background-color: #4c8867;
+}
+
+/* Affichage du menu lorsqu'il est actif */
+.dropdown-content.show {
+    display: block;
+}
+
+
 .no {
+    background: #eeeeee;
+    border: 2px solid #3c6650;
+    border-radius: 5%;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    width: 160px;  /*toute la largeur disponible */
+
+    font-size: 1em;
+    font-weight: 600;
+    transition-duration: .3s;
+    font-family: 'Montserrat', sans-serif;
     text-decoration: none;
 }
 
-.func-icon .text {
-    text-align: center;
-    font-size: 16px; /* ou la taille de police que vous souhaitez */
-}
 
-.func-icon .icons {
+
+.no .icons {
     width: 20px; 
     height: auto; 
     margin-right: 10px;  /* Espace entre l'icône et le texte */
     box-shadow: none;
 }
-
-
-.support button {
-    background: #eeeeee;/*28662f*/
-    border: 2px solid #3a3a3a;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    text-align: center;
-    height: 1.8em;
-}
-.support button:hover {
-    background: #3a3a3a79;
-}
-
-
-
-
-.right-sidebar {
-    width:18%;
-    border: 2px solid #3c6650;
-    right: 4.5em;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: fixed;
-}
-
-
-
-.suggestions {
-    flex: 1;
-    overflow-y: scroll; /* Activer le défilement */
-    margin-bottom: 20px;
-    scrollbar-width: none; /* Pour Firefox */
-    -ms-overflow-style: none;  /* Pour Internet Explorer et Edge */
-}
-
-.suggestions::-webkit-scrollbar {
-    display: none; /* Pour Chrome, Safari et Opera */
-}
-
-.suggestions h2 {
-    margin-bottom: 10px;
-}
-
-.suggestions .post {
-    background: #3c6650;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-.post-title {
-    display: flex;
-    justify-content: space-between;
-}
-
-.post-stat {
-    display: flex;
-    justify-content: space-between;
-}
-
-.bottom-messages {
-    background: #3c6650;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.bottom-messages button {
-    background: #3c6650;
-    border: none;
-    color: white;
-    width: 100%;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.bottom-messages button:hover {
-    background: #4c8867;
-}
-
-
-
-
-
-
-
-/* Media queries pour ajuster les éléments lors de la réduction de la fenêtre */
-@media screen and (max-width: 1200px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .left-sidebar, .right-sidebar {
-        position: static;
-        width: 100%;
-        margin: 0;
-    }
-
-   
-
-    
-}
-
-/* Styles pour les éléments cachés en vue réduite */
-@media screen and (max-width: 768px) { /*minimun sur mon navigateur*/
-    .container {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .left-sidebar {
-        width: 70px; /* Réduire la largeur */
-        padding: 10px;
-        align-items: center;
-    }
-
-    .right-sidebar {
-        display: none;
-    }
-
-    .functionality-list {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .functionality-list button {
-        padding: 5px;
-        margin: 5px 0;
-        font-size: 12px;
-        flex-direction: column; /* Aligner les icônes verticalement */
-        justify-content: center;
-    }
-
-    .functionality-list button span {
-        display: none; /* Masquer les labels */
-    }
-
-    .functionality-list button::before {
-        content: attr(data-icon-short); /* Utiliser le nom court pour les icônes */
-        font-size: 24px;
-        display: inline-block;
-        margin-right: 10px;
-    }
-
-    .bottom-pfp {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .bottom-pfp img {
-        width: 50px;
-        height: auto;
-    }
-
-    .top-logo img {
-        width: 150px;
-        height: auto;
-    }
-
-    .profile-info {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .top-logo img, .bottom-pfp img {
-        width: 50px;
-        height: 50px;
-    }
-
-    .functionality-list {
-        flex-direction: column;
-    }
-
-    .functionality-list button {
-        padding: 5px;
-        margin: 5px 0;
-        font-size: 12px;
-    }
-}
-
 
 
 
@@ -384,8 +216,8 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -405,20 +237,20 @@
 }
 
 .sign svg {
-    width: 16px;
+    width: 17px;
 }
 
 .sign svg path {
     fill: white;
 }
 
-.text2 {
+.text {
     position: absolute;
     right: 0%;
     width: 0%;
     opacity: 0;
     color: white;
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: 600;
     transition-duration: .3s;
     font-family: 'Montserrat', sans-serif;
@@ -435,17 +267,16 @@
     transition-duration: .3s;
 }
 
-.Btn:hover .text2 {
+.Btn:hover .text {
     opacity: 1;
     width: 70%;
     transition-duration: .3s;
-    padding-right: 13px;
+    padding-right: 10px;
 }
 
 .Btn:active {
     transform: translate(2px, 2px);
 }
-
 
 #img2 {
     margin-right: 5px;
@@ -469,8 +300,6 @@
     gap: 0.6em;
     font-weight: bold;
     font-family: 'Montserrat', sans-serif;
-    justify-content: center; /* Centrage horizontal */
-    margin-left: 0 auto;
 }
 
 .Btn2 .arrow-wrapper {
@@ -536,8 +365,7 @@
     gap: 0.6em;
     font-weight: bold;
     font-family: 'Montserrat', sans-serif;
-    justify-content: center; /* Centrage horizontal */
-    margin-left: 0 auto;
+        
 }
 
 .Btn3 .arrow-wrapper {
@@ -581,8 +409,25 @@
     right: 0;
 }
 
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    color: white;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    height: 5em;
+    border-bottom: 2px solid #818080;
+}
 
-
-
+header a {
+    text-decoration: none;
+    color: inherit;
+}
 
 

@@ -19,3 +19,4 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Toggle button or password field not found');
     }
 });
+

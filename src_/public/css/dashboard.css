@@ -8,11 +8,11 @@
 .request {
     width: 25em;
     height: fit-content;
-    background-color: #b0dfb3;
+    background-color: #eeeeee;
     margin-bottom: 3em;
     border-radius: 3em;
-    margin-right: 1em;
-    margin-left: 1em;
+    margin-right: 6em;
+    margin-left: 6em;
     padding-left: 1em;
 }
 
@@ -97,9 +97,16 @@
     height: 3em;
     border-radius: 10em;
     border: 2px solid #223f27;
-    background-color: #80c886;
+    background-color: #eeeeee;
     font-family: 'Montserrat', sans-serif;
     color: black;
     margin-bottom: 2em;
     margin-left: 3em;
+}
+#inputField2:hover{
+    background-color: #80c886
+}
+
+.description {
+    margin-top: -1em;
 }

@@ -5,7 +5,7 @@ namespace post;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require_once __DIR__ . '/../../vendor/autoload.php'; // Charge automatiquement les classes installées via Composer.
+require_once __DIR__ . '/../../vendor/autoload.php'; 
 
 require_once __DIR__ . '/../model/postModel.php';
 
@@ -33,6 +33,7 @@ class postController
         }
 
         $postData = $this->postModel->getPost($idPost);
+        $commentsData = $this->postModel->getComment($idPost);
 
         if (!empty($postData)) {
             $firstName = $postData[0]['FirstName'];
@@ -42,12 +43,32 @@ class postController
             $lastName = '';
         }
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId !== null) {
+            $this->addCommentData($idPost);
+        }
+
         echo $this->twig->render('post/post.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'postData' => $postData,
             'firstName' => $firstName,
-            'lastName' => $lastName
+            'lastName' => $lastName,
+            'commentsData' => $commentsData
         ]);
+    }
+
+    public function addCommentData($idPost)
+    {
+        if (isset($_POST['addComment'])) {
+            $ContentComment = $_POST['ContentComment'];
+            $IdUser = $_POST['IdUser'];
+
+            $IdComment = $this->postModel->addComment($idPost, $ContentComment, $IdUser);
+
+            if ($IdComment) {
+                header("Location: /ifadev/src/index.php/post-$idPost");
+                exit();
+            }
+        }
     }
 }
