@@ -33,13 +33,17 @@
                 </form>
             </div>
         </div>
-        <div class="filter-bar">
+
+        <div class="filter-toggle">
+            <button id="toggleFilterBarButton">Toggle Filter Bar</button>
+        </div>
+        <div class="filterBar">
             <form action="/allPost" method="get" class="filter-form">
                 <div class="group">
                     <div class="group1">
                         <label for="sortBy">Sort by:</label>
                         <select name="sortBy" id="sortBy">
-                        <option value="" disabled {% if not sortBy %}selected{% endif %}>Choisissez un critère</option>
+                            <option value="" disabled {% if not sortBy %}selected{% endif %}>Choisissez un critère</option>
                             <option value="date" {% if sortBy == 'date' %}selected{% endif %}>Date</option>
                             <option value="likes" {% if sortBy == 'likes' %}selected{% endif %}>Likes</option>
                             <option value="views" {% if sortBy == 'views' %}selected{% endif %}>Views</option>
@@ -73,19 +77,21 @@
         {% for Post in postData %}
         <div class="post">
             <div class="user-info">
-                <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
-                {% if Post.IsPro == 1 %}
-                <div class ="pro">
-                    <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
-                    {% set text = "I will create a stunning commercial marketing explainer video ads for your business" %}
-                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
-                    {% set isTruncated = text|length > 60 %}
+                <a href="/profile-{{ Post.IdUser }}">
+                    <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                    {% if Post.IsPro == 1 %}
+                    <div class ="pro">
+                        <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
+                        {% set text = "I will create a stunning commercial marketing explainer video ads for your business" %}
+                        {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                        {% set isTruncated = text|length > 60 %}
 
-                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
-                </div> 
-                {% else %}
-                <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
-                {% endif %}
+                        <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    </div> 
+                    {% else %}
+                    <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
+                    {% endif %}
+                </a>
             </div>
             <div class="contentPost">
                 <!--<h2>{{ Post.TitlePost }}</h2> -->
@@ -100,7 +106,6 @@
                 </form>
                 </p>
             </div>
-            <div class"testt">
             {% if Post.PicturesPost|length > 0  %}
                 <div class="swipe">
                     {% if Post.PicturesPost|length > 1  %}
@@ -122,7 +127,6 @@
                     {% endif %}
                 </div>
             {% endif %}
-            </div>
             {% if isConnected %}
                 <div class="interaction">
                     <form action="/allPost" method="post">
@@ -149,6 +153,7 @@
                             {% endif %}
                         </button>
                     </form>
+
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} views</p>
                 </div>
@@ -161,6 +166,8 @@
                     <button class="favorite" disabled>
                         <i class="far fa-star"></i>
                     </button>
+
+                    <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} views</p>
                 </div>
                 {% endif %}
@@ -212,8 +219,8 @@
 <script src="/../public/js/modalUser.js"></script>
 <script src="/../public/js/ImageCrop.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
-<script src="/../public/js/filterText.js"></script>
-
+<script src="/../public/public/js/filterText.js"></script>
+<script src="/../public/public/js/TogglesFilters.js"></script>
 <script src="/../public/js/modalImagePost.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 {% endblock %}

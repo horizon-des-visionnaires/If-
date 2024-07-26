@@ -13,29 +13,25 @@
 {% endblock %}
 
 {% block body %}
-<div class="intro-section">
-    <div class="title">
-        <h1>Rendre <br> l'éducation financière <br> accessible à tous</h1>
-    </div>
+<div class="title">
+    <h1> L'éducation financière <br> accessible à tous</h1>
 </div>
-
 <div class="ProfilContainer">
-    <h1>Découvrez des professionnels</h1>
+    <h1>Découvrez des professionnel</h1>
     <div class="allProfil">
         {% for user in userProData %}
         <a href="profile-{{ user.IdUser }}">
             <div class="profil">
                 <div class="profilPictureName">
                     <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
-                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> 
-                    <i id="certifIcon" class="fas fa-check-circle"></i>
+                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"class="fas fa-check-circle"></i>
                 </div>
-                <div class="description">
-                    {% set truncatedDescription = user.ProfilDescription[:35] %}
-                    <p>
-                        {{ truncatedDescription }}
-                        {% if user.ProfilDescription|length > 35 %}...{% endif %}
-                    </p>
+                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                    {% set text =  user.ProfilDescription %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+                    <div class="hover-text">Je peux t'aider à {{ text }}</div>
                 </div>
             </div>
         </a>
@@ -53,25 +49,30 @@
                 <div class="user-details">
                     <img id="icon" src="data:image;base64,{{ post.ProfilPicture }}" alt="icon">
                     {% if post.IsPro == 1 %}
-                    <h1 class="name1">{{ post.FirstName }} {{ post.LastName }} </h1>
-                    <i id="certifIcon" class="fas fa-check-circle"></i>
-                    {% set truncatedPromo = post.ContentPost[:50] %}
-                    <p> Je peux t'aider à 
-                        {{ truncatedPromo }}
-                        {% if post.ContentPost|length > 50 %}...{% endif %}
-                    </p>
+                        <h1 class= "name1">{{ post.FirstName }} {{ post.LastName }} </h1>
+                        <i id="certifIcon" class="fas fa-check-circle"></i>
                     {% else %}
-                    <h1 class="name2">{{ post.FirstName }} {{ post.LastName }} </h1>
+                        <h1 class= "name2">{{ post.FirstName }} {{ post.LastName }} </h1>
                     {% endif %}
                 </div>
                 <p id="date">{{ post.RelativeDatePost }}</p>
                 <p id="views">{{ post.Views }} vus</p>
                 <div class="contentPost">
+                    {% set text = post.TitlePost %}
+                    {% set truncatedText = text|length > 32 ? text|slice(0, 32) ~ '...' : text %}
+                    {% set isTruncated = text|length > 32 %}
+                    <h2 class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</h2>
+                    <div class="hover-text">{{ text }}</div>
+
+
+                    <!--
                     {% set truncatedDescription = post.ContentPost[:50] %}
                     <p>
                         {{ truncatedDescription }}
                         {% if post.ContentPost|length > 50 %}...{% endif %}
-                    </p>
+                    </p>-->
+
+                    
                 </div>
             </div>
         </a>

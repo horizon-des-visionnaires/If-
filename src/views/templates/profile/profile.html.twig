@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+<link  href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
@@ -72,7 +73,7 @@
                 <div id="charCount" class="char-count">0/255</div>
             </div>
 
-            <input type="file" id="images" name="ProfilPicture" />
+            <input type="file" id="images" name="ProfilPicture" onchange="openCropperModal(this)">
 
             <button type="submit" name="updateProfile" id="inputField2">Valider les changements</button>
         </form>
@@ -84,6 +85,7 @@
         <span class="close2">&times;</span>
         <form action="/profile-{{ user.IdUser }}" method="post" id="formPassPro" enctype="multipart/form-data">
             <input type="text" name="Job" placeholder="Métier" id="inputField" required>
+            <input type="text" name="Adress" placeholder="Adresse (ex: Lyon, Paris)" id="inputField" required>
             <input type="number" name="Age" placeholder="Age (minimum 18 ans)" min="18" id="inputField" required>
 
             <div style="position: relative;">
@@ -99,6 +101,9 @@
             <input type="file" id="images" name="identityCardVerso" accept="image/*" aria-label="Carte d'identité recto"
                 required />
 
+            <label for="images" id="labelText">Photo d'identité :</label>
+            <input type="file" id="images" name="UserPicture" accept="image/*" aria-label="Photo d'identité" required />
+            
             <input type="hidden" name="idUser" value="{{ user.IdUser }}">
 
             <button type="submit" name="pushRequest" id="inputField2">envoyer la demande</button>
@@ -277,6 +282,22 @@
 
 <div class="profilNotations"></div>
 
+
+<!-- Modal de découpe d'image -->
+<div id="cropperModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCropperModal()">&times;</span>
+        <div class="crop-container">
+            <img id="imageToCrop" src="" alt="Image to crop">
+        </div>
+        <div class="crop-buttons">
+            <button onclick="setAspectRatio(1)">Carré (1:1)</button>
+            <button onclick="cropImage()">Crop</button>
+        </div>
+    </div>
+</div>
+
+
 <div id="imageModal" class="image-modal">
     <span class="close-image-modal">&times;</span>
     <img class="image-modal-content" id="img01">
@@ -290,5 +311,8 @@
 <script src="/../public/js/modalUser.js"></script>
 <script src="/../public/js/profilDesc.js"></script>
 <script src="/../public/js/modalImagePost.js"></script>
+<script src="/../public/js/ImageCrop.js"></script>
 <script src="/../public/js/showContent.js"></script>
+
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 {% endblock %}
