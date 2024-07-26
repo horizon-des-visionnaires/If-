@@ -213,7 +213,7 @@ input[type=file]::file-selector-button {
 .post {
     width: 100%;
     padding: 1em;
-    background-color: #eeeeee;
+    background-color: #F7F7F7;
     margin-bottom: 1.5em;
     border-radius: 3em;
     margin-left: -1em;
@@ -240,11 +240,14 @@ input[type=file]::file-selector-button {
     margin-top: -0.4em;
     font-family: 'Open Sans', sans-serif;
 }
-
-.pro p{
-    margin-left: -8.4em;
-    margin-top: 3em;
-    font-size: 1.2em;
+.promotion{
+    margin-left: -10em;
+}
+.promotion p{
+    margin-top: 3.8em;
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
+    color:  #404145;
 }
 
 .user-picture {
@@ -254,7 +257,33 @@ input[type=file]::file-selector-button {
 }
 
 
+.hover-text {
+    position: absolute;
+    bottom: 65%; /* Positionner au-dessus de l'élément */
+    left: 25%;
+    transform: translateX(-50%); /* Centrer horizontalement */
+    background-color: #333;
+    color: #fff;
+    padding: 0.5em;
+    border-radius: 4px;
+    white-space: pre-wrap; /* Permet les retours à la ligne dans le texte */
+    max-width: 400px; /* Ajuster la largeur pour le texte */
+    word-wrap: break-word; /* Permet de couper les mots longs */
+    visibility: hidden; /* Masquer par défaut */
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-align: center; /* Alignement du texte à gauche */
+}
 
+/* Apparition du texte au survol */
+.promotion:hover .hover-text {
+    visibility: visible; /* Rendre visible */
+    opacity: 1; /* Rendre opaque */
+}
+
+.post:hover {
+    transform: scale(1.02);
+}
 
 .contentPost {
     padding-top: 1em;
@@ -527,6 +556,10 @@ span {
     justify-content: space-around;
     margin-top: 20px;
 }
+
+
+
+
 
 
 
