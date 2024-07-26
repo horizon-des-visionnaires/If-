@@ -81,7 +81,7 @@
                     <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
                     {% if Post.IsPro == 1 %}
                     <div class ="pro">
-                        <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
+                        <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                         {% set text = "I will create a stunning commercial marketing explainer video ads for your business" %}
                         {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                         {% set isTruncated = text|length > 60 %}
@@ -89,7 +89,9 @@
                         <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
                     </div> 
                     {% else %}
-                    <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1>
+                    <div <div class ="notpro">
+                        <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2>
+                    </div>
                     {% endif %}
                 </a>
             </div>
@@ -97,14 +99,19 @@
                 <!--<h2>{{ Post.TitlePost }}</h2> -->
                 <p>
                     {% set contentLines = Post.ContentPost | split("\n") %}
-                    {% for i in 0..2 %}
-                    {{ contentLines[i] }}<br>
-                    {% endfor %}
+                    {% if contentLines %}
+                        {% for i in 0..2 %}
+                            {% if contentLines[i] is defined %}
+                                {{ contentLines[i] }}<br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </p>
                 <form action="/allPost" method="post">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
                     <button type="submit" name="viewMore" class="viewMore">Voir Plus</button>
                 </form>
-                </p>
+                
             </div>
             {% if Post.PicturesPost|length > 0  %}
                 <div class="swipe">
