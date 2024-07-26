@@ -6,8 +6,12 @@
 }
 
 .allPostFiltre {
+    background: #ffffff;
+    padding: 2em;
+    border-radius: 20px;
     position: fixed;
-    margin-left: -90em;
+    margin-left: -60em;
+    margin-right: 20em;
 }
 
 .filter-bar{
@@ -21,8 +25,10 @@
 
 /* Bouton pour ouvrir la modal */
 .PostButton {
-    margin-top: 6em;
     margin-left: 4em;
+    background: #ffffff;
+    
+    border-radius: 20px;
 }
 
 /* Style de la modal */
@@ -181,28 +187,37 @@ input[type=file]::file-selector-button {
 }
 
 .allPostContainer {
-    margin-left: 35em;
-    margin-top: 7em;
+    padding: 3em;
+    margin-left: 30em;
+    margin-right: 10em;
+    margin-top: 2em;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    
 }
 
 .allPostPost {
     margin-left: 12em;
     width: 40em;
-    height: 40em;
+    height: 100%;
     margin-right: 7em;
+    background: #ffffff;
+    padding-left: 3em;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding-right: 3em;
+    border-radius: 20px;
 }
 
 .post {
     width: 100%;
     padding: 1em;
-    background-color: #ffffff;
+    background-color: #eeeeee;
     margin-bottom: 1.5em;
     border-radius: 3em;
     margin-left: -1em;
-    border: 1px solid #000;
+    
 }
 
 .user-info a,
