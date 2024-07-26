@@ -203,10 +203,10 @@ input[type=file]::file-selector-button {
     height: 100%;
     margin-right: 7em;
     background: #ffffff;
-    padding-left: 3em;
+    padding-left: 7em;
     padding-top: 1em;
     padding-bottom: 2em;
-    padding-right: 3em;
+    padding-right: 7em;
     border-radius: 20px;
 }
 
