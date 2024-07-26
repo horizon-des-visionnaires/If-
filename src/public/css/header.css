@@ -91,6 +91,7 @@ nav a {
 }
 
 .search {
+    margin-top: 18px;
     width: 20em;
     height: 40px;
     line-height: 28px;
@@ -119,6 +120,7 @@ nav a {
 }
 
 .iconSearch {
+    margin-top: 15px;
     position: absolute;
     left: 1rem;
     fill: #9e9ea7;

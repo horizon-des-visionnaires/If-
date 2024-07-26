@@ -4,7 +4,6 @@ namespace postDetails;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-
 require 'vendor/autoload.php';
 
 require_once __DIR__ . '/../model/postDetailsModel.php';
@@ -86,7 +85,7 @@ class postDetailsController
             $IdComment = $this->postDetailsModel->addComment($idPost, $ContentComment, $IdUser);
 
             if ($IdComment) {
-                header("Location: /postDetails-$idPost");
+                header("Location: /ifadev/src/index.php/postDetails-$idPost");
                 exit();
             }
         }

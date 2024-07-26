@@ -4,7 +4,6 @@ namespace profile;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-
 require 'vendor/autoload.php';
 
 require_once __DIR__ . '/../model/profileModel.php';

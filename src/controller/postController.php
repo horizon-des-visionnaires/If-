@@ -5,7 +5,7 @@ namespace post;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
-require 'vendor/autoload.php'; 
+require 'vendor/autoload.php';
 
 require_once __DIR__ . '/../model/postModel.php';
 
@@ -66,7 +66,7 @@ class postController
             $IdComment = $this->postModel->addComment($idPost, $ContentComment, $IdUser);
 
             if ($IdComment) {
-                header("Location: /post-$idPost");
+                header("Location: /ifadev/src/index.php/post-$idPost");
                 exit();
             }
         }

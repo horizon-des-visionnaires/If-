@@ -19,6 +19,10 @@
     border-radius: 3em;
 }
 
+
+
+
+
 .user-info a,
 .user-info {
     display: flex;
@@ -40,6 +44,20 @@ a {
     padding: 1em;
     border-radius: 50%;
 }
+
+
+
+.user-info .pro{
+    display: flex;
+    margin-top: -0.4em;
+}
+
+.pro p{
+    margin-left: -8.4em;
+    margin-top: 3.5em;
+    font-size: 1.2em;
+}
+
 
 .datePost {
     padding-left: 5em;

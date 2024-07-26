@@ -20,7 +20,8 @@
 
 /* Bouton pour ouvrir la modal */
 .PostButton {
-    margin-top: 5em;
+    margin-top: 18em;
+    margin-left: 4em;
 }
 
 /* Style de la modal */
@@ -195,15 +196,19 @@ input[type=file]::file-selector-button {
 .post {
     width: 100%;
     padding: 1em;
-    background-color: #eeeeee;
+    background-color: #ffffff;
     margin-bottom: 2em;
     border-radius: 3em;
     margin-left: -1em;
+    border: 1px solid #000;
 }
 
+.user-info a,
 .user-info {
     display: flex;
     flex-direction: row;
+    text-decoration: none;
+    color: #000;
 }
 
 .user-info h1 {
@@ -255,12 +260,7 @@ input[type=file]::file-selector-button {
     padding-top: 2.5em;
 }
 
-.group {
-    display: flex;
-    line-height: 28px;
-    align-items: center;
-    position: relative;
-}
+
 
 .search {
     width: 20em;
@@ -539,4 +539,70 @@ span {
     width: auto; /* Permet au texte de s'adapter à la largeur du contenu */
     max-width: 300px; /* Ajustez cette valeur selon vos besoins */
     z-index: 10;
+}
+
+
+
+
+.filter-bar {
+    margin-left: -3em;
+    margin-top: 3em;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    background-color: #eeeeee;
+    padding: 1em;
+    border: 1px solid #000;
+    border-radius: 1em;
+}
+
+.filter-form, .reset-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.group1, .group2 {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1em;
+}
+
+.group1 label, .group2 label {
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 0.5em;
+}
+
+.group1 select, .group2 select {
+    padding: 0.5em;
+    border-radius: 0.5em;
+    border: 1px solid #ddd;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.group1 select:hover, .group2 select:hover {
+    border-color: #1b5e20;
+}
+
+
+button {
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2px;
+}
+
+.filter-toggle{
+    margin-top: 100px;
 }

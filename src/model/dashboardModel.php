@@ -85,7 +85,7 @@ class dashboardModel
 
             $this->dsn->commit();
 
-            header("Location: /dashboard");
+            header("Location: /ifadev/src/index.php/dashboard");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -170,7 +170,7 @@ class dashboardModel
 
                 $this->dsn->commit();
 
-                header("Location: /dashboard");
+                header("Location: /ifadev/src/index.php/dashboard");
                 exit();
             } catch (PDOException $e) {
                 $this->dsn->rollBack();

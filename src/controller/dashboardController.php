@@ -8,7 +8,7 @@ use TCPDF;
 use ZipArchive;
 
 require 'vendor/autoload.php';
-require 'vendor/tecnickcom/tcpdf/tcpdf.php'; //car jai pas
+require 'vendor/tecnickcom/tcpdf/tcpdf.php'; 
 
 require_once __DIR__ . '/../model/dashboardModel.php';
 
@@ -42,7 +42,7 @@ class dashboardController
         }
 
         if (!$IsAdmin) {
-            header("Location: /");
+            header("Location: /ifadev/src/index.php/");
             exit();
         }
 

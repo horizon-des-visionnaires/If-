@@ -55,7 +55,7 @@ class homeController
     {
         if (isset($_POST['logOut'])) {
             session_unset();
-            header("Location: /login");
+            header("Location: /ifadev/src/index.php/login");
         }
     }
 }

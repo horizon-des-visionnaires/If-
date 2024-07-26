@@ -41,7 +41,7 @@ class registerModel
                 $stmt2->bindParam(':UserPassword', $hased_password);
 
                 if ($stmt2->execute()) {
-                    header("Location: /login");
+                    header("Location: /ifadev/src/index.php/login");
                     exit;
                 } else {
                     return 'Erreur lors de l\'inscription';

@@ -153,7 +153,7 @@ class postDetailsModel
 
             $this->dsn->commit();
 
-            header("Location: /");
+            header("Location: /ifadev/src/index.php/");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -174,7 +174,7 @@ class postDetailsModel
 
             $this->dsn->commit();
 
-            header("Location: /postDetails-$idPost");
+            header("Location: /ifadev/src/index.php/postDetails-$idPost");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -205,7 +205,7 @@ class postDetailsModel
             $execUpdateLike->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateLike->execute()) {
-                header("Location: /postDetails-$IdPost");
+                header("Location: /ifadev/src/index.php/postDetails-$IdPost");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du like.";
@@ -262,7 +262,7 @@ class postDetailsModel
             $execUpdateFavorite->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateFavorite->execute()) {
-                header("Location: /postDetails-$IdPost");
+                header("Location: /ifadev/src/index.php/postDetails-$IdPost");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du favori.";
