@@ -28,32 +28,41 @@
 
 <div class="ProfilContainer">
     <div class="profil">
-        <div class="profilPictureName">
+        <div class="ProfilUser">
             {% if user.ProfilPicture == null %}
             <img id="icon" src="/../public/image/user.png" alt="icon">
             {% else %}
             <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
             {% endif %}
             {% if user.IsPro == 1 %}
-            <div class ="infouser">
-                <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
-            </div>
-            <p>qdfqfaefzfza </p>
+            <div class ="pro">
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i> 
+                
+            </div> 
             {% else %}
-            <h1>{{ user.FirstName }} {{ user.LastName }}</h1>
-            {% endif %}
+            <div <div class ="notpro">
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+            </div> 
+            {% endif %}          
         </div>
+        
         {% if isConnected and userId == user.IdUser %}
         {% if userId == user.IdUser and user.IsPro == 0 %}
         <div class="passProButton">
-            <button id="openModalButtonPro" class="boton-elegante">Demande Passez pro</button>
+            <button id="openModalButtonPro" class="beautiful-button">Demande Passez pro</button>
         </div>
         {% endif %}
         <div class="profilButton">
-            <button id="openModalButton" class="boton-elegante">Editer le profile</button>
+            <button id="openModalButton" class="beautiful-button">Editer le profile</button>
         </div>
-        {% endif %}
     </div>
+    
+    {% endif %}
+    {% if user.IsPro == 1 %}
+    <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+        <p>{{ user.ProfilDescription| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
+    </div> 
+    {% endif %}
     <div class="description">
         <p>{{ user.ProfilDescription | nl2br }}</p>
     </div>
@@ -113,8 +122,8 @@
 
 {% if isConnected and userId == user.IdUser %}
 <div class="button-container">
-    <button id="showPosts" class="boton-elegante">Voir les posts</button>
-    <button id="showFavorites" class="boton-elegante">Voir les favoris</button>
+    <button id="showPosts" class="beautiful-button">Voir les posts</button>
+    <button id="showFavorites" class="beautiful-button">Voir les favoris</button>
 </div>
 {% endif %}
 
@@ -122,12 +131,14 @@
     {% for Post in userPost %}
     <div class="post">
         <div class="user-info">
-            <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
-            {% if userId == user.IdUser and user.IsPro == 0 %}
-            <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-            {% else %}
-            <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
-            {% endif %}
+            <div class= "flex">
+                <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                {% if userId == user.IdUser and user.IsPro == 0 %}
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                {% else %}
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                {% endif %}
+            </div>
             {% if isConnected and userId == user.IdUser %}
             <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
                 <button type="submit" name="deletePost" id="deleteButton">
@@ -141,17 +152,21 @@
             {% endif %}
         </div>
 
-        <p class="datePost">{{ Post.RelativeDatePost }}</p>
+        
         <div class="contentPost">
             <h2>{{ Post.TitlePost }}</h2>
             <p>
                 {% set contentLines = Post.ContentPost | split("\n") %}
-                {% for i in 0..2 %}
-                {{ contentLines[i] }}<br>
-                {% endfor %}
+                {% if contentLines %}
+                    {% for i in 0..2 %}
+                        {% if contentLines[i] is defined %}
+                            {{ contentLines[i] }}<br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                <button type="submit" name="viewMore" class="viewMore">Voir Plus</button>
+                <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
             </form>
             </p>
         </div>
@@ -184,7 +199,7 @@
                     {% endif %}
                 </button>
             </form>
-
+            <p class="datePost">{{ Post.RelativeDatePost }}</p>
             <p class="viewsPost">{{ Post.Views }} views</p>
         </div>
         {% else %}
@@ -207,27 +222,32 @@
 <div class="profilFavorites" style="display: none;">
     {% for Post in postFav %}
     <div class="post">
-        <div class="user-info">
+        <div class="user-info2">
             <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
             {% if userId == user.IdUser and user.IsPro == 0 %}
-            <h1>{{ user.FirstName }} {{ user.LastName }}</h1>
+            <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
             {% else %}
-            <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
+            <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
             
             {% endif %}
         </div>
 
-        <p class="datePost">{{ Post.RelativeDatePost }}</p>
+        
         <div class="contentPost">
             <h2>{{ Post.TitlePost }}</h2>
             <p>
                 {% set contentLines = Post.ContentPost | split("\n") %}
-                {% for i in 0..2 %}
-                {{ contentLines[i] }}<br>
-                {% endfor %}
+                {% if contentLines %}
+                    {% for i in 0..2 %}
+                        {% if contentLines[i] is defined %}
+                            {{ contentLines[i] }}<br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                <button type="submit" name="viewMore" class="viewMore">Voir Plus</button>
+                <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
             </form>
             </p>
         </div>
@@ -260,7 +280,7 @@
                     {% endif %}
                 </button>
             </form>
-
+            <p class="datePost">{{ Post.RelativeDatePost }}</p>
             <p class="viewsPost">{{ Post.Views }} views</p>
         </div>
         {% else %}

@@ -24,14 +24,20 @@
                             alt="profile picture">
                         {% if isPro == 1 %}
                         <div class ="pro">
-                            <h1>{{ Post.FirstName }} {{ Post.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
-                            {% set text = "I will create a stunning commercial marketing explainer video ads for your business" %}
-                            {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
-                            {% set isTruncated = text|length > 60 %}
-                            <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                            <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                                
+                            <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                                {% set text =  user.ProfilPromotion %}
+                                {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                                {% set isTruncated = text|length > 60 %}
+                                <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+                                <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                            </div> 
                         </div> 
                         {% else %}
-                        <h1>{{ firstName }} {{ lastName }}</h1>
+                        <div <div class ="notpro">
+                            <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2>
+                        </div>
                         {% endif %}
                     </a>
                     {% if isConnected and userId == Post.IdUser%}
@@ -51,9 +57,13 @@
                     <h2>{{ Post.TitlePost }}</h2>
                     <p>
                         {% set contentLines = Post.ContentPost | split("\n") %}
-                        {% for i in 0..2 %}
-                        {{ contentLines[i] }}<br>
-                        {% endfor %}
+                        {% if contentLines %}
+                            {% for i in 0..2 %}
+                                {% if contentLines[i] is defined %}
+                                    {{ contentLines[i] }}<br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                         {% if contentLines | length > 3 %}
                         <span id="moreContentPost{{ loop.index }}" style="display:none;">
                             {% for i in 3..(contentLines | length - 1) %}
@@ -115,11 +125,7 @@
         </div>
     </div>
 
-    {% if isConnected %}
-    <div class="CommentButton">
-        <button id="openModalButton" class="boton-elegante">Add Comment</button>
-    </div>
-    {% endif %}
+   
 
     {% for Post in postData %}
     <div id="profileModal" class="modal">
@@ -137,6 +143,11 @@
     {% endfor %}
 
     <div class="commentContainer">
+        {% if isConnected %}
+        <div class="CommentButton">
+            <button id="openModalButton" class="boton-elegante">Add Comment</button>
+        </div>
+        {% endif %}
         {% for Comment in commentsData %}
         <div class="comment">
             <div class="user-info">
@@ -144,9 +155,21 @@
                     <img class="user-picture" src="data:image;base64,{{ Comment.ProfilPicture }}"
                         alt="profile picture">
                     {% if Comment.IsPro == 1 %}
-                    <h1>{{ Comment.FirstName  }} {{ Comment.LastName }}</h1> <i id="certifIcon" class="fas fa-check-circle"></i>
+                    <div class ="pro">
+                        <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                             
+                        <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                            {% set text =  user.ProfilPromotion %}
+                            {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                            {% set isTruncated = text|length > 60 %}
+                            <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+                            <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                        </div> 
+                    </div> 
                     {% else %}
-                    <h1>{{ Comment.FirstName  }} {{ Comment.LastName }}</h1>
+                    <div <div class ="notpro">
+                        <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2>
+                    </div>
                     {% endif %}
                 </a>
                 {% if isConnected and userId == Comment.IdUser%}
@@ -164,10 +187,10 @@
                 {% endif %}
 
             </div>
-            <p class="dateComment">{{ Comment.RelativeDateComment }}</p>
             <div class="contentComment">
                 <p>{{ Comment.ContentComment | nl2br }}</p>
             </div>
+            <p class="dateComment">{{ Comment.RelativeDateComment }}</p>
         </div>
         {% endfor %}
     </div>

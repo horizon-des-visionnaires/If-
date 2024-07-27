@@ -21,13 +21,14 @@ nav ul {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 2rem;
 }
 
 
 nav li {
+    font-family: 'Montserrat', sans-serif;
     display: flex;
-    align-items: center;
+    justify-content: space-between; /* Répartit les éléments de manière égale */
+    align-items: center; /* Centre verticalement les éléments */
     margin-left: 3.5em;
 }
 
@@ -432,4 +433,19 @@ header a {
     color: inherit;
 }
 
+
+.Message{
+    position: fixed; /* Fixe l'élément par rapport à la fenêtre de visualisation */
+    bottom: 0; /* Aligne l'élément au bas de la page */
+    right: 0; /* Aligne l'élément à droite de la page */
+    z-index: 10;
+    background: transparent;
+}
+
+.Message img{
+    width: 70px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid #9e9ea7;
+}
 

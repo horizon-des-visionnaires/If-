@@ -1,46 +1,54 @@
+/* Palette de couleurs */
+:root {
+    --primary-color: #1DBF73;
+    --secondary-color: #404145;
+    --background-color: #F7F7F7;
+    --text-color: #1C1C1C;
+}
+
 .container {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
 
-.PagePost {
-    width: 31em;
-    height: 30em;
-    margin-top: 10em;
-}
 
-.post,
-.comment,
-.avis {
+
+.post, .comment {
+    margin-bottom: 2.5em;
     padding: 1em;
-    background-color: #eeeeee;
-    margin-bottom: 2em;
-    border-radius: 3em;
+    background-color: var(--background-color);
+    border-radius: 2em;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    width: 80%;
+    background: #F7F7F7;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
-
-
+.post:hover, .comment:hover {
+    transform: scale(1.02);
+}
 
 
 .user-info a,
 .user-info {
     display: flex;
     flex-direction: row;
+    text-decoration: none;
+    color: #000;
 }
 
 a {
     text-decoration: none;
 }
 
-.user-info h1 {
-    font-family: 'Open Sans', sans-serif;
-    padding-top: -1em;
-    color: black;
-}
+
 
 .user-picture {
-    height: 3em;
+    height: 4em;
     padding: 1em;
     border-radius: 50%;
 }
@@ -50,58 +58,66 @@ a {
 .user-info .pro{
     display: flex;
     margin-top: -0.4em;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .pro p{
-    margin-left: -8.4em;
+    margin-left: 0.1em;
     margin-top: 3.5em;
     font-size: 1.2em;
 }
 
-
-.datePost {
-    padding-left: 5em;
-    margin-top: 0.4em;
+.contentPost, .contentPost span{
     font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
 }
 
 #certifIcon {
     padding-left: 0.5em;
-    padding-top: 2.5em;
-    color: black;
+    padding-top: 2.4em;
+    color: var(--primary-color);
 }
 
-.contentPost {
-    padding: 1em;
+.contentPost, .contentComment {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    padding-top: 1em;
+    margin-left: 6.2em;
+    margin-top: -2.2em;
 }
 
 .contentPost h2 {
+    margin-top: 1%;
     font-family: 'Open Sans', sans-serif;
 }
 
 .icon {
     height: 5em;
 }
-
-.btn-voir-plus {
-    background-color: #3c9048;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    border-radius: 1em;
+.contentPost button{
+    margin-top: 1em;
+    margin-bottom: -1.5em;
 }
 
-.commentContainer {
-    height: 30em;
-    width: 31em;
-    margin-top: 12em;
+.commentContainer, .postContainer {
+    margin-left: 12em;
+    width: 35%;
+    height: 100%;
+    margin-right: 7em;
+    background: #ffffff;
+    margin-left: 4em;
+    margin-top: 5em;
+    padding: 2em;
+    padding-bottom: 1em;
+    border-radius: 3em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.contentComment {
-    padding: 0 0 0 1em;
-}
+
+
+
+
+
 
 /* Style de la modal */
 .modal {
@@ -118,7 +134,7 @@ a {
 
 /* Contenu de la modal */
 .modal-content {
-    background-color: #eeeeee; /* Fond blanc cassé */
+    background-color: #F7F7F7; /* Fond blanc cassé */
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #888;
@@ -166,19 +182,18 @@ a {
 }
 
 .inputField2 {
-    width: 20em;
+    width: 50%;
+    margin-left: 25%;
     height: 3em;
     border-radius: 10em;
     background-color: #2e7d32; /* Fond vert foncé */
-    color: #ffffff; /* Texte blanc */
+    color: #eeeeee; /* Texte blanc */
     margin-top: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: flex;
     text-align: center;
     justify-content: center;
-    align-items: center;
-    margin-left: 19em;
 }
 .inputField2:hover{
     background-color: #1b5e20;
@@ -187,64 +202,24 @@ a {
 
 /* Textarea */
 .inputFieldDesc {
+    margin-top: 1.5em;
     border-radius: 1em;
     background-color: #ffffff;
     overflow: auto;
     word-wrap: break-word;
     white-space: pre-wrap;
-    min-width: 30em;
-    max-width: 50em;
-    min-height: 15em;
-    max-height: 50em;
+    width: 60%;
+    height: 10em;
     resize: none; /* Empêcher le redimensionnement */
-    margin-left: 14em;
-}
-
-.boton-elegante {
-    padding: 8px 12px;
-    border: 2px solid #223f27;
-    background-color: #eeeeee;
-    color: #000000;
-    font-size: 1.2rem;
-    cursor: pointer;
-    border-radius: 30px;
-    transition: all 0.4s ease;
-    outline: none;
-    position: relative;
-    overflow: hidden;
-    font-weight: bold;
-    margin-right: 0.5em;
-    margin-top: 1em;
-    font-family: 'Montserrat', sans-serif;
+    margin-left: 20%;
 }
 
 
-
-.boton-elegante::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
-    transform: scale(0);
-    transition: transform 0.5s ease;
-}
-
-.boton-elegante:hover::after {
-    transform: scale(4);
-}
-
-.boton-elegante:hover {
-    border-color: #223f27;
-    background: #3c9048;
-}
 
 .CommentButton {
-    margin-top: 6em;
-    padding-left: 9.5em;
-    margin-bottom: -8em;
+    margin-top: -2.5em;
+    padding-left: 30%;
+    margin-bottom: 2em;
 }
 
 .formDeletePost,
@@ -263,9 +238,27 @@ a {
 }
 
 .interaction {
+    font-family: 'Montserrat', sans-serif;
     display: flex;
-    flex-direction: row;
+    justify-content: space-between; /* Répartit les éléments de manière égale */
+    align-items: center; /* Centre verticalement les éléments */
+    
     padding-top: 1em;
+}
+
+.dateComment {
+    padding-left: 90%;
+}
+.datePost {
+    padding-left: 5em;
+    margin-top: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.viewsPost {
+    margin-top: 1em;
+    font-family: 'Montserrat', sans-serif;
+    padding-left: 5em;
 }
 
 .heart,
@@ -318,11 +311,7 @@ span {
     font-family: 'Montserrat', sans-serif;
 }
 
-.viewsPost {
-    margin-top: 0.4em;
-    font-family: 'Montserrat', sans-serif;
-    padding-left: 13em;
-}
+
 
 .image-modal {
     display: none;
@@ -361,4 +350,187 @@ span {
     color: #bbb;
     text-decoration: none;
     cursor: pointer;
+}
+
+
+
+
+
+.user-info .pro{
+    display: flex;
+    margin-top: -0.4em;
+    font-family: 'Open Sans', sans-serif;
+}
+.promotion{
+    margin-left: -14em;
+}
+.promotion p{
+    margin-top: 3.8em;
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
+    color:  #404145;
+}
+
+
+.hover-text {
+    position: absolute;
+    left: 40%;
+    transform: translateX(-50%); /* Centrer horizontalement */
+    background-color: #333;
+    color: #fff;
+    padding: 0.5em;
+    border-radius: 4px;
+    white-space: pre-wrap; /* Permet les retours à la ligne dans le texte */
+    max-width: 400px; /* Ajuster la largeur pour le texte */
+    word-wrap: break-word; /* Permet de couper les mots longs */
+    visibility: hidden; /* Masquer par défaut */
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-align: center; /* Alignement du texte à gauche */
+}
+
+/* Apparition du texte au survol */
+.promotion:hover .hover-text {
+    visibility: visible; /* Rendre visible */
+    opacity: 1; /* Rendre opaque */
+}
+
+.notpro h2 {
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 1.2em;
+}
+.pro h2 {
+    margin-top: 1.1em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+
+/* Styles pour le conteneur swipe */
+.swipe {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 80vh; /* Limite la hauteur du conteneur */
+    max-width: 100%; /* Limite la largeur du conteneur */
+}
+
+.swipe-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    align-items: center;
+    justify-content: center;
+}
+
+.swipe-item {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    display: none;
+    width: 80vw; /* Largeur par défaut */
+    height: 80vh; /* Hauteur par défaut */
+}
+
+.swipe-item.active {
+    display: block;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.swipe-item img {
+    margin-top: 1em;
+    object-fit:cover; /* Assure que l'image couvre toute la surface */
+    border-radius: 5%;
+}
+
+/* Styles pour les formats spécifiques */
+.swipe-item.landscape {
+    width: 80vw; /* Fixe la largeur des images en paysage */
+    height: auto; /* Hauteur automatique */
+}
+
+.swipe-item.landscape img {
+    max-height: 60vh; /* Fixe la hauteur maximale pour les images en paysage */
+    width: 100%;
+    height: auto;
+}
+
+.swipe-item.portrait {
+    width: auto; /* Largeur automatique */
+    height: 40vh; /* Fixe la hauteur des images en portrait */
+}
+
+.swipe-item.portrait img {
+    max-width: 60vw; /* Fixe la largeur maximale pour les images en portrait */
+    width: auto;
+    height: 100%;
+}
+
+.swipe-item.square {
+    width: 60vh; /* Fixe la largeur et hauteur des images carrées */
+    height: 60vh;
+}
+
+.swipe-item.square img {
+    width: 90%;
+    height: 90%;
+}
+
+/* Styles pour les contrôles */
+.swipe-control-prev, .swipe-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #eeeeee;
+    color: black;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 35%;
+    border: 2px solid #3c6650;
+}
+
+.swipe-control-prev {
+    left: 10px;
+}
+
+.swipe-control-next {
+    right: 10px;
+}
+
+/* Liens */
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* Boutons */
+.btn-voir-plus, .boton-elegante {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    width: 200px; /* Taille fixe */
+    margin: 4em auto 0; /* Centrer le bouton */
+    height: 35px;
+}
+
+.btn-voir-plus:hover, .boton-elegante:hover {
+    background: #1a9b6e; /* Couleur alternative au survol, légèrement plus foncée */
+    transform: translateY(-2px);
+}
+
+.btn-voir-plus:active, .boton-elegante {
+    transform: scale(0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }

@@ -35,7 +35,7 @@
         </div>
 
         <div class="filter-toggle">
-            <button id="toggleFilterBarButton">Toggle Filter Bar</button>
+            <button id="toggleFilterBarButton" class="beautiful-button">Toggle Filter Bar</button>
         </div>
         <div class="filterBar">
             <form action="/allPost" method="get" class="filter-form">
@@ -50,7 +50,7 @@
                             <option value="comments" {% if sortBy == 'comments' %}selected{% endif %}>Comments</option>
                         </select>
                     </div>
-                    <div class="groupe2">
+                    <div class="group2">
                         <label for="order">Ordre :</label>
                         <select name="order" id="order">
                             <option value="DESC" {% if order=='DESC' %}selected{% endif %}>Les plus récents en premier</option>
@@ -68,7 +68,7 @@
         </div>
         {% if isConnected %}
         <div class="PostButton">
-            <button id="openModalButton" class="boton-elegante">Add Post</button>
+            <button id="openModalButton" class="beautiful-button">Add Post</button>
         </div>
         {% endif %}
     </div>
@@ -81,7 +81,7 @@
                     <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
                     {% if Post.IsPro == 1 %}
                     <div class ="pro">
-                        <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                        <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon1" class="fas fa-check-circle"></i>
                              
                         <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
                             {% set text =  user.ProfilPromotion %}
@@ -112,7 +112,7 @@
                 </p>
                 <form action="/allPost" method="post">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                    <button type="submit" name="viewMore" class="viewMore">Voir Plus</button>
+                    <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
                 </form>
                 
             </div>
