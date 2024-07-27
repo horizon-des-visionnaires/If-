@@ -1,6 +1,6 @@
-.htaccess
 composer.lock
 composer.json
+.htaccess
 
 # Dossiers
 /vendor/
