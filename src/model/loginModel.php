@@ -41,7 +41,7 @@ class loginModel
                 $_SESSION['IsPro'] = $userData['IsPro'];
                 $_SESSION['IsAdmin'] = $userData['IsAdmin'];
 
-                header("Location: /ifadev/src/index.php/");
+                header("Location: /");
                 exit;
             } else {
                 return "email ou mot de passe incorrect";

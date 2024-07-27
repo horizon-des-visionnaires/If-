@@ -42,7 +42,7 @@ class dashboardController
         }
 
         if (!$IsAdmin) {
-            header("Location: /ifadev/src/index.php/");
+            header("Location: /");
             exit();
         }
 

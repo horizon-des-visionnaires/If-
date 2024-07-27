@@ -84,7 +84,7 @@ class allPostController
             $IdPost = $this->allPostModel->addPost($TitlePost, $ContentPost, $PicturesPost, $userId);
 
             if ($IdPost) {
-                header("Location: /ifadev/src/index.php/allPost");
+                header("Location: /allPost");
                 exit();
             }
         }

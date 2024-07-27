@@ -157,7 +157,7 @@ class allPostModel
             $stmt->bindParam(':IdPost', $idPost);
 
             if ($stmt->execute()) {
-                header("Location: /ifadev/src/index.php/postDetails-$idPost");
+                header("Location: /postDetails-$idPost");
                 exit();
             }
         } catch (PDOException $e) {
@@ -227,7 +227,7 @@ class allPostModel
             $execUpdateLike->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateLike->execute()) {
-                header("Location: /ifadev/src/index.php/allPost");
+                header("Location: /allPost");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du like.";
@@ -259,7 +259,7 @@ class allPostModel
             $execUpdateFavorite->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateFavorite->execute()) {
-                header("Location: /ifadev/src/index.php/allPost");
+                header("Location: /allPost");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du favori.";

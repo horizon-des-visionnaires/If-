@@ -66,7 +66,7 @@ class postController
             $IdComment = $this->postModel->addComment($idPost, $ContentComment, $IdUser);
 
             if ($IdComment) {
-                header("Location: /ifadev/src/index.php/post-$idPost");
+                header("Location: /post-$idPost");
                 exit();
             }
         }

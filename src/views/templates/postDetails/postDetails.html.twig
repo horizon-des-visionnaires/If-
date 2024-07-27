@@ -26,13 +26,13 @@
                         <div class ="pro">
                             <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                                 
-                            <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                            {# <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
                                 {% set text =  user.ProfilPromotion %}
                                 {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                                 {% set isTruncated = text|length > 60 %}
                                 <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
                                 <div class="hover-text">Je peux t'aider à {{ text }}</div>
-                            </div> 
+                            </div>  #}
                         </div> 
                         {% else %}
                         <div <div class ="notpro">
@@ -158,13 +158,13 @@
                     <div class ="pro">
                         <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                              
-                        <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                        {# <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
                             {% set text =  user.ProfilPromotion %}
                             {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                             {% set isTruncated = text|length > 60 %}
                             <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
                             <div class="hover-text">Je peux t'aider à {{ text }}</div>
-                        </div> 
+                        </div>  #}
                     </div> 
                     {% else %}
                     <div <div class ="notpro">

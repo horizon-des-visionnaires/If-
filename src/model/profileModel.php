@@ -89,7 +89,7 @@ class profileModel
             }
 
             if ($stmt->execute()) {
-                header("Location: /ifadev/src/index.php/profile-$IdUser");
+                header("Location: /profile-$IdUser");
                 exit();
             } else {
                 echo "Échec de la mise à jour.";
@@ -187,7 +187,7 @@ class profileModel
 
             $this->dsn->commit();
 
-            header("Location: /ifadev/src/index.php/profile-$idUser");
+            header("Location: /profile-$idUser");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -215,7 +215,7 @@ class profileModel
 
             $this->dsn->commit();
 
-            header("Location: /ifadev/src/index.php/profile-$idUser");
+            header("Location: /profile-$idUser");
             exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
@@ -246,7 +246,7 @@ class profileModel
             $execUpdateLike->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateLike->execute()) {
-                header("Location: /ifadev/src/index.php/profile-$IdUser");
+                header("Location: /profile-$IdUser");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du like.";
@@ -303,7 +303,7 @@ class profileModel
             $execUpdateFavorite->bindParam(':IdPost', $IdPost);
 
             if ($execUpdateFavorite->execute()) {
-                header("Location: /ifadev/src/index.php/profile-$IdUser");
+                header("Location: /profile-$IdUser");
                 exit();
             } else {
                 echo "Erreur lors de l'ajout ou de la suppression du favori.";
@@ -346,7 +346,7 @@ class profileModel
 
 
             if ($stmt->execute()) {
-                header("Location: /ifadev/src/index.php/postDetails-$idPost");
+                header("Location: /postDetails-$idPost");
                 exit();
             }
         } catch (PDOException $e) {

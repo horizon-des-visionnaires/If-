@@ -58,11 +58,11 @@
     </div>
     
     {% endif %}
-    {% if user.IsPro == 1 %}
+    {# {% if user.IsPro == 1 %}
     <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
         <p>{{ user.ProfilDescription| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
     </div> 
-    {% endif %}
+    {% endif %} #}
     <div class="description">
         <p>{{ user.ProfilDescription | nl2br }}</p>
     </div>
