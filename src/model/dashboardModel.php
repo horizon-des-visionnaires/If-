@@ -94,9 +94,9 @@ class dashboardModel
     }
 
     public function getRequestPassProById($IdRequest)
-        {
-            try {
-                $stmt = $this->dsn->prepare("
+    {
+        try {
+            $stmt = $this->dsn->prepare("
                 SELECT 
                     rp.*, 
                     u.FirstName, 
@@ -111,70 +111,109 @@ class dashboardModel
                 WHERE 
                     rp.IdRequest = :IdRequest
             ");
-                $stmt->execute([':IdRequest' => $IdRequest]);
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->execute([':IdRequest' => $IdRequest]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($row) {
-                    if (!is_null($row['IdentityCardRecto'])) {
-                        $row['IdentityCardRecto'] = base64_encode($row['IdentityCardRecto']);
-                    }
-                    if (!is_null($row['IdentityCardVerso'])) {
-                        $row['IdentityCardVerso'] = base64_encode($row['IdentityCardVerso']);
-                    }
-                    if (!is_null($row['UserPicture'])) {
-                        $row['UserPicture'] = base64_encode($row['UserPicture']);
-                    }
+            if ($row) {
+                if (!is_null($row['IdentityCardRecto'])) {
+                    $row['IdentityCardRecto'] = base64_encode($row['IdentityCardRecto']);
                 }
-
-                return $row;
-            } catch (PDOException $e) {
-                $error = "error: " . $e->getMessage();
-                echo $error;
+                if (!is_null($row['IdentityCardVerso'])) {
+                    $row['IdentityCardVerso'] = base64_encode($row['IdentityCardVerso']);
+                }
+                if (!is_null($row['UserPicture'])) {
+                    $row['UserPicture'] = base64_encode($row['UserPicture']);
+                }
             }
 
-            return false;
-        }
-        public function addUserMessage($IdUser, $message)
-        {
-            try {
-                $stmt = $this->dsn->prepare("INSERT INTO UserMessages (IdUser, Message) VALUES (:IdUser, :Message)");
-                $stmt->execute([
-                    ':IdUser' => $IdUser,
-                    ':Message' => $message
-                ]);
-            } catch (PDOException $e) {
-                echo "Erreur : " . $e->getMessage();
-            }
+            return $row;
+        } catch (PDOException $e) {
+            $error = "error: " . $e->getMessage();
+            echo $error;
         }
 
-        public function requestInvalid($IdRequest, $rejectReason)
-        {
-            try {
-                $this->dsn->beginTransaction();
-
-                // Mettre à jour la demande comme invalidée
-                $updateRequestQuery = "UPDATE RequestPassPro SET IsRequestValid = -1 WHERE IdRequest = :IdRequest";
-                $stmt = $this->dsn->prepare($updateRequestQuery);
-                $stmt->execute([':IdRequest' => $IdRequest]);
-
-                // Obtenir l'ID utilisateur associé à la demande
-                $getUserIdQuery = "SELECT IdUser FROM RequestPassPro WHERE IdRequest = :IdRequest";
-                $stmt = $this->dsn->prepare($getUserIdQuery);
-                $stmt->execute([':IdRequest' => $IdRequest]);
-                $IdUser = $stmt->fetchColumn();
-
-                if ($IdUser) {
-                    // Ajouter le message de rejet pour l'utilisateur
-                    $this->addUserMessage($IdUser, "Désolé, votre demande pour être pro a été refusée. Raison : " . $rejectReason);
-                }
-
-                $this->dsn->commit();
-
-                header("Location: /dashboard");
-                exit();
-            } catch (PDOException $e) {
-                $this->dsn->rollBack();
-                echo "Erreur : " . $e->getMessage();
-            }
+        return false;
+    }
+    public function addUserMessage($IdUser, $message)
+    {
+        try {
+            $stmt = $this->dsn->prepare("INSERT INTO UserMessages (IdUser, Message) VALUES (:IdUser, :Message)");
+            $stmt->execute([
+                ':IdUser' => $IdUser,
+                ':Message' => $message
+            ]);
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function requestInvalid($IdRequest, $rejectReason)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            // Mettre à jour la demande comme invalidée
+            $updateRequestQuery = "UPDATE RequestPassPro SET IsRequestValid = -1 WHERE IdRequest = :IdRequest";
+            $stmt = $this->dsn->prepare($updateRequestQuery);
+            $stmt->execute([':IdRequest' => $IdRequest]);
+
+            // Obtenir l'ID utilisateur associé à la demande
+            $getUserIdQuery = "SELECT IdUser FROM RequestPassPro WHERE IdRequest = :IdRequest";
+            $stmt = $this->dsn->prepare($getUserIdQuery);
+            $stmt->execute([':IdRequest' => $IdRequest]);
+            $IdUser = $stmt->fetchColumn();
+
+            if ($IdUser) {
+                // Ajouter le message de rejet pour l'utilisateur
+                $this->addUserMessage($IdUser, "Désolé, votre demande pour être pro a été refusée. Raison : " . $rejectReason);
+            }
+
+            $this->dsn->commit();
+
+            header("Location: /dashboard");
+            exit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function getUserPro()
+    {
+        try {
+            $getUser = "SELECT IdUser, FirstName, LastName, ProfilPicture FROM User WHERE IsPro = 1";
+            $stmt = $this->dsn->prepare($getUser);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($results as &$row) {
+                if (!is_null($row['ProfilPicture'])) {
+                    $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
+                }
+            }
+
+            return $results;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function deletePro($IdUser)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $updateStatusPro = "UPDATE User SET IsPro = 0 WHERE IdUser = :IdUser";
+            $stmt = $this->dsn->prepare($updateStatusPro);
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            $this->dsn->commit();
+            header("Location: /dashboard");
+            exit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+}
