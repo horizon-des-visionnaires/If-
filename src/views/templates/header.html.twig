@@ -7,16 +7,13 @@
 
 {% block header %}
 
-<nav class="menu"> 
-    
-
-
+<nav class="menu">
     <ul>
         <a href="/">
             <img src="/../public/image/logo2.png" alt="logo du site" id="logo">
         </a>
         {% if isConnected %}
-        <div class="bar_connect"> 
+        <div class="bar_connect">
             <li>
                 <div class="dropdown">
                     <button class="item" onclick="toggleDropdown(event)">
@@ -24,41 +21,41 @@
                         <img src="/../public/image/menu.png" id="img2">
                     </button>
                     <div class="dropdown-content" id="myDropdown">
-                        <a href = "/" class = "no">
+                        <a href="/" class="no">
                             <img src="/../public/image/icon/home.png" alt="icon" class="icons">Home
                         </a>
-                        <a href = "/research" class = "no">
+                        <a href="/research" class="no">
                             <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">Search
                         </a>
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/message.png" alt="icon" class="icons">Message
                         </a>
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/post.png" alt="icon" class="icons">Post
                         </a>
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/saved.png" alt="icon" class="icons">Saved Post
                         </a>
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/notif.png" alt="icon" class="icons">Notification
                         </a>
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/3dots.png" alt="icon" class="icons">Other
                         </a>
                         {% if IsAdmin %}
-                        <a href = "/dashboard" class = "no">
+                        <a href="/dashboard" class="no">
                             <img src="/../public/image/icon/dashboard.png" alt="icon" class="icons">Dashboard
                         </a>
                         {% endif %}
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/setting.png" alt="icon" class="icons">Settings
                         </a>
-                        <a href = "#" class = "no">
+                        <a href="#" class="no">
                             <img src="/../public/image/icon/support.png" alt="icon" class="icons">Support
                         </a>
                     </div>
                 </div>
-                
+
 
             </li>
             <li>
@@ -80,7 +77,8 @@
                                     </path>
                                 </g>
                             </svg>
-                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}"
+                                class="search" name="search">
                         </div>
                     </form>
                 </div>
@@ -115,9 +113,9 @@
                     </button>
                 </form>
             </li>
-        </div> 
+        </div>
         {% else %}
-        <div class="bar_disconnect"> 
+        <div class="bar_disconnect">
             <!--<li>
                 <a href="/register" id="register">
                     <button class="Btn2">
@@ -127,7 +125,7 @@
                         </div>
                     </button>
                 </a>
-            </li>--> 
+            </li>-->
             <li>
                 <a href="/allPost" id="Post">
                     <div class="item" id="item">
@@ -147,7 +145,8 @@
                                     </path>
                                 </g>
                             </svg>
-                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}"
+                                class="search" name="search">
                         </div>
                     </form>
                 </div>
@@ -176,10 +175,10 @@
 </nav>
 
 <a href="#">
-    
-        <div class="Message">
-            <img src="/../public/image/icon/chat.png">
-        </div>
+
+    <div class="Message">
+        <img src="/../public/image/icon/chat.png">
+    </div>
     </button>
 </a>
 
