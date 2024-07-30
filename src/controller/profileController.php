@@ -79,6 +79,7 @@ class profileController
             $LastName = $_POST['LastName'] ?? null;
             $ProfilDescription = $_POST['ProfilDescription'] ?? null;
             $ProfilPromotion = $_POST['ProfilPromotion'] ?? null;
+            $Location = $_POST['Location'] ?? null;
 
             $ProfilPicture = null;
 
@@ -86,7 +87,7 @@ class profileController
                 $ProfilPicture = file_get_contents($_FILES["ProfilPicture"]["tmp_name"]);
             }
 
-            $this->profileModel->updateUserData($id, $FirstName, $LastName, $ProfilDescription, $ProfilPromotion, $ProfilPicture);
+            $this->profileModel->updateUserData($id, $FirstName, $LastName, $ProfilDescription, $ProfilPromotion, $Location, $ProfilPicture);
         }
     }
 

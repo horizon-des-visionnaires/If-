@@ -37,13 +37,12 @@
             {% if user.IsPro == 1 %}
             <div class ="pro">
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i> 
-                
             </div> 
             {% else %}
             <div <div class ="notpro">
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
             </div> 
-            {% endif %}          
+            {% endif %}   
         </div>
         
         {% if isConnected and userId == user.IdUser %}
@@ -56,8 +55,12 @@
             <button id="openModalButton" class="beautiful-button">Editer le profile</button>
         </div>
     </div>
-    
     {% endif %}
+
+    <div class="country">
+        <h3>{{ user.Location }}</h3>
+    </div>
+     
     {% if user.IsPro == 1 %}
     <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
         <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
@@ -75,6 +78,8 @@
             <input type="text" name="FirstName" placeholder="Prénom" id="inputField">
 
             <input type="text" name="LastName" placeholder="Nom de famille" id="inputField">
+
+            <input type="text" name="Location" placeholder="Localisation (ex: france, espagne, ...)" id="inputField">
 
             <div style="position: relative;">
                 <textarea name="ProfilPromotion" placeholder="ProfilPromotion" id="inputFieldPromotion"
