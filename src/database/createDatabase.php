@@ -23,7 +23,8 @@ $createTableUser = ("CREATE TABLE IF NOT EXISTS
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE utf8mb4_unicode_ci");
 $dsn->exec($createTableUser);
 
-$createTableTempUser = ("CREATE TABLE IF NOT EXISTS `TempUser` (
+$createTableTempUser = ("CREATE TABLE IF NOT EXISTS 
+`TempUser` (
     `IdTempUser` int(11) NOT NULL AUTO_INCREMENT,
     `FirstName` varchar(255) DEFAULT NULL,
     `LastName` varchar(255) DEFAULT NULL,
@@ -34,6 +35,16 @@ $createTableTempUser = ("CREATE TABLE IF NOT EXISTS `TempUser` (
     CONSTRAINT unique_TempUser_Email UNIQUE (`Email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 $dsn->exec($createTableTempUser);
+
+$createTableTempTokenResetPassword = ("CREATE TABLE IF NOT EXISTS 
+`TempTokenResetPassword` (
+    `IdtempReset` int(11) NOT NULL AUTO_INCREMENT,
+    `Email` varchar(255) DEFAULT NULL,
+    `token` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`IdtempReset`),
+    CONSTRAINT unique_TempUser_Email UNIQUE (`Email`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+$dsn->exec($createTableTempTokenResetPassword);
 
 $createTablePost = ("CREATE TABLE IF NOT EXISTS
 `Post` (

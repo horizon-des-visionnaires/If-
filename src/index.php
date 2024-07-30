@@ -9,6 +9,8 @@ require_once __DIR__ . '/controller/allPostController.php';
 require_once __DIR__ . '/controller/researchController.php';
 require_once __DIR__ . '/controller/adviceController.php';
 require_once __DIR__ . '/controller/verifyController.php';
+require_once __DIR__ . '/controller/forgotPasswordController.php';
+require_once __DIR__ . '/controller/resetPasswordController.php';
 
 require_once __DIR__ . '/database/createDatabase.php';
 
@@ -21,6 +23,8 @@ $routes = [
   '/research' => ['controller' => 'research\researchContoller', 'method' => 'research'],
   '/advice' => ['controller' => 'advice\adviceController', 'method' => 'advice'],
   '/verify' => ['controller' => 'verify\verifyController', 'method' => 'verify'],
+  '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
+  '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
 ];
 
 $requestParts = explode('?', $_SERVER['REQUEST_URI'], 2);
