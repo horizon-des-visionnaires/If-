@@ -58,11 +58,11 @@
     </div>
     
     {% endif %}
-    {# {% if user.IsPro == 1 %}
+    {% if user.IsPro == 1 %}
     <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-        <p>{{ user.ProfilDescription| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
+        <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
     </div> 
-    {% endif %} #}
+    {% endif %}
     <div class="description">
         <p>{{ user.ProfilDescription | nl2br }}</p>
     </div>
@@ -75,6 +75,12 @@
             <input type="text" name="FirstName" placeholder="Prénom" id="inputField">
 
             <input type="text" name="LastName" placeholder="Nom de famille" id="inputField">
+
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="ProfilPromotion" id="inputFieldPromotion"
+                    maxlength="255"></textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
 
             <div style="position: relative;">
                 <textarea name="ProfilDescription" placeholder="Description du profil" id="inputFieldDesc"
@@ -330,6 +336,7 @@
 {% block scripts %}
 <script src="/../public/js/modalUser.js"></script>
 <script src="/../public/js/profilDesc.js"></script>
+<script src="/../public/js/profilPromotion.js"></script>
 <script src="/../public/js/modalImagePost.js"></script>
 <script src="/../public/js/ImageCrop.js"></script>
 <script src="/../public/js/showContent.js"></script>

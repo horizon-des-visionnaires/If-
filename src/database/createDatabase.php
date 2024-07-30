@@ -16,7 +16,7 @@ $createTableUser = ("CREATE TABLE IF NOT EXISTS
     `IsPro` tinyint(1) DEFAULT '0',
     `ProfilPicture` LONGBLOB DEFAULT NULL,
     `ProfilDescription` varchar(255) DEFAULT NULL,
-    `ProfilPromotion` varchar(127) DEFAULT NULL,
+    `ProfilPromotion` varchar(100) DEFAULT NULL,
     `IsAdmin` tinyint(1) DEFAULT '0',
     PRIMARY KEY (`IdUser`),
     CONSTRAINT unique_User_Email UNIQUE (`Email`)

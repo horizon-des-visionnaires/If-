@@ -126,7 +126,7 @@
 }
 
 /* Champs de texte */
-#inputField, #inputFieldDesc, #inputField2, #inputFieldDesc2 {
+#inputField, #inputFieldDesc, #inputField2, #inputFieldDesc2, #inputFieldPromotion {
     border: 2px solid #2e7d32; /* Bordure vert foncé */
     font-family: 'Montserrat', sans-serif;
     padding: 1em;
@@ -158,7 +158,7 @@
     align-items: center;
 }
 
-#inputFieldDesc {
+#inputFieldDesc, #inputFieldPromotion {
     border-radius: 1em;
     box-sizing: border-box;
     overflow: auto;
@@ -166,7 +166,7 @@
     white-space: pre-wrap;
     margin-bottom: 1em;
     min-width: 30em;
-    min-height: 15em;
+    min-height: 10em;
     max-width: 20em;
     max-height: 15em;
     resize: none; /* Empêcher le redimensionnement */
@@ -194,7 +194,8 @@
 
 #inputField::placeholder,
 #inputFieldDesc::placeholder,
-#inputFieldDesc2::placeholder
+#inputFieldDesc2::placeholder,
+#inputFieldPromotion::placeholder
 {
     color: black;
     opacity: 1;
