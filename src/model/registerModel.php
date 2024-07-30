@@ -22,33 +22,29 @@ class registerModel
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function insertRegisterData($firstName, $lastName, $email, $hased_password)
+    public function storeTempRegisterData($firstName, $lastName, $email, $hashed_password, $token)
     {
         try {
-            $checkEmailAndPhoneNumber = "SELECT COUNT(*) FROM User WHERE Email = :email";
-            $stmt = $this->dsn->prepare($checkEmailAndPhoneNumber);
+            $checkEmail = "SELECT COUNT(*) FROM User WHERE Email = :email";
+            $stmt = $this->dsn->prepare($checkEmail);
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
             if ($stmt->fetchColumn() > 0) {
-                return "Cet email est déjà utilisé.";
+                return "email déja utilisé";
             } else {
-                $insertRegister = "INSERT INTO User (FirstName, LastName, Email, UserPassword) VALUES (:FirstName, :LastName, :Email, :UserPassword)";
-                $stmt2 = $this->dsn->prepare($insertRegister);
+                $insertTemp = "INSERT INTO TempUser (FirstName, LastName, Email, UserPassword, token) VALUES (:FirstName, :LastName, :Email, :UserPassword, :token)";
+                $stmt2 = $this->dsn->prepare($insertTemp);
                 $stmt2->bindParam(':FirstName', $firstName);
                 $stmt2->bindParam(':LastName', $lastName);
                 $stmt2->bindParam(':Email', $email);
-                $stmt2->bindParam(':UserPassword', $hased_password);
+                $stmt2->bindParam(':UserPassword', $hashed_password);
+                $stmt2->bindParam(':token', $token);
 
-                if ($stmt2->execute()) {
-                    header("Location: /login");
-                    exit;
-                } else {
-                    return 'Erreur lors de l\'inscription';
-                }
+                return $stmt2->execute();
             }
         } catch (PDOException $e) {
-            return "error: " . $e->getMessage();
+            return false;
         }
     }
 }
