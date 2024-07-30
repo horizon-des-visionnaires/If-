@@ -39,6 +39,7 @@ class postDetailsController
 
         $postData = $this->postDetailsModel->getPost($idPost);
         $commentsData = $this->postDetailsModel->getComment($idPost);
+        $commentCount = $this->postDetailsModel->getCommentCount($idPost);
 
         foreach ($postData as &$post) {
             $post['IsLike'] = $this->postDetailsModel->getIsLike($userId, $post['IdPost']);
@@ -72,7 +73,8 @@ class postDetailsController
             'firstName' => $firstName,
             'isPro' => $isPro,
             'lastName' => $lastName,
-            'commentsData' => $commentsData
+            'commentsData' => $commentsData,
+            'commentCount' => $commentCount
         ]);
     }
 
