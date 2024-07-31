@@ -11,6 +11,7 @@ require_once __DIR__ . '/controller/adviceController.php';
 require_once __DIR__ . '/controller/verifyController.php';
 require_once __DIR__ . '/controller/forgotPasswordController.php';
 require_once __DIR__ . '/controller/resetPasswordController.php';
+require_once __DIR__ . '/controller/conversationController.php';
 
 require_once __DIR__ . '/database/createDatabase.php';
 
@@ -25,6 +26,7 @@ $routes = [
   '/verify' => ['controller' => 'verify\verifyController', 'method' => 'verify'],
   '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
   '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
+  '/conversation' => ['controller' => 'conversation\conversationController', 'method' => 'conversation'],
 ];
 
 $requestParts = explode('?', $_SERVER['REQUEST_URI'], 2);
