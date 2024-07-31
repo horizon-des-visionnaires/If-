@@ -22,7 +22,7 @@ class conversationChatController
         $this->conversationChatModel = new conversationChatModel();
     }
 
-    public function conversationChat($IdMessages)
+    public function conversationChat($IdConversations)
     {
         session_start();
 
@@ -39,10 +39,13 @@ class conversationChatController
             $IsAdmin = true;
         }
 
+        $convChat = $this->conversationChatModel->getChat($IdConversations);
+
         echo $this->twig->render('conversationChat/conversationChat.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
+            'convChat' => $convChat
         ]);
     }
 }

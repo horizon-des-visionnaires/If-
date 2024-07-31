@@ -3,7 +3,7 @@
 {% block title %}IFÀ | Conversation de {{ user.FirstName }} {{ user.LastName }}{% endblock %}
 
 {% block stylesheet %}
-<link href="/../public/css/conversation.css" rel="stylesheet">
+<link href="/../public/css/conversationChat.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
@@ -13,7 +13,26 @@
 {% endblock %}
 
 {% block body %}
+<div class="chat">
+    {% for ConversationMessages in convChat %}
+    <img class="icon" src="data:image;base64,{{ ConversationMessages.ProfilPicture }}" alt="profile picture">
+    {% if ConversationMessages.isPro == 1 %}
+    <div class="pro">
+        <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+    </div> 
+    {% else %}
+    <div <div class ="notpro">
+        <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2>
+    </div>
+    {% endif %}
+    <p>{{ ConversationMessages.IdMessages }}</p>
+    <p>{{ ConversationMessages.IdConversations }}</p>
+    <p>{{ ConversationMessages.IdSender }}</p>
+    <p>{{ ConversationMessages.ContentMessages }}</p>
+    <p>{{ ConversationMessages.CreatedAt }}</p>
 
+    {% endfor %}
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}
