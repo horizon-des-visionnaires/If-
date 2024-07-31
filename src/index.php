@@ -12,6 +12,7 @@ require_once __DIR__ . '/controller/verifyController.php';
 require_once __DIR__ . '/controller/forgotPasswordController.php';
 require_once __DIR__ . '/controller/resetPasswordController.php';
 require_once __DIR__ . '/controller/conversationController.php';
+require_once __DIR__ . '/controller/conversationChatController.php';
 
 require_once __DIR__ . '/database/createDatabase.php';
 
@@ -48,7 +49,11 @@ if (array_key_exists($path, $routes)) {
   } else if (preg_match('/^\/postDetails-(\d+)$/', $path, $matches)) {
     $controller = new postDetails\postDetailsController();
     $controller->post($matches[1]);
-  } else {
+  } else if (preg_match('/^\/conversationChat-(\d+)$/', $path, $matches)) {
+    $controller = new conversationChat\conversationChatController();
+    $controller->conversationChat($matches[1]);
+  }
+  else {
     http_response_code(404);
     echo "Page not found";
   }

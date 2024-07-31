@@ -448,13 +448,14 @@ class profileModel
     public function addConvertation($idUser_1, $IdUser_2)
     {
         try {
-            $checkConv = "SELECT COUNT(*) FROM  WHERE IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2";
+            $checkConv = "SELECT COUNT(*) FROM Conversations WHERE IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2";
             $stmt = $this->dsn->prepare($checkConv);
             $stmt->bindParam(':IdUser_1', $idUser_1);
             $stmt->bindParam(':IdUser_2', $IdUser_2);
+            $stmt->execute();
 
             if ($stmt->fetchColumn() > 0) {
-                echo "conversation déja créer";
+                echo "Conversation déjà créée";
             } else {
                 $addConv = "INSERT INTO Conversations (IdUser_1, IdUser_2) VALUES (:IdUser_1, :IdUser_2)";
                 $stmt2 = $this->dsn->prepare($addConv);
@@ -462,7 +463,17 @@ class profileModel
                 $stmt2->bindParam(':IdUser_2', $IdUser_2);
                 $stmt2->execute();
 
-                header("Location: /");
+                $idConversation = $this->dsn->lastInsertId();
+
+                $addMessage = "INSERT INTO ConversationMessages (IdConversations, IdSender, ContentMessages) VALUES (:IdConversations, :IdSender, :ContentMessages)";
+                $stmt3 = $this->dsn->prepare($addMessage);
+                $contentMessage = "premier message";
+                $stmt3->bindParam(':IdConversations', $idConversation);
+                $stmt3->bindParam(':IdSender', $IdUser_2);
+                $stmt3->bindParam(':ContentMessages', $contentMessage);
+                $stmt3->execute();
+
+                header("Location: /conversation");
                 exit();
             }
         } catch (PDOException $e) {
