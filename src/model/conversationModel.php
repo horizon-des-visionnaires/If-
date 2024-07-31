@@ -45,4 +45,27 @@ class conversationModel
 
         return $getUserData;
     }
+
+    public function getUsersByConversation($userId)
+    {
+        $stmt = $this->dsn->prepare("
+            SELECT u.FirstName, u.LastName, u.IsPro, u.ProfilPicture
+            FROM Conversations c
+            JOIN User u ON c.IdUser_1 = u.IdUser
+            WHERE c.IdUser_2 = :userId
+        ");
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $usersData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($usersData as &$userData) {
+            if ($userData['ProfilPicture'] !== null) {
+                $userData['ProfilPicture'] = base64_encode($userData['ProfilPicture']);
+            } else {
+                $userData['ProfilPicture'] = '';
+            }
+        }
+
+        return $usersData;
+    }
 }

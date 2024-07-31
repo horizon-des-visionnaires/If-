@@ -40,12 +40,14 @@ class conversationController
         }
 
         $user = $this->conversationModel->getConvById($userId);
+        $conversationUsers = $this->conversationModel->getUsersByConversation($userId);
 
         echo $this->twig->render('conversation/conversation.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
-            'user' => $user
+            'user' => $user,
+            'conversationUsers' => $conversationUsers
         ]);
     }
 }
