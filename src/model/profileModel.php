@@ -448,14 +448,19 @@ class profileModel
     public function addConvertation($idUser_1, $IdUser_2)
     {
         try {
-            $checkConv = "SELECT COUNT(*) FROM Conversations WHERE IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2";
+            $checkConv = "SELECT IdConversations FROM Conversations 
+                      WHERE (IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2) 
+                         OR (IdUser_1 = :IdUser_2 AND IdUser_2 = :IdUser_1)";
             $stmt = $this->dsn->prepare($checkConv);
             $stmt->bindParam(':IdUser_1', $idUser_1);
             $stmt->bindParam(':IdUser_2', $IdUser_2);
             $stmt->execute();
 
-            if ($stmt->fetchColumn() > 0) {
-                echo "Conversation déjà créée";
+            $existingConversationId = $stmt->fetchColumn();
+
+            if ($existingConversationId) {
+                header("Location: /conversationChat-" . $existingConversationId);
+                exit();
             } else {
                 $addConv = "INSERT INTO Conversations (IdUser_1, IdUser_2) VALUES (:IdUser_1, :IdUser_2)";
                 $stmt2 = $this->dsn->prepare($addConv);
@@ -473,7 +478,7 @@ class profileModel
                 $stmt3->bindParam(':ContentMessages', $contentMessage);
                 $stmt3->execute();
 
-                header("Location: /conversation");
+                header("Location: /conversationChat-" . $idConversation);
                 exit();
             }
         } catch (PDOException $e) {
