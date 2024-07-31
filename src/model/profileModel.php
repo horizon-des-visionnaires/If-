@@ -47,7 +47,7 @@ class profileModel
     }
 
 
-    public function updateUserData($IdUser, $FirstName, $LastName, $ProfilDescription, $ProfilPicture = null)
+    public function updateUserData($IdUser, $FirstName, $LastName, $ProfilDescription, $ProfilPromotion, $Location, $ProfilPicture = null)
     {
         try {
             $setClauses = [];
@@ -60,6 +60,12 @@ class profileModel
             }
             if (!empty($ProfilDescription)) {
                 $setClauses[] = "ProfilDescription = :ProfilDescription";
+            }
+            if (!empty($ProfilPromotion)) {
+                $setClauses[] = "ProfilPromotion = :ProfilPromotion";
+            }
+            if (!empty($Location)) {
+                $setClauses[] = "Location = :Location";
             }
             if (!empty($ProfilPicture)) {
                 $setClauses[] = "ProfilPicture = :ProfilPicture";
@@ -83,6 +89,12 @@ class profileModel
             }
             if (!empty($ProfilDescription)) {
                 $stmt->bindParam(':ProfilDescription', $ProfilDescription);
+            }
+            if (!empty($ProfilPromotion)) {
+                $stmt->bindParam(':ProfilPromotion', $ProfilPromotion);
+            }
+            if (!empty($Location)) {
+                $stmt->bindParam(':Location', $Location);
             }
             if (!empty($ProfilPicture)) {
                 $stmt->bindParam(':ProfilPicture', $ProfilPicture, PDO::PARAM_LOB);
@@ -398,7 +410,7 @@ class profileModel
 
         return $getFavPostData;
     }
-    
+
     public function getUserMessages($id)
     {
         try {
@@ -427,6 +439,32 @@ class profileModel
             $stmtRequests->execute();
 
             $this->dsn->commit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function addConvertation($idUser_1, $IdUser_2)
+    {
+        try {
+            $checkConv = "SELECT COUNT(*) FROM  WHERE IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2";
+            $stmt = $this->dsn->prepare($checkConv);
+            $stmt->bindParam(':IdUser_1', $idUser_1);
+            $stmt->bindParam(':IdUser_2', $IdUser_2);
+
+            if ($stmt->fetchColumn() > 0) {
+                echo "conversation déja créer";
+            } else {
+                $addConv = "INSERT INTO Conversations (IdUser_1, IdUser_2) VALUES (:IdUser_1, :IdUser_2)";
+                $stmt2 = $this->dsn->prepare($addConv);
+                $stmt2->bindParam(':IdUser_1', $idUser_1);
+                $stmt2->bindParam(':IdUser_2', $IdUser_2);
+                $stmt2->execute();
+
+                header("Location: /");
+                exit();
+            }
         } catch (PDOException $e) {
             $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();

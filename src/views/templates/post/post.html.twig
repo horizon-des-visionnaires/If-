@@ -47,7 +47,7 @@
 
 {% if isConnected %}
 <div class="CommentButton">
-    <button id="openModalButton" class="boton-elegante">Add Comment</button>
+    <button id="openModalButton" class="boton-elegante">Ajouter un commentaire</button>
 </div>
 {% endif %}
 
@@ -58,7 +58,7 @@
         <form action="/post-{{ Post.IdPost }}" method="post" id="formAddComment" enctype="multipart/form-data">
             <textarea name="ContentComment" placeholder="ContentComment" class="inputFieldDesc" required></textarea>
             <input type="hidden" name="IdUser" value="{{ userId }}">
-            <button type="submit" name="addComment" class="inputField2">Add Comment</button>
+            <button type="submit" name="addComment" class="inputField2">Ajouter un commentaire</button>
         </form>
     </div>
 </div>

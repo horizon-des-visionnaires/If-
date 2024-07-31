@@ -152,7 +152,7 @@ nav a {
     background-color: transparent;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 16;
 
     margin-left: -5.5em;
 }
@@ -423,7 +423,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 2;
+    z-index: 15;
     height: 5em;
     border-bottom: 2px solid #818080;
 }
@@ -440,6 +440,11 @@ header a {
     right: 0; /* Aligne l'élément à droite de la page */
     z-index: 10;
     background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
 }
 
 .Message img{

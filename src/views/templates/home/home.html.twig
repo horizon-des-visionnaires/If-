@@ -21,34 +21,102 @@
     <h1>Découvrez des professionnel</h1>
     <div class="allProfil">
         {% for user in userProData %}
-        <a href="profile-{{ user.IdUser }}">
-            <div class="profil">
+        
+        <div class="profil">
+            <a href="profile-{{ user.IdUser }}">
                 <div class="profilPictureName">
-                    <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                    {% if user.ProfilPicture == null %}
+                        <img id="icon" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                        <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                    {% endif %}
                     <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"class="fas fa-check-circle"></i>
                 </div>
-                {# <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                
+                <div class="advice-number">
+                    <div class="rating">
+                        <div class="stars">
+                            {% set rating = user.Rating %}
+                            {% set fullStars = rating|round(0, 'floor') %}
+                            {% set decimalPart = rating - fullStars %}
+                            {% set hasHalfStar = decimalPart >= 0.5 %}
+                            
+                            {% for i in 1..5 %}
+                                {% if i <= fullStars %}
+                                    <i class="fa fa-star"></i>
+                                {% elseif i == fullStars + 1 and hasHalfStar %}
+                                    <i class="fa fa-star-half-alt"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="rating-count">({{ user.RatingCount }} reviews)</span>
+                    </div>
+                    <div class="price">
+                        <span>10€</span>
+                    </div>
+                </div>
+
+
+                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
                     {% set text =  user.ProfilDescription %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
                     <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
                     <div class="hover-text">Je peux t'aider à {{ text }}</div>
-                </div> #}
+                </div>
+            </a>
+
+
+            <!-- Swipe DANS ADVICE APRES -->
+            {% set user_pictures = ['https://24ai.tech/fr/wp-content/uploads/sites/19/2023/10/01_product_1_sdelat-izobrazhenie-1-1-3-scaled.jpg','https://i0.wp.com/digital-photography-school.com/wp-content/uploads/2013/07/ar-10.jpg?ssl=1', 'https://cdn.shopify.com/s/files/1/0265/1327/7008/files/comment-accueillir-un-chaton.jpg?v=1694429887', 'https://stan.bio/cdn/shop/articles/accueillir-un-chaton.jpg?v=1694430809'] %}
+            {% if user_pictures|length > 0 %} <!-- user.Pictures -->
+            <div class="swipe">
+                {% if user_pictures|length > 1 %}
+                <button class="swipe-control-prev">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in user_pictures %}
+                    <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                        <img class="icon" src="{{ picture }}" alt="icon"><!-- data:image;base64, -->
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if user_pictures|length > 1 %}
+                <button class="swipe-control-next">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(user_pictures|length - 1) %}
+                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
-        </a>
+            {% endif %}
+        </div>
+        
+        
         {% endfor %}
         <a href="/research" class="beautiful-button">Découvrir d'autres professionnels</a>
     </div>
 </div>
 
 <div class="postContainer">
-    <h1>Posts populaires</h1>
+    <h1>Publications populaires</h1>
     <div class="allPosts">
         {% for post in randomPosts %}
         <a href="postDetails-{{ post.IdPost }}">
             <div class="post">
                 <div class="user-details">
-                    <img id="icon" src="data:image;base64,{{ post.ProfilPicture }}" alt="icon">
+                    {% if post.ProfilPicture == null %}
+                    <img id="icon" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                    <img id="icon" src="data:image;base64,{{post.ProfilPicture}}" alt="icon">
+                    {% endif %}
                     {% if post.IsPro == 1 %}
                         <h1 class= "name1">{{ post.FirstName }} {{ post.LastName }} </h1>
                         <i id="certifIcon" class="fas fa-check-circle"></i>
@@ -65,20 +133,11 @@
                     <h2 class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</h2>
                     <div class="hover-text">{{ text }}</div>
 
-
-                    <!--
-                    {% set truncatedDescription = post.ContentPost[:50] %}
-                    <p>
-                        {{ truncatedDescription }}
-                        {% if post.ContentPost|length > 50 %}...{% endif %}
-                    </p>-->
-
-                    
                 </div>
             </div>
         </a>
         {% endfor %}
-        <a href="/allPost" class="beautiful-button">Découvrir d'autres posts</a>
+        <a href="/allPost" class="beautiful-button">Découvrir d'autres publications</a>
     </div>
 </div>
 {% endblock %}
@@ -86,4 +145,5 @@
 {% block footer %}{% endblock %}
 
 {% block scripts %}
+<script src="/../public/js/swipePicturePost.js"></script>
 {% endblock %}

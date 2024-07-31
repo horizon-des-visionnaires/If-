@@ -1,0 +1,30 @@
+{% extends "default.html.twig" %}
+
+{% block title %}Vérification de l'email{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/verify.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="container-form">
+    <form class="form" action="/verify" method="get">
+        <h1 class="title">Vérification de l'email</h1>
+        <p class="message">Veuillez entrer le token de vérification reçu par email.</p>
+        <label>
+            <input required="" placeholder="Token" name="token" type="text" class="input">
+            <span>Token de vérification</span>
+        </label>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <button class="submit" type="submit">Vérifier</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

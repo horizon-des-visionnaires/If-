@@ -296,4 +296,23 @@ class postDetailsModel
             return false;
         }
     }
+
+    public function getCommentCount($idPost)
+    {
+        try {
+            $stmt = $this->dsn->prepare(
+                "SELECT COUNT(*) AS CommentCount 
+            FROM Comment 
+            WHERE IdPost = :idPost"
+            );
+            $stmt->bindParam(':idPost', $idPost, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int) $result['CommentCount'];
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return 0;
+        }
+    }
 }

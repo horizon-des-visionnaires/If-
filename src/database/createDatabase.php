@@ -16,12 +16,36 @@ $createTableUser = ("CREATE TABLE IF NOT EXISTS
     `IsPro` tinyint(1) DEFAULT '0',
     `ProfilPicture` LONGBLOB DEFAULT NULL,
     `ProfilDescription` varchar(255) DEFAULT NULL,
-    `ProfilPromotion` varchar(127) DEFAULT NULL,
     `IsAdmin` tinyint(1) DEFAULT '0',
+    `ProfilPromotion` varchar(100) DEFAULT NULL,
+    `Location` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`IdUser`),
     CONSTRAINT unique_User_Email UNIQUE (`Email`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE utf8mb4_unicode_ci");
 $dsn->exec($createTableUser);
+
+$createTableTempUser = ("CREATE TABLE IF NOT EXISTS 
+`TempUser` (
+    `IdTempUser` int(11) NOT NULL AUTO_INCREMENT,
+    `FirstName` varchar(255) DEFAULT NULL,
+    `LastName` varchar(255) DEFAULT NULL,
+    `Email` varchar(255) DEFAULT NULL,
+    `UserPassword` varchar(255) DEFAULT NULL,
+    `token` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`IdTempUser`),
+    CONSTRAINT unique_TempUser_Email UNIQUE (`Email`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+$dsn->exec($createTableTempUser);
+
+$createTableTempTokenResetPassword = ("CREATE TABLE IF NOT EXISTS 
+`TempTokenResetPassword` (
+    `IdtempReset` int(11) NOT NULL AUTO_INCREMENT,
+    `Email` varchar(255) DEFAULT NULL,
+    `token` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`IdtempReset`),
+    CONSTRAINT unique_TempUser_Email UNIQUE (`Email`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+$dsn->exec($createTableTempTokenResetPassword);
 
 $createTablePost = ("CREATE TABLE IF NOT EXISTS
 `Post` (
@@ -111,3 +135,42 @@ $createTableUserMessages = ("CREATE TABLE IF NOT EXISTS
     CONSTRAINT fk_IdUser_UserMessages FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableUserMessages);
+
+$createTableNotaions = ("CREATE TABLE IF NOT EXISTS
+`Notations` (
+    `idNotations` int(11) NOT NULL AUTO_INCREMENT,
+    `Note` int(11) DEFAULT NULL,
+    `CommentNote` TEXT DEFAULT NULL,
+    `DateNotation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `IdUser` int(11) DEFAULT NULL,
+    `IdUserIsPro` int(11) DEFAULT NULL,
+    PRIMARY KEY (`idNotations`),
+    CONSTRAINT fk_IdUser_Notations FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdUserIsPro_Notations FOREIGN KEY (`IdUserIsPro`) REFERENCES User (`IdUser`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableNotaions);
+
+$createTableConversations = ("CREATE TABLE IF NOT EXISTS
+`Conversations` (
+    `IdConversations` int(11) NOT NULL AUTO_INCREMENT,
+    `IdUser_1` int(11) DEFAULT NULL,
+    `IdUser_2` int(11) DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`IdConversations`),
+    CONSTRAINT fk_IdUser_1_Conversations FOREIGN KEY (`IdUser_1`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdUser_2_Conversations FOREIGN KEY (`IdUser_2`) REFERENCES User (`IdUser`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableConversations);
+
+$createTableConversationMessages = ("CREATE TABLE IF NOT EXISTS
+`ConversationMessages` (
+    `IdMessages` int(11) NOT NULL AUTO_INCREMENT,
+    `IdConversations` int(11) DEFAULT NULL,
+    `IdSender` int(11) DEFAULT NULL,
+    `ContentMessages` TEXT DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`IdMessages`),
+    CONSTRAINT fk_IdConversations_ConversationMessages FOREIGN KEY (`IdConversations`) REFERENCES Conversations (`IdConversations`),
+    CONSTRAINT fk_IdSender_ConversationMessages FOREIGN KEY (`IdSender`) REFERENCES User (`IdUser`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableConversationMessages);

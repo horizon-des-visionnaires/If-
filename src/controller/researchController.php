@@ -38,10 +38,16 @@ class researchContoller
             $IsAdmin = true;
         }
 
+        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+        $userData = $this->researchModel->getFilteredProUsers($searchQuery);
+
+
         echo $this->twig->render('research/research.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
+            'userData' => $userData,
+            'searchQuery' => $searchQuery,
         ]);
     }
 }

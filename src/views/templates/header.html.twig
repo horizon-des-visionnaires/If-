@@ -25,33 +25,30 @@
                     </button>
                     <div class="dropdown-content" id="myDropdown">
                         <a href = "/" class = "no">
-                            <img src="/../public/image/icon/home.png" alt="icon" class="icons">Home
+                            <img src="/../public/image/icon/home.png" alt="icon" class="icons">Page d'accueil
                         </a>
                         <a href = "/research" class = "no">
-                            <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">Search
+                            <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">Recherche
                         </a>
-                        <a href = "#" class = "no">
+                        <a href = "/Chat" class = "no">
                             <img src="/../public/image/icon/message.png" alt="icon" class="icons">Message
                         </a>
-                        <a href = "#" class = "no">
-                            <img src="/../public/image/icon/post.png" alt="icon" class="icons">Post
-                        </a>
-                        <a href = "#" class = "no">
-                            <img src="/../public/image/icon/saved.png" alt="icon" class="icons">Saved Post
+                        <a href = "/allPost" class = "no">
+                            <img src="/../public/image/icon/post.png" alt="icon" class="icons">Publication
                         </a>
                         <a href = "#" class = "no">
                             <img src="/../public/image/icon/notif.png" alt="icon" class="icons">Notification
                         </a>
                         <a href = "#" class = "no">
-                            <img src="/../public/image/icon/3dots.png" alt="icon" class="icons">Other
+                            <img src="/../public/image/icon/3dots.png" alt="icon" class="icons">Autres
                         </a>
                         {% if IsAdmin %}
                         <a href = "/dashboard" class = "no">
-                            <img src="/../public/image/icon/dashboard.png" alt="icon" class="icons">Dashboard
+                            <img src="/../public/image/icon/dashboard.png" alt="icon" class="icons">Panneau de contrôle
                         </a>
                         {% endif %}
                         <a href = "#" class = "no">
-                            <img src="/../public/image/icon/setting.png" alt="icon" class="icons">Settings
+                            <img src="/../public/image/icon/setting.png" alt="icon" class="icons">Paramètre
                         </a>
                         <a href = "#" class = "no">
                             <img src="/../public/image/icon/support.png" alt="icon" class="icons">Support
@@ -64,7 +61,7 @@
             <li>
                 <a href="/allPost" id="Post">
                     <div class="item" id="item">
-                        Post
+                        Publication
                         <img src="/../public/image/post.png" id="img2">
                     </div>
                 </a>
@@ -131,7 +128,7 @@
             <li>
                 <a href="/allPost" id="Post">
                     <div class="item" id="item">
-                        Post
+                        Publication
                         <img src="/../public/image/post.png" id="img2">
                     </div>
                 </a>
@@ -176,11 +173,9 @@
 </nav>
 
 <a href="#">
-    
-        <div class="Message">
-            <img src="/../public/image/icon/chat.png">
-        </div>
-    </button>
+    <div class="Message"  id="Message">
+        <img src="/../public/image/icon/chat.png">
+    </div>
 </a>
 
 
@@ -189,4 +184,5 @@
 
 {% block scripts %}
 <script src="/../public/js/dropdownMenu.js"></script>
+<script src="/../public/js/MovableChat.js"></script>
 {% endblock %}

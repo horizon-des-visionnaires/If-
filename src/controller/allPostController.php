@@ -51,6 +51,11 @@ class allPostController
         $this->getDataAddLike();
         $this->getDataAddFavorite();
 
+        foreach ($postData as &$post) {
+            $post['commentCount'] = $this->allPostModel->getCommentCount($post['IdPost']);
+        }
+
+
         echo $this->twig->render('allPost/allPost.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -58,7 +63,7 @@ class allPostController
             'postData' => $postData,
             'searchQuery' => $searchQuery,
             'sortBy' => $sortBy,
-            'order' => $order
+            'order' => $order,
         ]);
     }
 
