@@ -49,10 +49,13 @@ class conversationModel
     public function getUsersByConversation($userId)
     {
         $stmt = $this->dsn->prepare("
-            SELECT u.FirstName, u.LastName, u.IsPro, u.ProfilPicture
+            SELECT DISTINCT u.FirstName, u.LastName, u.IsPro, u.ProfilPicture
             FROM Conversations c
-            JOIN User u ON c.IdUser_1 = u.IdUser
-            WHERE c.IdUser_2 = :userId
+            JOIN User u ON u.IdUser = CASE
+                WHEN c.IdUser_1 = :userId THEN c.IdUser_2
+                ELSE c.IdUser_1
+            END
+            WHERE c.IdUser_1 = :userId OR c.IdUser_2 = :userId
         ");
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();

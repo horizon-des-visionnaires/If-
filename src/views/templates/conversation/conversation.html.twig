@@ -29,6 +29,7 @@
 {% for user in conversationUsers %}
 <div class="convContainer">
     <div class="conv">
+        <p>Conversation avec :</p>
         <img id="icon2" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
         {% if user.IsPro == 1 %}
         <div class="pro">
