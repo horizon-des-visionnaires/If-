@@ -28,19 +28,21 @@
 
 {% for user in conversationUsers %}
 <div class="convContainer">
-    <div class="conv">
-        <p>Conversation avec :</p>
-        <img id="icon2" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
-        {% if user.IsPro == 1 %}
-        <div class="pro">
-            <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+    <a href="/conversationChat-{{user.IdConversations}}">
+        <div class="conv">
+            <p>Conversation avec :</p>
+            <img id="icon2" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+            {% if user.IsPro == 1 %}
+            <div class="pro">
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+            </div>
+            {% else %}
+            <div class="notpro">
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+            </div>
         </div>
-        {% else %}
-        <div class="notpro">
-            <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-        </div>
-    </div>
-    {% endif %}
+        {% endif %}
+    </a>
 </div>
 {% endfor %}
 
