@@ -4,6 +4,7 @@ namespace profile;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+
 require 'vendor/autoload.php';
 
 require_once __DIR__ . '/../model/profileModel.php';
@@ -58,7 +59,7 @@ class profileController
         $messages = $this->profileModel->getUserMessages($id);
 
         $this->profileModel->cleanupOldData();
-
+        $this->getConversationData();
 
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
@@ -156,6 +157,16 @@ class profileController
             $idPost = $_POST['idPost'];
 
             $this->profileModel->updateViews($idPost);
+        }
+    }
+
+    public function getConversationData()
+    {
+        if (isset($_POST['conversation'])) {
+            $idUser_1 = $_POST['idUser_1'];
+            $IdUser_2 = $_SESSION['IdUser'];
+
+            $this->profileModel->addConvertation($idUser_1, $IdUser_2);
         }
     }
 }

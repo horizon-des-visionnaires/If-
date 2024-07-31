@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<link  href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
 {% endblock %}
 
 {% block header %}
@@ -18,11 +18,11 @@
 
 {% block body %}
 {% if messages is not empty %}
-    <div class="alert">
-        {% for message in messages %}
-            <h1>{{ message }}</h1>
-        {% endfor %}
-    </div>
+<div class="alert">
+    {% for message in messages %}
+    <h1>{{ message }}</h1>
+    {% endfor %}
+</div>
 {% endif %}
 
 
@@ -35,16 +35,26 @@
             <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
             {% endif %}
             {% if user.IsPro == 1 %}
-            <div class ="pro">
-                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i> 
-            </div> 
+            <div class="pro">
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+            </div>
             {% else %}
-            <div <div class ="notpro">
+            <div <div class="notpro">
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-            </div> 
-            {% endif %}   
+            </div>
+            {% endif %}
+            {% if isConnected and userId != user.IdUser %}
+            <div class="message">
+                <form action="/profile-{{ user.IdUser }}" method="post">
+                    <input type="hidden" name="idUser_1" value="{{ user.IdUser }}">
+                    <button type="submit" name="conversation">
+                        <img id="icon2" src="/../public/image/messenger.png" alt="icon">
+                    </button>
+                </form>
+            </div>
+            {% endif %}
         </div>
-        
+
         {% if isConnected and userId == user.IdUser %}
         {% if userId == user.IdUser and user.IsPro == 0 %}
         <div class="passProButton">
@@ -60,11 +70,12 @@
     <div class="country">
         <h3>{{ user.Location }}</h3>
     </div>
-     
+
     {% if user.IsPro == 1 %}
-    <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+    <div class="promotion">
+        <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
         <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
-    </div> 
+    </div>
     {% endif %}
     <div class="description">
         <p>{{ user.ProfilDescription | nl2br }}</p>
@@ -123,7 +134,7 @@
 
             <label for="images" id="labelText">Photo d'identité :</label>
             <input type="file" id="images" name="UserPicture" accept="image/*" aria-label="Photo d'identité" required />
-            
+
             <input type="hidden" name="idUser" value="{{ user.IdUser }}">
 
             <button type="submit" name="pushRequest" id="inputField2">envoyer la demande</button>
@@ -142,7 +153,7 @@
     {% for Post in userPost %}
     <div class="post">
         <div class="user-info">
-            <div class= "flex">
+            <div class="flex">
                 <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
                 {% if userId == user.IdUser and user.IsPro == 0 %}
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
@@ -163,17 +174,17 @@
             {% endif %}
         </div>
 
-        
+
         <div class="contentPost">
             <h2>{{ Post.TitlePost }}</h2>
             <p>
                 {% set contentLines = Post.ContentPost | split("\n") %}
                 {% if contentLines %}
-                    {% for i in 0..2 %}
-                        {% if contentLines[i] is defined %}
-                            {{ contentLines[i] }}<br>
-                        {% endif %}
-                    {% endfor %}
+                {% for i in 0..2 %}
+                {% if contentLines[i] is defined %}
+                {{ contentLines[i] }}<br>
+                {% endif %}
+                {% endfor %}
                 {% endif %}
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
@@ -239,23 +250,23 @@
             <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
             {% else %}
             <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
-            
+
             {% endif %}
         </div>
 
-        
+
         <div class="contentPost">
             <h2>{{ Post.TitlePost }}</h2>
             <p>
                 {% set contentLines = Post.ContentPost | split("\n") %}
                 {% if contentLines %}
-                    {% for i in 0..2 %}
-                        {% if contentLines[i] is defined %}
-                            {{ contentLines[i] }}<br>
-                        {% endif %}
-                    {% endfor %}
+                {% for i in 0..2 %}
+                {% if contentLines[i] is defined %}
+                {{ contentLines[i] }}<br>
                 {% endif %}
-                
+                {% endfor %}
+                {% endif %}
+
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
                 <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>

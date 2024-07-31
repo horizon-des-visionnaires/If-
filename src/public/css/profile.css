@@ -541,3 +541,7 @@ span {
     margin-left: 0.5em;
     color: var(--primary-color);
 }
+
+#icon2 {
+    height: 2em;
+}

@@ -410,7 +410,7 @@ class profileModel
 
         return $getFavPostData;
     }
-    
+
     public function getUserMessages($id)
     {
         try {
@@ -439,6 +439,32 @@ class profileModel
             $stmtRequests->execute();
 
             $this->dsn->commit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function addConvertation($idUser_1, $IdUser_2)
+    {
+        try {
+            $checkConv = "SELECT COUNT(*) FROM  WHERE IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2";
+            $stmt = $this->dsn->prepare($checkConv);
+            $stmt->bindParam(':IdUser_1', $idUser_1);
+            $stmt->bindParam(':IdUser_2', $IdUser_2);
+
+            if ($stmt->fetchColumn() > 0) {
+                echo "conversation déja créer";
+            } else {
+                $addConv = "INSERT INTO Conversations (IdUser_1, IdUser_2) VALUES (:IdUser_1, :IdUser_2)";
+                $stmt2 = $this->dsn->prepare($addConv);
+                $stmt2->bindParam(':IdUser_1', $idUser_1);
+                $stmt2->bindParam(':IdUser_2', $IdUser_2);
+                $stmt2->execute();
+
+                header("Location: /");
+                exit();
+            }
         } catch (PDOException $e) {
             $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();
