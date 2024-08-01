@@ -1,7 +1,46 @@
+/* Ajoutez ce CSS dans conversationChat.css */
+
 .chat {
     margin-top: 10em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    max-width: 80%;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    word-break: break-word;
+}
+
+.message.left {
+    margin-left: 0;
+    margin-right: auto;
+    background-color: #f0f0f0;
+}
+
+.message.right {
+    margin-left: auto;
+    margin-right: 0;
+    background-color: #007bff;
+    color: #fff;
 }
 
 .icon {
     height: 2em;
+    border-radius: 50%;
+}
+
+.pro {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.notpro {
+    display: flex;
+    align-items: center;
 }
