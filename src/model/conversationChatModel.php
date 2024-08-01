@@ -79,30 +79,19 @@ class conversationChatModel
         }
     }
 
-    public function checkParticipant($IdConversations, $userId)
-    {
-        $stmt = $this->dsn->prepare(
-            "SELECT COUNT(*) FROM Conversations
-            WHERE IdConversations = :IdConversations 
-            AND (IdUser_1 = :userId OR IdUser_2 = :userId)"
-        );
-        $stmt->bindParam(':IdConversations', $IdConversations, PDO::PARAM_INT);
-        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchColumn() > 0;
-    }
-
-    public function getParticipants($IdConversations)
+    public function getConversationDetails($IdConversations, $userId)
     {
         $stmt = $this->dsn->prepare(
             "SELECT User1.FirstName AS FirstName1, User1.LastName AS LastName1, 
-                    User2.FirstName AS FirstName2, User2.LastName AS LastName2
+                    User2.FirstName AS FirstName2, User2.LastName AS LastName2,
+                    (User1.IdUser = :userId OR User2.IdUser = :userId) AS isParticipant
              FROM Conversations
              JOIN User AS User1 ON Conversations.IdUser_1 = User1.IdUser
              JOIN User AS User2 ON Conversations.IdUser_2 = User2.IdUser
              WHERE Conversations.IdConversations = :IdConversations"
         );
         $stmt->bindParam(':IdConversations', $IdConversations, PDO::PARAM_INT);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

@@ -39,12 +39,12 @@ class conversationChatController
             $IsAdmin = true;
         }
 
-        if (!$this->isParticipant($IdConversations, $userId)) {
+        $details = $this->conversationChatModel->getConversationDetails($IdConversations, $userId);
+
+        if (!$details['isParticipant']) {
             header("Location: /conversation");
             exit();
         }
-
-        $participants = $this->conversationChatModel->getParticipants($IdConversations);
 
         $convChat = $this->conversationChatModel->getChat($IdConversations);
         $this->getMessage();
@@ -54,7 +54,12 @@ class conversationChatController
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
             'convChat' => $convChat,
-            'participants' => $participants
+            'participants' => [
+                'FirstName1' => $details['FirstName1'],
+                'LastName1' => $details['LastName1'],
+                'FirstName2' => $details['FirstName2'],
+                'LastName2' => $details['LastName2'],
+            ]
         ]);
     }
 
@@ -67,10 +72,5 @@ class conversationChatController
 
             $this->conversationChatModel->insertMessage($IdConversations, $IdUser, $messageContent);
         }
-    }
-
-    private function isParticipant($IdConversations, $userId)
-    {
-        return $this->conversationChatModel->checkParticipant($IdConversations, $userId);
     }
 }
