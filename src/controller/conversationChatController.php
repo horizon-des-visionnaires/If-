@@ -39,13 +39,38 @@ class conversationChatController
             $IsAdmin = true;
         }
 
+        if (!$this->isParticipant($IdConversations, $userId)) {
+            header("Location: /conversation");
+            exit();
+        }
+
+        $participants = $this->conversationChatModel->getParticipants($IdConversations);
+
         $convChat = $this->conversationChatModel->getChat($IdConversations);
+        $this->getMessage();
 
         echo $this->twig->render('conversationChat/conversationChat.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
-            'convChat' => $convChat
+            'convChat' => $convChat,
+            'participants' => $participants
         ]);
+    }
+
+    public function getMessage()
+    {
+        if (isset($_POST['message'])) {
+            $messageContent = $_POST['messageContent'];
+            $IdConversations = $_POST['IdConversations'];
+            $IdUser = $_SESSION['IdUser'];
+
+            $this->conversationChatModel->insertMessage($IdConversations, $IdUser, $messageContent);
+        }
+    }
+
+    private function isParticipant($IdConversations, $userId)
+    {
+        return $this->conversationChatModel->checkParticipant($IdConversations, $userId);
     }
 }
