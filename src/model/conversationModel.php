@@ -22,30 +22,6 @@ class conversationModel
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function getConvById($userId)
-    {
-        $stmt = $this->dsn->prepare("SELECT FirstName, LastName, IsPro, ProfilPicture, IsAdmin FROM User WHERE IdUser = :id");
-        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        $getUserData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($getUserData === false) {
-            return null;
-        }
-
-        foreach ($getUserData as $key => &$User) {
-            if ($key === 'ProfilPicture') {
-                if ($User !== null) {
-                    $User = base64_encode($User);
-                } else {
-                    $User = '';
-                }
-            }
-        }
-
-        return $getUserData;
-    }
-
     public function getUsersByConversation($userId)
     {
         $stmt = $this->dsn->prepare("
