@@ -25,7 +25,7 @@ class conversationModel
     public function getUsersByConversation($userId)
     {
         $stmt = $this->dsn->prepare("
-            SELECT DISTINCT u.FirstName, u.LastName, u.IsPro, u.ProfilPicture, c.IdConversations
+            SELECT DISTINCT u.FirstName, u.LastName, u.IsPro, u.ProfilPicture, u.IsAdmin, c.IdConversations
             FROM Conversations c
             JOIN User u ON u.IdUser = CASE
                 WHEN c.IdUser_1 = :userId THEN c.IdUser_2

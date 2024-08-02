@@ -17,7 +17,12 @@
 <div class="convContainer">
     <a href="/conversationChat-{{user.IdConversations}}">
         <div class="conv">
-            <p>Conversation avec :</p>
+            <p>{% if user.IsAdmin == 1 %}
+                Conversation avec un admin :
+                {% else %}
+                Conversation avec :
+                {% endif %}
+            </p>
             <img id="icon2" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
             {% if user.IsPro == 1 %}
             <div class="pro">
