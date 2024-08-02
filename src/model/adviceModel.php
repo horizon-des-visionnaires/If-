@@ -47,7 +47,6 @@ class adviceModel
             header('location: /advice');
             exit();
         } catch (PDOException $e) {
-            $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();
         }
     }
@@ -55,7 +54,7 @@ class adviceModel
     public function getAdviceAndUserInfo()
     {
         try {
-            $query = "SELECT a.AdviceType, a.AdviceDescription, p.IdUser ,p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+            $query = "SELECT a.AdviceType, a.AdviceDescription, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
                   FROM Advice a
                   JOIN User p ON a.IdUser = p.IdUser";
 
@@ -76,5 +75,61 @@ class adviceModel
             echo "Error: " . $e->getMessage();
             return [];
         }
+    }
+
+    public function getFilteredAdvice($searchQuery = '', $sortBy = '', $order = 'DESC')
+    {
+        $query = $this->buildAdviceQuery($searchQuery, $sortBy, $order);
+        $stmt = $this->dsn->prepare($query);
+
+        if ($searchQuery) {
+            $searchQuery = "%{$searchQuery}%";
+            $stmt->bindParam(':searchQuery', $searchQuery);
+        }
+
+        $stmt->execute();
+        $adviceData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($adviceData as &$advice) {
+            if (isset($advice['ProfilPicture']) && $advice['ProfilPicture'] !== null) {
+                $advice['ProfilPicture'] = base64_encode($advice['ProfilPicture']);
+            } else {
+                $advice['ProfilPicture'] = '';
+            }
+        }
+
+        return $adviceData;
+    }
+
+    private function buildAdviceQuery($searchQuery, $sortBy, $order)
+    {
+        $query = "SELECT a.AdviceType, a.AdviceDescription, a.CreatedAt, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
+                  FROM Advice a
+                  JOIN User p ON a.IdUser = p.IdUser";
+
+        if ($searchQuery) {
+            $query .= " WHERE (a.AdviceType LIKE :searchQuery 
+                    OR a.AdviceDescription LIKE :searchQuery
+                    OR p.FirstName LIKE :searchQuery 
+                    OR p.LastName LIKE :searchQuery)";
+        }
+
+        if ($sortBy) {
+            switch ($sortBy) {
+                case 'type':
+                    $query .= " ORDER BY a.AdviceType $order";
+                    break;
+                case 'user':
+                    $query .= " ORDER BY p.FirstName $order, p.LastName $order";
+                    break;
+                default:
+                    $query .= " ORDER BY a.CreatedAt $order";
+                    break;
+            }
+        } else {
+            $query .= " ORDER BY a.CreatedAt $order";
+        }
+
+        return $query;
     }
 }
