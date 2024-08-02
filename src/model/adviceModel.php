@@ -55,7 +55,7 @@ class adviceModel
     public function getAdviceAndUserInfo()
     {
         try {
-            $query = "SELECT a.AdviceType, a.AdviceDescription, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+            $query = "SELECT a.AdviceType, a.AdviceDescription, p.IdUser ,p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
                   FROM Advice a
                   JOIN User p ON a.IdUser = p.IdUser";
 

@@ -36,7 +36,7 @@
 .close:hover,
 .close:focus {
     color: black;
-    text-decoration: none;  
+    text-decoration: none;
 }
 
 .beautiful-button {
@@ -51,18 +51,24 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     text-align: center;
-    width: 200px; /* Taille fixe */
-    margin: auto 0; /* Centrer le bouton */
+    width: 200px;
+    /* Taille fixe */
+    margin: auto 0;
+    /* Centrer le bouton */
     height: 35px;
     align-items: center;
-    font-size: 1rem; /* Taille de police ajustée pour meilleure lisibilité */
-    overflow: hidden; /* Évite que le texte dépasse du bouton */
+    font-size: 1rem;
+    /* Taille de police ajustée pour meilleure lisibilité */
+    overflow: hidden;
+    /* Évite que le texte dépasse du bouton */
 }
 
 .beautiful-button:hover {
-    background: #1a9b6e; /* Couleur alternative au survol, légèrement plus foncée */
+    background: #1a9b6e;
+    /* Couleur alternative au survol, légèrement plus foncée */
     transform: translateY(-2px);
-    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+    /* Ombre plus marquée au survol */
 }
 
 .profilButton {
@@ -82,8 +88,11 @@
 }
 
 /* Champs de texte */
-#inputField, #inputFieldDesc, #inputField2 {
-    border: 2px solid #2e7d32; /* Bordure vert foncé */
+#inputField,
+#inputFieldDesc,
+#inputField2 {
+    border: 2px solid #2e7d32;
+    /* Bordure vert foncé */
     font-family: 'Montserrat', sans-serif;
     padding: 1em;
     color: black;
@@ -101,8 +110,10 @@
     width: 20em;
     height: 3em;
     border-radius: 10em;
-    background-color: #2e7d32; /* Fond vert foncé */
-    color: #ffffff; /* Texte blanc */
+    background-color: #2e7d32;
+    /* Fond vert foncé */
+    color: #ffffff;
+    /* Texte blanc */
     margin-top: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -123,16 +134,53 @@
     min-height: 10em;
     max-width: 20em;
     max-height: 15em;
-    resize: none; /* Empêcher le redimensionnement */
+    resize: none;
 }
 
 #inputField::placeholder,
-#inputFieldDesc::placeholder
-{
+#inputFieldDesc::placeholder {
     color: black;
     opacity: 1;
 }
 
 #inputField2:hover {
     background-color: #1b5e20;
+}
+
+#icon {
+    height: 3em;
+    padding-top: 1em;
+    padding-right: 1em;
+}
+
+.adviceContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.adviceContainer a {
+    color: black;
+    text-decoration: none;
+}
+
+.advice {
+    margin-bottom: 5em;
+}
+
+.profilPictureName,
+.adviceData {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.profilPictureName i {
+    padding-top: 2em;
+    padding-left: 1em;
+}
+
+.profilPictureName p {
+    padding-left: 1em;
+    padding-top: 1em;
 }
