@@ -135,20 +135,9 @@ class allPostModel
         return $stmtLikes->fetch(PDO::FETCH_ASSOC)['TotalLikes'];
     }
 
-    private function getRelativeTime($date)
+    public function getRelativeTime($date)
     {
-        $timestamp = strtotime($date);
-        $diff = time() - $timestamp;
-
-        if ($diff < 60) {
-            return $diff . ' s';
-        } elseif ($diff < 3600) {
-            return floor($diff / 60) . ' m';
-        } elseif ($diff < 86400) {
-            return floor($diff / 3600) . ' h';
-        } else {
-            return floor($diff / 86400) . ' J';
-        }
+        return getRelativeTime($date);
     }
 
     public function updateViews($idPost)

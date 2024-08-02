@@ -66,22 +66,6 @@ class postDetailsModel
         return $getPostData;
     }
 
-    private function getRelativeTime($date)
-    {
-        $timestamp = strtotime($date);
-        $diff = time() - $timestamp;
-
-        if ($diff < 60) {
-            return $diff . ' s';
-        } elseif ($diff < 3600) {
-            return floor($diff / 60) . ' m';
-        } elseif ($diff < 86400) {
-            return floor($diff / 3600) . ' h';
-        } else {
-            return floor($diff / 86400) . ' J';
-        }
-    }
-
     public function getComment($idPost)
     {
         $stmt = $this->dsn->prepare(
@@ -146,6 +130,11 @@ class postDetailsModel
             $error = "error: " . $e->getMessage();
             echo $error;
         }
+    }
+
+    public function getRelativeTime($date)
+    {
+        return getRelativeTime($date);
     }
 
     public function deletePost($idPost, $idUser)

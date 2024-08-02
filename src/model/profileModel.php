@@ -157,22 +157,6 @@ class profileModel
         return $getPostData;
     }
 
-    private function getRelativeTime($date)
-    {
-        $timestamp = strtotime($date);
-        $diff = time() - $timestamp;
-
-        if ($diff < 60) {
-            return $diff . ' s';
-        } elseif ($diff < 3600) {
-            return floor($diff / 60) . ' m';
-        } elseif ($diff < 86400) {
-            return floor($diff / 3600) . ' h';
-        } else {
-            return floor($diff / 86400) . ' J';
-        }
-    }
-
     public function insertRequestPassProData($Job, $Age, $Description, $idUser, $Adress, $identityCardRecto = null, $identityCardVerso = null, $UserPicture = null)
     {
         try {
@@ -199,6 +183,11 @@ class profileModel
             $error = "error: " . $e->getMessage();
             echo $error;
         }
+    }
+
+    public function getRelativeTime($date)
+    {
+        return getRelativeTime($date);
     }
     
     public function deletePost($idPost, $idUser)
