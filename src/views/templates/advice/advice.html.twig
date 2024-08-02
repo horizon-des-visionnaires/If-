@@ -11,10 +11,27 @@
 {% endblock %}
 
 {% block body %}
+<div class="profilButton">
+    <button id="openModalButton" class="beautiful-button">ajouter un conseil</button>
+</div>
 
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/advice" method="post" id="formAdvice" enctype="multipart/form-data">
+            <input type="text" name="AdviceType" placeholder="Titre, Sujet, Thème" id="inputField">
+
+            <div style="position: relative;">
+                <textarea name="AdviceDescription" placeholder="Description du service" id="inputFieldDesc"></textarea>
+            </div>
+            <button type="submit" name="addAdvice" id="inputField2">Soumettre le form</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block scripts %}
+<script src="/../public/js/modalUser.js"></script>
 {% endblock %}

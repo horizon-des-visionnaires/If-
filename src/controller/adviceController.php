@@ -37,11 +37,24 @@ class adviceController
         if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin'] == 1) {
             $IsAdmin = true;
         }
+        
+        $this->getAdviceData();
 
         echo $this->twig->render('advice/advice.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
         ]);
+    }
+
+    public function getAdviceData()
+    {
+        if (isset($_POST['addAdvice'])) {
+            $AdviceType = $_POST['AdviceType'];
+            $AdviceDescription = $_POST['AdviceDescription'];
+            $IdUser = $_SESSION['IdUser'];
+
+            $this->adviceModel->insertAdviceData($AdviceType, $AdviceDescription, $IdUser);
+        }
     }
 }
