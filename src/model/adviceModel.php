@@ -51,4 +51,30 @@ class adviceModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function getAdviceAndUserInfo()
+    {
+        try {
+            $query = "SELECT a.AdviceType, a.AdviceDescription, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+                  FROM Advice a
+                  JOIN User p ON a.IdUser = p.IdUser";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->execute();
+            $userData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($userData as &$user) {
+                if (isset($user['ProfilPicture']) && $user['ProfilPicture'] !== null) {
+                    $user['ProfilPicture'] = base64_encode($user['ProfilPicture']);
+                } else {
+                    $user['ProfilPicture'] = '';
+                }
+            }
+
+            return $userData;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
+        }
+    }
 }

@@ -39,11 +39,13 @@ class adviceController
         }
         
         $this->getAdviceData();
+        $adviceData = $this->adviceModel->getAdviceAndUserInfo();
 
         echo $this->twig->render('advice/advice.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
+            'adviceData' => $adviceData
         ]);
     }
 
