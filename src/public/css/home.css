@@ -69,7 +69,8 @@ h1 {
 
 /* Profil et Post Containers */
 .ProfilContainer,
-.postContainer {
+.postContainer,
+.adminContainer {
     margin-top: 4em;
     padding: 2em;
     background: white;
@@ -79,7 +80,8 @@ h1 {
 
 /* Disposition en grille */
 .allProfil,
-.allPosts {
+.allPosts,
+.allAdmin {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(28em, 1fr));
     gap: 1em;
@@ -88,7 +90,8 @@ h1 {
 
 /* Style des Profils et Posts */
 .profil,
-.post {
+.post,
+.admin {
     padding: 1em;
     background-color: var(--background-color);
     border-radius: 2em;
@@ -244,4 +247,8 @@ a {
     .title h1 {
         font-size: 2em;
     }
+}
+
+#icon2 {
+    height: 2em;
 }

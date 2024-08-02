@@ -25,10 +25,12 @@
             <div class="profil">
                 <div class="profilPictureName">
                     <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
-                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"class="fas fa-check-circle"></i>
+                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"
+                        class="fas fa-check-circle"></i>
                 </div>
-                {# <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-                    {% set text =  user.ProfilDescription %}
+                {# <div class="promotion">
+                    <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                    {% set text = user.ProfilDescription %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
                     <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
@@ -50,10 +52,10 @@
                 <div class="user-details">
                     <img id="icon" src="data:image;base64,{{ post.ProfilPicture }}" alt="icon">
                     {% if post.IsPro == 1 %}
-                        <h1 class= "name1">{{ post.FirstName }} {{ post.LastName }} </h1>
-                        <i id="certifIcon" class="fas fa-check-circle"></i>
+                    <h1 class="name1">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <i id="certifIcon" class="fas fa-check-circle"></i>
                     {% else %}
-                        <h1 class= "name2">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <h1 class="name2">{{ post.FirstName }} {{ post.LastName }} </h1>
                     {% endif %}
                 </div>
                 <p id="date">{{ post.RelativeDatePost }}</p>
@@ -73,12 +75,39 @@
                         {% if post.ContentPost|length > 50 %}...{% endif %}
                     </p>-->
 
-                    
+
                 </div>
             </div>
         </a>
         {% endfor %}
         <a href="/allPost" class="beautiful-button">Découvrir d'autres posts</a>
+    </div>
+</div>
+
+<div class="adminContainer">
+    <h1>admin du site</h1>
+    <div class="allAdmin">
+        {% for User in userAdmin %}
+        <a href="profile-{{ User.IdUser }}">
+            <div class="admin">
+                <div class="user-details">
+                    <img id="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon">
+                    <h1 class="name1">{{ User.FirstName }} {{ User.LastName }} </h1>
+                    {% if isConnected and userId != User.IdUser %}
+                    <div class="message">
+                        <form action="/" method="post">
+                            <input type="hidden" name="idUser_1" value="{{ User.IdUser }}">
+                            <button type="submit" name="conversation" id="messageButton">
+                                <img id="icon2" src="/../public/image/messenger.png" alt="icon">
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                <p id="help">Je peut vous aider n'hésitez pas à me contacter</p>
+            </div>
+        </a>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
