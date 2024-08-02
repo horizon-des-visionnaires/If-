@@ -223,6 +223,7 @@
             </form>
             <p class="datePost">{{ Post.RelativeDatePost }}</p>
             <p class="viewsPost">{{ Post.Views }} views</p>
+            <p class="commentCount">{{ commentCount }} Comments</p>
         </div>
         {% else %}
         <div class="interaction">
@@ -234,6 +235,7 @@
                 <i class="far fa-star"></i>
             </button>
             <p class="viewsPost">{{ Post.Views }} views</p>
+            <p class="commentCount">{{ commentCount }} Comments</p>
         </div>
         {% endif %}
     </div>
