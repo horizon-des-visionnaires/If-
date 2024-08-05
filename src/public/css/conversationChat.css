@@ -1,0 +1,224 @@
+/* Palette de couleurs */
+:root {
+    --primary-color: #1DBF73;
+    --secondary-color: #404145;
+    --background-color: #F7F7F7;
+    --text-color: #1C1C1C;
+    --message-background: #FFFFFF;
+    --message-border: #E0E0E0;
+    --button-background: #1DBF73;
+    --button-color: #FFFFFF;
+}
+/* Liens */
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+/* Style global */
+body {
+    font-family: 'Montserrat';
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow-y: none;
+}
+
+h2 {
+    font-family: sans-serif;
+    color: var(--secondary-color);
+    margin: 0;
+}
+
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin: 5em auto 1em;
+    padding: 1em;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Répartit les éléments de manière égale */
+    margin-bottom: 0.5em;
+    flex-direction: row-reverse;
+}
+.head a{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.head.left{
+    flex-direction: row;
+}
+.head.left a{
+    flex-direction:row;
+}
+.right{    
+    text-align: right ;
+}
+
+.head:first-of-type {
+    display:none;
+}
+
+.icon {
+    height: 4em;
+    border-radius: 50%;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.pro, .notpro {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.pro h2, .notpro h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+#certifIcon {
+    color: var(--primary-color);
+    margin-left: 0.5em;
+}
+
+.chat p {
+    margin: 0.5em 0;
+    padding: 1em;
+    background-color: var(--message-background);
+    border: 1px solid var(--message-border);
+    border-radius: 8px;
+    margin-bottom: 1em;
+    flex-grow: 1; /* Permet au contenu de prendre l'espace disponible et être défilable */
+}
+
+.chat p:first-of-type {
+    font-weight: bold;
+    color: var(--secondary-color);
+    background-color: var(--background);
+    align-self: center;
+    border:none;
+}
+
+.head span{
+    font-weight:400;
+    margin-top:-0.5em;
+}
+
+
+.poster {
+    margin-top: 2%;
+    background-color: #ffffff;
+    padding: 0em 1em;
+    margin-bottom: 1%;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    position: sticky;
+    bottom: 0;
+    text-align: center;
+}
+
+
+
+.poster textarea {
+    width: 100%;
+    padding: 1em;
+    border: 1px solid var(--message-border);
+    border-radius: 8px;
+    resize: none;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    height: 1em;
+    margin-right: 1em;
+}
+
+.poster button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    height: 35px;
+    padding: 0 20px; /* Ajout d'un padding horizontal pour un meilleur espacement */
+}
+
+.poster button:hover {
+    background-color: var(--button-background);
+}
+
+.out {
+    position: fixed;
+    top: 50%;
+    left: 7%;
+    background-color: var(--button-background);
+    color: var(--button-color);
+    border: none;
+    padding: 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+}
+
+.out a {
+    color: var(--button-color);
+    text-decoration: none;
+}
+
+
+
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .chat, .poster {
+        width: 90%;
+        padding: 0.5em;
+    }
+
+    .icon {
+        height: 3em;
+    }
+
+    h2 {
+        font-size: 1em;
+    }
+
+    textarea {
+        padding: 0.5em;
+    }
+
+    button[type="submit"], button {
+        padding: 0.5em;
+        font-size: 0.9em;
+    }
+
+    .out {
+        top: 0%;
+        left: 25%;
+        transform: translateY(-50%);
+    }
+
+    .Message img{
+        display: none;
+    }
+    
+}

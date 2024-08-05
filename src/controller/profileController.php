@@ -61,6 +61,8 @@ class profileController
         $this->profileModel->cleanupOldData();
         $this->getConversationData();
 
+        $commentCount = $this->profileModel->getCommentCount($id);
+
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
             'isConnected' => $isConnected,
@@ -68,7 +70,8 @@ class profileController
             'IsAdmin' => $IsAdmin,
             'userPost' => $userPost,
             'postFav' => $postFav,
-            'messages' => $messages
+            'messages' => $messages,
+            'commentCount' => $commentCount
         ]);
     }
 

@@ -42,8 +42,8 @@
             {% else %}
             <div <div class ="notpro">
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-            </div> 
-            {% endif %} 
+            </div>
+            {% endif %}
             {% if isConnected and userId != user.IdUser %}
             <div class="message">
                 <form action="/profile-{{ user.IdUser }}" method="post">
@@ -53,7 +53,7 @@
                     </button>
                 </form>
             </div>
-            {% endif %}         
+            {% endif %}    
         </div>
         
         {% if isConnected and userId == user.IdUser %}
@@ -66,6 +66,10 @@
             <button id="openModalButton" class="beautiful-button">Editer le profile</button>
         </div>
         {% endif %}
+
+        <div class="country">
+            <h3>{{ user.Location }}</h3>
+        </div>
     </div>
     
     
@@ -89,11 +93,20 @@
 
             <input type="text" name="Location" placeholder="Localisation (ex: france, espagne, ...)" id="inputField">
 
+
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="ProfilPromotion" id="inputFieldPromotion"
+                    maxlength="100"></textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
+
             <div style="position: relative;">
                 <textarea name="ProfilDescription" placeholder="Description du profil" id="inputFieldDesc"
                     maxlength="255"></textarea>
                 <div id="charCount" class="char-count">0/255</div>
             </div>
+
+            
 
             <input type="file" id="images" name="ProfilPicture" onchange="openCropperModal(this)">
 
@@ -128,15 +141,15 @@
             
             <input type="hidden" name="idUser" value="{{ user.IdUser }}">
 
-            <button type="submit" name="pushRequest" id="inputField2">envoyer la demande</button>
+            <button type="submit" name="pushRequest" id="inputField2">Envoyer la demande</button>
         </form>
     </div>
 </div>
 
 {% if isConnected and userId == user.IdUser %}
 <div class="button-container">
-    <button id="showPosts" class="beautiful-button">Voir les posts</button>
-    <button id="showFavorites" class="beautiful-button">Voir les favoris</button>
+    <button id="showPosts" class="beautiful-button">Voir les Publications</button>
+    <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
 </div>
 {% endif %}
 
@@ -229,7 +242,7 @@
                     <i class="far fa-heart"></i>
                     {% endif %}
                 </button>
-                <span class="total-likes">{{ Post.TotalLikes }} likes</span>
+                <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
             </form>
             <a href="/postDetail-{{Post.IdPost}}" >
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
@@ -248,14 +261,14 @@
                 </button>
             </form>
             <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} views</p>
+            <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% else %}
         <div class="interaction">
             <button class="heart" disabled>
                 <i class="far fa-heart"></i>
             </button>
-            <span class="total-likes3">{{ Post.TotalLikes }} likes</span>
+            <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
             <a href="/postDetail-{{Post.IdPost}}" >
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
@@ -264,7 +277,7 @@
                 <i class="far fa-star"></i>
             </button>
             <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} views</p>
+            <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% endif %}
     </div>
@@ -345,7 +358,7 @@
                     <i class="far fa-heart"></i>
                     {% endif %}
                 </button>
-                <span class="total-likes">{{ Post.TotalLikes }} likes</span>
+                <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
             </form>
 
             <form action="/profile-{{ Post.IdUser }}" method="post">
@@ -360,18 +373,18 @@
                 </button>
             </form>
             <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} views</p>
+            <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% else %}
         <div class="interaction">
             <button class="heart" disabled>
                 <i class="far fa-heart"></i>
             </button>
-            <span class="total-likes3">{{ Post.TotalLikes }} likes</span>
+            <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
             <button class="favorite" disabled>
                 <i class="far fa-star"></i>
             </button>
-            <p class="viewsPost">{{ Post.Views }} views</p>
+            <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% endif %}
     </div>
@@ -413,5 +426,6 @@
 <script src="/../public/js/ImageCrop.js"></script>
 <script src="/../public/js/showContent.js"></script>
 <script src="/../public/js/profilPromotion.js"></script>
+<script src="/../public/js/swipePicturePost.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 {% endblock %}

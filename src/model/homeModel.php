@@ -6,6 +6,7 @@ use PDO;
 use PDOException;
 
 require_once 'database/connectDB.php';
+require_once __DIR__ . '/utils.php';
 
 class homeModel
 {
@@ -95,19 +96,78 @@ class homeModel
         }
     }
 
-    private function getRelativeTime($date)
+    public function getRelativeTime($date)
     {
-        $timestamp = strtotime($date);
-        $diff = time() - $timestamp;
+        return getRelativeTime($date);
+    }
 
-        if ($diff < 60) {
-            return $diff . ' s';
-        } elseif ($diff < 3600) {
-            return floor($diff / 60) . ' m';
-        } elseif ($diff < 86400) {
-            return floor($diff / 3600) . ' h';
-        } else {
-            return floor($diff / 86400) . ' J';
+    public function getUserAdmin()
+    {
+        try {
+            $stmt = $this->dsn->query("
+                SELECT 
+                    IdUser,
+                    FirstName, 
+                    LastName, 
+                    ProfilPicture,
+                    IsAdmin
+                FROM User
+                WHERE IsAdmin = 1
+            ");
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($results as &$row) {
+                if (!is_null($row['ProfilPicture'])) {
+                    $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
+                }
+            }
+
+            return $results;
+        } catch (PDOException $e) {
+            $error = "error: " . $e->getMessage();
+            echo $error;
+        }
+    }
+
+    public function addConvertation($idUser_1, $IdUser_2)
+    {
+        try {
+            $checkConv = "SELECT IdConversations FROM Conversations 
+                      WHERE (IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2) 
+                         OR (IdUser_1 = :IdUser_2 AND IdUser_2 = :IdUser_1)";
+            $stmt = $this->dsn->prepare($checkConv);
+            $stmt->bindParam(':IdUser_1', $idUser_1);
+            $stmt->bindParam(':IdUser_2', $IdUser_2);
+            $stmt->execute();
+
+            $existingConversationId = $stmt->fetchColumn();
+
+            if ($existingConversationId) {
+                header("Location: /conversationChat-" . $existingConversationId);
+                exit();
+            } else {
+                $addConv = "INSERT INTO Conversations (IdUser_1, IdUser_2) VALUES (:IdUser_1, :IdUser_2)";
+                $stmt2 = $this->dsn->prepare($addConv);
+                $stmt2->bindParam(':IdUser_1', $idUser_1);
+                $stmt2->bindParam(':IdUser_2', $IdUser_2);
+                $stmt2->execute();
+
+                $idConversation = $this->dsn->lastInsertId();
+
+                $addMessage = "INSERT INTO ConversationMessages (IdConversations, IdSender, ContentMessages) VALUES (:IdConversations, :IdSender, :ContentMessages)";
+                $stmt3 = $this->dsn->prepare($addMessage);
+                $contentMessage = "premier message";
+                $stmt3->bindParam(':IdConversations', $idConversation);
+                $stmt3->bindParam(':IdSender', $IdUser_2);
+                $stmt3->bindParam(':ContentMessages', $contentMessage);
+                $stmt3->execute();
+
+                header("Location: /conversationChat-" . $idConversation);
+                exit();
+            }
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
         }
     }
 }

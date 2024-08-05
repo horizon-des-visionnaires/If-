@@ -6,6 +6,7 @@ use PDO;
 use PDOException;
 
 require_once __DIR__ . '/../database/connectDB.php';
+require_once __DIR__ . '/utils.php';
 
 class postDetailsModel
 {
@@ -65,22 +66,6 @@ class postDetailsModel
         return $getPostData;
     }
 
-    private function getRelativeTime($date)
-    {
-        $timestamp = strtotime($date);
-        $diff = time() - $timestamp;
-
-        if ($diff < 60) {
-            return $diff . ' s';
-        } elseif ($diff < 3600) {
-            return floor($diff / 60) . ' m';
-        } elseif ($diff < 86400) {
-            return floor($diff / 3600) . ' h';
-        } else {
-            return floor($diff / 86400) . ' J';
-        }
-    }
-
     public function getComment($idPost)
     {
         $stmt = $this->dsn->prepare(
@@ -126,42 +111,6 @@ class postDetailsModel
         }
     }
 
-    public function deletePost($idPost)
-    {
-        try {
-            $this->dsn->beginTransaction();
-
-            $deletePicturePost = "DELETE FROM PicturePost WHERE IdPost = :IdPost";
-            $picturePost = $this->dsn->prepare($deletePicturePost);
-            $picturePost->bindParam(':IdPost', $idPost);
-            $picturePost->execute();
-
-            $deleteComment = "DELETE FROM Comment WHERE IdPost = :IdPost";
-            $comment = $this->dsn->prepare($deleteComment);
-            $comment->bindParam(':IdPost', $idPost);
-            $comment->execute();
-
-            $deleteLike = "DELETE FROM `LikeFavorites` WHERE IdPost = :IdPost";
-            $like = $this->dsn->prepare($deleteLike);
-            $like->bindParam(':IdPost', $idPost);
-            $like->execute();
-
-            $deletePost = "DELETE FROM Post WHERE IdPost = :IdPost";
-            $stmt = $this->dsn->prepare($deletePost);
-            $stmt->bindParam(':IdPost', $idPost);
-            $stmt->execute();
-
-            $this->dsn->commit();
-
-            header("Location: /");
-            exit();
-        } catch (PDOException $e) {
-            $this->dsn->rollBack();
-            $error = "error: " . $e->getMessage();
-            echo $error;
-        }
-    }
-
     public function deleteComment($idComment, $idPost)
     {
         try {
@@ -183,136 +132,33 @@ class postDetailsModel
         }
     }
 
-    public function LikeData($IdUser, $IdPost)
+    public function getRelativeTime($date)
     {
-        try {
-            $checkIsLike = "SELECT COUNT(*) FROM LikeFavorites WHERE IdUser = :IdUser AND IdPost = :IdPost";
-            $execCheckIsLike = $this->dsn->prepare($checkIsLike);
-            $execCheckIsLike->bindParam(':IdUser', $IdUser);
-            $execCheckIsLike->bindParam(':IdPost', $IdPost);
-            $execCheckIsLike->execute();
-
-            $isLiked = $execCheckIsLike->fetchColumn() > 0;
-
-            if ($isLiked) {
-                $updateLike = "UPDATE LikeFavorites SET IsLike = NOT IsLike WHERE IdUser = :IdUser AND IdPost = :IdPost";
-            } else {
-                $updateLike = "INSERT INTO LikeFavorites (IdUser, IdPost, IsLike) VALUES (:IdUser, :IdPost, 1)";
-            }
-
-            $execUpdateLike = $this->dsn->prepare($updateLike);
-            $execUpdateLike->bindParam(':IdUser', $IdUser);
-            $execUpdateLike->bindParam(':IdPost', $IdPost);
-
-            if ($execUpdateLike->execute()) {
-                header("Location: /postDetails-$IdPost");
-                exit();
-            } else {
-                echo "Erreur lors de l'ajout ou de la suppression du like.";
-            }
-        } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
-        }
+        return getRelativeTime($date);
     }
 
-    public function getIsLike($IdUser, $IdPost)
+    public function deletePost($idPost, $idUser)
     {
-        try {
-            $stmt = $this->dsn->prepare(
-                "SELECT IsLike 
-            FROM LikeFavorites 
-            WHERE IdUser = :IdUser AND IdPost = :IdPost"
-            );
-            $stmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
-            $stmt->bindParam(':IdPost', $IdPost, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result !== false) {
-                return (bool)$result['IsLike'];
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
-        }
+        return deletePost($this->dsn, $idPost, $idUser);
     }
 
-
-    public function FavoriteData($IdUser, $IdPost)
-    {
-        try {
-            $checkFavorite = "SELECT IsFavorites FROM LikeFavorites WHERE IdUser = :IdUser AND IdPost = :IdPost";
-            $stmt = $this->dsn->prepare($checkFavorite);
-            $stmt->bindParam(':IdUser', $IdUser);
-            $stmt->bindParam(':IdPost', $IdPost);
-            $stmt->execute();
-
-            $existingFavorite = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($existingFavorite) {
-                $updateFavorite = "UPDATE LikeFavorites SET IsFavorites = NOT IsFavorites WHERE IdUser = :IdUser AND IdPost = :IdPost";
-            } else {
-                $updateFavorite = "INSERT INTO LikeFavorites (IdUser, IdPost, IsFavorites) VALUES (:IdUser, :IdPost, 1)";
-            }
-
-            $execUpdateFavorite = $this->dsn->prepare($updateFavorite);
-            $execUpdateFavorite->bindParam(':IdUser', $IdUser);
-            $execUpdateFavorite->bindParam(':IdPost', $IdPost);
-
-            if ($execUpdateFavorite->execute()) {
-                header("Location: /postDetails-$IdPost");
-                exit();
-            } else {
-                echo "Erreur lors de l'ajout ou de la suppression du favori.";
-            }
-        } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
-        }
+    public function getIsLike($IdUser, $IdPost) {
+        return getIsLike($this->dsn, $IdUser, $IdPost);
     }
 
-
-    public function getIsFavorites($IdUser, $IdPost)
-    {
-        try {
-            $stmt = $this->dsn->prepare(
-                "SELECT IsFavorites 
-            FROM LikeFavorites 
-            WHERE IdUser = :IdUser AND IdPost = :IdPost"
-            );
-            $stmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
-            $stmt->bindParam(':IdPost', $IdPost, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result !== false) {
-                return (bool)$result['IsFavorites'];
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
-        }
+    public function getIsFavorites($IdUser, $IdPost) {
+        return getIsFavorites($this->dsn, $IdUser, $IdPost);
     }
 
-    public function getCommentCount($idPost)
-    {
-        try {
-            $stmt = $this->dsn->prepare(
-                "SELECT COUNT(*) AS CommentCount 
-            FROM Comment 
-            WHERE IdPost = :idPost"
-            );
-            $stmt->bindParam(':idPost', $idPost, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function LikeData($IdUser, $IdPost) {
+        LikeData($this->dsn, $IdUser, $IdPost, "/postDetails-$IdPost");
+    }
 
-            return (int) $result['CommentCount'];
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return 0;
-        }
+    public function FavoriteData($IdUser, $IdPost) {
+        FavoriteData($this->dsn, $IdUser, $IdPost, "/postDetails-$IdPost");
+    }
+
+    public function getCommentCount($idPost) {
+        return getCommentCount($this->dsn, $idPost);
     }
 }

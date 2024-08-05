@@ -1,6 +1,6 @@
 {% extends "default.html.twig" %}
 
-{% block title %}home{% endblock %}
+{% block title %}Page d'Accueil de IFÀ{% endblock %}
 
 {% block stylesheet %}
 <link href="/../public/css/home.css" rel="stylesheet">
@@ -35,8 +35,9 @@
                 
                 <div class="advice-number">
                     <div class="rating">
+                        {% set rating = 3.9 %} <!-- user.Rating-->
+                        <span class="ratings">{{rating }}  </span>
                         <div class="stars">
-                            {% set rating = user.Rating %}
                             {% set fullStars = rating|round(0, 'floor') %}
                             {% set decimalPart = rating - fullStars %}
                             {% set hasHalfStar = decimalPart >= 0.5 %}
@@ -51,13 +52,13 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <span class="rating-count">({{ user.RatingCount }} reviews)</span>
+                        <span class="rating-count">({{ user.RatingCount }}19 Revues)</span>
                     </div>
                     <div class="price">
                         <span>10€</span>
                     </div>
                 </div>
-
+                
 
                 <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
                     {% set text =  user.ProfilDescription %}
@@ -125,7 +126,7 @@
                     {% endif %}
                 </div>
                 <p id="date">{{ post.RelativeDatePost }}</p>
-                <p id="views">{{ post.Views }} vus</p>
+                <p id="views">{{ post.Views }} Vues</p>
                 <div class="contentPost">
                     {% set text = post.TitlePost %}
                     {% set truncatedText = text|length > 32 ? text|slice(0, 32) ~ '...' : text %}
@@ -138,6 +139,39 @@
         </a>
         {% endfor %}
         <a href="/allPost" class="beautiful-button">Découvrir d'autres publications</a>
+    </div>
+</div>
+
+
+
+<div class="adminContainer">
+    <h1>admin du site</h1>
+    <div class="allAdmin">
+        {% for User in userAdmin %}
+        <a href="profile-{{ User.IdUser }}">
+            <div class="admin">
+                <div class="user-details">
+                    {% if User.ProfilPicture == null %}
+                    <img id="icon" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                    <img id="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon">
+                    {% endif %}
+                    <h1 class="name1">{{ User.FirstName }} {{ User.LastName }} </h1>
+                    {% if isConnected and userId != User.IdUser %}
+                    <div class="message">
+                        <form action="/" method="post">
+                            <input type="hidden" name="idUser_1" value="{{ User.IdUser }}">
+                            <button type="submit" name="conversation" id="messageButton">
+                                <img id="icon2" src="/../public/image/messenger.png" alt="icon">
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                <p id="help">Je peut vous aider n'hésitez pas à me contacter</p>
+            </div>
+        </a>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

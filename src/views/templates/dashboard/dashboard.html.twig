@@ -71,21 +71,26 @@
 <div class="tableUserPro">
     <table>
         <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>ProfilPicture</th>
-            <th>Supprimer Pro</th>
+            <th>Prénom</th>
+            <th>Nom de Famille</th>
+            <th>Photo de Profil</th>
+            <th>Supprimer Professionnel</th>
         </tr>
         {% for User in userPro %}
         <tr>
             <td>{{ User.FirstName }}</td>
             <td>{{ User.LastName }}</td>
-            <td><img class="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon" onclick="openModal(this)">
+            <td>
+                {% if User.ProfilPicture == null %}
+                <img class="icon" src="/../public/image/user.png" alt="icon" onclick="openModal(this)">
+                {% else %}
+                <img class="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon" onclick="openModal(this)">
+                {% endif %}
             </td>
             <td>
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdUser" value="{{ User.IdUser }}">
-                    <button type="submit" name="deletePro">Supprimer des pro</button>
+                    <button type="submit" name="deletePro">Supprimer des Pro</button>
                 </form>
             </td>
         </tr>

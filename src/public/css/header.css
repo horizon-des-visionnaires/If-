@@ -92,13 +92,9 @@ nav a {
 }
 
 .search {
-    margin-top: 18px;
     width: 20em;
     height: 40px;
-    line-height: 28px;
-    padding: 0 1rem;
     padding-left: 2.5rem;
-    border: 2px solid transparent;
     border-radius: 8px;
     outline: none;
     background-color: #f3f3f4;
@@ -108,7 +104,7 @@ nav a {
 }
 
 .search::placeholder {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat';
     color: black;
 }
 
@@ -121,7 +117,6 @@ nav a {
 }
 
 .iconSearch {
-    margin-top: 15px;
     position: absolute;
     left: 1rem;
     fill: #9e9ea7;

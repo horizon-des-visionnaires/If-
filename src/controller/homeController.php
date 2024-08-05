@@ -41,13 +41,16 @@ class homeController
         $this->logOut();
         $userProData = $this->homeModel->get5UserProRandom();
         $randomPosts = $this->homeModel->get5RandomPostsFromTop10();
+        $userAdmin = $this->homeModel->getUserAdmin();
+        $this->getConversationData();
 
         echo $this->twig->render('home/home.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
             'userProData' => $userProData,
-            'randomPosts' => $randomPosts
+            'randomPosts' => $randomPosts,
+            'userAdmin' => $userAdmin
         ]);
     }
 
@@ -56,6 +59,16 @@ class homeController
         if (isset($_POST['logOut'])) {
             session_unset();
             header("Location: /login");
+        }
+    }
+
+    public function getConversationData()
+    {
+        if (isset($_POST['conversation'])) {
+            $idUser_1 = $_POST['idUser_1'];
+            $IdUser_2 = $_SESSION['IdUser'];
+
+            $this->homeModel->addConvertation($idUser_1, $IdUser_2);
         }
     }
 }
