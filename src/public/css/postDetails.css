@@ -78,12 +78,6 @@ a {
     border-radius: 50%;
 }
 
-
-
-
-
-
-
 .user-info .pro{
     display: flex;
     margin-top: -0.4em;
@@ -127,13 +121,6 @@ a {
     margin-top: 1em;
     margin-bottom: -1.5em;
 }
-
-
-
-
-
-
-
 
 /* Style de la modal */
 .modal {
@@ -207,7 +194,6 @@ a {
     background-color: #1b5e20;
 }
 
-
 /* Textarea */
 .inputFieldDesc {
     margin-top: 1.5em;
@@ -221,9 +207,6 @@ a {
     resize: none; /* Empêcher le redimensionnement */
     margin-left: 20%;
 }
-
-
-
 
 .formDeletePost,
 .formDeletePostComment {
