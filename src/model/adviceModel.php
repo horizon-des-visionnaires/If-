@@ -13,15 +13,18 @@ class adviceModel
 
     public function __construct()
     {
+        // Initialisation de la connexion à la base de données
         $this->connectDB();
     }
 
     public function connectDB()
     {
+        // Connexion à la base de données MySQL avec PDO
         $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
+    // fonction qui permet d'ajouter un conseil en vérifinat qu'il n'y en est pas déja un
     public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser)
     {
         try {
@@ -51,6 +54,7 @@ class adviceModel
         }
     }
 
+    // fonction pour récupérer les conseil
     public function getAdviceAndUserInfo()
     {
         try {
@@ -77,6 +81,7 @@ class adviceModel
         }
     }
 
+    // fonction pour filtrer les conseil
     public function getFilteredAdvice($searchQuery = '', $sortBy = '', $order = 'DESC')
     {
         $query = $this->buildAdviceQuery($searchQuery, $sortBy, $order);
