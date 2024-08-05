@@ -32,8 +32,7 @@ class adviceModel
             $currentAdviceCount = $stmtCount->fetchColumn();
 
             if ($currentAdviceCount >= 3) {
-                echo "User already has three advices, cannot insert more.";
-                return;
+                return "L'utilisateur a déjà trois conseils, impossible d'en ajouter d'autres.";
             }
 
             $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser, DaysOfWeek, StartTime, EndTime)
@@ -47,17 +46,16 @@ class adviceModel
             $execInsertAdvice->bindParam(':EndTime', $EndTime);
             $execInsertAdvice->execute();
 
-            header('location: /advice');
-            exit();
+            return true;
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            return "Erreur : " . $e->getMessage();
         }
     }
 
     public function getAdviceAndUserInfo()
     {
         try {
-            $query = "SELECT a.AdviceType, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+            $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
                   FROM Advice a
                   JOIN User p ON a.IdUser = p.IdUser";
 
@@ -106,7 +104,7 @@ class adviceModel
 
     private function buildAdviceQuery($searchQuery, $sortBy, $order)
     {
-        $query = "SELECT a.AdviceType, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
+        $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
                   FROM Advice a
                   JOIN User p ON a.IdUser = p.IdUser";
 
@@ -134,5 +132,103 @@ class adviceModel
         }
 
         return $query;
+    }
+
+    public function buyAdvice($DaysOfWeek, $StartTime, $EndTime, $IdAdvice, $IdBuyer)
+    {
+        try {
+            // Vérifier que la durée est bien de 1 heure
+            $start = new \DateTime($StartTime);
+            $end = new \DateTime($EndTime);
+            $interval = $start->diff($end);
+
+            if ($interval->h !== 1 || $interval->i !== 0) {
+                echo "Erreur : La durée choisie doit être exactement de 1 heure.";
+                return;
+            }
+
+            // Vérifier que le jour choisi est bien renseigné dans le champ DaysOfWeek de la table Advice
+            $queryAdvice = "SELECT DaysOfWeek, StartTime, EndTime FROM Advice WHERE IdAdvice = :IdAdvice";
+            $stmtAdvice = $this->dsn->prepare($queryAdvice);
+            $stmtAdvice->bindParam(':IdAdvice', $IdAdvice);
+            $stmtAdvice->execute();
+            $adviceData = $stmtAdvice->fetch(PDO::FETCH_ASSOC);
+
+            if (!$adviceData) {
+                echo "Erreur : Le conseil sélectionné n'existe pas.";
+                return;
+            }
+
+            $adviceDaysOfWeek = explode(',', $adviceData['DaysOfWeek']);
+            $selectedDaysOfWeek = explode(',', $DaysOfWeek);
+
+            // Vérifier que le jour choisi est bien dans DaysOfWeek
+            foreach ($selectedDaysOfWeek as $day) {
+                if (!in_array($day, $adviceDaysOfWeek)) {
+                    echo "Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.";
+                    return;
+                }
+            }
+
+            // Vérifier que le créneau horaire est couvert par les horaires disponibles
+            $adviceStartTime = new \DateTime($adviceData['StartTime']);
+            $adviceEndTime = new \DateTime($adviceData['EndTime']);
+
+            if ($start < $adviceStartTime || $end > $adviceEndTime) {
+                echo "Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.";
+                return;
+            }
+
+            // Vérifier les chevauchements avec les achats existants pour ce conseil
+            $queryOverlap = "SELECT COUNT(*) FROM BuyAdvice
+                         WHERE IdAdvice = :IdAdvice
+                         AND DaysOfWeek = :DaysOfWeek
+                         AND (StartTime < :EndTime AND EndTime > :StartTime)";
+            $stmtOverlap = $this->dsn->prepare($queryOverlap);
+            $stmtOverlap->bindParam(':IdAdvice', $IdAdvice);
+            $stmtOverlap->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $stmtOverlap->bindParam(':StartTime', $StartTime);
+            $stmtOverlap->bindParam(':EndTime', $EndTime);
+            $stmtOverlap->execute();
+            $overlapCount = $stmtOverlap->fetchColumn();
+
+            if ($overlapCount > 0) {
+                echo "Erreur : Le créneau horaire choisi est déjà réservé.";
+                return;
+            }
+
+            // Vérifier si l'utilisateur a déjà une réservation pendant les heures choisies
+            $queryUserOverlap = "SELECT COUNT(*) FROM BuyAdvice
+                             WHERE IdBuyer = :IdBuyer
+                             AND (DaysOfWeek = :DaysOfWeek
+                             AND (StartTime < :EndTime AND EndTime > :StartTime))";
+            $stmtUserOverlap = $this->dsn->prepare($queryUserOverlap);
+            $stmtUserOverlap->bindParam(':IdBuyer', $IdBuyer);
+            $stmtUserOverlap->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $stmtUserOverlap->bindParam(':StartTime', $StartTime);
+            $stmtUserOverlap->bindParam(':EndTime', $EndTime);
+            $stmtUserOverlap->execute();
+            $userOverlapCount = $stmtUserOverlap->fetchColumn();
+
+            if ($userOverlapCount > 0) {
+                echo "Erreur : Vous avez déjà une réservation pendant ce créneau horaire.";
+                return;
+            }
+
+            // Insérer l'achat dans la base de données
+            $insertBuyAdviceQuery = "INSERT INTO BuyAdvice (IdAdvice, IdBuyer, DaysOfWeek, StartTime, EndTime)
+                             VALUES (:IdAdvice, :IdBuyer, :DaysOfWeek, :StartTime, :EndTime)";
+            $stmtInsertBuyAdvice = $this->dsn->prepare($insertBuyAdviceQuery);
+            $stmtInsertBuyAdvice->bindParam(':IdAdvice', $IdAdvice);
+            $stmtInsertBuyAdvice->bindParam(':IdBuyer', $IdBuyer);
+            $stmtInsertBuyAdvice->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $stmtInsertBuyAdvice->bindParam(':StartTime', $StartTime);
+            $stmtInsertBuyAdvice->bindParam(':EndTime', $EndTime);
+            $stmtInsertBuyAdvice->execute();
+
+            echo "L'achat du conseil a été effectué avec succès.";
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        }
     }
 }

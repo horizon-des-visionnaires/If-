@@ -57,6 +57,7 @@ class adviceController
         $adviceData = $this->adviceModel->getFilteredAdvice($searchQuery, $sortBy, $order);
 
         $this->getAdviceData();
+        $this->getDataBuyAdvice();
 
         // Affichage du template Twig avec les données récupérées
         echo $this->twig->render('advice/advice.html.twig', [
@@ -105,6 +106,19 @@ class adviceController
                 $StartTime,
                 $EndTime
             );
+        }
+    }
+
+    public function getDataBuyAdvice()
+    {
+        if (isset($_POST['buyAdvice'])) {
+            $DaysOfWeek = $_POST['DaysOfWeek'];
+            $StartTime = $_POST['StartTime'];
+            $EndTime = $_POST['EndTime'];
+            $IdAdvice = $_POST['IdAdvice'];
+            $IdBuyer = $_SESSION['IdUser'];
+
+            $this->adviceModel->buyAdvice($DaysOfWeek, $StartTime, $EndTime, $IdAdvice, $IdBuyer);
         }
     }
 }

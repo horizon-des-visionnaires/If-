@@ -45,7 +45,8 @@
         <form action="/advice" method="post" id="formAdvice" enctype="multipart/form-data">
             <input type="text" name="AdviceType" placeholder="Titre, Sujet, Thème" id="inputField" required>
             <div style="position: relative;">
-                <textarea name="AdviceDescription" placeholder="Description du service" id="inputFieldDesc" required></textarea>
+                <textarea name="AdviceDescription" placeholder="Description du service" id="inputFieldDesc"
+                    required></textarea>
             </div>
             <div class="availability-section">
                 <label>Disponibilités:</label>
@@ -65,7 +66,7 @@
                 <input type="time" name="EndTime" id="endTime" required>
             </div>
             <button type="submit" name="addAdvice" id="inputField2">Soumettre le form</button>
-        </form>        
+        </form>
     </div>
 </div>
 
@@ -73,7 +74,7 @@
     {% for Advice in adviceData %}
     <div class="advice">
         <a href="profile-{{ Advice.IdUser }}">
-        <div class="profilPictureName">
+            <div class="profilPictureName">
                 <img id="icon" src="data:image;base64,{{Advice.ProfilPicture}}" alt="icon">
                 <h1>{{ Advice.FirstName }} {{ Advice.LastName }}</h1> <i id="certifIcon"
                     class="fas fa-check-circle"></i>
@@ -88,14 +89,49 @@
             </ul>
             <p>prix = 10 €</p>
         </div>
+        {% if isConnected %}
+        <div class="BuyAdviceButton">
+            <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">acheter ce conseil</button>
+        </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
+
+{% for Advice in adviceData %}
+<div id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="modal2">
+    <div class="modal-content2">
+        <span class="close2" data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}">&times;</span>
+        <form action="/advice" method="post" id="formAdvice-{{ Advice.IdAdvice }}" enctype="multipart/form-data">
+            <label for="dayOfWeek">Jours:</label>
+            <select name="DaysOfWeek" id="dayOfWeek">
+                <option value="Monday">Lundi</option>
+                <option value="Tuesday">Mardi</option>
+                <option value="Wednesday">Mercredi</option>
+                <option value="Thursday">Jeudi</option>
+                <option value="Friday">Vendredi</option>
+                <option value="Saturday">Samedi</option>
+                <option value="Sunday">Dimanche</option>
+            </select>
+
+            <label for="startTime">Heure de début:</label>
+            <input type="time" name="StartTime" id="startTime" required>
+            <label for="endTime">Heure de fin:</label>
+            <input type="time" name="EndTime" id="endTime" required>
+
+            <input type="hidden" name="IdAdvice" value="{{ Advice.IdAdvice }}">
+
+            <button type="submit" name="buyAdvice" id="inputField2">acheter le conseil</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block scripts %}
 <script src="/../public/js/modalUser.js"></script>
-<script src="/../public/js/modalUser.js"></script>
+<script src="/../public/js/buyAdvice.js"></script>
 {% endblock %}
