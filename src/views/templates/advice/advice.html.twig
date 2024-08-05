@@ -30,9 +30,11 @@
     </div>
 </div>
 
+{% if isConnected and isPro %}
 <div class="profilButton">
     <button id="openModalButton" class="beautiful-button">ajouter un conseil</button>
 </div>
+{% endif %}
 
 <div id="profileModal" class="modal">
     <div class="modal-content">

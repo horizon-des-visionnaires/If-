@@ -30,6 +30,7 @@ class adviceController
 
         $isConnected = false;
         $userId = null;
+        $isPro = false;
         // Vérification de la connexion de l'utilisateur
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
@@ -41,7 +42,12 @@ class adviceController
         if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin'] == 1) {
             $IsAdmin = true;
         }
-        
+
+        // Vérification du statut IsPro de l'utilisateur
+        if (isset($_SESSION['IsPro']) && $_SESSION['IsPro'] == 1) {
+            $isPro = true;
+        }
+
         // Récupération des paramètres de filtre et de tri
         $searchQuery = $_GET['search'] ?? '';
         $sortBy = $_GET['sortBy'] ?? '';
@@ -55,6 +61,7 @@ class adviceController
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
+            'isPro' => $isPro,
             'adviceData' => $adviceData,
             'searchQuery' => $searchQuery,
             'sortBy' => $sortBy,
