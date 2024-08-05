@@ -236,17 +236,20 @@ input[type=file]::file-selector-button {
 .button-container {
     padding-top: 2%;
     margin-left: 35%;
+    margin-right: 35%;
 }
 
 .profilPost, .profilFavorites{
     width: 40%;
-    height: auto;
-    margin-top: 1em;
-    margin-left: 27%;
-    margin-bottom: 3em;
+    height: 100%;
+    margin-right: 30%;
+    margin-left: 28%;
+    margin-top: 1%;
+    padding: 1em 2em;
+    padding-bottom: 1em;
+    border-radius: 15px;
     background: #ffffff;
-    border-radius: 3em;
-    padding :2em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 
@@ -259,10 +262,12 @@ input[type=file]::file-selector-button {
 
 
 .post {
+    width: 100%;
     padding: 1em;
-    background-color: #F7F7F7;
-    margin-bottom: 2em;
-    border-radius: 3em;
+    background-color: #ffffff;
+    margin-bottom: 1.5em;
+    margin-left: -1em;
+    border-bottom: 1px solid rgb(182, 182, 182);
 }
 .post:hover {
     transform: scale(1.02);
@@ -285,17 +290,32 @@ input[type=file]::file-selector-button {
     margin-top: 0.4em;
     font-family: 'Montserrat', sans-serif;
 }
+.commentCount {
+    padding-left: 1em;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 0.2em;
+}
+
+.icon_commentaire{
+    width: 25px;
+    height: auto;
+    margin-top: 0.2em;
+}
+
 
 .contentPost {
     padding-top: 1em;
     margin-left: 5em;
-    padding-right: 2em;
-    margin-top: -2.5em;
+    margin-top: -2.2em;
     margin-bottom: 0.5em;
 }
 
 .contentPost h2 {
     font-family: 'Open Sans', sans-serif;
+}
+.contentPost button{
+    margin-top: -1em;
+    margin-bottom: -1em;
 }
 
 .icon {
@@ -425,23 +445,6 @@ span {
 
 
 
-
-.crop-container {
-    max-width: 100%;
-    max-height: 400px;
-    overflow: hidden;
-}
-
-.crop-buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-
-
-
-
 .notpro h2 {
     font-family: 'Open Sans', sans-serif;
     font-size: 2em;
@@ -542,6 +545,154 @@ span {
     color: var(--primary-color);
 }
 
+
+
+
 #icon2 {
     height: 2em;
+
+}
+
+
+
+.swipe-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Assure que l'image couvre toute la surface */
+    border-radius: 5%;
+}
+
+/* Styles pour les formats spécifiques */
+.swipe-item.landscape {
+    width: 50vh;
+    height: auto;
+}
+
+.swipe-item.landscape img {
+    max-height: 29vh;
+}
+
+.swipe-item.portrait {
+    height: 50vh;
+    width: auto;
+}
+
+.swipe-item.portrait img {
+    max-width: 38vw;
+}
+
+.swipe-item.square {
+    width: 50vh;
+    height: 50vh;
+}
+
+/* Styles pour le conteneur swipe */
+.swipe {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 80vh; 
+    margin-top: 2em;
+}
+
+.swipe-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    align-items: center;
+    justify-content: center;
+}
+
+.swipe-item {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    display: none;
+    width: 100%; /* Unique format */
+    height: auto;
+}
+
+.swipe-item.active {
+    display: block;
+    opacity: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.swipe-control-prev, .swipe-control-next {
+    background-color: white; /* Assurez-vous qu'ils sont visibles */
+    border: none;
+    color: rgb(109, 109, 109);
+    font-size: 1em;
+    padding: 0.5em;
+    cursor: pointer;
+    position: absolute; /* Positionner les boutons */
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    z-index: 10; /* Assurez-vous qu'ils sont au-dessus des autres éléments */
+    opacity: 0;
+}
+
+.swipe-control-prev {
+    left: 60px;
+}
+
+.swipe-control-next {
+    right: 60px;
+}
+
+.swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next {
+    opacity: 1;
+}
+
+/* Bullets */
+.bullets {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 5;
+}
+
+.bullet {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.bullet.active {
+    background-color: #333;
+}
+
+
+.crop-container {
+    max-width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.crop-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+button {
+    background-color: #2e7d32;
+    color: #ffffff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    transition: background-color 0.3s ease;
+    margin-bottom: 2px;
 }

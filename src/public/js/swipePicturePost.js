@@ -1,32 +1,43 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const swipes = document.querySelectorAll('.swipe');
+    const swipeContainers = document.querySelectorAll('.swipe');
 
-    swipes.forEach(swipe => {
-        const items = swipe.querySelectorAll('.swipe-item');
+    swipeContainers.forEach(container => {
+        const prevButton = container.querySelector('.swipe-control-prev');
+        const nextButton = container.querySelector('.swipe-control-next');
+        const items = container.querySelectorAll('.swipe-item');
+        const bullets = container.querySelectorAll('.bullet');
         let currentIndex = 0;
 
-        const prevButton = swipe.querySelector('.swipe-control-prev');
-        const nextButton = swipe.querySelector('.swipe-control-next');
-
-        function updateCarousel() {
+        function updateSwipe() {
             items.forEach((item, index) => {
-                item.classList.remove('active');
-                if (index === currentIndex) {
-                    item.classList.add('active');
-                }
+                item.classList.toggle('active', index === currentIndex);
+            });
+            bullets.forEach((bullet, index) => {
+                bullet.classList.toggle('active', index === currentIndex);
             });
         }
 
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex === 0) ? items.length - 1 : currentIndex - 1;
-            updateCarousel();
+        if (prevButton) {
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + items.length) % items.length;
+                updateSwipe();
+            });
+        }
+
+        if (nextButton) {
+            nextButton.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % items.length;
+                updateSwipe();
+            });
+        }
+
+        bullets.forEach((bullet, index) => {
+            bullet.addEventListener('click', () => {
+                currentIndex = index;
+                updateSwipe();
+            });
         });
 
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex === items.length - 1) ? 0 : currentIndex + 1;
-            updateCarousel();
-        });
-
-        updateCarousel();
+        updateSwipe();
     });
 });

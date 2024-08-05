@@ -30,6 +30,10 @@ $routes = [
   '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
   '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
   '/conversation' => ['controller' => 'conversation\conversationController', 'method' => 'conversation'],
+  '/verify' => ['controller' => 'verify\verifyController', 'method' => 'verify'],
+  '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
+  '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
+  '/conversation' => ['controller' => 'conversation\conversationController', 'method' => 'conversation'],
 ];
 
 // Récupération du chemin de la requête

@@ -1,3 +1,4 @@
+
 {% extends "default.html.twig" %}
 
 {% block title %}IFÀ | Conversation entre {{ participants.FirstName1 }} {{ participants.LastName1 }} et {{ participants.FirstName2 }} {{ participants.LastName2 }}{% endblock %}
@@ -13,12 +14,17 @@
 {% endblock %}
 
 {% block body %}
-<div class="chat">
+<div class="chat" id="chat">
     {% for ConversationMessages in convChat %}
-    <div class="message {% if ConversationMessages.IdSender == userId %}right{% else %}left{% endif %}">
-        <img class="icon" src="data:image;base64,{{ ConversationMessages.ProfilPicture }}" alt="profile picture">
-        <div>
-            {% if ConversationMessages.isPro == 1 %}
+    <div class="head {% if ConversationMessages.IdSender != userId %}left {% endif %}">
+        <a href="/profile-{{ConversationMessages.IdSender}}">
+            {% if ConversationMessages.ProfilPicture == null %}
+            <img class="icon" src="/../public/image/user.png" alt="profile picture">
+            {% else %}
+            <img class="icon" src="data:image;base64,{{ ConversationMessages.ProfilPicture }}" alt="profile picture">
+            {% endif %}
+        
+            {% if ConversationMessages.IsPro == 1 %}
             <div class="pro">
                 <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2> 
                 <i id="certifIcon" class="fas fa-check-circle"></i>
@@ -28,24 +34,27 @@
                 <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2>
             </div>
             {% endif %}
-            <p>{{ ConversationMessages.ContentMessages }}</p>
-            <p>{{ ConversationMessages.CreatedAt }}</p>
-        </div>
+        </a>
+        <span>{{ ConversationMessages.CreatedAt }}</span>
     </div>
+    <p class="{% if ConversationMessages.IdSender == userId %}right {% endif %}">{{ ConversationMessages.ContentMessages }}</p>
     {% endfor %}
-</div>
+    <div id="scroll-target"></div><!--permt de scroll jusquici avec js-->
 
-{% if convChat is not empty %}
-    <form action="/conversationChat-{{ convChat[0].IdConversations }}" method="post">
+    {% if convChat is not empty %}
+    <form action="/conversationChat-{{ convChat[0].IdConversations }}" method="post" class="poster">
         <textarea name="messageContent" placeholder="Écrivez votre message ici..." required></textarea>
         <input type="hidden" name="IdConversations" value="{{ convChat[0].IdConversations }}">
         <button type="submit" name="message">Envoyer</button>
     </form>
-{% endif %}
+    {% endif %}
+</div>
 
-<button><a href="/conversation">Retour aux conversations</a></button>
+<button class ="out"><a href="/conversation">Retour aux conversations</a></button>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
-{% block scripts %}{% endblock %}
+{% block scripts %}
+<script src="/../public/js/ScrollDownMessage.js"></script>
+{% endblock %}

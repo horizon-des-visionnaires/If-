@@ -27,9 +27,12 @@ class postDetailsController
 
         $isConnected = false;
         $userId = null;
+        $user = null;
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
+            $userModel = new \profile\profileModel();
+            $user = $userModel->getUserById($userId);
         }
 
         $IsAdmin = false;
@@ -74,7 +77,9 @@ class postDetailsController
             'isPro' => $isPro,
             'lastName' => $lastName,
             'commentsData' => $commentsData,
-            'commentCount' => $commentCount
+            'commentCount' => $commentCount,
+
+            'user' => $user,
         ]);
     }
 

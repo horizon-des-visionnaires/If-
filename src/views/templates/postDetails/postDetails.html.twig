@@ -20,8 +20,11 @@
             <div class="post">
                 <div class="user-info">
                     <a href="/profile-{{ Post.IdUser }}">
-                        <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}"
-                            alt="profile picture">
+                        {% if Post.ProfilPicture == null %}
+                        <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                        {% else %}
+                        <img class="user-picture" src="data:image;base64,{{Post.ProfilPicture}}" alt="profile picture">
+                        {% endif %}
                         {% if isPro == 1 %}
                         <div class ="pro">
                             <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
@@ -76,12 +79,40 @@
                         {% endif %}
                     </p>
                 </div>
-                {% for picture in Post.PicturesPost %}
-                <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
-                {% endfor %}
+
+                
+                {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+                <div class="swipe">
+                    {% if Post.PicturesPost|length > 1 %}
+                    <button class="swipe-control-prev">
+                        <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                    </button>
+                    {% endif %}
+                    <div class="swipe-inner">
+                        {% for picture in Post.PicturesPost %}
+                        <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                            <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if Post.PicturesPost|length > 1 %}
+                    <button class="swipe-control-next">
+                        <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                    </button>
+                    <div class="bullets">
+                        {% for i in 0..(Post.PicturesPost|length - 1) %}
+                        <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+
+
                 {% if isConnected %}
                 <div class="interaction">
-                    <form action="/postDetails-{{ Post.IdPost }}" method="post">
+                    <form action="/allPost" method="post">
                         <input type="hidden" name="AddLike" value="1">
                         <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
                         <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
@@ -91,10 +122,12 @@
                             <i class="far fa-heart"></i>
                             {% endif %}
                         </button>
-                        <span class="total-likes">{{ Post.TotalLikes }} likes</span>
+                        <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
                     </form>
-
-                    <form action="/postDetails-{{ Post.IdPost }}" method="post">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                    
+                    <form action="/allPost" method="post">
                         <input type="hidden" name="AddFavorite" value="1">
                         <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
                         <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
@@ -106,20 +139,23 @@
                         </button>
                     </form>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
-                    <p class="viewsPost">{{ Post.Views }} views</p>
-                    <p class="commentCount">{{ commentCount }} Comments</p>
+                    <p class="viewsPost">{{ Post.Views }} Vues</p>
                 </div>
                 {% else %}
                 <div class="interaction">
                     <button class="heart" disabled>
                         <i class="far fa-heart"></i>
                     </button>
-                    <span class="total-likes3">{{ Post.TotalLikes }} likes</span>
+                    <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
+                    <a href="/postDetail-{{Post.IdPost}}" >
+                        <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                        <span class="commentCount">{{ Post.commentCount }}</span>
+                    </a>
                     <button class="favorite" disabled>
                         <i class="far fa-star"></i>
                     </button>
-                    <p class="viewsPost">{{ Post.Views }} views</p>
-                    <p class="commentCount">{{ commentCount }} Comments</p>
+                    <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                    <p class="viewsPost">{{ Post.Views }} Vues</p>
                 </div>
                 {% endif %}
             </div>
@@ -129,33 +165,17 @@
 
    
 
-    {% for Post in postData %}
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formAddComment"
-                enctype="multipart/form-data">
-                <textarea name="ContentComment" placeholder="ContentComment" class="inputFieldDesc"
-                    required></textarea>
-                <input type="hidden" name="IdUser" value="{{ userId }}">
-                <button type="submit" name="addComment" class="inputField2">Add Comment</button>
-            </form>
-        </div>
-    </div>
-    {% endfor %}
-
     <div class="commentContainer">
-        {% if isConnected %}
-        <div class="CommentButton">
-            <button id="openModalButton" class="boton-elegante">Add Comment</button>
-        </div>
-        {% endif %}
+        
         {% for Comment in commentsData %}
         <div class="comment">
             <div class="user-info">
                 <a href="/profile-{{ Comment.IdUser }}">
-                    <img class="user-picture" src="data:image;base64,{{ Comment.ProfilPicture }}"
-                        alt="profile picture">
+                    {% if Comment.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{Comment.ProfilPicture}}" alt="profile picture">
+                    {% endif %}
                     {% if Comment.IsPro == 1 %}
                     <div class ="pro">
                         <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
@@ -194,6 +214,30 @@
             <p class="dateComment">{{ Comment.RelativeDateComment }}</p>
         </div>
         {% endfor %}
+
+
+        {% if isConnected %}
+        <div class="new_post">
+            <div class="user-info">
+                <a href="/profile-{{ userId}}">
+                    {% if user.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
+                    {% endif %}
+                </a>
+            </div>
+            {% for Post in postData %}
+            <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formAddComment"
+                enctype="multipart/form-data">
+                <input id="postInputField" class="postInput" type="text" name="ContentComment" placeholder="Ajouter un commentaire..." required>
+                <input type="hidden" name="IdUser" value="{{ userId }}">
+                <button class="post_button" id="postButton" type="submit" name="addComment">Poster</button>
+            </form>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
     </div>
 </div>
 
@@ -210,4 +254,5 @@
 <script src="/../public/js/modalUser.js"></script>
 <script src="/../public/js/viewMore.js"></script>
 <script src="/../public/js/modalImagePost.js"></script>
+<script src="/../public/js/swipePicturePost.js"></script>
 {% endblock %}
