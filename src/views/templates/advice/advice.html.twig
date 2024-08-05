@@ -72,14 +72,14 @@
 <div class="adviceContainer">
     {% for Advice in adviceData %}
     <div class="advice">
+        <a href="profile-{{ Advice.IdUser }}">
         <div class="profilPictureName">
-            <a href="profile-{{ Advice.IdUser }}">
                 <img id="icon" src="data:image;base64,{{Advice.ProfilPicture}}" alt="icon">
                 <h1>{{ Advice.FirstName }} {{ Advice.LastName }}</h1> <i id="certifIcon"
                     class="fas fa-check-circle"></i>
                 <p>{{ Advice.ProfilPromotion }} </p>
-            </a>
-        </div>
+            </div>
+        </a>
         <div class="adviceData">
             <p>{{ Advice.AdviceType }} </p>
             <p>{{ Advice.AdviceDescription }} </p>
