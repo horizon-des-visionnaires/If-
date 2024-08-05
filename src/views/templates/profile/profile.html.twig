@@ -292,7 +292,7 @@
             {% if Post.ProfilPicture == null %}
             <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
             {% else %}
-            <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+            <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
             {% endif %}
             {% if userId == user.IdUser and user.IsPro == 0 %}
             <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
