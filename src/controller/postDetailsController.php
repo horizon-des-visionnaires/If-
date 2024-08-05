@@ -102,7 +102,8 @@ class postDetailsController
     {
         if (isset($_POST['deletePost'])) {
             $idPost = $_POST['idPost'];
-            $this->postDetailsModel->deletePost($idPost);
+            $idUser = $_SESSION['IdUser'];
+            $this->postDetailsModel->deletePost($idPost, $idUser);
         }
     }
 
