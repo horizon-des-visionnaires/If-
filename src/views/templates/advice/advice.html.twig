@@ -26,7 +26,8 @@
                         </path>
                     </g>
                 </svg>
-                <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search"
+                    name="search">
             </div>
         </form>
     </div>
@@ -54,21 +55,21 @@
 
 <div class="adviceContainer">
     {% for Advice in adviceData %}
-    <a href="profile-{{ Advice.IdUser }}">
-        <div class="advice">
-            <div class="profilPictureName">
+    <div class="advice">
+        <div class="profilPictureName">
+            <a href="profile-{{ Advice.IdUser }}">
                 <img id="icon" src="data:image;base64,{{Advice.ProfilPicture}}" alt="icon">
                 <h1>{{ Advice.FirstName }} {{ Advice.LastName }}</h1> <i id="certifIcon"
                     class="fas fa-check-circle"></i>
                 <p>{{ Advice.ProfilPromotion }} </p>
-            </div>
-            <div class="adviceData">
-                <p>{{ Advice.AdviceType }} </p>
-                <p>{{ Advice.AdviceDescription }} </p>
-                <p>prix = 10 €</p>
-            </div>
+            </a>
         </div>
-    </a>
+        <div class="adviceData">
+            <p>{{ Advice.AdviceType }} </p>
+            <p>{{ Advice.AdviceDescription }} </p>
+            <p>prix = 10 €</p>
+        </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

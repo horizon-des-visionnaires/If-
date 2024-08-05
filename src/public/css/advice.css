@@ -56,23 +56,17 @@
     transition: all 0.3s ease-in-out;
     text-align: center;
     width: 200px;
-    /* Taille fixe */
     margin: auto 0;
-    /* Centrer le bouton */
     height: 35px;
     align-items: center;
     font-size: 1rem;
-    /* Taille de police ajustée pour meilleure lisibilité */
     overflow: hidden;
-    /* Évite que le texte dépasse du bouton */
 }
 
 .beautiful-button:hover {
     background: #1a9b6e;
-    /* Couleur alternative au survol, légèrement plus foncée */
     transform: translateY(-2px);
     box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
-    /* Ombre plus marquée au survol */
 }
 
 .profilButton {
@@ -91,12 +85,10 @@
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Champs de texte */
 #inputField,
 #inputFieldDesc,
 #inputField2 {
     border: 2px solid #2e7d32;
-    /* Bordure vert foncé */
     font-family: 'Montserrat', sans-serif;
     padding: 1em;
     color: black;
@@ -115,9 +107,7 @@
     height: 3em;
     border-radius: 10em;
     background-color: #2e7d32;
-    /* Fond vert foncé */
     color: #ffffff;
-    /* Texte blanc */
     margin-top: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -163,7 +153,7 @@
     align-items: center;
 }
 
-.adviceContainer a {
+.profilPictureName a {
     color: black;
     text-decoration: none;
 }
