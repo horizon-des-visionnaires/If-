@@ -56,6 +56,8 @@ class adviceController
         // Appel à la méthode du modèle pour obtenir les conseils filtrés
         $adviceData = $this->adviceModel->getFilteredAdvice($searchQuery, $sortBy, $order);
 
+        $this->getAdviceData();
+
         // Affichage du template Twig avec les données récupérées
         echo $this->twig->render('advice/advice.html.twig', [
             'isConnected' => $isConnected,

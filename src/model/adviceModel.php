@@ -28,17 +28,20 @@ class adviceModel
     public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser)
     {
         try {
-            $checkUser = "SELECT COUNT(*) FROM Advice WHERE IdUser =:IdUser";
-            $execCheckUser = $this->dsn->prepare($checkUser);
-            $execCheckUser->bindParam(':IdUser', $IdUser);
-            $execCheckUser->execute();
-            $userExists = $execCheckUser->fetchColumn();
+            // Vérifier le nombre d'advices déjà existants pour cet utilisateur
+            $countAdviceQuery = "SELECT COUNT(*) FROM Advice WHERE IdUser = :IdUser";
+            $stmtCount = $this->dsn->prepare($countAdviceQuery);
+            $stmtCount->bindParam(':IdUser', $IdUser);
+            $stmtCount->execute();
+            $currentAdviceCount = $stmtCount->fetchColumn();
 
-            if ($userExists) {
-                echo "User already has advice, skipping insertion.";
+            // Limiter à trois conseils maximum
+            if ($currentAdviceCount >= 3) {
+                echo "User already has three advices, cannot insert more.";
                 return;
             }
 
+            // Insertion du conseil
             $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser)
                               VALUES (:AdviceType, :AdviceDescription, :IdUser)";
             $execInsertAdvice = $this->dsn->prepare($insertAdviceQuery);
