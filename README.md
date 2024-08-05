@@ -51,9 +51,11 @@
     ```
     cette commande vous demanderz votre mot de passe
 
-  - Cinquième étape: Aller dans le dossier src et éxecuter la commande suivant
+  - Cinquième étape: Aller dans le dossier src et éxecuter les commandes suivantes
     ```bash
     composer require "twig/twig:^3.0"
+    composer require tecnickcom/tcpdf
+    composer require phpmailer/phpmailer
     ```
    
   - Sixième étape: dans le dossier src placé le fichier .htaccess télécharger précédemment 
