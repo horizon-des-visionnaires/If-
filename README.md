@@ -54,10 +54,13 @@
   - Cinquième étape: Aller dans le dossier src et éxecuter les commandes suivantes
     ```bash
     composer require "twig/twig:^3.0"
-    composer require tecnickcom/tcpdf
-    composer require phpmailer/phpmailer
     ```
-   
+    ```bash
+    composer require phpmailer/phpmailer
+    ``` 
+    ```bash
+    composer require tecnickcom/tcpdf
+    ```
   - Sixième étape: dans le dossier src placé le fichier .htaccess télécharger précédemment 
     
   - Septième étape: Aller sur ce lien pour voir le site
