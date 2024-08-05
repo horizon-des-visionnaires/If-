@@ -14,6 +14,7 @@ require_once __DIR__ . '/controller/forgotPasswordController.php';
 require_once __DIR__ . '/controller/resetPasswordController.php';
 require_once __DIR__ . '/controller/conversationController.php';
 require_once __DIR__ . '/controller/conversationChatController.php';
+require_once __DIR__ . '/controller/adviceMeetingContoller.php';
 
 require_once __DIR__ . '/database/createDatabase.php'; // Inclusion du script de création de la base de données
 
@@ -61,11 +62,11 @@ if (array_key_exists($path, $routes)) {
   } else if (preg_match('/^\/conversationChat-(\d+)$/', $path, $matches)) {
     $controller = new conversationChat\conversationChatController();
     $controller->conversationChat($matches[1]); // Appel de la méthode avec l'ID de la conversation de chat
-  }
-  else {
-    // Retourne une erreur 404 si la route n'est pas trouvée
+  } else if (preg_match('/^\/adviceMeeting-(\d+)$/', $path, $matches)) {
+    $controller = new adviceMeeting\adviceMeetingController();
+    $controller->adviceMeeting($matches[1]); // Appel de la méthode avec l'ID de la conversation de chat
+  } else {
     http_response_code(404);
-    echo "Page not found"; // Message d'erreur
+    echo "Page not found";
   }
 }
-?>
