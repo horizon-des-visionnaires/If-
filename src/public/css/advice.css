@@ -178,3 +178,7 @@
     padding-left: 1em;
     padding-top: 1em;
 }
+
+.adviceData li {
+    padding-right: 2em;
+}

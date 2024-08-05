@@ -43,13 +43,29 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/advice" method="post" id="formAdvice" enctype="multipart/form-data">
-            <input type="text" name="AdviceType" placeholder="Titre, Sujet, Thème" id="inputField">
-
+            <input type="text" name="AdviceType" placeholder="Titre, Sujet, Thème" id="inputField" required>
             <div style="position: relative;">
-                <textarea name="AdviceDescription" placeholder="Description du service" id="inputFieldDesc"></textarea>
+                <textarea name="AdviceDescription" placeholder="Description du service" id="inputFieldDesc" required></textarea>
+            </div>
+            <div class="availability-section">
+                <label>Disponibilités:</label>
+                <label for="dayOfWeek">Jours:</label>
+                <div>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Monday"> Lundi</label>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Tuesday"> Mardi</label>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Wednesday"> Mercredi</label>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Thursday"> Jeudi</label>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Friday"> Vendredi</label>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Saturday"> Samedi</label>
+                    <label><input type="checkbox" name="DaysOfWeek[]" value="Sunday"> Dimanche</label>
+                </div>
+                <label for="startTime">Heure de début:</label>
+                <input type="time" name="StartTime" id="startTime" required>
+                <label for="endTime">Heure de fin:</label>
+                <input type="time" name="EndTime" id="endTime" required>
             </div>
             <button type="submit" name="addAdvice" id="inputField2">Soumettre le form</button>
-        </form>
+        </form>        
     </div>
 </div>
 
@@ -67,6 +83,9 @@
         <div class="adviceData">
             <p>{{ Advice.AdviceType }} </p>
             <p>{{ Advice.AdviceDescription }} </p>
+            <ul>
+                <li>{{ Advice.DaysOfWeek }} de {{ Advice.StartTime }} à {{ Advice.EndTime }}</li>
+            </ul>
             <p>prix = 10 €</p>
         </div>
     </div>

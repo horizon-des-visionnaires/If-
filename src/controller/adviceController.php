@@ -73,13 +73,38 @@ class adviceController
 
     public function getAdviceData()
     {
-        // Traitement du formulaire d'ajout de conseil
         if (isset($_POST['addAdvice'])) {
             $AdviceType = $_POST['AdviceType'];
             $AdviceDescription = $_POST['AdviceDescription'];
+            $DaysOfWeekArray = $_POST['DaysOfWeek'] ?? []; // Liste des jours sélectionnés
+            $StartTime = $_POST['StartTime'] ?? '';
+            $EndTime = $_POST['EndTime'] ?? '';
             $IdUser = $_SESSION['IdUser'];
 
-            $this->adviceModel->insertAdviceData($AdviceType, $AdviceDescription, $IdUser);
+            // Vérifier que les deux champs de temps sont remplis
+            if (empty($StartTime) || empty($EndTime)) {
+                echo "Erreur : Heure de début et heure de fin doivent être remplies.";
+                return;
+            }
+
+            // Vérifier qu'au moins un jour est sélectionné
+            if (empty($DaysOfWeekArray)) {
+                echo "Erreur : Au moins un jour doit être sélectionné.";
+                return;
+            }
+
+            // Convertir le tableau des jours en une chaîne de caractères séparée par des virgules
+            $DaysOfWeek = implode(',', $DaysOfWeekArray);
+
+            // Insérer le conseil dans la base de données avec tous les jours dans une seule ligne
+            $this->adviceModel->insertAdviceData(
+                $AdviceType,
+                $AdviceDescription,
+                $IdUser,
+                $DaysOfWeek,
+                $StartTime,
+                $EndTime
+            );
         }
     }
 }

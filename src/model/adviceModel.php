@@ -13,41 +13,38 @@ class adviceModel
 
     public function __construct()
     {
-        // Initialisation de la connexion à la base de données
         $this->connectDB();
     }
 
     public function connectDB()
     {
-        // Connexion à la base de données MySQL avec PDO
         $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    // fonction qui permet d'ajouter un conseil en vérifinat qu'il n'y en est pas déja un
-    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser)
+    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime)
     {
         try {
-            // Vérifier le nombre d'advices déjà existants pour cet utilisateur
             $countAdviceQuery = "SELECT COUNT(*) FROM Advice WHERE IdUser = :IdUser";
             $stmtCount = $this->dsn->prepare($countAdviceQuery);
             $stmtCount->bindParam(':IdUser', $IdUser);
             $stmtCount->execute();
             $currentAdviceCount = $stmtCount->fetchColumn();
 
-            // Limiter à trois conseils maximum
             if ($currentAdviceCount >= 3) {
                 echo "User already has three advices, cannot insert more.";
                 return;
             }
 
-            // Insertion du conseil
-            $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser)
-                              VALUES (:AdviceType, :AdviceDescription, :IdUser)";
+            $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser, DaysOfWeek, StartTime, EndTime)
+            VALUES (:AdviceType, :AdviceDescription, :IdUser, :DaysOfWeek, :StartTime, :EndTime)";
             $execInsertAdvice = $this->dsn->prepare($insertAdviceQuery);
             $execInsertAdvice->bindParam(':AdviceType', $AdviceType);
             $execInsertAdvice->bindParam(':AdviceDescription', $AdviceDescription);
             $execInsertAdvice->bindParam(':IdUser', $IdUser);
+            $execInsertAdvice->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $execInsertAdvice->bindParam(':StartTime', $StartTime);
+            $execInsertAdvice->bindParam(':EndTime', $EndTime);
             $execInsertAdvice->execute();
 
             header('location: /advice');
@@ -57,11 +54,10 @@ class adviceModel
         }
     }
 
-    // fonction pour récupérer les conseil
     public function getAdviceAndUserInfo()
     {
         try {
-            $query = "SELECT a.AdviceType, a.AdviceDescription, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+            $query = "SELECT a.AdviceType, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
                   FROM Advice a
                   JOIN User p ON a.IdUser = p.IdUser";
 
@@ -84,7 +80,6 @@ class adviceModel
         }
     }
 
-    // fonction pour filtrer les conseil
     public function getFilteredAdvice($searchQuery = '', $sortBy = '', $order = 'DESC')
     {
         $query = $this->buildAdviceQuery($searchQuery, $sortBy, $order);
@@ -111,7 +106,7 @@ class adviceModel
 
     private function buildAdviceQuery($searchQuery, $sortBy, $order)
     {
-        $query = "SELECT a.AdviceType, a.AdviceDescription, a.CreatedAt, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
+        $query = "SELECT a.AdviceType, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
                   FROM Advice a
                   JOIN User p ON a.IdUser = p.IdUser";
 
