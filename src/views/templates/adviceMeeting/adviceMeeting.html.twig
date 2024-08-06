@@ -1,4 +1,3 @@
-
 {% extends "default.html.twig" %}
 
 {% block title %}IFÀ | advice meeting{% endblock %}
@@ -14,7 +13,36 @@
 {% endblock %}
 
 {% block body %}
+<div class="advice-meeting-container">
+    {% if adviceData %}
+        <h1>Advice Meeting Details</h1>
 
+        <h2>Advice Information</h2>
+        <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
+        <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
+        <p><strong>Available Days:</strong> {{ adviceData.AdviceDaysOfWeek }}</p>
+        <p><strong>Start Time:</strong> {{ adviceData.AdviceStartTime }}</p>
+        <p><strong>End Time:</strong> {{ adviceData.AdviceEndTime }}</p>
+
+        <h2>Buyer Information</h2>
+        <p><strong>Buyer Name:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
+        {% if adviceData.BuyerProfilPicture %}
+            <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
+        {% else %}
+            <p>No profile picture available.</p>
+        {% endif %}
+
+        <h2>Seller Information</h2>
+        <p><strong>Seller Name:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
+        {% if adviceData.SellerProfilPicture %}
+            <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
+        {% else %}
+            <p>No profile picture available.</p>
+        {% endif %}
+    {% else %}
+        <p>No advice meeting data available.</p>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}

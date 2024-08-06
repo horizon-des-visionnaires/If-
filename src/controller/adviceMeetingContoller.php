@@ -39,10 +39,13 @@ class adviceMeetingController
             $IsAdmin = true;
         }
 
+        $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
+
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
-            'IsAdmin' => $IsAdmin
+            'IsAdmin' => $IsAdmin,
+            'adviceData' => $adviceData
         ]);
     }
 }
