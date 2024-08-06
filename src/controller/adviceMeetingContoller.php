@@ -40,6 +40,12 @@ class adviceMeetingController
         }
 
         $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
+        if ($adviceData) {
+            if ($userId !== $adviceData['SellerId'] && $userId !== $adviceData['BuyerId']) {
+                header('Location: /advice');
+                exit;
+            }
+        }
 
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
