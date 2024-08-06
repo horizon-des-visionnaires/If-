@@ -34,7 +34,7 @@ class adviceMeetingModel
                 A.StartTime AS AdviceStartTime,
                 A.EndTime AS AdviceEndTime,
                 BA.IdBuyAdvice,
-                BA.DaysOfWeek AS BuyAdviceDaysOfWeek,
+                BA.Date AS BuyAdviceDate,
                 BA.StartTime AS BuyAdviceStartTime,
                 BA.EndTime AS BuyAdviceEndTime,
                 U1.IdUser AS SellerId,
