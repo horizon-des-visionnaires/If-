@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block header %}
-{% include 'header.html.twig' %}
+{# {% include 'header.html.twig' %} #}
 {% endblock %}
 
 {% block body %}
@@ -19,13 +19,13 @@
     <div class="searchBar">
         <form action="/advice" method="get" class="search-form">
             <div class="group-search">
-                <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
+                {# <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
                     <g>
                         <path
                             d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
                         </path>
                     </g>
-                </svg>
+                </svg> #}
                 <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search"
                     name="search">
             </div>
@@ -103,16 +103,8 @@
     <div class="modal-content2">
         <span class="close2" data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}">&times;</span>
         <form action="/advice" method="post" id="formAdvice-{{ Advice.IdAdvice }}" enctype="multipart/form-data">
-            <label for="dayOfWeek">Jours:</label>
-            <select name="DaysOfWeek" id="dayOfWeek">
-                <option value="Monday">Lundi</option>
-                <option value="Tuesday">Mardi</option>
-                <option value="Wednesday">Mercredi</option>
-                <option value="Thursday">Jeudi</option>
-                <option value="Friday">Vendredi</option>
-                <option value="Saturday">Samedi</option>
-                <option value="Sunday">Dimanche</option>
-            </select>
+            <label for="date">Date:</label>
+            <input type="date" name="Date" id="date-{{ Advice.IdAdvice }}" required>
 
             <label for="startTime">Heure de début:</label>
             <input type="time" name="StartTime" id="startTime" required>
@@ -134,4 +126,13 @@
 {% block scripts %}
 <script src="/../public/js/modalUser.js"></script>
 <script src="/../public/js/buyAdvice.js"></script>
+<script>
+    // Set the min attribute of the date input fields to today's date
+    document.addEventListener('DOMContentLoaded', function () {
+        const today = new Date().toISOString().split('T')[0];
+        document.querySelectorAll('input[type="date"]').forEach(function(input) {
+            input.setAttribute('min', today);
+        });
+    });
+</script>
 {% endblock %}

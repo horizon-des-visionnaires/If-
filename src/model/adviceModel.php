@@ -134,16 +134,24 @@ class adviceModel
         return $query;
     }
 
-    public function buyAdvice($DaysOfWeek, $StartTime, $EndTime, $IdAdvice, $IdBuyer)
+    public function buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer)
     {
         try {
-            // Vérifier que la durée est bien de 1 heure
-            $start = new \DateTime($StartTime);
-            $end = new \DateTime($EndTime);
+            // Combine date and time for full DateTime objects
+            $start = new \DateTime("$Date $StartTime");
+            $end = new \DateTime("$Date $EndTime");
             $interval = $start->diff($end);
 
+            // Vérifier que la durée est bien de 1 heure
             if ($interval->h !== 1 || $interval->i !== 0) {
                 echo "Erreur : La durée choisie doit être exactement de 1 heure.";
+                return;
+            }
+
+            // Vérifier que la réservation est dans le futur
+            $now = new \DateTime();
+            if ($start < $now) {
+                echo "Erreur : Vous ne pouvez pas réserver une date dans le passé.";
                 return;
             }
 
@@ -160,19 +168,18 @@ class adviceModel
             }
 
             $adviceDaysOfWeek = explode(',', $adviceData['DaysOfWeek']);
-            $selectedDaysOfWeek = explode(',', $DaysOfWeek);
+            $selectedDayOfWeek = $start->format('l'); // Get the day of the week in English
 
-            // Vérifier que le jour choisi est bien dans DaysOfWeek
-            foreach ($selectedDaysOfWeek as $day) {
-                if (!in_array($day, $adviceDaysOfWeek)) {
-                    echo "Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.";
-                    return;
-                }
+            if (!in_array($selectedDayOfWeek, $adviceDaysOfWeek)) {
+                echo "Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.";
+                return;
             }
 
             // Vérifier que le créneau horaire est couvert par les horaires disponibles
             $adviceStartTime = new \DateTime($adviceData['StartTime']);
             $adviceEndTime = new \DateTime($adviceData['EndTime']);
+            $adviceStartTime->setDate($start->format('Y'), $start->format('m'), $start->format('d'));
+            $adviceEndTime->setDate($end->format('Y'), $end->format('m'), $end->format('d'));
 
             if ($start < $adviceStartTime || $end > $adviceEndTime) {
                 echo "Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.";
@@ -182,11 +189,11 @@ class adviceModel
             // Vérifier les chevauchements avec les achats existants pour ce conseil
             $queryOverlap = "SELECT COUNT(*) FROM BuyAdvice
                          WHERE IdAdvice = :IdAdvice
-                         AND DaysOfWeek = :DaysOfWeek
+                         AND Date = :Date
                          AND (StartTime < :EndTime AND EndTime > :StartTime)";
             $stmtOverlap = $this->dsn->prepare($queryOverlap);
             $stmtOverlap->bindParam(':IdAdvice', $IdAdvice);
-            $stmtOverlap->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $stmtOverlap->bindParam(':Date', $Date);
             $stmtOverlap->bindParam(':StartTime', $StartTime);
             $stmtOverlap->bindParam(':EndTime', $EndTime);
             $stmtOverlap->execute();
@@ -200,11 +207,11 @@ class adviceModel
             // Vérifier si l'utilisateur a déjà une réservation pendant les heures choisies
             $queryUserOverlap = "SELECT COUNT(*) FROM BuyAdvice
                              WHERE IdBuyer = :IdBuyer
-                             AND (DaysOfWeek = :DaysOfWeek
-                             AND (StartTime < :EndTime AND EndTime > :StartTime))";
+                             AND Date = :Date
+                             AND (StartTime < :EndTime AND EndTime > :StartTime)";
             $stmtUserOverlap = $this->dsn->prepare($queryUserOverlap);
             $stmtUserOverlap->bindParam(':IdBuyer', $IdBuyer);
-            $stmtUserOverlap->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $stmtUserOverlap->bindParam(':Date', $Date);
             $stmtUserOverlap->bindParam(':StartTime', $StartTime);
             $stmtUserOverlap->bindParam(':EndTime', $EndTime);
             $stmtUserOverlap->execute();
@@ -216,12 +223,12 @@ class adviceModel
             }
 
             // Insérer l'achat dans la base de données
-            $insertBuyAdviceQuery = "INSERT INTO BuyAdvice (IdAdvice, IdBuyer, DaysOfWeek, StartTime, EndTime)
-                             VALUES (:IdAdvice, :IdBuyer, :DaysOfWeek, :StartTime, :EndTime)";
+            $insertBuyAdviceQuery = "INSERT INTO BuyAdvice (IdAdvice, IdBuyer, Date, StartTime, EndTime)
+                                 VALUES (:IdAdvice, :IdBuyer, :Date, :StartTime, :EndTime)";
             $stmtInsertBuyAdvice = $this->dsn->prepare($insertBuyAdviceQuery);
             $stmtInsertBuyAdvice->bindParam(':IdAdvice', $IdAdvice);
             $stmtInsertBuyAdvice->bindParam(':IdBuyer', $IdBuyer);
-            $stmtInsertBuyAdvice->bindParam(':DaysOfWeek', $DaysOfWeek);
+            $stmtInsertBuyAdvice->bindParam(':Date', $Date);
             $stmtInsertBuyAdvice->bindParam(':StartTime', $StartTime);
             $stmtInsertBuyAdvice->bindParam(':EndTime', $EndTime);
             $stmtInsertBuyAdvice->execute();

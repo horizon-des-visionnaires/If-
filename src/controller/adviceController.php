@@ -112,13 +112,13 @@ class adviceController
     public function getDataBuyAdvice()
     {
         if (isset($_POST['buyAdvice'])) {
-            $DaysOfWeek = $_POST['DaysOfWeek'];
+            $Date = $_POST['Date'];
             $StartTime = $_POST['StartTime'];
             $EndTime = $_POST['EndTime'];
             $IdAdvice = $_POST['IdAdvice'];
             $IdBuyer = $_SESSION['IdUser'];
 
-            $this->adviceModel->buyAdvice($DaysOfWeek, $StartTime, $EndTime, $IdAdvice, $IdBuyer);
+            $this->adviceModel->buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer);
         }
     }
 }

@@ -195,12 +195,12 @@ $createTableBuyAdvice = ("CREATE TABLE IF NOT EXISTS
     `IdBuyAdvice` int(11) NOT NULL AUTO_INCREMENT,
     `IdAdvice` int(11) DEFAULT NULL,
     `IdBuyer` int(11) DEFAULT NULL,
-    `DaysOfWeek` VARCHAR(255) DEFAULT NULL,
+    `Date` DATE DEFAULT NULL,
     `StartTime` TIME NOT NULL,
     `EndTime` TIME NOT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdBuyAdvice`),
     CONSTRAINT fk_IdAdvice_BuyAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`),
-    CONSTRAINT fk_IdBuyerr_BuyAdvice FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`)
+    CONSTRAINT fk_IdBuyer_BuyAdvice FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableBuyAdvice);
