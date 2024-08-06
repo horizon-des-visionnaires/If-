@@ -2,8 +2,17 @@
 :root {
     --primary-color: #1DBF73;
     --secondary-color: #404145;
-    --background-color: #F7F7F7;
+    --background-color: #f7f7f7;
     --text-color: #1C1C1C;
+}
+/* Style global */
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 .alert {
@@ -14,12 +23,10 @@
 }
 
 .ProfilContainer {
-    background-color: #ffffff;
-    margin-top: 8em;
+    margin-top: 7em;
     height: 35%;
     width: 60%;
     margin-left: 20%;
-    border-radius: 2em;
 }
 
 
@@ -67,6 +74,8 @@
 }
 
 .profil {
+    
+    
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -74,7 +83,14 @@
     padding-left: 1em;
 }
 
-
+.allprofil{
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    border-radius: 12px;
+}
 
 
 #icon {
@@ -95,9 +111,9 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     text-align: center;
-    width: 200px; /* Taille fixe */
+    width: 230px; /* Taille fixe */
     margin: auto 0; /* Centrer le bouton */
-    height: 35px;
+    height: 40px;
     align-items: center;
     
     font-size: 1rem; /* Taille de police ajustée pour meilleure lisibilité */
@@ -203,18 +219,6 @@
     background-color: #1b5e20;
 }
 
-.description {
-    padding-left: 2em;
-    padding-right: 2em;
-    padding-bottom: 1em;
-}
-
-.description p {
-    margin-top: 0.5em;
-    font-size: 1.5em;
-    font-family: 'Montserrat', sans-serif;
-}
-
 /* Bouton de sélection de fichier */
 input[type=file]::file-selector-button {
     border: none;
@@ -232,33 +236,27 @@ input[type=file]::file-selector-button {
     padding-bottom: 0.5em;
 }
 
+
 .button-container {
-    padding-top: 2%;
-    margin-left: 35%;
-    margin-right: 35%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
 }
 
 .profilPost, .profilFavorites{
-    width: 40%;
     height: 100%;
-    margin-right: 30%;
-    margin-left: 28%;
+    margin-right: 25%;
+    margin-left: 25%;
     margin-top: 1%;
+    margin-bottom: 1%;
     padding: 1em 2em;
     padding-bottom: 1em;
     border-radius: 15px;
     background: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
-
-
-
-
-
-
-
-
 
 .post {
     width: 100%;
@@ -456,17 +454,27 @@ span {
 }
 
 
-.promotion {
+.promotion , .description ,.country{
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 1em;
-
+}
+.country p {
+    margin-top: 0.5em;
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .promotion p {
     font-size: 1em;
     font-family: 'Montserrat', sans-serif;
     color: #404145;
+}
+
+.description p {
+    margin-top: 0.5em;
+    font-size: 1.5em;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .ProfilUser{
@@ -485,15 +493,12 @@ span {
     margin-left: 0.5em;
     }
 
-.passProButton{
-    margin-left: 5%;
+.passProButton, .profilButton{
     margin-right: 5%;
     margin-top: 1.5%;
+    margin-left: -5%;
 }
-.profilButton{
-    margin-top: 1.5%;
-    margin-right: 1%;
-}
+
 
 .user-info {
     display: flex;
@@ -544,7 +549,11 @@ span {
     color: var(--primary-color);
 }
 
-
+.EditButton{
+    display: flex;
+    flex-direction: column;
+    margin-left: -5.5em;
+}
 
 
 #icon2 {
@@ -695,3 +704,56 @@ button {
     transition: background-color 0.3s ease;
     margin-bottom: 2px;
 }
+
+
+
+
+/* Responsive Design */
+@media (max-width: 1000px) {/*display le button avec le edit button*/
+    
+    .description p {
+        font-size: 1.2em;
+    }
+    .user-info h2, .user-info2 h2{
+        margin-top: -0.5;
+        font-size: 1.5em;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .profilPost, .profilFavorites{
+        margin-right: 20%;
+        margin-left: 20%;
+    }
+
+    .ProfilContainer {
+        width: 80%;
+        margin-left: 10%;
+    }
+}
+
+@media (max-width: 770px) {
+    .EditButton{
+        display: none;
+    }
+    
+}
+
+@media (max-width: 540px) {
+    .profilPost, .profilFavorites{
+        margin-right: 5%;
+        margin-left: 5%;
+    }
+
+    .ProfilContainer {
+        width: 96%;
+        margin-left: 2%;
+    }
+}
+
+
+
+
+
+
+
+

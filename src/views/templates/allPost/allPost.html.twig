@@ -134,11 +134,11 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                </p>
+                </p><!--
                 <form action="/allPost" method="post">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
                     <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
-                </form>
+                </form>-->
                 
             </div>
             {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
@@ -231,7 +231,7 @@
         <form action="/allPost" method="post" id="formAddPost" enctype="multipart/form-data">
             <input id="modalTitlePost" type="text" name="TitlePost" placeholder="Titre du Post" class="inputField" required>
             <textarea id="modalContentPost" name="ContentPost" placeholder="Contenu du Post" class="inputFieldDesc" required></textarea>
-            <input type="file" id="modalFileInput" name="PicturePost[]" multiple accept="image/*" onchange="openCropperModal(this)">
+            <input type="file" id="images" name="PicturePost[]" multiple accept="image/*" onchange="openCropperModal(this)">
             <button type="submit" name="addPost" class="inputField2">Ajouter une Publication</button>
         </form>
     </div>
@@ -270,6 +270,6 @@
 <script src="/../public/js/filterText.js"></script>
 <script src="/../public/js/TogglesFilters.js"></script>
 <script src="/../public/js/modalImagePost.js"></script>
-<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 <script src="/../public/js/NewPost.js"></script>
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 {% endblock %}

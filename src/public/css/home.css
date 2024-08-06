@@ -2,7 +2,7 @@
 :root {
     --primary-color: #1DBF73;
     --secondary-color: #404145;
-    --background-color: #F7F7F7;
+    --background-color: #f7f7f7;
     --text-color: #1C1C1C;
 }
 
@@ -13,6 +13,7 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -21,9 +22,9 @@ h1 {
     color: var(--secondary-color);
 }
 .title {
-    width: 60%;
-    margin-left: 20%;
     margin-top: 8.5em;
+    margin-left: 20%;
+    margin-right: 20%;
     text-align: center;
     color: #ffffff; /* Text color */
     background: linear-gradient(to right, #416f45 0%, #1DBF73 100%); /* Gradient background */
@@ -33,7 +34,7 @@ h1 {
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px; /* Rounded corners */
-    overflow: hidden;
+    overflow: hidden;   
 }
 
 @keyframes gradientBackground {
@@ -86,6 +87,7 @@ h1 {
     grid-template-columns: repeat(auto-fit, minmax(28em, 1fr));
     gap: 1em;
     justify-items: center;
+    width: 100%;
 }
 
 /* Style des Profils et Posts */
@@ -97,7 +99,12 @@ h1 {
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     transition: transform 0.2s;
-    width: 400px;
+    width: 25em;
+}
+.profil h1,
+.post h1, 
+.admin h1{
+    font-size: 1.7em;
 }
 
 .profil:hover,
@@ -122,6 +129,7 @@ h1 {
     font-family: 'Poppins', Arial, sans-serif;
     margin: 0;
     color: var(--secondary-color);
+    display: flex;
 }
 
 #icon {
@@ -192,8 +200,9 @@ a {
     transition: all 0.3s ease-in-out;
     text-align: center;
     width: 200px; /* Taille fixe */
-    margin: 4em auto 0; /* Centrer le bouton */
+    
     height: 35px;
+    align-self: center;
 }
 
 .beautiful-button:hover {
@@ -225,7 +234,7 @@ a {
 #date, #views {
     font-size: 0.8em;
     color: var(--secondary-color);
-    margin-top: -2.5em;
+    margin-top: -1.5em;
     margin-left: 2em;
 }
 
@@ -235,26 +244,8 @@ a {
 
 #views {
     padding-left: 12em;
-    margin-top: -2.2em;
+    margin-top: -2.3em;
 }
-
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    .title {
-        padding: 2em 1em;
-        margin-top: 5em;
-    }
-    
-    .title h1 {
-        font-size: 2em;
-    }
-}
-
-
-
-
-
-
 
 
 /* Style pour les étoiles de notation */
@@ -305,29 +296,22 @@ a {
 }
 
 /* Styles pour les formats spécifiques */
+/*
 .swipe-item.landscape {
     width: 50vh;
     height: auto;
 }
 
-.swipe-item.landscape img {
-    max-height: 29vh;
-}
+.swipe-item.square {
+    width: 50vh;
+    height: 50vh;
+}*/
+
 
 .swipe-item.portrait {
     height: 50vh;
     width: auto;
 }
-
-.swipe-item.portrait img {
-    max-width: 38vw;
-}
-
-.swipe-item.square {
-    width: 50vh;
-    height: 50vh;
-}
-
 
 
 
@@ -423,3 +407,87 @@ a {
     height: 2em;
 
 }
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 510px) {
+
+    .title h1 {
+        font-size: 2em;
+        width:fit-content;
+    }
+    .title{
+        padding: 3.5em 1em;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .ProfilContainer,
+    .postContainer ,
+    .adminContainer{
+        padding: 1em 0.5em;
+        font-size: 0.9em;
+    }
+
+    .allProfil,
+    .allPosts ,
+    .allAdmin {     
+        grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+        justify-items: center;
+    }
+}
+
+@media (max-width: 410px) {
+    .title h1 {
+        font-size: 1.8em;
+    }
+    .title{
+        padding: 3em 1em;
+    }
+    .allProfil,
+    .allPosts ,
+    .allAdmin {     
+        grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+    }
+    .profil,
+    .post, 
+    .admin {
+        padding: 1em 0.5em;
+        width: 23em;
+    }
+    .profil h1,
+    .post h1, 
+    .admin h1{
+        font-size: 1.5em;
+    }
+    #icon {
+        height: 4em;
+    }
+    
+}
+
+@media (max-width: 345px) {
+    .title h1 {
+        font-size: 1.6em;
+    }
+    .profil,
+    .post, 
+    .admin {
+        padding: 1em 0.5em;
+        width: 20em;
+    }
+    .profil h1,
+    .post h1, 
+    .admin h1{
+        font-size: 1.5em;
+    }
+    #icon {
+        height: 3.7em;
+    }
+}
+
+
+

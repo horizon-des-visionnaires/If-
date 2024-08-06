@@ -8,171 +8,124 @@
 {% block header %}
 
 <nav class="menu"> 
-    
 
-
-    <ul>
-        <a href="/">
-            <img src="/../public/image/logo2.png" alt="logo du site" id="logo">
-        </a>
-        {% if isConnected %}
-        <div class="bar_connect"> 
-            <li>
-                <div class="dropdown">
-                    <button class="item" onclick="toggleDropdown(event)">
-                        Menu
-                        <img src="/../public/image/menu.png" id="img2">
-                    </button>
-                    <div class="dropdown-content" id="myDropdown">
-                        <a href = "/" class = "no">
-                            <img src="/../public/image/icon/home.png" alt="icon" class="icons">Page d'accueil
-                        </a>
-                        <a href = "/research" class = "no">
-                            <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">Recherche
-                        </a>
-                        <a href = "/conversation" class = "no">
-                            <img src="/../public/image/icon/message.png" alt="icon" class="icons">Message
-                        </a>
-                        <a href = "/allPost" class = "no">
-                            <img src="/../public/image/icon/post.png" alt="icon" class="icons">Publication
-                        </a>
-                        <a href = "#" class = "no">
-                            <img src="/../public/image/icon/notif.png" alt="icon" class="icons">Notification
-                        </a>
-                        <a href = "#" class = "no">
-                            <img src="/../public/image/icon/3dots.png" alt="icon" class="icons">Autres
-                        </a>
-                        {% if IsAdmin %}
-                        <a href = "/dashboard" class = "no">
-                            <img src="/../public/image/icon/dashboard.png" alt="icon" class="icons">Panneau de contrôle
-                        </a>
-                        {% endif %}
-                        <a href = "#" class = "no">
-                            <img src="/../public/image/icon/setting.png" alt="icon" class="icons">Paramètre
-                        </a>
-                        <a href = "#" class = "no">
-                            <img src="/../public/image/icon/support.png" alt="icon" class="icons">Support
-                        </a>
-                    </div>
-                </div>
-                
-
-            </li>
-            <li>
-                <a href="/allPost" id="Post">
-                    <div class="item" id="item">
-                        Publication
-                        <img src="/../public/image/post.png" id="img2">
-                    </div>
+    <a href="/">
+        <img src="/../public/image/logo2.png" alt="logo du site" id="logo">
+    </a>
+    <li>
+        <div class="dropdown ">
+            <button class="item" onclick="toggleDropdown(event)">
+                <p>Menu</p>
+                <img src="/../public/image/menu.png" id="img2">
+            </button>
+            <div class="dropdown-content" id="myDropdown">
+                <a href = "/" class = "no">
+                    <img src="/../public/image/icon/home.png" alt="icon" class="icons">Page d'accueil
                 </a>
-            </li>
-            <li>
-                <div class="searchBar">
-                    <form action="/allPost" method="get" class="search-form">
-                        <div class="group">
-                            <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
-                                <g>
-                                    <path
-                                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
-                                    </path>
-                                </g>
-                            </svg>
-                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
-                        </div>
-                    </form>
-                </div>
-            </li>
-            <li>
-                <a href="/advice" id="Post">
-                    <div class="item" id="item">
-                        Conseil
-                        <img src="/../public/image/meeting.png" id="img2">
-                    </div>
+                <a href = "/research" class = "no">
+                    <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">Recherche
                 </a>
-            </li>
-            <li>
-                <a href="/profile-{{ userId }}" id="profile">
-                    <div class="item" id="item">
-                        Profil
-                        <img src="/../public/image/user.png" id="img2">
-                    </div>
+                <a href = "/conversation" class = "no">
+                    <img src="/../public/image/icon/message.png" alt="icon" class="icons">Message
                 </a>
-            </li>
-
-            <li>
-                <form action="/" method="post">
-                    <button class="Btn" type="submit" name="logOut" id="logout">
-                        <div class="sign">
-                            <svg viewBox="0 0 512 512">
-                                <path
-                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
-                            </svg>
-                        </div>
-                        <div class="text">Deconnexion</div>
-                    </button>
-                </form>
-            </li>
-        </div> 
-        {% else %}
-        <div class="bar_disconnect"> 
-            <!--<li>
-                <a href="/register" id="register">
-                    <button class="Btn2">
-                        Inscription
-                        <div class="arrow-wrapper">
-                            <div class="arrow"></div>
-                        </div>
-                    </button>
+                <a href = "/allPost" class = "no">
+                    <img src="/../public/image/icon/post.png" alt="icon" class="icons">Publication
+                </a><!--
+                <a href = "#" class = "no">
+                    <img src="/../public/image/icon/notif.png" alt="icon" class="icons">Notification
                 </a>
-            </li>--> 
-            <li>
-                <a href="/allPost" id="Post">
-                    <div class="item" id="item">
-                        Publication
-                        <img src="/../public/image/post.png" id="img2">
-                    </div>
+                <a href = "#" class = "no">
+                    <img src="/../public/image/icon/3dots.png" alt="icon" class="icons">Autres
+                </a>-->
+                {% if IsAdmin %}
+                <a href = "/dashboard" class = "no">
+                    <img src="/../public/image/icon/dashboard.png" alt="icon" class="icons">Panneau de contrôle
                 </a>
-            </li>
-            <li>
-                <div class="searchBar">
-                    <form action="/allPost" method="get" class="search-form">
-                        <div class="group">
-                            <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
-                                <g>
-                                    <path
-                                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
-                                    </path>
-                                </g>
-                            </svg>
-                            <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
-                        </div>
-                    </form>
-                </div>
-            </li>
-            <li>
-                <a href="/advice" id="Post">
-                    <div class="item" id="item">
-                        Conseil
-                        <img src="/../public/image/meeting.png" id="img2">
-                    </div>
+                {% endif %}<!--
+                <a href = "#" class = "no">
+                    <img src="/../public/image/icon/setting.png" alt="icon" class="icons">Paramètre
                 </a>
-            </li>
-            <li>
-                <a href="/login">
-                    <button class="Btn3" id="login">
-                        Connexion
-                        <div class="arrow-wrapper">
-                            <div class="arrow"></div>
-                        </div>
-                    </button>
-                </a>
-            </li>
+                <a href = "#" class = "no">
+                    <img src="/../public/image/icon/support.png" alt="icon" class="icons">Support
+                </a>-->
+            </div>
         </div>
-        {% endif %}
-    </ul>
+    </li>
+
+    <!-- Barre de navigation en bas pour les petits écrans -->
+    <div class="bottom-nav" id="bottomNav">
+        <a href="/allPost" class = "no">
+            <img src="/../public/image/icon/post.png" alt="icon" class="icons">
+            <p>Publication</p>
+        </a>
+        <a href = "/research" class = "no middlesize">
+            <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">
+            <p>Recherche</p>
+        </a>
+        <li>
+            <div class="searchBar bigsize">
+                <form action="/allPost" method="get" class="search-form">
+                    <div class="group">
+                        <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
+                            <g>
+                                <path
+                                    d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                                </path>
+                            </g>
+                        </svg>
+                        <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                    </div>
+                </form>
+            </div>
+        </li>
+        <a href = "/conversation" class = "no littlesize">
+            <img src="/../public/image/icon/message.png" alt="icon" class="icons">
+            <p>Messages</p>
+        </a>
+        <a href="/advice" class = "no">
+            <img src="/../public/image/meeting.png" alt="icon" class="icons">
+            <p>Conseil</p>
+        </a>
+    </div>
+
+
+    {% if isConnected %}
+    <li>
+        <a href="/profile-{{ userId }}" id="profile">
+            <div class="item" id="item">
+                <p>Profil</p>
+                <img src="/../public/image/user.png" id="img2">
+            </div>
+        </a>
+    </li>
+    <li>
+        <form action="/" method="post">
+            <button class="Btn" type="submit" name="logOut" id="logout">
+                <div class="sign">
+                    <svg viewBox="0 0 512 512">
+                        <path
+                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+                    </svg>
+                </div>
+                <div class="text">Deconnexion</div>
+            </button>
+        </form>
+    </li>
+    {% else %}
+    <li>
+        <a href="/login">
+            <button class="Btn3" id="login">
+                Connexion
+                <div class="arrow-wrapper">
+                    <div class="arrow"></div>
+                </div>
+            </button>
+        </a>
+    </li>
+    {% endif %}
 </nav>
 
-<a href="#">
+<a href="/conversation">
     <div class="Message"  id="Message">
         <img src="/../public/image/icon/chat.png">
     </div>
@@ -185,4 +138,33 @@
 {% block scripts %}
 <script src="/../public/js/dropdownMenu.js"></script>
 <script src="/../public/js/MovableChat.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var lastScrollTop = 0;
+    var bottomNav = document.getElementById('bottomNav');
+
+    window.addEventListener('scroll', function() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > lastScrollTop) {
+            // Scrolling down
+            bottomNav.classList.add('hidden');
+        } else {
+            // Scrolling up
+            bottomNav.classList.remove('hidden');
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
+    }, false);
+});
+</script>
 {% endblock %}
+
+
+
+
+
+
+
+
