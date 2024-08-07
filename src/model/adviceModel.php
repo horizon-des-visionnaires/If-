@@ -170,10 +170,11 @@ class adviceModel
                 return;
             }
 
-            // Vérifier que la réservation est dans le futur
-            $now = new \DateTime();
-            if ($start < $now) {
-                echo "Erreur : Vous ne pouvez pas réserver une date dans le passé.";
+            // Vérifier que la réservation est dans le futur, pas pour le jour même
+            $endOfToday = (new \DateTime())->setTime(23, 59, 59);
+            // La réservation doit être après la fin de la journée actuelle
+            if ($start <= $endOfToday) {
+                echo "Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.";
                 return;
             }
 
