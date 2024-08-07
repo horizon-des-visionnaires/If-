@@ -17,17 +17,27 @@
     {% if adviceData %}
         <h1>Advice Meeting Details</h1>
 
-        <h2>Advice Information</h2>
         <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
         <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
-        <p><strong>Available Days:</strong> {{ adviceData.AdviceDaysOfWeek }}</p>
-        <p><strong>Start Time:</strong> {{ adviceData.AdviceStartTime }}</p>
-        <p><strong>End Time:</strong> {{ adviceData.AdviceEndTime }}</p>
 
-        <h2>Advice Buy Information</h2>
         <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
         <p><strong>Start Time:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
         <p><strong>End Time:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
+
+        <h2>Advice Images</h2>
+        {% if adviceImages is not empty %}
+            <div class="advice-images">
+                {% for image in adviceImages %}
+                    {% if image.PictureAdvice %}
+                        <img class="icon" src="data:image;base64,{{ image.PictureAdvice }}" alt="Advice Image">
+                    {% else %}
+                        <p>No image available.</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No images available.</p>
+        {% endif %}
 
         <h2>Buyer Information</h2>
         <p><strong>Buyer Name:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
@@ -48,9 +58,16 @@
         <p>No advice meeting data available.</p>
     {% endif %}
 </div>
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block scripts %}
+<script src="/../public/js/modalImageAdvice.js"></script>
 {% endblock %}

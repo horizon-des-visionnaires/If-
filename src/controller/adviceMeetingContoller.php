@@ -47,11 +47,22 @@ class adviceMeetingController
             }
         }
 
+        $adviceImages = [];
+        if ($adviceData) {
+            if ($userId !== $adviceData['SellerId'] && $userId !== $adviceData['BuyerId']) {
+                header('Location: /advice');
+                exit;
+            }
+            $adviceImages = $this->adviceMeetingModel->getAdviceImages($adviceData['IdAdvice']);
+        }
+        
+
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
-            'adviceData' => $adviceData
+            'adviceData' => $adviceData,
+            'adviceImages' => $adviceImages
         ]);
     }
 }

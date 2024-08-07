@@ -30,9 +30,6 @@ class adviceMeetingModel
                 A.IdAdvice,
                 A.AdviceType,
                 A.AdviceDescription,
-                A.DaysOfWeek AS AdviceDaysOfWeek,
-                A.StartTime AS AdviceStartTime,
-                A.EndTime AS AdviceEndTime,
                 BA.IdBuyAdvice,
                 BA.Date AS BuyAdviceDate,
                 BA.StartTime AS BuyAdviceStartTime,
@@ -72,6 +69,33 @@ class adviceMeetingModel
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return null;
+        }
+    }
+
+    public function getAdviceImages($IdAdvice)
+    {
+        try {
+            $query = "
+        SELECT PictureAdvice
+        FROM PictureAdvice
+        WHERE IdAdvice = :idAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':idAdvice', $IdAdvice, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Encode images to base64
+            foreach ($images as &$image) {
+                $image['PictureAdvice'] = base64_encode($image['PictureAdvice']);
+            }
+
+            return $images;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return [];
         }
     }
 }
