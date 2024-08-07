@@ -7,46 +7,35 @@ header .buttons {
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    margin: 8px;
+}
+
+header a{
+    background: #ffffff;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1em;
+    font-weight: 600;
+    transition-duration: .3s;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    display: flex;
 }
 
 nav {
-    display: flex;
-    align-items: center;
-    margin-right: 30px;
-}
-
-nav ul {
+    position: fixed;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-evenly;
+    color: black;
+    overflow-x: hidden;
 }
-
 
 nav li {
     font-family: 'Montserrat', sans-serif;
     display: flex;
     justify-content: space-between; /* Répartit les éléments de manière égale */
     align-items: center; /* Centre verticalement les éléments */
-    margin-left: 3.5em;
-}
-
-.bar_connect{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2.9rem 2.9rem;
-    list-style: none;
-}
-
-.bar_disconnect{
-    margin-left: 9em;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 7.2rem 7.2rem;
-    list-style: none;
 }
 
 .item,
@@ -78,12 +67,7 @@ nav li {
     font-size: 20px;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
+
 .group {
     display: flex;
     line-height: 28px;
@@ -136,19 +120,17 @@ nav a {
     position: relative;
     display: inline-block;
     background-color: transparent;
-    
 }
 
 
 
 .dropdown-content {
     display: none;
-    position: absolute;
+    position: fixed;
     background-color: transparent;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 16;
-
     margin-left: -5.5em;
 }
 
@@ -174,31 +156,16 @@ nav a {
 }
 
 
-.no {
-    background: #eeeeee;
-    border: 2px solid #3c6650;
-    border-radius: 5%;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    width: 160px;  /*toute la largeur disponible */
-
-    font-size: 1em;
-    font-weight: 600;
-    transition-duration: .3s;
-    font-family: 'Montserrat', sans-serif;
-    text-decoration: none;
-}
-
-
-
-.no .icons {
-    width: 20px; 
+.icons {
+    width: 3em; 
     height: auto; 
     margin-right: 10px;  /* Espace entre l'icône et le texte */
     box-shadow: none;
 }
 
+.no p{
+    display: flex;
+}
 
 
 
@@ -448,4 +415,114 @@ header a {
     background: transparent;
     border: 1px solid #9e9ea7;
 }
+
+
+.littlesize{
+    display: none;
+}
+.middlesize{
+    display: none;
+}
+.bottom-nav{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap:4em;
+}
+@media (max-width:1500px) {
+    bottom-nav{
+        gap:2em;
+    }
+}
+@media (max-width:1200px) {
+    bottom-nav{
+        gap:1em;
+    }
+}
+/* Responsive Design */
+@media (max-width: 1080px) {
+
+    .item p,.no p {
+        display: none;
+    }
+    .bigsize {
+        display: none;
+    }
+
+    .middlesize {
+        display: flex;
+    }
+    .bottom-nav{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap:0em;
+    }
+    .bottom-nav a{
+        margin-left: 2em;
+        margin-right: 2em;
+    }
+
+    
+}
+
+
+@media (max-width: 740px) {
+
+    .bottom-nav a{
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+    
+}
+
+@media (max-width: 540px) {
+    .bottom-nav {
+        position: fixed;
+        transition: transform 0.2s ease-in-out;
+        bottom: 0;
+        width: 100%;
+        background-color: #ffffff;
+        border-top: 2px solid #818080;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0.5em 0;
+        z-index: 15;
+        display: flex;
+        flex-direction: row;
+        gap:0em;
+        margin: 0em;
+    }
+    /* When the element should be hidden */
+    .bottom-nav.hidden {
+        transform: translateY(100%);
+    }
+    
+    .littlesize {
+        display: flex;
+    }
+    
+    .bottom-nav img {
+        width: 2em;
+    }
+
+    .Message{
+        display: none;
+    }
+
+    .bottom-nav li {
+        width: 2em;
+        margin: -2em;
+    }
+}
+
+@media (max-width: 80px) {
+    .bottom-nav li {
+        width: 2em;
+        margin: 0em;
+    }
+}
+
+
+
 

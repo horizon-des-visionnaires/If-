@@ -27,60 +27,71 @@
 
 
 <div class="ProfilContainer">
-    <div class="profil">
-        <div class="ProfilUser">
-            {% if user.ProfilPicture == null %}
-            <img id="icon" src="/../public/image/user.png" alt="icon">
-            {% else %}
-            <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
-            {% endif %}
+    <div class="allprofil">
+        <div class="profil">
+            <div class="ProfilUser">
+                {% if user.ProfilPicture == null %}
+                <img id="icon" src="/../public/image/user.png" alt="icon">
+                {% else %}
+                <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                {% endif %}
 
-            {% if user.IsPro == 1 %}
-            <div class="pro">
-                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                {% if user.IsPro == 1 %}
+                <div class="pro">
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                </div>
+                {% else %}
+                <div <div class ="notpro">
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                </div>
+                {% endif %}
+                {% if isConnected and userId != user.IdUser %}
+                <div class="message">
+                    <form action="/profile-{{ user.IdUser }}" method="post">
+                        <input type="hidden" name="idUser_1" value="{{ user.IdUser }}">
+                        <button type="submit" name="conversation">
+                            <img id="icon2" src="/../public/image/messenger.png" alt="icon">
+                        </button>
+                    </form>
+                </div>
+                {% endif %}    
             </div>
-            {% else %}
-            <div <div class="notpro">
-                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+            <div class="EditButton">
+                {% if isConnected and userId == user.IdUser %}
+                {% if userId == user.IdUser and user.IsPro == 0 %}
+                <div class="passProButton">
+                    <button id="openModalButtonPro" class="beautiful-button">Passer Professionnel</button>
+                </div>
+                {% endif %}
+                <div class="profilButton">
+                    <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if isConnected and userId != user.IdUser %}
-            <div class="message">
-                <form action="/profile-{{ user.IdUser }}" method="post">
-                    <input type="hidden" name="idUser_1" value="{{ user.IdUser }}">
-                    <button type="submit" name="conversation">
-                        <img id="icon2" src="/../public/image/messenger.png" alt="icon">
-                    </button>
-                </form>
-            </div>
-            {% endif %}    
         </div>
-
-        {% if isConnected and userId == user.IdUser %}
-        {% if userId == user.IdUser and user.IsPro == 0 %}
-        <div class="passProButton">
-            <button id="openModalButtonPro" class="beautiful-button">Demander à passez Professionnel</button>
-        </div>
-        {% endif %}
-        <div class="profilButton">
-            <button id="openModalButton" class="beautiful-button">Editer le profile</button>
-        </div>
-        {% endif %}
-
+    
+    
         <div class="country">
-            <h3>{{ user.Location }}</h3>
+            <p>Pays : {{ user.Location }}</p>
+        </div>
+        {% if user.IsPro == 1 %}
+        <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+            <p>Je peux t'aider à {{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
+        </div> 
+        {% endif %} 
+        <div class="description">
+            <p>{{ user.ProfilDescription | nl2br }}</p>
         </div>
     </div>
-    
-    
-    {% if user.IsPro == 1 %}
-    <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-        <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
-    </div> 
-    {% endif %} 
-    <div class="description">
-        <p>{{ user.ProfilDescription | nl2br }}</p>
+
+    {% if isConnected and userId == user.IdUser %}
+    <div class="button-container">
+        <button id="showPosts" class="beautiful-button">Voir les Publications</button>
+        <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
     </div>
+    {% endif %}
+
+
 </div>
 
 <div id="profileModal" class="modal">
@@ -146,12 +157,6 @@
     </div>
 </div>
 
-{% if isConnected and userId == user.IdUser %}
-<div class="button-container">
-    <button id="showPosts" class="beautiful-button">Voir les Publications</button>
-    <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
-</div>
-{% endif %}
 
 <div class="profilPost">
     {% for Post in userPost %}
@@ -283,6 +288,8 @@
     </div>
     {% endfor %}
 </div>
+
+
 
 {% if isConnected and userId == user.IdUser %}
 <div class="profilFavorites" style="display: none;">

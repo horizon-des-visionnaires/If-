@@ -141,15 +141,16 @@ input[type=file]::file-selector-button {
 .allPostPost {
     width: 40%;
     height: auto;
-    margin-right: 15%;
-    margin-left: 5%;
+    margin-right: 20%;
+    margin-left: 40%;
     margin-top: 6%;
     padding: 0em 2em;
     padding-bottom: 0em;
     border-radius: 15px;
     background: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-top: 8%;
+    margin-top: 5%;
+    margin-bottom: 1%;
 }
 
 .post {
