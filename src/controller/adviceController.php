@@ -88,6 +88,15 @@ class adviceController
                 return;
             }
 
+            $startDateTime = new \DateTime($StartTime);
+            $endDateTime = new \DateTime($EndTime);
+
+            // Vérifier que EndTime n'est pas inférieur à StartTime
+            if ($endDateTime <= $startDateTime) {
+                echo "Erreur : L'heure de fin doit être supérieure à l'heure de début.";
+                return;
+            }
+
             // Vérifier qu'au moins un jour est sélectionné
             if (empty($DaysOfWeekArray)) {
                 echo "Erreur : Au moins un jour doit être sélectionné.";
@@ -97,6 +106,19 @@ class adviceController
             // Convertir le tableau des jours en une chaîne de caractères séparée par des virgules
             $DaysOfWeek = implode(',', $DaysOfWeekArray);
 
+            $PictureAdvice = [];
+            if (isset($_FILES["PictureAdvice"])) {
+                if (count($_FILES["PictureAdvice"]["tmp_name"]) > 3) {
+                    echo "You can upload a maximum of 3 images.";
+                    return;
+                }
+                foreach ($_FILES["PictureAdvice"]["tmp_name"] as $tmpName) {
+                    if ($tmpName) {
+                        $PictureAdvice[] = file_get_contents($tmpName);
+                    }
+                }
+            }
+
             // Insérer le conseil dans la base de données avec tous les jours dans une seule ligne
             $this->adviceModel->insertAdviceData(
                 $AdviceType,
@@ -104,7 +126,8 @@ class adviceController
                 $IdUser,
                 $DaysOfWeek,
                 $StartTime,
-                $EndTime
+                $EndTime,
+                $PictureAdvice
             );
         }
     }

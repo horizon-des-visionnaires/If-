@@ -22,7 +22,7 @@ class adviceModel
         $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime)
+    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime, $PictureAdvice)
     {
         try {
             $countAdviceQuery = "SELECT COUNT(*) FROM Advice WHERE IdUser = :IdUser";
@@ -46,7 +46,16 @@ class adviceModel
             $execInsertAdvice->bindParam(':EndTime', $EndTime);
             $execInsertAdvice->execute();
 
-            return true;
+            $IdAdvice = $this->dsn->lastInsertId();
+            $stmt = $this->dsn->prepare("INSERT INTO PictureAdvice (IdAdvice, PictureAdvice) VALUES (:IdAdvice, :PictureAdvice)");
+            foreach ($PictureAdvice as $PictureAdvice) {
+                $stmt->bindParam(':IdAdvice', $IdAdvice);
+                $stmt->bindParam(':PictureAdvice', $PictureAdvice, PDO::PARAM_LOB);
+                $stmt->execute();
+            }
+
+            header('Location: /advice');
+            exit();
         } catch (PDOException $e) {
             return "Erreur : " . $e->getMessage();
         }

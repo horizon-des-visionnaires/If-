@@ -204,3 +204,13 @@ $createTableBuyAdvice = ("CREATE TABLE IF NOT EXISTS
     CONSTRAINT fk_IdBuyer_BuyAdvice FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableBuyAdvice);
+
+$createTablePictureAdvice = ("CREATE TABLE IF NOT EXISTS
+`PictureAdvice` (
+    `IdPictureAdvice` int(11) NOT NULL AUTO_INCREMENT,
+    `IdAdvice` int(11) DEFAULT NULL,
+    `PictureAdvice` LONGBLOB DEFAULT NULL,
+    PRIMARY KEY (`IdPictureAdvice`),
+    CONSTRAINT fk_Advice_PictureAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTablePictureAdvice);
