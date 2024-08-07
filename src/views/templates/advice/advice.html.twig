@@ -6,8 +6,6 @@
 <link href="/../public/css/advice.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block header %}
@@ -91,6 +89,11 @@
             </ul>
             <p>prix = 10 €</p>
         </div>
+        <div class="advice-images">
+            {% for image in Advice.PicturesAdvice %}
+            <img src="data:image/jpeg;base64,{{ image }}" alt="Advice Image" class="icon">
+            {% endfor %}
+        </div>
         {% if isConnected %}
         <div class="BuyAdviceButton">
             <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">acheter ce conseil</button>
@@ -119,6 +122,12 @@
         </form>
     </div>
 </div>
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
 {% endfor %}
 
 {% endblock %}
@@ -128,13 +137,6 @@
 {% block scripts %}
 <script src="/../public/js/modalUser.js"></script>
 <script src="/../public/js/buyAdvice.js"></script>
-<script>
-    // Set the min attribute of the date input fields to today's date
-    document.addEventListener('DOMContentLoaded', function () {
-        const today = new Date().toISOString().split('T')[0];
-        document.querySelectorAll('input[type="date"]').forEach(function(input) {
-            input.setAttribute('min', today);
-        });
-    });
-</script>
+<script src="/../public/js/modalImageAdvice.js"></script>
+<script src="/../public/js/currentDate.js"></script>
 {% endblock %}

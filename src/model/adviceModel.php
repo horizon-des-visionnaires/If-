@@ -78,6 +78,12 @@ class adviceModel
                 } else {
                     $user['ProfilPicture'] = '';
                 }
+
+                $stmtPictures = $this->dsn->prepare("SELECT PictureAdvice FROM PictureAdvice WHERE IdAdvice = :IdAdvice");
+                $stmtPictures->bindParam(':IdAdvice', $user['IdAdvice']);
+                $stmtPictures->execute();
+                $pictures = $stmtPictures->fetchAll(PDO::FETCH_COLUMN);
+                $user['PicturesAdvice'] = array_map('base64_encode', $pictures);
             }
 
             return $userData;
@@ -106,6 +112,13 @@ class adviceModel
             } else {
                 $advice['ProfilPicture'] = '';
             }
+
+            // Récupérer les images des conseils
+            $stmtPictures = $this->dsn->prepare("SELECT PictureAdvice FROM PictureAdvice WHERE IdAdvice = :IdAdvice");
+            $stmtPictures->bindParam(':IdAdvice', $advice['IdAdvice']);
+            $stmtPictures->execute();
+            $pictures = $stmtPictures->fetchAll(PDO::FETCH_COLUMN);
+            $advice['PicturesAdvice'] = array_map('base64_encode', $pictures);
         }
 
         return $adviceData;
