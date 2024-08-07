@@ -94,7 +94,7 @@
             <img src="data:image/jpeg;base64,{{ image }}" alt="Advice Image" class="icon">
             {% endfor %}
         </div>
-        {% if isConnected %}
+        {% if isConnected and userId != Advice.IdUser %}
         <div class="BuyAdviceButton">
             <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">acheter ce conseil</button>
         </div>
