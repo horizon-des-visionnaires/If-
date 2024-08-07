@@ -41,6 +41,7 @@ class conversationChatModel
             } else {
                 $convChat['ProfilPicture'] = '';
             }
+            $convChat['CreatedAt'] = $this->getRelativeTime($convChat['CreatedAt']);
         }
 
         return $getConvChatData;
@@ -94,5 +95,10 @@ class conversationChatModel
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getRelativeTime($date)
+    {
+        return getRelativeTime($date);
     }
 }
