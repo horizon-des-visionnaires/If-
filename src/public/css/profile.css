@@ -35,7 +35,7 @@ body {
 .modal, .modal2 {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 20;
     left: 0;
     top: 0;
     width: 100%;
@@ -99,7 +99,7 @@ body {
 }
 
 /* Boutons */
-.beautiful-button {
+.beautiful-button, .beautiful-button2 {
     display: inline-block;
     background: var(--primary-color);
     color: white;
@@ -115,15 +115,24 @@ body {
     margin: auto 0; /* Centrer le bouton */
     height: 40px;
     align-items: center;
-    
     font-size: 1rem; /* Taille de police ajustée pour meilleure lisibilité */
     overflow: hidden; /* Évite que le texte dépasse du bouton */
 }
 
-.beautiful-button:hover {
+.beautiful-button:hover, .beautiful-button2:hover {
     background: #1a9b6e; /* Couleur alternative au survol, légèrement plus foncée */
     transform: translateY(-2px);
     box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
+}
+
+.beautiful-button2{
+    width: 150px;
+    height: 35px;
+    justify-self: center;
+}
+
+.contentPost form{
+    display: grid;
 }
 
 
@@ -249,7 +258,7 @@ input[type=file]::file-selector-button {
     height: 100%;
     margin-right: 25%;
     margin-left: 25%;
-    margin-top: 1%;
+    margin-top: 2%;
     margin-bottom: 1%;
     padding: 1em 2em;
     padding-bottom: 1em;
@@ -262,7 +271,7 @@ input[type=file]::file-selector-button {
     width: 100%;
     padding: 1em;
     background-color: #ffffff;
-    margin-bottom: 1.5em;
+    margin-bottom: 0.5em;
     margin-left: -1em;
     border-bottom: 1px solid rgb(182, 182, 182);
 }
@@ -276,28 +285,11 @@ input[type=file]::file-selector-button {
     border-radius: 50%;
 }
 
-
-.viewsPost {
-    margin-top: 0.4em;
-    font-family: 'Montserrat', sans-serif;
-    padding-left: 3em;
-}
-.datePost {
-    padding-left: 3em;
-    margin-top: 0.4em;
-    font-family: 'Montserrat', sans-serif;
-}
 .commentCount {
     padding-left: 1em;
     font-family: 'Montserrat', sans-serif;
-    margin-top: 0.2em;
 }
 
-.icon_commentaire{
-    width: 25px;
-    height: auto;
-    margin-top: 0.2em;
-}
 
 
 .contentPost {
@@ -311,7 +303,7 @@ input[type=file]::file-selector-button {
     font-family: 'Open Sans', sans-serif;
 }
 .contentPost button{
-    margin-top: -1em;
+    margin-top: -0.5em;
     margin-bottom: -1em;
 }
 
@@ -332,6 +324,7 @@ input[type=file]::file-selector-button {
 
 #deleteImage {
     height: 3em;
+    margin-top: -1em;
 }
 
 .viewMore {
@@ -343,7 +336,7 @@ input[type=file]::file-selector-button {
 .image-modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 21;
     left: 0;
     top: 0;
     width: 100%;
@@ -378,7 +371,23 @@ input[type=file]::file-selector-button {
     text-decoration: none;
     cursor: pointer;
 }
+.interaction a, .interaction form{
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between ;
+    align-items: center;
+    padding-left: 1em;
+}
+.interaction p {
+    padding-left: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
 
+.icon_commentaire{
+    width: 28px;
+    height: auto;
+}
 .interaction {
     display: flex;
     flex-direction: row;
@@ -387,6 +396,7 @@ input[type=file]::file-selector-button {
     display: flex;
     justify-content: space-between; /* Répartit les éléments de manière égale */
     align-items: center; /* Centre verticalement les éléments */
+    font-size: 1em;
     padding-left: 10%;
 }
 
@@ -397,9 +407,7 @@ input[type=file]::file-selector-button {
     cursor: pointer;
 }
 
-.favorite {
-    padding-left: 2em;
-}
+
 
 .heart:focus,
 .favorite:focus {
@@ -428,16 +436,11 @@ input[type=file]::file-selector-button {
     color: yellow;
 }
 
-.total-likes2 {
-    padding-top: 0.3em;
-}
 
-.total-likes3 {
-    padding-top: 0.7em;
-}
 
 span {
     font-family: 'Montserrat', sans-serif;
+    color: #404145;
 }
 
 
@@ -457,7 +460,6 @@ span {
 .promotion , .description ,.country{
     padding-left: 2em;
     padding-right: 2em;
-    padding-bottom: 1em;
 }
 .country p {
     margin-top: 0.5em;
@@ -473,7 +475,7 @@ span {
 
 .description p {
     margin-top: 0.5em;
-    font-size: 1.5em;
+    font-size: 1.4em;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -498,61 +500,52 @@ span {
     margin-top: 1.5%;
     margin-left: -5%;
 }
+.passProButton.show,.profilButton.show  {
+    display: block; /* Afficher le menu lorsque la classe 'show' est ajoutée */
+}
 
-
-.user-info {
+.user-info, .user-info2 {
     display: flex;
-    flex-direction: row;
-    text-decoration: none;
-    color: #000;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: -1em;
-}
-.user-info h2{
-    margin-top: -0.5;
-    font-size: 2em;
-    font-family: 'Open Sans', sans-serif;
-}
-
-.user-info2 {
-    display: flex;
-    flex-direction: row;
-    text-decoration: none;
-    color: #000;
-    align-items: center;
-    margin-top: -1em;
-}
-.user-info2 h2{
-    margin-top: -0.5;
-    font-size: 2em;
-    font-family: 'Open Sans', sans-serif;
-}
-
-
-.flex{display: flex;
     flex-direction: row;
     text-decoration: none;
     color: #000;
     
     align-items: center;
+    margin-top: -1em;
+}
+.user-info h2,.user-info2 h2{
+    font-size: 2em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.user-info{
+    justify-content: space-between;
+}
+
+
+
+.flex, .flex2{
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    color: #000;
+    align-items: center;
 }
 
 .pro #certifIcon {
     margin-top: 2.7em;
-    margin-left: 1em;
-    color: var(--primary-color);
 }
 #certifIcon {
     margin-top: 0.5em;
     margin-left: 0.5em;
-    color: var(--primary-color);
+    color: #38B6FF;
 }
 
 .EditButton{
     display: flex;
     flex-direction: column;
     margin-left: -5.5em;
+    
 }
 
 
@@ -696,7 +689,6 @@ span {
 button {
     background-color: #2e7d32;
     color: #ffffff;
-    padding: 0.5em 1em;
     border: none;
     border-radius: 0.5em;
     cursor: pointer;
@@ -705,17 +697,40 @@ button {
     margin-bottom: 2px;
 }
 
+.filter:hover {
+    background: #1a9b6e; /* Couleur alternative au survol, légèrement plus foncée */
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
+}
+.filter{
+    display: none;
+    padding: 0.5em;
+    justify-self: center;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    margin: auto 0; /* Centrer le bouton */
+    align-items: center;
+}
 
+.filter img{
+    padding: 0.5em;
+    width: 30px;
+    background: transparent;
+    
+    filter: invert(1);
+}
 
 
 /* Responsive Design */
-@media (max-width: 1000px) {/*display le button avec le edit button*/
+@media (max-width: 1050px) {/*display le button avec le edit button*/
     
     .description p {
         font-size: 1.2em;
     }
     .user-info h2, .user-info2 h2{
-        margin-top: -0.5;
         font-size: 1.5em;
         font-family: 'Open Sans', sans-serif;
     }
@@ -729,16 +744,23 @@ button {
         width: 80%;
         margin-left: 10%;
     }
-}
 
-@media (max-width: 770px) {
-    .EditButton{
-        display: none;
+    .interaction {
+        padding-left: 0%;
     }
-    
 }
 
-@media (max-width: 540px) {
+@media (max-width: 790px) {
+    
+    #icon {
+        height: 4em;
+    }
+    .notpro h2,.pro h2{
+        font-size: 1.5em;
+    }
+    .pro #certifIcon {
+        margin-top: 1.8em;
+    }
     .profilPost, .profilFavorites{
         margin-right: 5%;
         margin-left: 5%;
@@ -748,6 +770,180 @@ button {
         width: 96%;
         margin-left: 2%;
     }
+}
+
+@media (max-width: 570px) {
+    .EditButton{
+        position: sticky;
+        padding-right: 0em;
+    }
+    .profilButton, .passProButton{
+        display: none;
+    }
+    .filter{
+        display: flex;
+        margin-right: 1%;
+    }
+    .contentPost {
+        margin-left: 2em;
+    }
+    .contentPost h2{
+        font-size: 1.2em;
+    }
+    #deleteImage {
+        height: 2.5em;
+    }
+    .ProfilContainer {
+        width: 96%;
+        margin-top: 19%;
+    }
+}
+
+@media (max-width: 430px) {
+    .interaction span, .interaction p{
+        font-size: 0.85em;
+    }
+    .icon_commentaire{
+        width: 22px;
+        height: auto;
+    }
+    .heart i,
+    .favorite i {
+        font-size: 20px;
+        color: #000;
+    }
+
+    .interaction a, .interaction form{
+        padding-left: 0.5em;
+    }
+    .interaction button{
+        padding: 0.5em 0em;
+    }
+    .interaction span{
+        padding-left: 0.5em;
+    }
+    .interaction p{
+        padding-left: 0em;
+    }
+
+    .flex, .user-info2{
+        margin-left: -2em;
+    }
+
+    .country p, .promotion p{
+        font-size: 0.9em;
+    }
+    .description p {
+        font-size: 1em;
+    }
+
+    .contentPost h2{
+        font-size: 1.1em;
+    }
+    .contentPost {
+        margin-left: 0em;
+    }
+    .user-info h2, .user-info2 h2{
+        font-size: 1.2em;
+        font-family: 'Open Sans', sans-serif;
+    }
+    #deleteImage {
+        height: 2em;
+    }
+
+    .filter{
+        padding: 0.25em;
+    }
+    
+    .filter img{
+        padding: 0.5em;
+        width: 20px;
+    }
+    .ProfilUser h2{
+        font-size: 1.2em;
+    }
+    .EditButton button{
+        width: 150px;
+        font-size: 0.8em;
+    }
+    .pro #certifIcon {
+        margin-top: 1.5em;
+    }
+
+    .modal-content, .modal-content2 {
+        width: 80%;
+    }
+
+    .modal-content2{
+        margin-top: 5em;
+    }
+
+    /* Champs de texte */
+#inputField, #inputFieldDesc, #inputField2, #inputFieldDesc2, #inputFieldPromotion {
+    border: 2px solid #2e7d32; /* Bordure vert foncé */
+    font-family: 'Montserrat', sans-serif;
+    padding: 1em;
+    color: black;
+    box-sizing: border-box;
+}
+
+
+
+#inputField {
+    width: 20em;
+    height: 1.5em;
+    border-radius: 10em;
+    background-color: #ffffff;
+}
+
+#inputField2 {
+    width: 20em;
+    height: 3em;
+    border-radius: 10em;
+    background-color: #2e7d32; /* Fond vert foncé */
+    color: #ffffff; /* Texte blanc */
+    margin-top: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#inputFieldDesc, #inputFieldPromotion {
+    border-radius: 1em;
+    box-sizing: border-box;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin-bottom: 1em;
+    min-width: 30em;
+    min-height: 15em;
+    max-width: 20em;
+    max-height: 15em;
+    resize: none; /* Empêcher le redimensionnement */
+}
+
+#inputFieldDesc2 {
+    border-radius: 1em;
+    box-sizing: border-box;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin-bottom: 1em;
+    width: 20em;
+    height: 10em;
+    resize: none; /* Empêcher le redimensionnement */
+}
+
+.char-count {
+    position: absolute;
+    bottom: 25px;
+    right: 10px;
+    font-size: 0.8em;
+    font-family: 'Montserrat', sans-serif;
+}
 }
 
 

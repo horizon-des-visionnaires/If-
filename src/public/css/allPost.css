@@ -6,14 +6,10 @@
     --text-color: #1C1C1C;
 }
 
-
-
 a{
     text-decoration: none;
     color: #000;
 }
-
-
 
 /* Style de la modal */
 .modal {
@@ -134,22 +130,20 @@ input[type=file]::file-selector-button {
 .allPostContainer {
     display: flex;
     flex-direction: row;
-    justify-content:end ;
 }
 
 
 .allPostPost {
-    width: 40%;
+    width: 50%;
     height: auto;
     margin-right: 20%;
-    margin-left: 40%;
-    margin-top: 6%;
+    margin-left: 28%;
+    margin-top: 6em;
     padding: 0em 2em;
     padding-bottom: 0em;
     border-radius: 15px;
     background: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-top: 5%;
     margin-bottom: 1%;
 }
 
@@ -157,19 +151,20 @@ input[type=file]::file-selector-button {
     width: 100%;
     padding: 1em;
     background-color: #ffffff;
-    margin-bottom: 1.5em;
     margin-left: -1em;
     border-bottom: 1px solid rgb(182, 182, 182);
 }
 
 .user-info a,
-.user-info {
+.user-info, .user-info2 {
     display: flex;
     flex-direction: row;
     text-decoration: none;
     color: #000;
 }
-
+.user-info{
+    flex-direction: column;
+}
 .notpro h2 {
     font-family: 'Open Sans', sans-serif;
     margin-top: 1.2em;
@@ -186,12 +181,12 @@ input[type=file]::file-selector-button {
     font-family: 'Open Sans', sans-serif;
 }
 
-.promotion {
-    margin-left: -13.7em;
+.promotion{
+    padding-left: 6em;
+    margin-top: -3em;
 }
 
 .promotion p {
-    margin-top: 3.8em;
     font-size: 1em;
     font-family: 'Montserrat', sans-serif;
     color: #404145;
@@ -205,8 +200,7 @@ input[type=file]::file-selector-button {
 
 .hover-text {
     position: absolute;
-    bottom: 65%; /* Positionner au-dessus de l'élément */
-    left: 25%;
+    left: 40%;
     transform: translateX(-50%); /* Centrer horizontalement */
     background-color: #333;
     color: #fff;
@@ -219,6 +213,8 @@ input[type=file]::file-selector-button {
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     text-align: center; /* Alignement du texte à gauche */
+    font-family: 'Montserrat', sans-serif;
+    z-index: 10;
 }
 
 /* Apparition du texte au survol */
@@ -233,74 +229,56 @@ input[type=file]::file-selector-button {
 
 .contentPost {
     padding-top: 1em;
-    margin-left: 5em;
+    margin-left: 6em;
     margin-top: -2.2em;
-    margin-bottom: 0.5em;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .contentPost h2 {
     font-family: 'Open Sans', sans-serif;
-}
-.contentPost button{
-    margin-top: -1em;
-    margin-bottom: -1em;
 }
 
 
 #certifIcon1 {
     padding-left: 0.5em;
     padding-top: 2.4em;
-    color: var(--primary-color);
+    color: #38B6FF;
 }
 
-
-
-
-.actions {
-    display: flex;
-    margin-top: 2.4em;
-    justify-content: space-between;
-}
-
-.actions .comments {
-    display: flex;
-    margin-left: 2em;
-}
-
-.actions .comments p {
-    font-family: 'Montserrat', sans-serif;
-    color: #4c4d5f;
-}
-
-.actions .icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-right: 3em;
-}
 
 .iconUp, .iconDown {
     height: 1.5em;
 }
 
-.iconComments {
-    height: 2em;
-    padding-right: 0.3em;
-}
-
-
 .interaction {
-    font-family: 'Montserrat', sans-serif;
     display: flex;
     flex-direction: row;
-    padding-top: 1em;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
     justify-content: space-between; /* Répartit les éléments de manière égale */
     align-items: center; /* Centre verticalement les éléments */
+    font-size: 1em;
     padding-left: 10%;
+    padding-top: 0.5em;
 }
 
-.interaction a {
-    cursor: pointer;
+.interaction a, .interaction form{
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between ;
+    align-items: center;
+    padding-left: 1em;
+}
+
+.interaction p {
+    padding-left: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.icon_commentaire{
+    width: 28px;
+    height: auto;
 }
 
 .heart,
@@ -356,13 +334,6 @@ span {
 .commentCount {
     padding-left: 1em;
     font-family: 'Montserrat', sans-serif;
-    margin-top: 0.2em;
-}
-
-.icon_commentaire{
-    width: 25px;
-    height: auto;
-    margin-top: 0.2em;
 }
 
 
@@ -429,17 +400,15 @@ span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%; /* Changez cette valeur selon vos besoins */
+    max-width: 100%;
     cursor: pointer;
     position: relative;
 }
 
 .truncated-text:hover::after {
-    content: attr(data-full-text);
     white-space: normal;
     position: absolute;
-    left: 0;
-    top: 100%;
+    left: 50%;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
     padding: 5px;
@@ -452,32 +421,27 @@ span {
 
 
 .filterBar {
-    margin-top: 10em;
     display: flex;
     flex-direction: column;
     padding: 1em;
     border-radius: 1em;
-    padding-bottom: 3em;
-    
+    margin-right: 10%;
 }
-#filterBar {
-    display: none; /* Masque la barre de filtres par défaut */
-}
+
 .filter-form, .reset-form {
     display: flex;
     flex-direction: column;
 }
 
-.group {
+.groups {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 1em;
+    flex-direction: column;
+    justify-content: start;
 }
 
 .group1, .group2 {
     display: flex;
     flex-direction: column;
-    margin-right: 2em;
 }
 
 .group1 label, .group2 label {
@@ -515,7 +479,7 @@ button {
 
 
 /* Boutons */
-.beautiful-button {
+.beautiful-button, .beautiful-button2 {
     display: inline-block;
     background: var(--primary-color);
     color: white;
@@ -536,17 +500,25 @@ button {
     overflow: hidden; /* Évite que le texte dépasse du bouton */
 }
 
-.beautiful-button:hover {
+.beautiful-button:hover, .beautiful-button2:hover {
     background: #1a9b6e; /* Couleur alternative au survol, légèrement plus foncée */
     transform: translateY(-2px);
     box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3); /* Ombre plus marquée au survol */
 }
 
+.beautiful-button2{
+    width: 150px;
+    justify-self: center;
+}
 
+.contentPost form{
+    display: grid;
+}
 
-/*Validate*/
-
-
+.contentPost button{
+    margin-top: -0.5em;
+    margin-bottom: 0em;
+}
 
 .swipe-item img {
     width: 100%;
@@ -589,7 +561,7 @@ button {
     justify-content: center;
     align-items: center;
     max-height: 80vh; 
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 .swipe-inner {
@@ -666,27 +638,36 @@ button {
     background-color: #333;
 }
 
-
+/* Style pour le menu déroulant sur le côté gauche de l'écran */
 .allPostFiltre {
-    left: 0%;
-    width: auto;
-    height: auto;
-}
-.allPostFiltre .searchBar{
+    display: none; /* Initialement caché */
     position: fixed;
-    top: 15%;
-    left: 5%;
+    top: 46%;
+    left: 0;
+    transform: translateY(-50%);
+    background-color: white;
+    width: 300px; /* Largeur du menu */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 16;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-y: auto; /* Permettre le défilement si le contenu dépasse la hauteur de l'écran */
+    max-height: 90%; /* Limiter la hauteur pour éviter de dépasser l'écran */
 }
+
+.allPostFiltre.show {
+    display: block; /* Afficher le menu lorsque la classe 'show' est ajoutée */
+}
+
 .allPostFiltre .iconSearch{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 4%;
+    margin-top: 0.65em;
+    margin-left: 1.5em;
 }
+
 
 .filter-toggle{
     position: fixed;
-    top : 22%;
+    top : 7em;
     left: 7%;
 }
 
@@ -719,3 +700,134 @@ button {
     padding: 10px 20px;
     cursor: pointer;
 }
+
+.filter{
+    position: fixed; /* Fixe l'élément par rapport à la fenêtre de visualisation */
+    top: 14%; /* Aligne l'élément au bas de la page */
+    left: 0; /* Aligne l'élément à droite de la page */
+    z-index: 10;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid #278219;
+    display: none;
+    padding: 1em;
+}
+
+.filter img{
+    padding: 0.5em;
+    width: 30px;
+    background: transparent;
+}
+
+/* Responsive Design */
+@media (max-width: 1080px) {
+    .filter-toggle{
+        display:none;
+    }
+    .filter{
+        display:flex;
+    }
+}
+
+@media (max-width: 850px) {/*display le button avec le edit button*/
+    .allPostPost {
+        width: 60%;
+        margin-left: 20%;
+    }
+
+    .profilPost, .profilFavorites{
+        margin-right: 20%;
+        margin-left: 20%;
+    }
+
+    .interaction {
+        padding-left: 0%;
+    }
+}
+
+@media (max-width: 680px) {
+    .allPostPost {
+        width: 70%;
+        margin-left: 15%;
+    }
+}
+@media (max-width: 680px) {
+    .allPostPost {
+        margin-left: 10%;
+        margin-right: 5%;
+    }
+}
+@media (max-width: 540px) {
+    .contentPost {
+        margin-left: 2em;
+    }
+
+    .allPostPost {
+        width: 80%;
+        margin-top: 5em;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    .filter{
+        padding: 0.4em;
+    }
+    
+}
+
+@media (max-width: 430px) {
+    .interaction span, .interaction p{
+        font-size: 0.85em;
+    }
+    .icon_commentaire{
+        width: 22px;
+        height: auto;
+    }
+    .heart i,
+    .favorite i {
+        font-size: 20px;
+        color: #000;
+    }
+
+    .interaction a, .interaction form{
+        padding-left: 0.5em;
+    }
+    .interaction button{
+        padding: 0.5em 0em;
+    }
+    .interaction span{
+        padding-left: 0.5em;
+    }
+    .interaction p{
+        padding-left: 0em;
+    }
+
+    .user-info, .user-info2{
+        margin-left: -2em;
+    }
+
+    .promotion p{
+        font-size: 0.9em;
+    }
+    .contentPost {
+        margin-left: 0em;
+    }
+    .user-info h2{
+        font-size: 1.2em;
+        font-family: 'Open Sans', sans-serif;
+    }
+    .user-info .pro {
+        margin-top: 0.2em;
+    }
+    #certifIcon1 {
+        padding-top: 1.75em;
+    }
+}
+
+
+
+
+

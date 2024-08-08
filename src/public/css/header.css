@@ -158,7 +158,7 @@ nav li {
 
 .icons {
     width: 3em; 
-    height: auto; 
+    height: 3em; 
     margin-right: 10px;  /* Espace entre l'icône et le texte */
     box-shadow: none;
 }
@@ -473,6 +473,23 @@ header a {
         margin-left: 1em;
         margin-right: 1em;
     }
+
+    #logo{
+        width: 4em;
+        height: auto;
+    }
+    #img2{
+        width: 2.4em;
+        height: auto;
+    }
+    .Btn{
+        width: 3.5em;
+        height: 3.5em;
+    }
+    .icons{
+        width: 2.5em; 
+        height: auto;
+    }
     
 }
 
@@ -504,6 +521,7 @@ header a {
     
     .bottom-nav img {
         width: 2em;
+        height: auto;
     }
 
     .Message{
@@ -513,6 +531,22 @@ header a {
     .bottom-nav li {
         width: 2em;
         margin: -2em;
+    }
+    #logo{
+        width: 3.5em;
+        height: auto;
+    }
+    #img2{
+        width: 2.5em;
+        height: auto;
+    }
+    .Btn{
+        width: 3em;
+        height: 3em;
+    }
+
+    header {
+        height: 4em;
     }
 }
 

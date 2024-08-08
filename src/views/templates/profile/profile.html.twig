@@ -59,15 +59,20 @@
             <div class="EditButton">
                 {% if isConnected and userId == user.IdUser %}
                 {% if userId == user.IdUser and user.IsPro == 0 %}
-                <div class="passProButton">
+                <div class="passProButton" id="Toshow">
                     <button id="openModalButtonPro" class="beautiful-button">Passer Professionnel</button>
                 </div>
                 {% endif %}
-                <div class="profilButton">
+                <div class="profilButton" id="Toshow2">
                     <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
                 </div>
                 {% endif %}
             </div>
+            {% if isConnected and userId == user.IdUser %}
+            <button class="filter" id="toggleEditButton2">
+                    <img src="/../public/image/icon/edit_profil.png">
+            </button>
+            {% endif %}
         </div>
     
     
@@ -106,7 +111,7 @@
 
 
             <div style="position: relative;">
-                <textarea name="ProfilPromotion" placeholder="ProfilPromotion" id="inputFieldPromotion"
+                <textarea name="ProfilPromotion" placeholder="Promotion du profil" id="inputFieldPromotion"
                     maxlength="100"></textarea>
                 <div id="charCount2" class="char-count">0/100</div>
             </div>
@@ -201,7 +206,7 @@
                 {% endif %}
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
+                <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
             </form>
             </p>
         </div>
@@ -247,7 +252,7 @@
                     <i class="far fa-heart"></i>
                     {% endif %}
                 </button>
-                <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
+                <span class="total-likes">{{ Post.TotalLikes }}</span>
             </form>
             <a href="/postDetail-{{Post.IdPost}}" >
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
@@ -273,7 +278,7 @@
             <button class="heart" disabled>
                 <i class="far fa-heart"></i>
             </button>
-            <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
+            <span class="total-likes">{{ Post.TotalLikes }}</span>
             <a href="/postDetail-{{Post.IdPost}}" >
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
@@ -323,7 +328,7 @@
                 
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
+                <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
             </form>
             </p>
         </div>
@@ -365,9 +370,12 @@
                     <i class="far fa-heart"></i>
                     {% endif %}
                 </button>
-                <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
+                <span class="total-likes">{{ Post.TotalLikes }}</span>
             </form>
-
+            <a href="/postDetail-{{Post.IdPost}}" >
+                <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                <span class="commentCount">{{ Post.commentCount }}</span>
+            </a>
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="AddFavorite" value="1">
                 <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
@@ -387,7 +395,11 @@
             <button class="heart" disabled>
                 <i class="far fa-heart"></i>
             </button>
-            <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
+            <span class="total-likes">{{ Post.TotalLikes }}</span>
+            <a href="/postDetail-{{Post.IdPost}}" >
+                <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                <span class="commentCount">{{ Post.commentCount }}</span>
+            </a>
             <button class="favorite" disabled>
                 <i class="far fa-star"></i>
             </button>
@@ -435,4 +447,30 @@
 <script src="/../public/js/profilPromotion.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleButton2 = document.getElementById('toggleEditButton2');
+    const Edit = document.getElementById('Toshow');  
+    const Edit2 = document.getElementById('Toshow2'); 
+
+    function toggleEdit(event) {
+        event.stopPropagation();
+        Edit2.classList.toggle('show');
+        if (Edit) {
+            Edit.classList.toggle('show');
+        }
+    }
+    toggleButton2.addEventListener('click', toggleEdit);
+
+    document.addEventListener('click', function (event) {
+        if (!Edit.contains(event.target) && !toggleButton2.contains(event.target) ) {
+            Edit2.classList.remove('show');
+            if (Edit) {
+                Edit.classList.remove('show');
+            }
+        }
+    });
+});
+</script>
 {% endblock %}

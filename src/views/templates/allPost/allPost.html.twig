@@ -17,7 +17,7 @@
 
 {% block body %}
 <div class="allPostContainer">
-    <div class="allPostFiltre">
+    <div class="allPostFiltre" id="allPostFiltre">
         <div class="searchBar">
             <form action="/allPost" method="get" class="search-form">
                 <div class="group-search">
@@ -32,13 +32,9 @@
                 </div>
             </form>
         </div>
-
-        <div class="filter-toggle">
-            <button id="toggleFilterBarButton" class="beautiful-button">Filtres de Recherche</button>
-        </div>
-        <div class="filterBar" id="filterBar">
+        <div class="filterBar" >
             <form action="/allPost" method="get" class="filter-form">
-                <div class="group">
+                <div class="groups">
                     <div class="group1">
                         <label for="sortBy">Trié par:</label>
                         <select name="sortBy" id="sortBy">
@@ -68,11 +64,18 @@
 
         
     </div>
-    
+    <div class="filter-toggle">
+        <button id="toggleFilterBarButton" class="beautiful-button">Filtres de Recherche</button>
+    </div>
+
+
+
+
+
     <div class="allPostPost">
         {% if isConnected %}
         <div class="new_post">
-            <div class="user-info">
+            <div class="user-info2">
                 <a href="/profile-{{ userId}}">
                     {% if user.ProfilPicture == null %}
                     <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
@@ -107,14 +110,6 @@
                     {% if Post.IsPro == 1 %}
                     <div class ="pro">
                         <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon1" class="fas fa-check-circle"></i>
-                             
-                        {# <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-                            {% set text =  user.ProfilPromotion %}
-                            {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
-                            {% set isTruncated = text|length > 60 %}
-                            <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
-                            <div class="hover-text">Je peux t'aider à {{ text }}</div>
-                        </div>  #}
                     </div> 
                     {% else %}
                     <div <div class ="notpro">
@@ -122,7 +117,18 @@
                     </div>
                     {% endif %}
                 </a>
+                {% if Post.IsPro == 1 %}
+                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                    {% set text = Post.ProfilPromotion   %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+                    <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                </div>
+                {% endif %}
             </div>
+            
+
             <div class="contentPost">
                 <!--<h2>{{ Post.TitlePost }}</h2> -->
                 <p>
@@ -134,11 +140,11 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                </p><!--
+                </p>
                 <form action="/allPost" method="post">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                    <button type="submit" name="viewMore" class="beautiful-button">Voir Plus</button>
-                </form>-->
+                    <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+                </form>
                 
             </div>
             {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
@@ -180,7 +186,7 @@
                         <i class="far fa-heart"></i>
                         {% endif %}
                     </button>
-                    <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
+                    <span class="total-likes">{{ Post.TotalLikes }}</span>
                 </form>
                 <a href="/postDetails-{{Post.IdPost}}" >
                     <img class="icon_commentaire" src="/../public/image/icon/message.png">
@@ -203,10 +209,12 @@
             </div>
             {% else %}
             <div class="interaction">
-                <button class="heart" disabled>
-                    <i class="far fa-heart"></i>
-                </button>
-                <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
+                <div>
+                    <button class="heart" disabled>
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="total-likes3">{{ Post.TotalLikes }}</span>
+                </div>
                 <a href="/postDetails-{{Post.IdPost}}" >
                     <img class="icon_commentaire" src="/../public/image/icon/message.png">
                     <span class="commentCount">{{ Post.commentCount }}</span>
@@ -258,6 +266,15 @@
     <img class="image-modal-content" id="img01">
     <div id="caption"></div>
 </div>
+
+
+
+
+
+<button class="filter" id="toggleFilterBarButton2">
+    <img src="/../public/image/icon/gear.png">
+</button>
+
 
 {% endblock %}
 
