@@ -99,11 +99,11 @@
         </a>
     </li>
     <li>
-        <a href="/notification" id="profile">
+        <a href="/notification" id="notification-link">
             <div class="item" id="item">
                 <p>Notif</p>
                 {% if isConnected and unreadCount > 0 %}
-                <span class="notification-count">{{ unreadCount }}</span>
+                <span id="notification-count" class="notification-count">{{ unreadCount }}</span>
                 {% endif %}
                 <img src="/../public/image/icon/notif.png" id="img2">
             </div>
@@ -169,6 +169,32 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
     }, false);
 });
+</script>
+
+<script>
+function loadNotifications() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/notification', true); // Fetch notifications from the notification page
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(xhr.responseText, 'text/html');
+            const newNotificationCount = doc.querySelector('#notification-count');
+            
+            // Update notification count
+            const notificationCountElement = document.querySelector('#notification-count');
+            if (newNotificationCount) {
+                notificationCountElement.textContent = newNotificationCount.textContent;
+            } else {
+                notificationCountElement.textContent = '0'; // or remove the element
+            }
+        }
+    };
+    xhr.send();
+}
+
+// Load notifications every 5 seconds
+setInterval(loadNotifications, 5000);
 </script>
 {% endblock %}
 
