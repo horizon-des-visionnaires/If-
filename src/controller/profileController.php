@@ -66,6 +66,9 @@ class profileController
         $commentCount = $this->profileModel->getCommentCount($id);
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+        $adviceData = $this->profileModel->getBuyAdviceData($userId);
+        $adviceImages = [];
+        $adviceImages = $this->profileModel->getAdviceImages($adviceData['IdAdvice']);
 
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
@@ -76,7 +79,9 @@ class profileController
             'postFav' => $postFav,
             'messages' => $messages,
             'commentCount' => $commentCount,
-            'unreadCount' => $unreadCount
+            'unreadCount' => $unreadCount,
+            'adviceData' => $adviceData,
+            'adviceImages' => $adviceImages
         ]);
     }
 

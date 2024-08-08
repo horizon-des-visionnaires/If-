@@ -38,10 +38,11 @@
 
                 {% if user.IsPro == 1 %}
                 <div class="pro">
-                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon"
+                        class="fas fa-check-circle"></i>
                 </div>
                 {% else %}
-                <div <div class ="notpro">
+                <div <div class="notpro">
                     <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
                 </div>
                 {% endif %}
@@ -54,7 +55,7 @@
                         </button>
                     </form>
                 </div>
-                {% endif %}    
+                {% endif %}
             </div>
             <div class="EditButton">
                 {% if isConnected and userId == user.IdUser %}
@@ -69,16 +70,17 @@
                 {% endif %}
             </div>
         </div>
-    
-    
+
+
         <div class="country">
             <p>Pays : {{ user.Location }}</p>
         </div>
         {% if user.IsPro == 1 %}
-        <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+        <div class="promotion">
+            <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
             <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
-        </div> 
-        {% endif %} 
+        </div>
+        {% endif %}
         <div class="description">
             <p>{{ user.ProfilDescription | nl2br }}</p>
         </div>
@@ -88,6 +90,7 @@
     <div class="button-container">
         <button id="showPosts" class="beautiful-button">Voir les Publications</button>
         <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
+        <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
     </div>
     {% endif %}
 
@@ -107,11 +110,11 @@
             {% else %}
             <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField">
             {% endif %}
-            
+
             {% if user.ProfilPromotion == null %}
             <div style="position: relative;">
-                <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: je peux t'aider à ...)" id="inputFieldPromotion"
-                    maxlength="100"></textarea>
+                <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: je peux t'aider à ...)"
+                    id="inputFieldPromotion" maxlength="100"></textarea>
                 <div id="charCount2" class="char-count">0/100</div>
             </div>
             {% else %}
@@ -179,7 +182,7 @@
     {% for Post in userPost %}
     <div class="post">
         <div class="user-info">
-            <div class= "flex">
+            <div class="flex">
                 {% if Post.ProfilPicture == null %}
                 <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
                 {% else %}
@@ -233,7 +236,8 @@
             {% endif %}
             <div class="swipe-inner">
                 {% for picture in Post.PicturesPost %}
-                <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                <div
+                    class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
                     <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
                 </div>
                 {% endfor %}
@@ -266,11 +270,11 @@
                 </button>
                 <span class="total-likes">{{ Post.TotalLikes }} J'aime</span>
             </form>
-            <a href="/postDetail-{{Post.IdPost}}" >
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
-            
+
             <form action="/profile-{{ user.IdUser }}" method="post">
                 <input type="hidden" name="AddFavorite" value="1">
                 <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
@@ -291,7 +295,7 @@
                 <i class="far fa-heart"></i>
             </button>
             <span class="total-likes3">{{ Post.TotalLikes }} J'aime</span>
-            <a href="/postDetail-{{Post.IdPost}}" >
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
@@ -353,7 +357,8 @@
             {% endif %}
             <div class="swipe-inner">
                 {% for picture in Post.PicturesPost %}
-                <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                <div
+                    class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
                     <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
                 </div>
                 {% endfor %}
@@ -415,6 +420,57 @@
     {% endfor %}
 </div>
 {% endif %}
+
+{% if isConnected and userId == user.IdUser %}
+<div class="profilePlanning" style="display: none;">
+    {% if adviceData %}
+    <h1>Advice Meeting Details</h1>
+
+    <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
+    <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
+
+    <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Start Time:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
+    <p><strong>End Time:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
+
+    <h2>Advice Images</h2>
+    {% if adviceImages is not empty %}
+    <div class="advice-images">
+        {% for image in adviceImages %}
+        {% if image.PictureAdvice %}
+        <img class="icon" src="data:image;base64,{{ image.PictureAdvice }}" alt="Advice Image">
+        {% else %}
+        <p>No image available.</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No images available.</p>
+    {% endif %}
+
+    <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
+
+    <h2>Buyer Information</h2>
+    <p><strong>Buyer Name:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
+    {% if adviceData.BuyerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>No profile picture available.</p>
+    {% endif %}
+
+    <h2>Seller Information</h2>
+    <p><strong>Seller Name:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
+    {% if adviceData.SellerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>No profile picture available.</p>
+    {% endif %}
+    {% else %}
+    <p>No advice meeting data available.</p>
+    {% endif %}
+</div>
+{% endif %}
+
 
 <div class="profilNotations"></div>
 
