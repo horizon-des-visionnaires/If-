@@ -9,6 +9,11 @@
     margin-top: 10em;
 }
 
+.error-message {
+    margin-top: 10em;
+    color: red;
+}
+
 .modal,
 .modal2 {
     display: none;

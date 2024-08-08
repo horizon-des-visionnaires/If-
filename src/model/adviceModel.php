@@ -153,139 +153,163 @@ class adviceModel
     public function buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer)
     {
         try {
-            // Combine date and time for full DateTime objects
-            $start = new \DateTime("$Date $StartTime");
-            $end = new \DateTime("$Date $EndTime");
-            $interval = $start->diff($end);
+            // Vérifier la validité de la réservation
+            $this->validateReservation($Date, $StartTime, $EndTime);
 
-            // Vérifier que la durée est bien de 1 heure
-            if ($interval->h !== 1 || $interval->i !== 0) {
-                echo "Erreur : La durée choisie doit être exactement de 1 heure.";
-                return;
-            }
+            // Vérifier les disponibilités du conseil
+            $adviceData = $this->getAdviceData($IdAdvice);
+            $this->checkAdviceAvailability($adviceData, $Date, $StartTime, $EndTime);
 
-            // Vérifier que la réservation est dans le futur, pas pour le jour même
-            $endOfToday = (new \DateTime())->setTime(23, 59, 59);
-            if ($start <= $endOfToday) {
-                echo "Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.";
-                return;
-            }
+            // Vérifier les chevauchements de réservation
+            $this->checkOverlappingReservations($IdAdvice, $Date, $StartTime, $EndTime, $IdBuyer);
 
-            // Vérifier que le jour choisi est bien renseigné dans le champ DaysOfWeek de la table Advice
-            $queryAdvice = "SELECT DaysOfWeek, StartTime, EndTime, IdUser FROM Advice WHERE IdAdvice = :IdAdvice";
-            $stmtAdvice = $this->dsn->prepare($queryAdvice);
-            $stmtAdvice->bindParam(':IdAdvice', $IdAdvice);
-            $stmtAdvice->execute();
-            $adviceData = $stmtAdvice->fetch(PDO::FETCH_ASSOC);
+            // Effectuer la réservation
+            $this->insertBuyAdvice($IdAdvice, $IdBuyer, $Date, $StartTime, $EndTime);
 
-            if (!$adviceData) {
-                echo "Erreur : Le conseil sélectionné n'existe pas.";
-                return;
-            }
-
-            $adviceDaysOfWeek = explode(',', $adviceData['DaysOfWeek']);
-            $selectedDayOfWeek = $start->format('l'); // Get the day of the week in English
-
-            if (!in_array($selectedDayOfWeek, $adviceDaysOfWeek)) {
-                echo "Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.";
-                return;
-            }
-
-            // Vérifier que le créneau horaire est couvert par les horaires disponibles
-            $adviceStartTime = new \DateTime($adviceData['StartTime']);
-            $adviceEndTime = new \DateTime($adviceData['EndTime']);
-            $adviceStartTime->setDate($start->format('Y'), $start->format('m'), $start->format('d'));
-            $adviceEndTime->setDate($end->format('Y'), $end->format('m'), $end->format('d'));
-
-            if ($start < $adviceStartTime || $end > $adviceEndTime) {
-                echo "Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.";
-                return;
-            }
-
-            // Vérifier les chevauchements avec les achats existants pour ce conseil
-            $queryOverlap = "SELECT COUNT(*) FROM BuyAdvice
-                         WHERE IdAdvice = :IdAdvice
-                         AND Date = :Date
-                         AND (StartTime < :EndTime AND EndTime > :StartTime)";
-            $stmtOverlap = $this->dsn->prepare($queryOverlap);
-            $stmtOverlap->bindParam(':IdAdvice', $IdAdvice);
-            $stmtOverlap->bindParam(':Date', $Date);
-            $stmtOverlap->bindParam(':StartTime', $StartTime);
-            $stmtOverlap->bindParam(':EndTime', $EndTime);
-            $stmtOverlap->execute();
-            $overlapCount = $stmtOverlap->fetchColumn();
-
-            if ($overlapCount > 0) {
-                echo "Erreur : Le créneau horaire choisi est déjà réservé.";
-                return;
-            }
-
-            // Vérifier si l'utilisateur a déjà une réservation pendant les heures choisies
-            $queryUserOverlap = "SELECT COUNT(*) FROM BuyAdvice
-                             WHERE IdBuyer = :IdBuyer
-                             AND Date = :Date
-                             AND (StartTime < :EndTime AND EndTime > :StartTime)";
-            $stmtUserOverlap = $this->dsn->prepare($queryUserOverlap);
-            $stmtUserOverlap->bindParam(':IdBuyer', $IdBuyer);
-            $stmtUserOverlap->bindParam(':Date', $Date);
-            $stmtUserOverlap->bindParam(':StartTime', $StartTime);
-            $stmtUserOverlap->bindParam(':EndTime', $EndTime);
-            $stmtUserOverlap->execute();
-            $userOverlapCount = $stmtUserOverlap->fetchColumn();
-
-            if ($userOverlapCount > 0) {
-                echo "Erreur : Vous avez déjà une réservation pendant ce créneau horaire.";
-                return;
-            }
-
-            // Insérer l'achat dans la base de données
-            $insertBuyAdviceQuery = "INSERT INTO BuyAdvice (IdAdvice, IdBuyer, Date, StartTime, EndTime)
-                                 VALUES (:IdAdvice, :IdBuyer, :Date, :StartTime, :EndTime)";
-            $stmtInsertBuyAdvice = $this->dsn->prepare($insertBuyAdviceQuery);
-            $stmtInsertBuyAdvice->bindParam(':IdAdvice', $IdAdvice);
-            $stmtInsertBuyAdvice->bindParam(':IdBuyer', $IdBuyer);
-            $stmtInsertBuyAdvice->bindParam(':Date', $Date);
-            $stmtInsertBuyAdvice->bindParam(':StartTime', $StartTime);
-            $stmtInsertBuyAdvice->bindParam(':EndTime', $EndTime);
-            $stmtInsertBuyAdvice->execute();
-
-            // Récupérer les informations du vendeur
-            $querySellerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdUser";
-            $stmtSellerInfo = $this->dsn->prepare($querySellerInfo);
-            $stmtSellerInfo->bindParam(':IdUser', $adviceData['IdUser']);
-            $stmtSellerInfo->execute();
-            $sellerInfo = $stmtSellerInfo->fetch(PDO::FETCH_ASSOC);
-
-            if (!$sellerInfo) {
-                echo "Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.";
-                return;
-            }
-
-            // Récupérer les informations de l'acheteur pour la notification
-            $queryBuyerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer";
-            $stmtBuyerInfo = $this->dsn->prepare($queryBuyerInfo);
-            $stmtBuyerInfo->bindParam(':IdBuyer', $IdBuyer);
-            $stmtBuyerInfo->execute();
-            $buyerInfo = $stmtBuyerInfo->fetch(PDO::FETCH_ASSOC);
-
-            if (!$buyerInfo) {
-                echo "Erreur : Impossible de trouver l'utilisateur acheteur.";
-                return;
-            }
-
-            // Créer le message de notification
-            $MessageNotif = "{$buyerInfo['FirstName']} {$buyerInfo['LastName']} a acheté votre conseil pour le {$Date} entre {$StartTime} et {$EndTime}.";
-
-            // Insérer la notification pour le vendeur
-            $insertNotificationQuery = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
-            $stmtInsertNotification = $this->dsn->prepare($insertNotificationQuery);
-            $stmtInsertNotification->bindParam(':IdUser', $adviceData['IdUser']);  // Le vendeur reçoit la notification
-            $stmtInsertNotification->bindParam(':MessageNotif', $MessageNotif);
-            $stmtInsertNotification->execute();
+            // Envoyer la notification
+            $this->sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime);
 
             echo "L'achat du conseil a été effectué avec succès.";
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
         }
+    }
+
+    private function validateReservation($Date, $StartTime, $EndTime)
+    {
+        $start = new \DateTime("$Date $StartTime");
+        $end = new \DateTime("$Date $EndTime");
+        $interval = $start->diff($end);
+
+        // Vérifier que la durée est bien de 1 heure
+        if ($interval->h !== 1 || $interval->i !== 0) {
+            echo ("Erreur : La durée choisie doit être exactement de 1 heure.");
+        }
+
+        // Vérifier que la réservation est dans le futur
+        $endOfToday = (new \DateTime())->setTime(23, 59, 59);
+        if ($start <= $endOfToday) {
+            echo("Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.");
+        }
+    }
+
+    private function getAdviceData($IdAdvice)
+    {
+        $queryAdvice = "SELECT DaysOfWeek, StartTime, EndTime, IdUser FROM Advice WHERE IdAdvice = :IdAdvice";
+        $stmtAdvice = $this->dsn->prepare($queryAdvice);
+        $stmtAdvice->bindParam(':IdAdvice', $IdAdvice);
+        $stmtAdvice->execute();
+        $adviceData = $stmtAdvice->fetch(PDO::FETCH_ASSOC);
+
+        if (!$adviceData) {
+            echo("Erreur : Le conseil sélectionné n'existe pas.");
+        }
+
+        return $adviceData;
+    }
+
+    private function checkAdviceAvailability($adviceData, $Date, $StartTime, $EndTime)
+    {
+        $start = new \DateTime("$Date $StartTime");
+        $end = new \DateTime("$Date $EndTime");
+
+        $adviceDaysOfWeek = explode(',', $adviceData['DaysOfWeek']);
+        $selectedDayOfWeek = $start->format('l'); // Get the day of the week in English
+
+        if (!in_array($selectedDayOfWeek, $adviceDaysOfWeek)) {
+            echo("Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.");
+        }
+
+        $adviceStartTime = new \DateTime($adviceData['StartTime']);
+        $adviceEndTime = new \DateTime($adviceData['EndTime']);
+        $adviceStartTime->setDate($start->format('Y'), $start->format('m'), $start->format('d'));
+        $adviceEndTime->setDate($end->format('Y'), $end->format('m'), $end->format('d'));
+
+        if ($start < $adviceStartTime || $end > $adviceEndTime) {
+            echo("Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.");
+        }
+    }
+
+    private function checkOverlappingReservations($IdAdvice, $Date, $StartTime, $EndTime, $IdBuyer)
+    {
+        $queryOverlap = "SELECT COUNT(*) FROM BuyAdvice
+                         WHERE IdAdvice = :IdAdvice
+                         AND Date = :Date
+                         AND (StartTime < :EndTime AND EndTime > :StartTime)";
+        $stmtOverlap = $this->dsn->prepare($queryOverlap);
+        $stmtOverlap->bindParam(':IdAdvice', $IdAdvice);
+        $stmtOverlap->bindParam(':Date', $Date);
+        $stmtOverlap->bindParam(':StartTime', $StartTime);
+        $stmtOverlap->bindParam(':EndTime', $EndTime);
+        $stmtOverlap->execute();
+        $overlapCount = $stmtOverlap->fetchColumn();
+
+        if ($overlapCount > 0) {
+            echo("Erreur : Le créneau horaire choisi est déjà réservé.");
+        }
+
+        $queryUserOverlap = "SELECT COUNT(*) FROM BuyAdvice
+                             WHERE IdBuyer = :IdBuyer
+                             AND Date = :Date
+                             AND (StartTime < :EndTime AND EndTime > :StartTime)";
+        $stmtUserOverlap = $this->dsn->prepare($queryUserOverlap);
+        $stmtUserOverlap->bindParam(':IdBuyer', $IdBuyer);
+        $stmtUserOverlap->bindParam(':Date', $Date);
+        $stmtUserOverlap->bindParam(':StartTime', $StartTime);
+        $stmtUserOverlap->bindParam(':EndTime', $EndTime);
+        $stmtUserOverlap->execute();
+        $userOverlapCount = $stmtUserOverlap->fetchColumn();
+
+        if ($userOverlapCount > 0) {
+            echo("Erreur : Vous avez déjà une réservation pendant ce créneau horaire.");
+        }
+    }
+
+    private function insertBuyAdvice($IdAdvice, $IdBuyer, $Date, $StartTime, $EndTime)
+    {
+        $insertBuyAdviceQuery = "INSERT INTO BuyAdvice (IdAdvice, IdBuyer, Date, StartTime, EndTime)
+                                 VALUES (:IdAdvice, :IdBuyer, :Date, :StartTime, :EndTime)";
+        $stmtInsertBuyAdvice = $this->dsn->prepare($insertBuyAdviceQuery);
+        $stmtInsertBuyAdvice->bindParam(':IdAdvice', $IdAdvice);
+        $stmtInsertBuyAdvice->bindParam(':IdBuyer', $IdBuyer);
+        $stmtInsertBuyAdvice->bindParam(':Date', $Date);
+        $stmtInsertBuyAdvice->bindParam(':StartTime', $StartTime);
+        $stmtInsertBuyAdvice->bindParam(':EndTime', $EndTime);
+        $stmtInsertBuyAdvice->execute();
+    }
+
+    private function sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime)
+    {
+        // Récupérer les informations du vendeur
+        $querySellerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdUser";
+        $stmtSellerInfo = $this->dsn->prepare($querySellerInfo);
+        $stmtSellerInfo->bindParam(':IdUser', $adviceData['IdUser']);
+        $stmtSellerInfo->execute();
+        $sellerInfo = $stmtSellerInfo->fetch(PDO::FETCH_ASSOC);
+
+        if (!$sellerInfo) {
+            echo("Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.");
+        }
+
+        // Récupérer les informations de l'acheteur pour la notification
+        $queryBuyerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer";
+        $stmtBuyerInfo = $this->dsn->prepare($queryBuyerInfo);
+        $stmtBuyerInfo->bindParam(':IdBuyer', $IdBuyer);
+        $stmtBuyerInfo->execute();
+        $buyerInfo = $stmtBuyerInfo->fetch(PDO::FETCH_ASSOC);
+
+        if (!$buyerInfo) {
+            echo("Erreur : Impossible de trouver l'utilisateur acheteur.");
+        }
+
+        // Créer le message de notification
+        $MessageNotif = "{$buyerInfo['FirstName']} {$buyerInfo['LastName']} a acheté votre conseil pour le {$Date} entre {$StartTime} et {$EndTime}.";
+
+        // Insérer la notification pour le vendeur
+        $insertNotificationQuery = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+        $stmtInsertNotification = $this->dsn->prepare($insertNotificationQuery);
+        $stmtInsertNotification->bindParam(':IdUser', $adviceData['IdUser']);  // Le vendeur reçoit la notification
+        $stmtInsertNotification->bindParam(':MessageNotif', $MessageNotif);
+        $stmtInsertNotification->execute();
     }
 }
