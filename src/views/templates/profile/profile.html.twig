@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block header %}
-{% include 'header.html.twig' %}
+{# {% include 'header.html.twig' %} #}
 {% endblock %}
 
 
@@ -449,14 +449,6 @@
     {% endif %}
 
     <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
-
-    <h2>Buyer Information</h2>
-    <p><strong>Buyer Name:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
-    {% if adviceData.BuyerProfilPicture %}
-    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
-    {% else %}
-    <p>No profile picture available.</p>
-    {% endif %}
 
     <h2>Seller Information</h2>
     <p><strong>Seller Name:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>

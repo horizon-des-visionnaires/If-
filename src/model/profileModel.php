@@ -183,29 +183,34 @@ class profileModel
     {
         return getRelativeTime($date);
     }
-    
+
     public function deletePost($idPost, $idUser)
     {
         return deletePost($this->dsn, $idPost, $idUser);
     }
 
-    public function getIsLike($IdUser, $IdPost) {
+    public function getIsLike($IdUser, $IdPost)
+    {
         return getIsLike($this->dsn, $IdUser, $IdPost);
     }
 
-    public function getIsFavorites($IdUser, $IdPost) {
+    public function getIsFavorites($IdUser, $IdPost)
+    {
         return getIsFavorites($this->dsn, $IdUser, $IdPost);
     }
 
-    public function LikeData($IdUser, $IdPost) {
+    public function LikeData($IdUser, $IdPost)
+    {
         LikeData($this->dsn, $IdUser, $IdPost, "/profile-$IdUser");
     }
 
-    public function FavoriteData($IdUser, $IdPost) {
+    public function FavoriteData($IdUser, $IdPost)
+    {
         FavoriteData($this->dsn, $IdUser, $IdPost, "/profile-$IdUser");
     }
 
-    public function getCommentCount($idPost) {
+    public function getCommentCount($idPost)
+    {
         return getCommentCount($this->dsn, $idPost);
     }
 
@@ -362,17 +367,14 @@ class profileModel
                 U1.IdUser AS SellerId,
                 U1.FirstName AS SellerFirstName,
                 U1.LastName AS SellerLastName,
-                U2.IdUser AS BuyerId,
-                U2.FirstName AS BuyerFirstName,
-                U2.LastName AS BuyerLastName,
-                U1.ProfilPicture AS SellerProfilPicture,
-                U2.ProfilPicture AS BuyerProfilPicture
+                U1.ProfilPicture AS SellerProfilPicture
             FROM BuyAdvice BA
             INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
             INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
             INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
             WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
         ";
+
 
             $stmt = $this->dsn->prepare($query);
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
@@ -387,7 +389,6 @@ class profileModel
 
             if ($getAdviceData) {
                 $getAdviceData['SellerProfilPicture'] = $getAdviceData['SellerProfilPicture'] ? base64_encode($getAdviceData['SellerProfilPicture']) : '';
-                $getAdviceData['BuyerProfilPicture'] = $getAdviceData['BuyerProfilPicture'] ? base64_encode($getAdviceData['BuyerProfilPicture']) : '';
             }
 
             return $getAdviceData;
