@@ -68,7 +68,7 @@ class homeController
             $idUser_1 = $_POST['idUser_1'];
             $IdUser_2 = $_SESSION['IdUser'];
 
-            $this->homeModel->addConvertation($idUser_1, $IdUser_2);
+            $this->homeModel->addConversation($idUser_1, $IdUser_2);
         }
     }
 }

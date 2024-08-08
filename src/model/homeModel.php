@@ -150,9 +150,11 @@ class homeModel
         }
     }
 
-    public function addConvertation($idUser_1, $IdUser_2)
+    public function addConversation($idUser_1, $IdUser_2)
     {
         try {
+            $this->dsn->beginTransaction();
+
             $checkConv = "SELECT IdConversations FROM Conversations 
                       WHERE (IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2) 
                          OR (IdUser_1 = :IdUser_2 AND IdUser_2 = :IdUser_1)";
@@ -182,6 +184,16 @@ class homeModel
                 $stmt3->bindParam(':IdSender', $IdUser_2);
                 $stmt3->bindParam(':ContentMessages', $contentMessage);
                 $stmt3->execute();
+
+                // Créer une notification pour l'utilisateur IdUser_1
+                $MessageNotif = "Vous avez une nouvelle conversation avec " . $_SESSION['FirstName'] . " " . $_SESSION['LastName'];
+                $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+                $stmt4 = $this->dsn->prepare($addNotification);
+                $stmt4->bindParam(':IdUser', $idUser_1);
+                $stmt4->bindParam(':MessageNotif', $MessageNotif);
+                $stmt4->execute();
+
+                $this->dsn->commit();
 
                 header("Location: /conversationChat-" . $idConversation);
                 exit();

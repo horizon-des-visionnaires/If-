@@ -214,3 +214,15 @@ $createTablePictureAdvice = ("CREATE TABLE IF NOT EXISTS
     CONSTRAINT fk_Advice_PictureAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTablePictureAdvice);
+
+$createTableNotifications = ("CREATE TABLE IF NOT EXISTS
+`Notifications` (
+    `IdNotification` int(11) NOT NULL AUTO_INCREMENT,
+    `IdUser` int(11) DEFAULT NULL,
+    `MessageNotif` TEXT DEFAULT NULL,
+    `IsRead` tinyint(1) DEFAULT '0',
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`IdNotification`),
+    CONSTRAINT fk_IdUser_Notifications FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableNotifications);

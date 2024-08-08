@@ -22,7 +22,8 @@ class notificationController
         $this->notificationModel = new \notification\notificationModel();
     }
 
-    public function notification() {
+    public function notification()
+    {
         session_start();
 
         $isConnected = false;
@@ -37,10 +38,13 @@ class notificationController
             $IsAdmin = true;
         }
 
+        $notifications = $this->notificationModel->getUserNotifications($userId);
+
         echo $this->twig->render('notification/notification.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
-            'IsAdmin' => $IsAdmin
+            'IsAdmin' => $IsAdmin,
+            'notifications' => $notifications
         ]);
     }
 }
