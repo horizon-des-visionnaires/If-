@@ -16,6 +16,7 @@ require_once __DIR__ . '/controller/conversationController.php';
 require_once __DIR__ . '/controller/conversationChatController.php';
 require_once __DIR__ . '/controller/adviceMeetingContoller.php';
 require_once __DIR__ . '/controller/notificationContoller.php';
+require_once __DIR__ . '/controller/planningController.php';
 
 require_once __DIR__ . '/database/createDatabase.php'; // Inclusion du script de création de la base de données
 
@@ -37,6 +38,7 @@ $routes = [
   '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
   '/conversation' => ['controller' => 'conversation\conversationController', 'method' => 'conversation'],
   '/notification' => ['controller' => 'notification\notificationController', 'method' => 'notification'],
+  '/planning' => ['controller' => 'planning\planningController', 'method' => 'planning'],
 ];
 
 // Récupération du chemin de la requête

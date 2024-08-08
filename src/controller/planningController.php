@@ -1,30 +1,30 @@
 <?php
 
-namespace adviceMeeting;
+namespace planning;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require 'vendor/autoload.php';
 
-require_once __DIR__ . '/../model/adviceMeetingModel.php';
+require_once __DIR__ . '/../model/planningModel.php';
 
-class adviceMeetingController
+class planningController
 {
     protected $twig;
     private $loader;
-    private $adviceMeetingModel;
+    private $planningModel;
     private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
-        $this->adviceMeetingModel = new \adviceMeeting\adviceMeetingModel();
+        $this->planningModel = new \planning\planningModel();
         $this->notificationModel = new \notification\notificationModel();
     }
 
-    public function adviceMeeting($IdBuyAdvice)
+    public function planning()
     {
         session_start();
 
@@ -41,25 +41,21 @@ class adviceMeetingController
             $IsAdmin = true;
         }
 
-        $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
-        $adviceImages = [];
-        if ($adviceData) {
-            if ($userId !== $adviceData['SellerId'] && $userId !== $adviceData['BuyerId']) {
-                header('Location: /advice');
-                exit;
-            }
-            $adviceImages = $this->adviceMeetingModel->getAdviceImages($adviceData['IdAdvice']);
-        }
-        
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+        $adviceData = $this->planningModel->getBuyAdviceData($userId);
+        $adviceImages = [];
+        $adviceImages = $this->planningModel->getAdviceImages($adviceData['IdAdvice']);
+        $userInfo = $this->planningModel->getUserInfo($userId);
 
-        echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
+        echo $this->twig->render('planning/planning.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
+            'unreadCount' => $unreadCount,
             'adviceData' => $adviceData,
             'adviceImages' => $adviceImages,
-            'unreadCount' => $unreadCount
+            'userFirstName' => $userInfo['FirstName'],
+            'userLastName' => $userInfo['LastName']
         ]);
     }
 }
