@@ -76,7 +76,7 @@
         </div>
         {% if user.IsPro == 1 %}
         <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-            <p>Je peux t'aider à {{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
+            <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
         </div> 
         {% endif %} 
         <div class="description">
@@ -98,26 +98,43 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/profile-{{ user.IdUser }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
-            <input type="text" name="FirstName" placeholder="Prénom" id="inputField">
+            <input type="text" name="FirstName" placeholder="{{ user.FirstName }}" id="inputField">
 
-            <input type="text" name="LastName" placeholder="Nom de famille" id="inputField">
+            <input type="text" name="LastName" placeholder="{{ user.LastName }}" id="inputField">
 
+            {% if user.Location == null %}
             <input type="text" name="Location" placeholder="Localisation (ex: france, espagne, ...)" id="inputField">
-
-
+            {% else %}
+            <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField">
+            {% endif %}
+            
+            {% if user.ProfilPromotion == null %}
             <div style="position: relative;">
                 <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: je peux t'aider à ...)" id="inputFieldPromotion"
                     maxlength="100"></textarea>
                 <div id="charCount2" class="char-count">0/100</div>
             </div>
+            {% else %}
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="{{ user.ProfilPromotion }}" id="inputFieldPromotion"
+                    maxlength="100"></textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
+            {% endif %}
 
+            {% if user.ProfilDescription == null %}
             <div style="position: relative;">
                 <textarea name="ProfilDescription" placeholder="Description du profil" id="inputFieldDesc"
                     maxlength="255"></textarea>
                 <div id="charCount" class="char-count">0/255</div>
             </div>
-
-            
+            {% else %}
+            <div style="position: relative;">
+                <textarea name="ProfilDescription" placeholder="{{ user.ProfilDescription }}" id="inputFieldDesc"
+                    maxlength="255"></textarea>
+                <div id="charCount" class="char-count">0/255</div>
+            </div>
+            {% endif %}
 
             <input type="file" id="images" name="ProfilPicture" onchange="openCropperModal(this)">
 
