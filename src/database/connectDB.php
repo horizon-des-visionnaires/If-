@@ -1,14 +1,17 @@
 <?php
-$servername = "mysql";
-$username = "ifa_user";
-$password = "ifa_password";
-$dbname = "ifa_database";
-$dsn = '';
 
-try {
-    $dsn = 'mysql:host=' . $servername . ';dbname=' . $dbname;
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo 'connection failed: ' . $e->getMessage();
+function connectDB()
+{
+    $dsn = 'mysql:host=mysql;dbname=ifa_database';
+    $username = 'ifa_user';
+    $password = 'ifa_password';
+
+    try {
+        $pdo = new PDO($dsn, $username, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    } catch (PDOException $e) {
+        echo "Erreur de connexion à la base de données : " . $e->getMessage();
+        exit();
+    }
 }
