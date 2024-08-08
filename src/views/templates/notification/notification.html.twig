@@ -17,9 +17,15 @@
 
 <div class="notification-container">
     {% for notification in notifications %}
-    <div class="notification {% if not notification.IsRead %}unread{% endif %}">
+    <div class="notification">
+        {% if notification.IsRead == 0 %}
         <p>{{ notification.MessageNotif }}</p>
         <span>{{ notification.CreatedAt|date("d/m/Y H:i") }}</span>
+        <form method="post" action="/notification">
+            <input type="hidden" name="IdNotification" value="{{ notification.IdNotification }}">
+            <button type="submit">Marquer comme lu</button>
+        </form>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

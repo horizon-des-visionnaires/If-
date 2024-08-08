@@ -39,6 +39,7 @@ class notificationController
         }
 
         $notifications = $this->notificationModel->getUserNotifications($userId);
+        $this->markAsRead();
 
         echo $this->twig->render('notification/notification.html.twig', [
             'isConnected' => $isConnected,
@@ -46,5 +47,13 @@ class notificationController
             'IsAdmin' => $IsAdmin,
             'notifications' => $notifications
         ]);
+    }
+
+    public function markAsRead()
+    {
+        if (isset($_POST['IdNotification'])) {
+            $notificationId = $_POST['IdNotification'];
+            $this->notificationModel->markNotificationAsRead($notificationId);
+        }
     }
 }

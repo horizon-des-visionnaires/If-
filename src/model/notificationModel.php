@@ -39,4 +39,22 @@ class notificationModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function markNotificationAsRead($notificationId)
+    {
+        try {
+            $stmt = $this->dsn->prepare("
+            UPDATE Notifications 
+            SET IsRead = 1 
+            WHERE IdNotification = :IdNotification
+        ");
+            $stmt->bindParam(':IdNotification', $notificationId);
+            $stmt->execute();
+
+            header("Location: /notification");
+            exit();
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
 }
