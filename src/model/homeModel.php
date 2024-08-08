@@ -27,26 +27,47 @@ class homeModel
     {
         try {
             $stmt = $this->dsn->query("
-                SELECT 
-                    IdUser,
-                    FirstName, 
-                    LastName, 
-                    ProfilPicture, 
-                    ProfilDescription
-                FROM User
-                WHERE IsPro = 1
-                ORDER BY RAND()
-                LIMIT 5
-            ");
+            SELECT 
+                u.IdUser,
+                u.FirstName, 
+                u.LastName, 
+                u.ProfilPicture, 
+                u.ProfilPromotion,
+                a.AdviceType,
+                a.AdviceDescription,
+                pa.PictureAdvice
+            FROM User u
+            INNER JOIN Advice a ON u.IdUser = a.IdUser
+            LEFT JOIN PictureAdvice pa ON a.IdAdvice = pa.IdAdvice
+            WHERE u.IsPro = 1
+            ORDER BY RAND()
+            LIMIT 5
+        ");
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($results as &$row) {
-                if (!is_null($row['ProfilPicture'])) {
-                    $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
+            $userData = [];
+            foreach ($results as $row) {
+                $userId = $row['IdUser'];
+
+                if (!isset($userData[$userId])) {
+                    $userData[$userId] = [
+                        'IdUser' => $row['IdUser'],
+                        'FirstName' => $row['FirstName'],
+                        'LastName' => $row['LastName'],
+                        'ProfilPicture' => $row['ProfilPicture'] ? base64_encode($row['ProfilPicture']) : null,
+                        'ProfilPromotion' => $row['ProfilPromotion'],
+                        'AdviceType' => $row['AdviceType'],
+                        'AdviceDescription' => $row['AdviceDescription'],
+                        'Pictures' => []
+                    ];
+                }
+
+                if ($row['PictureAdvice']) {
+                    $userData[$userId]['Pictures'][] = base64_encode($row['PictureAdvice']);
                 }
             }
 
-            return $results;
+            return array_values($userData);
         } catch (PDOException $e) {
             $error = "error: " . $e->getMessage();
             echo $error;
