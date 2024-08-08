@@ -172,14 +172,13 @@ class adviceModel
 
             // Vérifier que la réservation est dans le futur, pas pour le jour même
             $endOfToday = (new \DateTime())->setTime(23, 59, 59);
-            // La réservation doit être après la fin de la journée actuelle
             if ($start <= $endOfToday) {
                 echo "Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.";
                 return;
             }
 
             // Vérifier que le jour choisi est bien renseigné dans le champ DaysOfWeek de la table Advice
-            $queryAdvice = "SELECT DaysOfWeek, StartTime, EndTime FROM Advice WHERE IdAdvice = :IdAdvice";
+            $queryAdvice = "SELECT DaysOfWeek, StartTime, EndTime, IdUser FROM Advice WHERE IdAdvice = :IdAdvice";
             $stmtAdvice = $this->dsn->prepare($queryAdvice);
             $stmtAdvice->bindParam(':IdAdvice', $IdAdvice);
             $stmtAdvice->execute();
@@ -255,6 +254,40 @@ class adviceModel
             $stmtInsertBuyAdvice->bindParam(':StartTime', $StartTime);
             $stmtInsertBuyAdvice->bindParam(':EndTime', $EndTime);
             $stmtInsertBuyAdvice->execute();
+
+            // Récupérer les informations du vendeur
+            $querySellerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdUser";
+            $stmtSellerInfo = $this->dsn->prepare($querySellerInfo);
+            $stmtSellerInfo->bindParam(':IdUser', $adviceData['IdUser']);
+            $stmtSellerInfo->execute();
+            $sellerInfo = $stmtSellerInfo->fetch(PDO::FETCH_ASSOC);
+
+            if (!$sellerInfo) {
+                echo "Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.";
+                return;
+            }
+
+            // Récupérer les informations de l'acheteur pour la notification
+            $queryBuyerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer";
+            $stmtBuyerInfo = $this->dsn->prepare($queryBuyerInfo);
+            $stmtBuyerInfo->bindParam(':IdBuyer', $IdBuyer);
+            $stmtBuyerInfo->execute();
+            $buyerInfo = $stmtBuyerInfo->fetch(PDO::FETCH_ASSOC);
+
+            if (!$buyerInfo) {
+                echo "Erreur : Impossible de trouver l'utilisateur acheteur.";
+                return;
+            }
+
+            // Créer le message de notification
+            $MessageNotif = "{$buyerInfo['FirstName']} {$buyerInfo['LastName']} a acheté votre conseil pour le {$Date} entre {$StartTime} et {$EndTime}.";
+
+            // Insérer la notification pour le vendeur
+            $insertNotificationQuery = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmtInsertNotification = $this->dsn->prepare($insertNotificationQuery);
+            $stmtInsertNotification->bindParam(':IdUser', $adviceData['IdUser']);  // Le vendeur reçoit la notification
+            $stmtInsertNotification->bindParam(':MessageNotif', $MessageNotif);
+            $stmtInsertNotification->execute();
 
             echo "L'achat du conseil a été effectué avec succès.";
         } catch (PDOException $e) {
