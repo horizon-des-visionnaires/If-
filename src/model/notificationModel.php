@@ -71,4 +71,24 @@ class notificationModel
             return 0;
         }
     }
+
+    public function getUserInfo($userId)
+    {
+        try {
+            $query = "
+        SELECT FirstName, LastName
+        FROM User
+        WHERE IdUser = :userId
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
 }
