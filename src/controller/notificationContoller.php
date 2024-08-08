@@ -39,13 +39,15 @@ class notificationController
         }
 
         $notifications = $this->notificationModel->getUserNotifications($userId);
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
         $this->markAsRead();
 
         echo $this->twig->render('notification/notification.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount
         ]);
     }
 

@@ -14,12 +14,14 @@ class conversationController
     protected $twig;
     private $loader;
     private $conversationModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->conversationModel = new conversationModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function conversation()
@@ -41,11 +43,14 @@ class conversationController
 
         $conversationUsers = $this->conversationModel->getUsersByConversation($userId);
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
         echo $this->twig->render('conversation/conversation.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
-            'conversationUsers' => $conversationUsers
+            'conversationUsers' => $conversationUsers,
+            'unreadCount' => $unreadCount
         ]);
     }
 }

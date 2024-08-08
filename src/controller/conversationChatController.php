@@ -14,12 +14,14 @@ class conversationChatController
     protected $twig;
     private $loader;
     private $conversationChatModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->conversationChatModel = new conversationChatModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function conversationChat($IdConversations)
@@ -49,6 +51,8 @@ class conversationChatController
         $convChat = $this->conversationChatModel->getChat($IdConversations);
         $this->getMessage();
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
         echo $this->twig->render('conversationChat/conversationChat.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -59,7 +63,8 @@ class conversationChatController
                 'LastName1' => $details['LastName1'],
                 'FirstName2' => $details['FirstName2'],
                 'LastName2' => $details['LastName2'],
-            ]
+            ],
+            'unreadCount' => $unreadCount
         ]);
     }
 

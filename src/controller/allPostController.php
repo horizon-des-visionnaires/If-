@@ -14,12 +14,14 @@ class allPostController
     protected $twig;
     private $loader;
     private $allPostModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->allPostModel = new \allPost\allPostModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function allPost()
@@ -58,6 +60,7 @@ class allPostController
             $post['commentCount'] = $this->allPostModel->getCommentCount($post['IdPost']);
         }
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
         echo $this->twig->render('allPost/allPost.html.twig', [
             'isConnected' => $isConnected,
@@ -67,8 +70,8 @@ class allPostController
             'searchQuery' => $searchQuery,
             'sortBy' => $sortBy,
             'order' => $order,
-
             'user' => $user,
+            'unreadCount' => $unreadCount
         ]);
     }
 

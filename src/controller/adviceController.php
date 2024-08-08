@@ -13,6 +13,7 @@ class adviceController
     protected $twig;
     private $loader;
     private $adviceModel;
+    private $notificationModel;
 
     public function __construct()
     {
@@ -22,6 +23,7 @@ class adviceController
         $this->twig = new Environment($this->loader);
         // Instanciation du modèle adviceModel
         $this->adviceModel = new \advice\adviceModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function advice()
@@ -59,6 +61,8 @@ class adviceController
         $this->getAdviceData();
         $this->getDataBuyAdvice();
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
         // Affichage du template Twig avec les données récupérées
         echo $this->twig->render('advice/advice.html.twig', [
             'isConnected' => $isConnected,
@@ -68,7 +72,8 @@ class adviceController
             'adviceData' => $adviceData,
             'searchQuery' => $searchQuery,
             'sortBy' => $sortBy,
-            'order' => $order
+            'order' => $order,
+            'unreadCount' => $unreadCount
         ]);
     }
 

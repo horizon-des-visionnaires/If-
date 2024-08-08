@@ -14,12 +14,14 @@ class adviceMeetingController
     protected $twig;
     private $loader;
     private $adviceMeetingModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->adviceMeetingModel = new adviceMeetingModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function adviceMeeting($IdBuyAdvice)
@@ -56,13 +58,15 @@ class adviceMeetingController
             $adviceImages = $this->adviceMeetingModel->getAdviceImages($adviceData['IdAdvice']);
         }
         
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
             'adviceData' => $adviceData,
-            'adviceImages' => $adviceImages
+            'adviceImages' => $adviceImages,
+            'unreadCount' => $unreadCount
         ]);
     }
 }

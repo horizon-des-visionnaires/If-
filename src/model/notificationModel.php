@@ -57,4 +57,24 @@ class notificationModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function getUnreadNotificationCount($userId)
+    {
+        try {
+            $stmt = $this->dsn->prepare("
+            SELECT COUNT(*) as count
+            FROM Notifications 
+            WHERE IdUser = :IdUser 
+            AND IsRead = 0
+        ");
+            $stmt->bindParam(':IdUser', $userId);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['count'];
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+            return 0;
+        }
+    }
 }
