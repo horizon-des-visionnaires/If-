@@ -46,6 +46,11 @@ class registerController
                 return "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre.";
             }
 
+            // Check if email already exists in User table
+            if ($this->registerModel->emailExists($email)) {
+                return "L'adresse e-mail est déjà utilisée.";
+            }
+
             $hashed_password = password_hash($userPassword, PASSWORD_DEFAULT);
             $token = bin2hex(random_bytes(16));
 
