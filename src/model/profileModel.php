@@ -382,10 +382,10 @@ class profileModel
 
             $getAdviceData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($getAdviceData === false) {
-                echo "No data found for ID: " . htmlspecialchars($userId);
-                return null;
-            }
+            // if ($getAdviceData === false) {
+            //     echo "No data found for ID: " . htmlspecialchars($userId);
+            //     return null;
+            // }
 
             if ($getAdviceData) {
                 $getAdviceData['SellerProfilPicture'] = $getAdviceData['SellerProfilPicture'] ? base64_encode($getAdviceData['SellerProfilPicture']) : '';
@@ -402,9 +402,9 @@ class profileModel
     {
         try {
             $query = "
-        SELECT PictureAdvice
-        FROM PictureAdvice
-        WHERE IdAdvice = :idAdvice
+            SELECT PictureAdvice
+            FROM PictureAdvice
+            WHERE IdAdvice = :idAdvice
         ";
 
             $stmt = $this->dsn->prepare($query);
@@ -421,7 +421,7 @@ class profileModel
             return $images;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
-            return [];
+            return []; // Return an empty array on error
         }
     }
 }

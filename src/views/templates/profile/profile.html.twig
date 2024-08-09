@@ -451,7 +451,7 @@
         {% for image in adviceImages %}
         {% if image.PictureAdvice %}
         <img class="icon" src="data:image;base64,{{ image.PictureAdvice }}" alt="Advice Image">
-        {% else %}
+        {% endif %}
         {% endfor %}
     </div>
     {% endif %}
@@ -462,8 +462,6 @@
     <p><strong>Seller Name:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
     {% if adviceData.SellerProfilPicture %}
     <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
-    {% else %}
-    <p>No profile picture available.</p>
     {% endif %}
     {% endif %}
 </div>
