@@ -312,16 +312,15 @@ span {
 
 
 
-
 .image-modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 11;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden; /* Remplace "auto" par "hidden" pour éviter le scroll */
     background-color: rgba(0, 0, 0, 0.9);
     backdrop-filter: blur(1em);
 }
@@ -329,15 +328,15 @@ span {
 .image-modal-content {
     margin: auto;
     display: block;
-    width: 70%;
-    max-width: 500px;
-    margin-top: 10em;
-    margin-left: 30em;
+    margin-top: 8em;
+    max-width: 80%; /* Garde une marge par rapport aux bords de l'écran */
+    max-height: 80%; /* Assure que l'image ne dépasse pas 80% de la hauteur de l'écran */
+    object-fit: contain; /* Garde les proportions de l'image */
 }
 
 .close-image-modal {
     position: absolute;
-    top: 3em;
+    top: 2em;
     right: 35px;
     color: #f1f1f1;
     font-size: 40px;

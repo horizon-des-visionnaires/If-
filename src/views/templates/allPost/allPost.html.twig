@@ -237,8 +237,8 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/allPost" method="post" id="formAddPost" enctype="multipart/form-data">
-            <input id="modalTitlePost" type="text" name="TitlePost" placeholder="Titre du Post" class="inputField" required>
-            <textarea id="modalContentPost" name="ContentPost" placeholder="Contenu du Post" class="inputFieldDesc" required></textarea>
+            <input id="modalTitlePost" type="text" name="TitlePost" placeholder="Titre de la Publication" class="inputField" required>
+            <textarea id="modalContentPost" name="ContentPost" placeholder="Contenu de la Publication" class="inputFieldDesc" required></textarea>
             <input type="file" id="images" name="PicturePost[]" multiple accept="image/*" onchange="openCropperModal(this)">
             <button type="submit" name="addPost" class="inputField2">Ajouter une Publication</button>
         </form>
