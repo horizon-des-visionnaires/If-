@@ -124,7 +124,7 @@
             </div>
             {% else %}
             <div style="position: relative;">
-                <textarea name="ProfilPromotion" placeholder="Promotion du profil" id="inputFieldPromotion"
+                <textarea name="ProfilPromotion" placeholder="{{ user.ProfilPromotion }}" id="inputFieldPromotion"
                     maxlength="100"></textarea>
                 <div id="charCount2" class="char-count">0/100</div>
             </div>
