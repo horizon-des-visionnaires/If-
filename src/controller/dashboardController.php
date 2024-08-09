@@ -8,7 +8,7 @@ use TCPDF;
 use ZipArchive;
 
 require 'vendor/autoload.php';
-require 'vendor/tecnickcom/tcpdf/tcpdf.php'; 
+require 'vendor/tecnickcom/tcpdf/tcpdf.php';
 
 require_once __DIR__ . '/../model/dashboardModel.php';
 
@@ -57,7 +57,7 @@ class dashboardController
             $IdRequest = $_POST['IdRequest'];
             $this->dashboardModel->requestValid($IdRequest);
         }
-    
+
         if (isset($_POST['requestInvalid'])) {
             $IdRequest = $_POST['IdRequest'];
             $rejectReason = $_POST['rejectReason'];
@@ -71,13 +71,21 @@ class dashboardController
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
+        $user = $this->dashboardModel->getUser();
+        $this->getDeleteUser();
+        $countUser = $this->dashboardModel->countNumberUser();
+        $countAdvice = $this->dashboardModel->countNumberAdviceSell();
+
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
             'requestPassProData' => $requestPassProData,
             'userPro' => $userPro,
-            'unreadCount' => $unreadCount
+            'unreadCount' => $unreadCount,
+            'user' => $user,
+            'countUser' => $countUser,
+            'countAdvice' => $countAdvice
         ]);
     }
 
@@ -161,9 +169,17 @@ class dashboardController
     {
         if (isset($_POST['deletePro'])) {
             $IdUser = $_POST['IdUser'];
-            
+
             $this->dashboardModel->deletePro($IdUser);
         }
     }
-}
 
+    public function getDeleteUser()
+    {
+        if (isset($_POST['deleteUser'])) {
+            $IdUser = $_POST['IdUser'];
+
+            $this->dashboardModel->deleteUser($IdUser);
+        }
+    }
+}

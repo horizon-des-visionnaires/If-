@@ -179,6 +179,8 @@ class adviceModel
             // Effectuer la réservation
             $this->insertBuyAdvice($IdAdvice, $IdBuyer, $Date, $StartTime, $EndTime);
 
+            $this->updateAdviceCounter($IdAdvice);
+
             // Envoyer la notification
             $errorMessage = $this->sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime);
 
@@ -344,5 +346,20 @@ class adviceModel
         $stmtInsertNotification->execute();
 
         return $errorMessage;
+    }
+
+    private function updateAdviceCounter()
+    {
+        try {
+            // Préparer la requête pour insérer une ligne si elle n'existe pas, ou mettre à jour le compteur si elle existe
+            $query = "INSERT INTO NumberByAdvice (Id, Number) 
+                  VALUES (1, 1)
+                  ON DUPLICATE KEY UPDATE Number = Number + 1";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la mise à jour du compteur : " . $e->getMessage();
+        }
     }
 }

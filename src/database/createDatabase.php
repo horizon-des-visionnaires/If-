@@ -227,3 +227,11 @@ $createTableNotifications = ("CREATE TABLE IF NOT EXISTS
     CONSTRAINT fk_IdUser_Notifications FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableNotifications);
+
+$createTableNumberBuyAdvice = ("CREATE TABLE IF NOT EXISTS
+`NumberByAdvice` (
+    `Id` int(11) NOT NULL AUTO_INCREMENT,
+    `Number` int(11) NOT NULL DEFAULT 0,
+    PRIMARY KEY (`Id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableNumberBuyAdvice);

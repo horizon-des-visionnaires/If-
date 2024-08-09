@@ -1,5 +1,3 @@
-
-
 /* Conteneur de la demande */
 .requestContainer {
 
@@ -61,7 +59,8 @@
 }
 
 /* Icônes et images */
-.icon, .icon2 {
+.icon,
+.icon2 {
     width: 50px;
     height: 50px;
     border-radius: 5px;
@@ -69,9 +68,11 @@
     transition: transform 0.3s;
 }
 
-.icon:hover, .icon2:hover {
+.icon:hover,
+.icon2:hover {
     transform: scale(1.1);
 }
+
 /* Boutons */
 .button {
     display: flex;
@@ -98,34 +99,44 @@
 .buttonValid button:hover {
     background-color: #218838;
 }
+
 .buttonInvalid {
     display: flex;
-    justify-content: space-between; /* Espace entre les enfants */
-    align-items: center; /* Alignement vertical des enfants */
-    gap: 15px; /* Espacement entre les enfants */
+    justify-content: space-between;
+    /* Espace entre les enfants */
+    align-items: center;
+    /* Alignement vertical des enfants */
+    gap: 15px;
+    /* Espacement entre les enfants */
 }
 
 .buttonInvalid textarea {
-    border: 2px solid #2e7d32; /* Bordure vert foncé */
+    border: 2px solid #2e7d32;
+    /* Bordure vert foncé */
     font-family: 'Montserrat', sans-serif;
     padding: 1em;
-    resize: none; /* Empêcher le redimensionnement */
+    resize: none;
+    /* Empêcher le redimensionnement */
     color: black;
-    width: auto; /* Ajuste la largeur */
+    width: auto;
+    /* Ajuste la largeur */
     height: auto;
     border-radius: 12px;
     background-color: #ffffff;
-    box-sizing: border-box; /* Ensures padding is included in the height/width */
+    box-sizing: border-box;
+    /* Ensures padding is included in the height/width */
 }
 
 .buttonInvalid textarea:hover {
-    border: 2px solid #1b5e20; /* Bordure vert foncé */
+    border: 2px solid #1b5e20;
+    /* Bordure vert foncé */
 }
 
 .buttonInvalid button {
     background-color: #dc3545;
-    display: flex; 
-    align-items: center; /* Center content vertically */
+    display: flex;
+    align-items: center;
+    /* Center content vertically */
     border: none;
     border-radius: 5px;
     font-size: 1em;
@@ -149,7 +160,8 @@
 
 
 /* Table des utilisateurs professionnels */
-.tableUserPro {
+.tableUserPro,
+.tableUser {
     margin: 20px;
     background: #fff;
     border-radius: 8px;
@@ -157,28 +169,35 @@
     padding: 20px;
 }
 
-.tableUserPro table {
+.tableUserPro table,
+.tableUser table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.tableUserPro th, .tableUserPro td {
+.tableUserPro th,
+.tableUserPro td,
+.tableUser th,
+.tableUser td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-.tableUserPro th {
+.tableUserPro th,
+.tableUser th {
     background-color: #f8f9fa;
     color: #333;
     font-weight: bold;
 }
 
-.tableUserPro tr:hover {
+.tableUserPro tr:hover,
+.tableUser tr:hover {
     background-color: #f1f1f1;
 }
 
-.tableUserPro img.icon {
+.tableUserPro img.icon,
+.tableUser img.icon  {
     width: 40px;
     height: 40px;
     border-radius: 5px;
@@ -186,10 +205,13 @@
     transition: transform 0.3s;
 }
 
-.tableUserPro img.icon:hover {
+.tableUserPro img.icon:hover,
+.tableUser img.icon:hover {
     transform: scale(1.1);
 }
-.tableUserPro button {
+
+.tableUserPro button,
+.tableUser button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -198,11 +220,14 @@
     color: #fff;
     transition: background 0.3s;
 }
-.tableUserPro button {
+
+.tableUserPro button,
+.tableUser button {
     background-color: #dc3545;
 }
 
-.tableUserPro button:hover {
+.tableUserPro button:hover,
+.tableUser button:hover {
     background-color: #c82333;
 }
 
