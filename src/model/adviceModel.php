@@ -42,9 +42,9 @@ class adviceModel
 
             $IdAdvice = $this->dsn->lastInsertId();
             $stmt = $this->dsn->prepare("INSERT INTO PictureAdvice (IdAdvice, PictureAdvice) VALUES (:IdAdvice, :PictureAdvice)");
-            foreach ($PictureAdvice as $PictureAdvice) {
+            foreach ($PictureAdvice as $Picture) {
                 $stmt->bindParam(':IdAdvice', $IdAdvice);
-                $stmt->bindParam(':PictureAdvice', $PictureAdvice, PDO::PARAM_LOB);
+                $stmt->bindParam(':PictureAdvice', $Picture, PDO::PARAM_LOB);
                 $stmt->execute();
             }
 
@@ -154,24 +154,41 @@ class adviceModel
     {
         try {
             // Vérifier la validité de la réservation
-            $this->validateReservation($Date, $StartTime, $EndTime);
+            $errorMessage = $this->validateReservation($Date, $StartTime, $EndTime);
+            if ($errorMessage) {
+                return $errorMessage;
+            }
 
             // Vérifier les disponibilités du conseil
             $adviceData = $this->getAdviceData($IdAdvice);
-            $this->checkAdviceAvailability($adviceData, $Date, $StartTime, $EndTime);
+            if (is_string($adviceData)) {
+                return $adviceData; // Return error message from getAdviceData
+            }
+
+            $errorMessage = $this->checkAdviceAvailability($adviceData, $Date, $StartTime, $EndTime);
+            if ($errorMessage) {
+                return $errorMessage;
+            }
 
             // Vérifier les chevauchements de réservation
-            $this->checkOverlappingReservations($IdAdvice, $Date, $StartTime, $EndTime, $IdBuyer);
+            $errorMessage = $this->checkOverlappingReservations($IdAdvice, $Date, $StartTime, $EndTime, $IdBuyer);
+            if ($errorMessage) {
+                return $errorMessage;
+            }
 
             // Effectuer la réservation
             $this->insertBuyAdvice($IdAdvice, $IdBuyer, $Date, $StartTime, $EndTime);
 
             // Envoyer la notification
-            $this->sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime);
+            $errorMessage = $this->sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime);
 
-            echo "L'achat du conseil a été effectué avec succès.";
-        } catch (\Exception $e) {
-            echo "Erreur : " . $e->getMessage();
+            if ($errorMessage) {
+                return $errorMessage;
+            }
+
+            return "L'achat du conseil a été effectué avec succès.";
+        } catch (PDOException $e) {
+            return "Erreur : " . $e->getMessage();
         }
     }
 
@@ -181,16 +198,20 @@ class adviceModel
         $end = new \DateTime("$Date $EndTime");
         $interval = $start->diff($end);
 
+        $errorMessage = '';
+
         // Vérifier que la durée est bien de 1 heure
         if ($interval->h !== 1 || $interval->i !== 0) {
-            throw new \Exception("Erreur : La durée choisie doit être exactement de 1 heure.");
+            $errorMessage = "Erreur : La durée choisie doit être exactement de 1 heure.";
         }
 
         // Vérifier que la réservation est dans le futur
         $endOfToday = (new \DateTime())->setTime(23, 59, 59);
         if ($start <= $endOfToday) {
-            throw new \Exception("Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.");
+            $errorMessage = "Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.";
         }
+
+        return $errorMessage;
     }
 
     private function getAdviceData($IdAdvice)
@@ -202,7 +223,7 @@ class adviceModel
         $adviceData = $stmtAdvice->fetch(PDO::FETCH_ASSOC);
 
         if (!$adviceData) {
-            echo ("Erreur : Le conseil sélectionné n'existe pas.");
+            return "Erreur : Le conseil sélectionné n'existe pas.";
         }
 
         return $adviceData;
@@ -216,8 +237,10 @@ class adviceModel
         $adviceDaysOfWeek = explode(',', $adviceData['DaysOfWeek']);
         $selectedDayOfWeek = $start->format('l'); // Get the day of the week in English
 
+        $errorMessage = '';
+
         if (!in_array($selectedDayOfWeek, $adviceDaysOfWeek)) {
-            throw new \Exception("Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.");
+            $errorMessage = "Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.";
         }
 
         $adviceStartTime = new \DateTime($adviceData['StartTime']);
@@ -226,12 +249,16 @@ class adviceModel
         $adviceEndTime->setDate($end->format('Y'), $end->format('m'), $end->format('d'));
 
         if ($start < $adviceStartTime || $end > $adviceEndTime) {
-            throw new \Exception("Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.");
+            $errorMessage = "Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.";
         }
+
+        return $errorMessage;
     }
 
     private function checkOverlappingReservations($IdAdvice, $Date, $StartTime, $EndTime, $IdBuyer)
     {
+        $errorMessage = '';
+
         $queryOverlap = "SELECT COUNT(*) FROM BuyAdvice
                          WHERE IdAdvice = :IdAdvice
                          AND Date = :Date
@@ -245,7 +272,7 @@ class adviceModel
         $overlapCount = $stmtOverlap->fetchColumn();
 
         if ($overlapCount > 0) {
-            echo ("Erreur : Le créneau horaire choisi est déjà réservé.");
+            $errorMessage = "Erreur : Le créneau horaire choisi est déjà réservé.";
         }
 
         $queryUserOverlap = "SELECT COUNT(*) FROM BuyAdvice
@@ -261,8 +288,10 @@ class adviceModel
         $userOverlapCount = $stmtUserOverlap->fetchColumn();
 
         if ($userOverlapCount > 0) {
-            echo ("Erreur : Vous avez déjà une réservation pendant ce créneau horaire.");
+            $errorMessage = "Erreur : Vous avez déjà une réservation pendant ce créneau horaire.";
         }
+
+        return $errorMessage;
     }
 
     private function insertBuyAdvice($IdAdvice, $IdBuyer, $Date, $StartTime, $EndTime)
@@ -280,6 +309,8 @@ class adviceModel
 
     private function sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime)
     {
+        $errorMessage = '';
+
         // Récupérer les informations du vendeur
         $querySellerInfo = "SELECT FirstName, LastName FROM User WHERE IdUser = :IdUser";
         $stmtSellerInfo = $this->dsn->prepare($querySellerInfo);
@@ -288,7 +319,7 @@ class adviceModel
         $sellerInfo = $stmtSellerInfo->fetch(PDO::FETCH_ASSOC);
 
         if (!$sellerInfo) {
-            echo ("Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.");
+            $errorMessage = "Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.";
         }
 
         // Récupérer les informations de l'acheteur pour la notification
@@ -299,7 +330,7 @@ class adviceModel
         $buyerInfo = $stmtBuyerInfo->fetch(PDO::FETCH_ASSOC);
 
         if (!$buyerInfo) {
-            echo ("Erreur : Impossible de trouver l'utilisateur acheteur.");
+            $errorMessage = "Erreur : Impossible de trouver l'utilisateur acheteur.";
         }
 
         // Créer le message de notification
@@ -311,5 +342,7 @@ class adviceModel
         $stmtInsertNotification->bindParam(':IdUser', $adviceData['IdUser']);  // Le vendeur reçoit la notification
         $stmtInsertNotification->bindParam(':MessageNotif', $MessageNotif);
         $stmtInsertNotification->execute();
+
+        return $errorMessage;
     }
 }

@@ -13,6 +13,17 @@
 {% endblock %}
 
 {% block body %}
+
+{% if errorMessages is not empty %}
+    <div class="alert">
+        <ul>
+            {% for message in errorMessages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 <div class="search-add">
     <div class="searchBar">
         <form action="/advice" method="get" class="search-form">

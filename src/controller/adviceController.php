@@ -58,8 +58,10 @@ class adviceController
         // Appel à la méthode du modèle pour obtenir les conseils filtrés
         $adviceData = $this->adviceModel->getFilteredAdvice($searchQuery, $sortBy, $order);
 
-        $this->getAdviceData();
-        $this->getDataBuyAdvice();
+        $errorMessages = [];
+
+        $this->getAdviceData($errorMessages);
+        $this->getDataBuyAdvice($errorMessages);
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
@@ -73,11 +75,12 @@ class adviceController
             'searchQuery' => $searchQuery,
             'sortBy' => $sortBy,
             'order' => $order,
-            'unreadCount' => $unreadCount
+            'unreadCount' => $unreadCount,
+            'errorMessages' => $errorMessages
         ]);
     }
 
-    public function getAdviceData()
+    public function getAdviceData(&$errorMessages)
     {
         if (isset($_POST['addAdvice'])) {
             $AdviceType = $_POST['AdviceType'];
@@ -89,7 +92,7 @@ class adviceController
 
             // Vérifier que les deux champs de temps sont remplis
             if (empty($StartTime) || empty($EndTime)) {
-                echo "Erreur : Heure de début et heure de fin doivent être remplies.";
+                $errorMessages[] = "Erreur : Heure de début et heure de fin doivent être remplies.";
                 return;
             }
 
@@ -98,13 +101,13 @@ class adviceController
 
             // Vérifier que EndTime n'est pas inférieur à StartTime
             if ($endDateTime <= $startDateTime) {
-                echo "Erreur : L'heure de fin doit être supérieure à l'heure de début.";
+                $errorMessages[] = "Erreur : L'heure de fin doit être supérieure à l'heure de début.";
                 return;
             }
 
             // Vérifier qu'au moins un jour est sélectionné
             if (empty($DaysOfWeekArray)) {
-                echo "Erreur : Au moins un jour doit être sélectionné.";
+                $errorMessages[] = "Erreur : Au moins un jour doit être sélectionné.";
                 return;
             }
 
@@ -114,7 +117,7 @@ class adviceController
             $PictureAdvice = [];
             if (isset($_FILES["PictureAdvice"])) {
                 if (count($_FILES["PictureAdvice"]["tmp_name"]) > 3) {
-                    echo "You can upload a maximum of 3 images.";
+                    $errorMessages[] = "Vous pouvez télécharger un maximum de 3 images.";
                     return;
                 }
                 foreach ($_FILES["PictureAdvice"]["tmp_name"] as $tmpName) {
@@ -125,7 +128,7 @@ class adviceController
             }
 
             // Insérer le conseil dans la base de données avec tous les jours dans une seule ligne
-            $this->adviceModel->insertAdviceData(
+            $result = $this->adviceModel->insertAdviceData(
                 $AdviceType,
                 $AdviceDescription,
                 $IdUser,
@@ -134,10 +137,14 @@ class adviceController
                 $EndTime,
                 $PictureAdvice
             );
+
+            if (is_string($result)) {
+                $errorMessages[] = $result;
+            }
         }
     }
 
-    public function getDataBuyAdvice()
+    public function getDataBuyAdvice(&$errorMessages)
     {
         if (isset($_POST['buyAdvice'])) {
             $Date = $_POST['Date'];
@@ -146,7 +153,11 @@ class adviceController
             $IdAdvice = $_POST['IdAdvice'];
             $IdBuyer = $_SESSION['IdUser'];
 
-            $this->adviceModel->buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer);
+            $result = $this->adviceModel->buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer);
+
+            if (is_string($result)) {
+                $errorMessages[] = $result;
+            }
         }
     }
 }
