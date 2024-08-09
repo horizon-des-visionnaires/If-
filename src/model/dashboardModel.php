@@ -232,24 +232,6 @@ class dashboardModel
         }
     }
 
-    public function deleteUser($IdUser)
-    {
-        try {
-            $this->dsn->beginTransaction();
-
-            $updateStatusPro = "UPDATE User SET IsPro = 0 WHERE IdUser = :IdUser";
-            $stmt = $this->dsn->prepare($updateStatusPro);
-            $stmt->execute([':IdUser' => $IdUser]);
-
-            $this->dsn->commit();
-            header("Location: /dashboard");
-            exit();
-        } catch (PDOException $e) {
-            $this->dsn->rollBack();
-            echo "Erreur : " . $e->getMessage();
-        }
-    }
-
     public function countNumberUser()
     {
         try {
@@ -304,6 +286,76 @@ class dashboardModel
             $result = $countNumberUser->fetchColumn();
 
             return $result;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function deleteUser($IdUser)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            // 1. Supprimer les likes et favoris associés aux posts de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM LikeFavorites WHERE IdPost IN (SELECT IdPost FROM Post WHERE IdUser = :IdUser)");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 2. Supprimer les commentaires liés aux posts de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM Comment WHERE IdPost IN (SELECT IdPost FROM Post WHERE IdUser = :IdUser)");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 3. Supprimer les photos des posts de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM PicturePost WHERE IdPost IN (SELECT IdPost FROM Post WHERE IdUser = :IdUser)");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 4. Supprimer les posts de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM Post WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 5. Supprimer les achats d'avis associés à l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM BuyAdvice WHERE IdBuyer = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 6. Supprimer les notations faites par l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM Notations WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 7. Supprimer les photos associées aux conseils de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM PictureAdvice WHERE IdAdvice IN (SELECT IdAdvice FROM Advice WHERE IdUser = :IdUser)");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 8. Supprimer les conseils associés à l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM Advice WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 9. Supprimer les messages de conversation envoyés par l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM ConversationMessages WHERE IdSender = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 10. Supprimer les conversations où l'utilisateur est participant
+            $stmt = $this->dsn->prepare("DELETE FROM Conversations WHERE IdUser_1 = :IdUser OR IdUser_2 = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 11. Supprimer les messages de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM UserMessages WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 12. Supprimer les demandes de passage au statut pro de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM RequestPassPro WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 14. Supprimer les notifications de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM Notifications WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 15. Supprimer l'utilisateur lui-même
+            $stmt = $this->dsn->prepare("DELETE FROM User WHERE IdUser = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            $this->dsn->commit();
+            header("Location: /dashboard");
+            exit();
         } catch (PDOException $e) {
             $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();
