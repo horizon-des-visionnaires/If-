@@ -170,7 +170,7 @@ class adviceModel
             $this->sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime);
 
             echo "L'achat du conseil a été effectué avec succès.";
-        } catch (PDOException $e) {
+        } catch (\Exception $e) {
             echo "Erreur : " . $e->getMessage();
         }
     }
@@ -183,13 +183,13 @@ class adviceModel
 
         // Vérifier que la durée est bien de 1 heure
         if ($interval->h !== 1 || $interval->i !== 0) {
-            echo ("Erreur : La durée choisie doit être exactement de 1 heure.");
+            throw new \Exception("Erreur : La durée choisie doit être exactement de 1 heure.");
         }
 
         // Vérifier que la réservation est dans le futur
         $endOfToday = (new \DateTime())->setTime(23, 59, 59);
         if ($start <= $endOfToday) {
-            echo("Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.");
+            throw new \Exception("Erreur : Vous ne pouvez pas réserver un conseil pour le jour même.");
         }
     }
 
@@ -202,7 +202,7 @@ class adviceModel
         $adviceData = $stmtAdvice->fetch(PDO::FETCH_ASSOC);
 
         if (!$adviceData) {
-            echo("Erreur : Le conseil sélectionné n'existe pas.");
+            echo ("Erreur : Le conseil sélectionné n'existe pas.");
         }
 
         return $adviceData;
@@ -217,7 +217,7 @@ class adviceModel
         $selectedDayOfWeek = $start->format('l'); // Get the day of the week in English
 
         if (!in_array($selectedDayOfWeek, $adviceDaysOfWeek)) {
-            echo("Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.");
+            throw new \Exception("Erreur : Le jour sélectionné n'est pas disponible pour ce conseil.");
         }
 
         $adviceStartTime = new \DateTime($adviceData['StartTime']);
@@ -226,7 +226,7 @@ class adviceModel
         $adviceEndTime->setDate($end->format('Y'), $end->format('m'), $end->format('d'));
 
         if ($start < $adviceStartTime || $end > $adviceEndTime) {
-            echo("Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.");
+            throw new \Exception("Erreur : Le créneau horaire choisi n'est pas disponible pour ce conseil.");
         }
     }
 
@@ -245,7 +245,7 @@ class adviceModel
         $overlapCount = $stmtOverlap->fetchColumn();
 
         if ($overlapCount > 0) {
-            echo("Erreur : Le créneau horaire choisi est déjà réservé.");
+            echo ("Erreur : Le créneau horaire choisi est déjà réservé.");
         }
 
         $queryUserOverlap = "SELECT COUNT(*) FROM BuyAdvice
@@ -261,7 +261,7 @@ class adviceModel
         $userOverlapCount = $stmtUserOverlap->fetchColumn();
 
         if ($userOverlapCount > 0) {
-            echo("Erreur : Vous avez déjà une réservation pendant ce créneau horaire.");
+            echo ("Erreur : Vous avez déjà une réservation pendant ce créneau horaire.");
         }
     }
 
@@ -288,7 +288,7 @@ class adviceModel
         $sellerInfo = $stmtSellerInfo->fetch(PDO::FETCH_ASSOC);
 
         if (!$sellerInfo) {
-            echo("Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.");
+            echo ("Erreur : Impossible de trouver l'utilisateur qui a proposé ce conseil.");
         }
 
         // Récupérer les informations de l'acheteur pour la notification
@@ -299,7 +299,7 @@ class adviceModel
         $buyerInfo = $stmtBuyerInfo->fetch(PDO::FETCH_ASSOC);
 
         if (!$buyerInfo) {
-            echo("Erreur : Impossible de trouver l'utilisateur acheteur.");
+            echo ("Erreur : Impossible de trouver l'utilisateur acheteur.");
         }
 
         // Créer le message de notification

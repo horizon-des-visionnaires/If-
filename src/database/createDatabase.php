@@ -199,6 +199,7 @@ $createTableBuyAdvice = ("CREATE TABLE IF NOT EXISTS
     `StartTime` TIME NOT NULL,
     `EndTime` TIME NOT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `IsAdviceValid` tinyint(1) DEFAULT NULL,
     PRIMARY KEY (`IdBuyAdvice`),
     CONSTRAINT fk_IdAdvice_BuyAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`),
     CONSTRAINT fk_IdBuyer_BuyAdvice FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`)
