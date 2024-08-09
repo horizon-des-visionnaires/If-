@@ -14,12 +14,14 @@ class homeController
     protected $twig;
     private $loader;
     private $homeModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->homeModel = new \home\homeModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function home()
@@ -44,13 +46,16 @@ class homeController
         $userAdmin = $this->homeModel->getUserAdmin();
         $this->getConversationData();
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
         echo $this->twig->render('home/home.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
             'userProData' => $userProData,
             'randomPosts' => $randomPosts,
-            'userAdmin' => $userAdmin
+            'userAdmin' => $userAdmin,
+            'unreadCount' => $unreadCount
         ]);
     }
 
@@ -68,7 +73,7 @@ class homeController
             $idUser_1 = $_POST['idUser_1'];
             $IdUser_2 = $_SESSION['IdUser'];
 
-            $this->homeModel->addConvertation($idUser_1, $IdUser_2);
+            $this->homeModel->addConversation($idUser_1, $IdUser_2);
         }
     }
 }

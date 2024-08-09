@@ -18,39 +18,39 @@
     <!--<img id="icon" src="/../public/image/home.css">-->
 </div>
 <div class="ProfilContainer">
-    <h1>Découvrez des professionnel</h1>
+    <h1>Découvrez des professionnels</h1>
     <div class="allProfil">
         {% for user in userProData %}
-        
+
         <div class="profil">
             <a href="profile-{{ user.IdUser }}">
                 <div class="profilPictureName">
                     {% if user.ProfilPicture == null %}
-                        <img id="icon" src="/../public/image/user.png" alt="icon">
+                    <img id="icon" src="/../public/image/user.png" alt="icon">
                     {% else %}
-                        <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                    <img id="icon" src="data:image;base64,{{ user.ProfilPicture }}" alt="icon">
                     {% endif %}
-                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"class="fas fa-check-circle"></i>
+                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"
+                        class="fas fa-check-circle"></i>
                 </div>
-                
+
                 <div class="advice-number">
                     <div class="rating">
                         {% set rating = 3.9 %} <!-- user.Rating-->
-                        <span class="ratings">{{rating }}  </span>
+                        <span class="ratings">{{rating }} </span>
                         <div class="stars">
                             {% set fullStars = rating|round(0, 'floor') %}
                             {% set decimalPart = rating - fullStars %}
                             {% set hasHalfStar = decimalPart >= 0.5 %}
-                            
+
                             {% for i in 1..5 %}
-                                {% if i <= fullStars %}
-                                    <i class="fa fa-star"></i>
+                            {% if i <= fullStars %} <i class="fa fa-star"></i>
                                 {% elseif i == fullStars + 1 and hasHalfStar %}
-                                    <i class="fa fa-star-half-alt"></i>
+                                <i class="fa fa-star-half-alt"></i>
                                 {% else %}
-                                    <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
                                 {% endif %}
-                            {% endfor %}
+                                {% endfor %}
                         </div>
                         <span class="rating-count">({{ user.RatingCount }}19 Revues)</span>
                     </div>
@@ -58,40 +58,46 @@
                         <span>10€</span>
                     </div>
                 </div>
-                
 
-                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-                    {% set text =  user.ProfilDescription %}
+                <div class="promotion">
+                    {% set text = user.ProfilPromotion %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
-                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
-                    <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    <div class="hover-text">{{ text }}</div>
                 </div>
             </a>
 
+            <div class="advice">
+                <p>{{ user.AdviceType }}</p>
+                {% set text = user.AdviceDescription %}
+                {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                {% set isTruncated = text|length > 60 %}
+                <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                <div class="hover-text">{{ text }}</div>
+            </div>
 
-            <!-- Swipe DANS ADVICE APRES -->
-            {% set user_pictures = ['https://24ai.tech/fr/wp-content/uploads/sites/19/2023/10/01_product_1_sdelat-izobrazhenie-1-1-3-scaled.jpg','https://i0.wp.com/digital-photography-school.com/wp-content/uploads/2013/07/ar-10.jpg?ssl=1', 'https://cdn.shopify.com/s/files/1/0265/1327/7008/files/comment-accueillir-un-chaton.jpg?v=1694429887', 'https://stan.bio/cdn/shop/articles/accueillir-un-chaton.jpg?v=1694430809'] %}
-            {% if user_pictures|length > 0 %} <!-- user.Pictures -->
+            <!-- Swipe des images Advice -->
+            {% if user.Pictures|length > 0 %}
             <div class="swipe">
-                {% if user_pictures|length > 1 %}
+                {% if user.Pictures|length > 1 %}
                 <button class="swipe-control-prev">
                     <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
                 </button>
                 {% endif %}
                 <div class="swipe-inner">
-                    {% for picture in user_pictures %}
-                    <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
-                        <img class="icon" src="{{ picture }}" alt="icon"><!-- data:image;base64, -->
+                    {% for picture in user.Pictures %}
+                    <div class="swipe-item {% if loop.first %}active{% endif %}">
+                        <img src="data:image;base64,{{ picture }}" alt="Advice Image">
                     </div>
                     {% endfor %}
                 </div>
-                {% if user_pictures|length > 1 %}
+                {% if user.Pictures|length > 1 %}
                 <button class="swipe-control-next">
                     <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
                 </button>
                 <div class="bullets">
-                    {% for i in 0..(user_pictures|length - 1) %}
+                    {% for i in 0..(user.Pictures|length - 1) %}
                     <span class="bullet {% if i == 0 %}active{% endif %}"></span>
                     {% endfor %}
                 </div>
@@ -99,8 +105,7 @@
             </div>
             {% endif %}
         </div>
-        
-        
+
         {% endfor %}
         <a href="/research" class="beautiful-button">Découvrir d'autres professionnels</a>
     </div>
@@ -119,10 +124,10 @@
                     <img id="icon" src="data:image;base64,{{post.ProfilPicture}}" alt="icon">
                     {% endif %}
                     {% if post.IsPro == 1 %}
-                        <h1 class= "name1">{{ post.FirstName }} {{ post.LastName }} </h1>
-                        <i id="certifIcon" class="fas fa-check-circle"></i>
+                    <h1 class="name1">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <i id="certifIcon" class="fas fa-check-circle"></i>
                     {% else %}
-                        <h1 class= "name2">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <h1 class="name2">{{ post.FirstName }} {{ post.LastName }} </h1>
                     {% endif %}
                 </div>
                 <p id="date">{{ post.RelativeDatePost }}</p>

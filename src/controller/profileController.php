@@ -14,12 +14,14 @@ class profileController
     protected $twig;
     private $loader;
     private $profileModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->profileModel = new profileModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function profile($id)
@@ -63,6 +65,13 @@ class profileController
 
         $commentCount = $this->profileModel->getCommentCount($id);
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+        $adviceData = $this->profileModel->getBuyAdviceData($userId);
+        $adviceImages = [];
+        if ($adviceData && isset($adviceData['IdAdvice'])) {
+            $adviceImages = $this->profileModel->getAdviceImages($adviceData['IdAdvice']);
+        }
+
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
             'isConnected' => $isConnected,
@@ -71,7 +80,10 @@ class profileController
             'userPost' => $userPost,
             'postFav' => $postFav,
             'messages' => $messages,
-            'commentCount' => $commentCount
+            'commentCount' => $commentCount,
+            'unreadCount' => $unreadCount,
+            'adviceData' => $adviceData,
+            'adviceImages' => $adviceImages
         ]);
     }
 

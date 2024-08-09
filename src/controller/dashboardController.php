@@ -8,7 +8,7 @@ use TCPDF;
 use ZipArchive;
 
 require 'vendor/autoload.php';
-require 'vendor/tecnickcom/tcpdf/tcpdf.php'; 
+require 'vendor/tecnickcom/tcpdf/tcpdf.php';
 
 require_once __DIR__ . '/../model/dashboardModel.php';
 
@@ -17,12 +17,14 @@ class dashboardController
     protected $twig;
     private $loader;
     private $dashboardModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->dashboardModel = new dashboardModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function dashboard()
@@ -55,7 +57,7 @@ class dashboardController
             $IdRequest = $_POST['IdRequest'];
             $this->dashboardModel->requestValid($IdRequest);
         }
-    
+
         if (isset($_POST['requestInvalid'])) {
             $IdRequest = $_POST['IdRequest'];
             $rejectReason = $_POST['rejectReason'];
@@ -67,12 +69,27 @@ class dashboardController
         $userPro = $this->dashboardModel->getUserPro();
         $this->getDeletePro();
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
+        $user = $this->dashboardModel->getUser();
+        $this->getDeleteUser();
+        $countUser = $this->dashboardModel->countNumberUser();
+        $countAdvice = $this->dashboardModel->countNumberAdviceSell();
+        $countPost = $this->dashboardModel->countNumberPost();
+        $countComment = $this->dashboardModel->countNumberComment();
+
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
             'requestPassProData' => $requestPassProData,
-            'userPro' => $userPro
+            'userPro' => $userPro,
+            'unreadCount' => $unreadCount,
+            'user' => $user,
+            'countUser' => $countUser,
+            'countAdvice' => $countAdvice,
+            'countPost' => $countPost,
+            'countComment' => $countComment
         ]);
     }
 
@@ -156,9 +173,17 @@ class dashboardController
     {
         if (isset($_POST['deletePro'])) {
             $IdUser = $_POST['IdUser'];
-            
+
             $this->dashboardModel->deletePro($IdUser);
         }
     }
-}
 
+    public function getDeleteUser()
+    {
+        if (isset($_POST['deleteUser'])) {
+            $IdUser = $_POST['IdUser'];
+
+            $this->dashboardModel->deleteUser($IdUser);
+        }
+    }
+}

@@ -55,8 +55,8 @@ class forgotPasswordController
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
             $mail->SMTPAuth = true;
-            $mail->Username = 'rebouletlucas@gmail.com';
-            $mail->Password = 'uqnb dmnm xshk aadp';
+            $mail->Username = 'ifaglobal.web@gmail.com';
+            $mail->Password = 'puxm inar ukhg rktu';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 

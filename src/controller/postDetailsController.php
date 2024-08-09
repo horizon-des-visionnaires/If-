@@ -13,12 +13,14 @@ class postDetailsController
     protected $twig;
     private $loader;
     private $postDetailsModel;
+    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->postDetailsModel = new postDetailsModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function post($idPost)
@@ -68,6 +70,8 @@ class postDetailsController
         $this->getDataAddLike();
         $this->getDataAddFavorite();
 
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
         echo $this->twig->render('postDetails/postDetails.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -78,8 +82,8 @@ class postDetailsController
             'lastName' => $lastName,
             'commentsData' => $commentsData,
             'commentCount' => $commentCount,
-
             'user' => $user,
+            'unreadCount' => $unreadCount
         ]);
     }
 
@@ -102,7 +106,8 @@ class postDetailsController
     {
         if (isset($_POST['deletePost'])) {
             $idPost = $_POST['idPost'];
-            $this->postDetailsModel->deletePost($idPost);
+            $idUser = $_SESSION['IdUser'];
+            $this->postDetailsModel->deletePost($idPost, $idUser);
         }
     }
 

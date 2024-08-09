@@ -181,8 +181,57 @@ $createTableAdvice = ("CREATE TABLE IF NOT EXISTS
     `AdviceType` varchar(255) DEFAULT NULL,
     `AdviceDescription` TEXT DEFAULT NULL,
     `IdUser` int(11) DEFAULT NULL,
+    `DaysOfWeek` VARCHAR(255) DEFAULT NULL,
+    `StartTime` TIME NOT NULL,
+    `EndTime` TIME NOT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdAdvice`),
     CONSTRAINT fk_IdUser_Advice FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableAdvice);
+
+$createTableBuyAdvice = ("CREATE TABLE IF NOT EXISTS
+`BuyAdvice` (
+    `IdBuyAdvice` int(11) NOT NULL AUTO_INCREMENT,
+    `IdAdvice` int(11) DEFAULT NULL,
+    `IdBuyer` int(11) DEFAULT NULL,
+    `Date` DATE DEFAULT NULL,
+    `StartTime` TIME NOT NULL,
+    `EndTime` TIME NOT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `IsAdviceValid` tinyint(1) DEFAULT NULL,
+    PRIMARY KEY (`IdBuyAdvice`),
+    CONSTRAINT fk_IdAdvice_BuyAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`),
+    CONSTRAINT fk_IdBuyer_BuyAdvice FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableBuyAdvice);
+
+$createTablePictureAdvice = ("CREATE TABLE IF NOT EXISTS
+`PictureAdvice` (
+    `IdPictureAdvice` int(11) NOT NULL AUTO_INCREMENT,
+    `IdAdvice` int(11) DEFAULT NULL,
+    `PictureAdvice` LONGBLOB DEFAULT NULL,
+    PRIMARY KEY (`IdPictureAdvice`),
+    CONSTRAINT fk_Advice_PictureAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTablePictureAdvice);
+
+$createTableNotifications = ("CREATE TABLE IF NOT EXISTS
+`Notifications` (
+    `IdNotification` int(11) NOT NULL AUTO_INCREMENT,
+    `IdUser` int(11) DEFAULT NULL,
+    `MessageNotif` TEXT DEFAULT NULL,
+    `IsRead` tinyint(1) DEFAULT '0',
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`IdNotification`),
+    CONSTRAINT fk_IdUser_Notifications FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableNotifications);
+
+$createTableNumberBuyAdvice = ("CREATE TABLE IF NOT EXISTS
+`NumberByAdvice` (
+    `Id` int(11) NOT NULL AUTO_INCREMENT,
+    `Number` int(11) NOT NULL DEFAULT 0,
+    PRIMARY KEY (`Id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableNumberBuyAdvice);

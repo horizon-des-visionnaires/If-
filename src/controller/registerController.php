@@ -46,6 +46,11 @@ class registerController
                 return "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre.";
             }
 
+            // Check if email already exists in User table
+            if ($this->registerModel->emailExists($email)) {
+                return "L'adresse e-mail est déjà utilisée.";
+            }
+
             $hashed_password = password_hash($userPassword, PASSWORD_DEFAULT);
             $token = bin2hex(random_bytes(16));
 
@@ -70,8 +75,8 @@ class registerController
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
             $mail->SMTPAuth = true;
-            $mail->Username = 'rebouletlucas@gmail.com';
-            $mail->Password = 'uqnb dmnm xshk aadp';
+            $mail->Username = 'ifaglobal.web@gmail.com';
+            $mail->Password = 'puxm inar ukhg rktu';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 

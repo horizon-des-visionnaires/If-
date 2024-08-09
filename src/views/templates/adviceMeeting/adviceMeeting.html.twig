@@ -1,0 +1,88 @@
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | advice meeting{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/adviceMeeting.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="advice-meeting-container">
+    {% if adviceData %}
+    <h1>Advice Meeting Details</h1>
+
+    <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
+    <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
+
+    <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Start Time:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
+    <p><strong>End Time:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
+
+    <h2>Advice Images</h2>
+    {% if adviceImages is not empty %}
+    <div class="advice-images">
+        {% for image in adviceImages %}
+        {% if image.PictureAdvice %}
+        <img class="icon" src="data:image;base64,{{ image.PictureAdvice }}" alt="Advice Image">
+        {% else %}
+        <p>No image available.</p>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No images available.</p>
+    {% endif %}
+
+    <h2>Buyer Information</h2>
+    <p><strong>Buyer Name:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
+    {% if adviceData.BuyerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>No profile picture available.</p>
+    {% endif %}
+
+    <h2>Seller Information</h2>
+    <p><strong>Seller Name:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
+    {% if adviceData.SellerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>No profile picture available.</p>
+    {% endif %}
+
+    {% if showReminder %}
+    <div class="reminder-div">
+        <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+            <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+            <label for="satisfaction">Êtes-vous satisfait du conseil?</label>
+            <select name="satisfaction" id="satisfaction" required>
+                <option value="1">Oui</option>
+                <option value="0">Non</option>
+            </select>
+            <button type="submit" name="isSatisfactoryAdvice">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p>No advice meeting data available.</p>
+    {% endif %}
+</div>
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/modalImageAdvice.js"></script>
+{% endblock %}

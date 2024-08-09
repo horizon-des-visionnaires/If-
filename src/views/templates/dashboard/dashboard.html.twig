@@ -1,6 +1,6 @@
 {% extends "default.html.twig" %}
 
-{% block title %}Panel Admin{% endblock %}
+{% block title %}IFÀ | Panel Admin{% endblock %}
 
 {% block stylesheet %}
 <link href="/../public/css/dashboard.css" rel="stylesheet">
@@ -97,6 +97,58 @@
         {% endfor %}
     </table>
 </div>
+
+<div class="tableUser">
+    <table>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom de Famille</th>
+            <th>Email</th>
+            <th>Photo de Profil</th>
+            <th>Lien page profile</th>
+            <th>Supprimer</th>
+        </tr>
+        {% for User in user %}
+        <tr>
+            <td>{{ User.FirstName }}</td>
+            <td>{{ User.LastName }}</td>
+            <td>{{ User.Email }}</td>
+            <td>
+                {% if User.ProfilPicture == null %}
+                <img class="icon" src="/../public/image/user.png" alt="icon" onclick="openModal(this)">
+                {% else %}
+                <img class="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon" onclick="openModal(this)">
+                {% endif %}
+            </td>
+            <td>
+                <a href="/profile-{{ User.IdUser }}">page profile</a>
+            </td>
+            <td>
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdUser" value="{{ User.IdUser }}">
+                    <button type="submit" name="deleteUser">Supprimer l'utilisateur</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<p>
+    nombre d'user :{{ countUser }}
+</p>
+
+<p>
+    nombre de conseil vendu :{{ countAdvice }}
+</p>
+
+<p>
+    nombre de post :{{ countPost }}
+</p>
+
+<p>
+    nombre de commentaires :{{ countComment }}
+</p>
 
 
 <div id="myModal" class="modal">

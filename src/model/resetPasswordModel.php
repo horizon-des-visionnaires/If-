@@ -13,13 +13,7 @@ class resetPasswordModel
 
     public function __construct()
     {
-        $this->connectDB();
-    }
-
-    public function connectDB()
-    {
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
-        $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->dsn = connectDB();
     }
 
     public function resetPassword($token, $hashed_password)

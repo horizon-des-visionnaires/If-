@@ -1,30 +1,28 @@
 <?php
 
-namespace research;
+namespace notification;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 require 'vendor/autoload.php';
 
-require_once __DIR__ . '/../model/researchModel.php';
+require_once __DIR__ . '/../model/notificationModel.php';
 
-class researchContoller
+class notificationController
 {
     protected $twig;
     private $loader;
-    private $researchModel;
     private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
-        $this->researchModel = new \research\researchModel();
         $this->notificationModel = new \notification\notificationModel();
     }
 
-    public function research()
+    public function notification()
     {
         session_start();
 
@@ -40,17 +38,28 @@ class researchContoller
             $IsAdmin = true;
         }
 
-        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
-        $userData = $this->researchModel->getFilteredProUsers($searchQuery);
+        $notifications = $this->notificationModel->getUserNotifications($userId);
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+        $this->markAsRead();
 
-        echo $this->twig->render('research/research.html.twig', [
+        $userInfo = $this->notificationModel->getUserInfo($userId);
+
+        echo $this->twig->render('notification/notification.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
             'IsAdmin' => $IsAdmin,
-            'userData' => $userData,
-            'searchQuery' => $searchQuery,
-            'unreadCount' => $unreadCount
+            'notifications' => $notifications,
+            'unreadCount' => $unreadCount,
+            'userFirstName' => $userInfo['FirstName'],
+            'userLastName' => $userInfo['LastName']
         ]);
+    }
+
+    public function markAsRead()
+    {
+        if (isset($_POST['IdNotification'])) {
+            $notificationId = $_POST['IdNotification'];
+            $this->notificationModel->markNotificationAsRead($notificationId);
+        }
     }
 }

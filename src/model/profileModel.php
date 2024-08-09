@@ -14,13 +14,7 @@ class profileModel
 
     public function __construct()
     {
-        $this->connectDB();
-    }
-
-    public function connectDB()
-    {
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
-        $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->dsn = connectDB();
     }
 
     public function getUserById($id)
@@ -189,29 +183,34 @@ class profileModel
     {
         return getRelativeTime($date);
     }
-    
+
     public function deletePost($idPost, $idUser)
     {
         return deletePost($this->dsn, $idPost, $idUser);
     }
 
-    public function getIsLike($IdUser, $IdPost) {
+    public function getIsLike($IdUser, $IdPost)
+    {
         return getIsLike($this->dsn, $IdUser, $IdPost);
     }
 
-    public function getIsFavorites($IdUser, $IdPost) {
+    public function getIsFavorites($IdUser, $IdPost)
+    {
         return getIsFavorites($this->dsn, $IdUser, $IdPost);
     }
 
-    public function LikeData($IdUser, $IdPost) {
+    public function LikeData($IdUser, $IdPost)
+    {
         LikeData($this->dsn, $IdUser, $IdPost, "/profile-$IdUser");
     }
 
-    public function FavoriteData($IdUser, $IdPost) {
+    public function FavoriteData($IdUser, $IdPost)
+    {
         FavoriteData($this->dsn, $IdUser, $IdPost, "/profile-$IdUser");
     }
 
-    public function getCommentCount($idPost) {
+    public function getCommentCount($idPost)
+    {
         return getCommentCount($this->dsn, $idPost);
     }
 
@@ -302,6 +301,8 @@ class profileModel
     public function addConvertation($idUser_1, $IdUser_2)
     {
         try {
+            $this->dsn->beginTransaction();
+
             $checkConv = "SELECT IdConversations FROM Conversations 
                       WHERE (IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2) 
                          OR (IdUser_1 = :IdUser_2 AND IdUser_2 = :IdUser_1)";
@@ -332,12 +333,95 @@ class profileModel
                 $stmt3->bindParam(':ContentMessages', $contentMessage);
                 $stmt3->execute();
 
+                // Créer une notification pour l'utilisateur IdUser_1
+                $MessageNotif = "Vous avez une nouvelle conversation avec " . $_SESSION['FirstName'] . " " . $_SESSION['LastName'];
+                $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+                $stmt4 = $this->dsn->prepare($addNotification);
+                $stmt4->bindParam(':IdUser', $idUser_1);
+                $stmt4->bindParam(':MessageNotif', $MessageNotif);
+                $stmt4->execute();
+
+                $this->dsn->commit();
+
                 header("Location: /conversationChat-" . $idConversation);
                 exit();
             }
         } catch (PDOException $e) {
             $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function getBuyAdviceData($userId)
+    {
+        try {
+            $query = "
+            SELECT 
+                A.IdAdvice,
+                A.AdviceType,
+                A.AdviceDescription,
+                BA.IdBuyAdvice,
+                BA.Date AS BuyAdviceDate,
+                BA.StartTime AS BuyAdviceStartTime,
+                BA.EndTime AS BuyAdviceEndTime,
+                U1.IdUser AS SellerId,
+                U1.FirstName AS SellerFirstName,
+                U1.LastName AS SellerLastName,
+                U1.ProfilPicture AS SellerProfilPicture
+            FROM BuyAdvice BA
+            INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
+            INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
+            INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
+            WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
+        ";
+
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $getAdviceData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // if ($getAdviceData === false) {
+            //     echo "No data found for ID: " . htmlspecialchars($userId);
+            //     return null;
+            // }
+
+            if ($getAdviceData) {
+                $getAdviceData['SellerProfilPicture'] = $getAdviceData['SellerProfilPicture'] ? base64_encode($getAdviceData['SellerProfilPicture']) : '';
+            }
+
+            return $getAdviceData;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+
+    public function getAdviceImages($IdAdvice)
+    {
+        try {
+            $query = "
+            SELECT PictureAdvice
+            FROM PictureAdvice
+            WHERE IdAdvice = :idAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':idAdvice', $IdAdvice, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Encode images to base64
+            foreach ($images as &$image) {
+                $image['PictureAdvice'] = base64_encode($image['PictureAdvice']);
+            }
+
+            return $images;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return []; // Return an empty array on error
         }
     }
 }

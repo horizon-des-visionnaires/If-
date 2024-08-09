@@ -13,13 +13,7 @@ class conversationChatModel
 
     public function __construct()
     {
-        $this->connectDB();
-    }
-
-    public function connectDB()
-    {
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
-        $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->dsn = connectDB();
     }
 
     public function getChat($IdConversations)
@@ -41,6 +35,7 @@ class conversationChatModel
             } else {
                 $convChat['ProfilPicture'] = '';
             }
+            $convChat['CreatedAt'] = $this->getRelativeTime($convChat['CreatedAt']);
         }
 
         return $getConvChatData;
@@ -94,5 +89,10 @@ class conversationChatModel
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getRelativeTime($date)
+    {
+        return getRelativeTime($date);
     }
 }

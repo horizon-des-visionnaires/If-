@@ -1,4 +1,3 @@
-
 {% extends "default.html.twig" %}
 
 {% block title %}IFÀ | Conversation entre {{ participants.FirstName1 }} {{ participants.LastName1 }} et {{ participants.FirstName2 }} {{ participants.LastName2 }}{% endblock %}
@@ -15,31 +14,33 @@
 
 {% block body %}
 <div class="chat" id="chat">
-    {% for ConversationMessages in convChat %}
-    <div class="head {% if ConversationMessages.IdSender != userId %}left {% endif %}">
-        <a href="/profile-{{ConversationMessages.IdSender}}">
-            {% if ConversationMessages.ProfilPicture == null %}
-            <img class="icon" src="/../public/image/user.png" alt="profile picture">
-            {% else %}
-            <img class="icon" src="data:image;base64,{{ ConversationMessages.ProfilPicture }}" alt="profile picture">
-            {% endif %}
-        
-            {% if ConversationMessages.IsPro == 1 %}
-            <div class="pro">
-                <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2> 
-                <i id="certifIcon" class="fas fa-check-circle"></i>
-            </div>
-            {% else %}
-            <div class="notpro">
-                <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2>
-            </div>
-            {% endif %}
-        </a>
-        <span>{{ ConversationMessages.CreatedAt }}</span>
+    <div id="messages">
+        {% for ConversationMessages in convChat %}
+        <div class="head {% if ConversationMessages.IdSender != userId %}left {% endif %}">
+            <a href="/profile-{{ConversationMessages.IdSender}}">
+                {% if ConversationMessages.ProfilPicture == null %}
+                <img class="icon" src="/../public/image/user.png" alt="profile picture">
+                {% else %}
+                <img class="icon" src="data:image;base64,{{ ConversationMessages.ProfilPicture }}" alt="profile picture">
+                {% endif %}
+            
+                {% if ConversationMessages.IsPro == 1 %}
+                <div class="pro">
+                    <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2> 
+                    <i id="certifIcon" class="fas fa-check-circle"></i>
+                </div>
+                {% else %}
+                <div class="notpro">
+                    <h2>{{ ConversationMessages.FirstName }} {{ ConversationMessages.LastName }}</h2>
+                </div>
+                {% endif %}
+            </a>
+            <span>{{ ConversationMessages.CreatedAt }}</span>
+        </div>
+        <p class="{% if ConversationMessages.IdSender == userId %}right {% endif %}">{{ ConversationMessages.ContentMessages }}</p>
+        {% endfor %}
     </div>
-    <p class="{% if ConversationMessages.IdSender == userId %}right {% endif %}">{{ ConversationMessages.ContentMessages }}</p>
-    {% endfor %}
-    <div id="scroll-target"></div><!--permt de scroll jusquici avec js-->
+    <div id="scroll-target"></div><!--permet de scroll jusqu'ici avec js-->
 
     {% if convChat is not empty %}
     <form action="/conversationChat-{{ convChat[0].IdConversations }}" method="post" class="poster">
@@ -50,11 +51,19 @@
     {% endif %}
 </div>
 
-<button class ="out"><a href="/conversation">Retour aux conversations</a></button>
+<a href="/conversation">
+    <button class="out">Retour aux conversations</button>
+    <button class="filter" id="toggleFilterBarButton2">
+        <img src="/../public/image/icon/gear.png">
+    </button>
+</a>
+
+
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block scripts %}
 <script src="/../public/js/ScrollDownMessage.js"></script>
+<script src="/../public/js/loadFunctions.js"></script>
 {% endblock %}

@@ -17,3 +17,10 @@ html {
     width: 0px;
     background: transparent;
 }
+
+.notification-count {
+    padding-bottom: 1.5em;
+    margin-left: -0.5em;
+    padding-right: 0.5em;
+    color: red;
+}

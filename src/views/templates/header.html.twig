@@ -99,6 +99,17 @@
         </a>
     </li>
     <li>
+        <a href="/notification" id="notification-link">
+            <div class="item" id="item">
+                <p>Notif</p>
+                {% if isConnected and unreadCount > 0 %}
+                <span id="notification-count" class="notification-count">{{ unreadCount }}</span>
+                {% endif %}
+                <img src="/../public/image/icon/notif.png" id="img2">
+            </div>
+        </a>
+    </li>
+    <li>
         <form action="/" method="post">
             <button class="Btn" type="submit" name="logOut" id="logout">
                 <div class="sign">
@@ -138,6 +149,7 @@
 {% block scripts %}
 <script src="/../public/js/dropdownMenu.js"></script>
 <script src="/../public/js/MovableChat.js"></script>
+{#<script src="/../public/js/loadFunctions.js"></script> #}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

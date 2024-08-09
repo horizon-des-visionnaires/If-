@@ -14,39 +14,54 @@ class homeModel
 
     public function __construct()
     {
-        $this->connectDB();
-    }
-
-    public function connectDB()
-    {
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
-        $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->dsn = connectDB();
     }
 
     public function get5UserProRandom()
     {
         try {
             $stmt = $this->dsn->query("
-                SELECT 
-                    IdUser,
-                    FirstName, 
-                    LastName, 
-                    ProfilPicture, 
-                    ProfilDescription
-                FROM User
-                WHERE IsPro = 1
-                ORDER BY RAND()
-                LIMIT 5
-            ");
+            SELECT 
+                u.IdUser,
+                u.FirstName, 
+                u.LastName, 
+                u.ProfilPicture, 
+                u.ProfilPromotion,
+                a.AdviceType,
+                a.AdviceDescription,
+                pa.PictureAdvice
+            FROM User u
+            INNER JOIN Advice a ON u.IdUser = a.IdUser
+            LEFT JOIN PictureAdvice pa ON a.IdAdvice = pa.IdAdvice
+            WHERE u.IsPro = 1
+            ORDER BY RAND()
+            LIMIT 5
+        ");
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($results as &$row) {
-                if (!is_null($row['ProfilPicture'])) {
-                    $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
+            $userData = [];
+            foreach ($results as $row) {
+                $userId = $row['IdUser'];
+
+                if (!isset($userData[$userId])) {
+                    $userData[$userId] = [
+                        'IdUser' => $row['IdUser'],
+                        'FirstName' => $row['FirstName'],
+                        'LastName' => $row['LastName'],
+                        'ProfilPicture' => $row['ProfilPicture'] ? base64_encode($row['ProfilPicture']) : null,
+                        'ProfilPromotion' => $row['ProfilPromotion'],
+                        'AdviceType' => $row['AdviceType'],
+                        'AdviceDescription' => $row['AdviceDescription'],
+                        'Pictures' => []
+                    ];
+                }
+
+                if ($row['PictureAdvice']) {
+                    $userData[$userId]['Pictures'][] = base64_encode($row['PictureAdvice']);
                 }
             }
 
-            return $results;
+            return array_values($userData);
         } catch (PDOException $e) {
             $error = "error: " . $e->getMessage();
             echo $error;
@@ -129,9 +144,11 @@ class homeModel
         }
     }
 
-    public function addConvertation($idUser_1, $IdUser_2)
+    public function addConversation($idUser_1, $IdUser_2)
     {
         try {
+            $this->dsn->beginTransaction();
+
             $checkConv = "SELECT IdConversations FROM Conversations 
                       WHERE (IdUser_1 = :IdUser_1 AND IdUser_2 = :IdUser_2) 
                          OR (IdUser_1 = :IdUser_2 AND IdUser_2 = :IdUser_1)";
@@ -161,6 +178,16 @@ class homeModel
                 $stmt3->bindParam(':IdSender', $IdUser_2);
                 $stmt3->bindParam(':ContentMessages', $contentMessage);
                 $stmt3->execute();
+
+                // Créer une notification pour l'utilisateur IdUser_1
+                $MessageNotif = "Vous avez une nouvelle conversation avec " . $_SESSION['FirstName'] . " " . $_SESSION['LastName'];
+                $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+                $stmt4 = $this->dsn->prepare($addNotification);
+                $stmt4->bindParam(':IdUser', $idUser_1);
+                $stmt4->bindParam(':MessageNotif', $MessageNotif);
+                $stmt4->execute();
+
+                $this->dsn->commit();
 
                 header("Location: /conversationChat-" . $idConversation);
                 exit();
