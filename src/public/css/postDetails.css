@@ -11,50 +11,43 @@ a {
 }
 
 .container {
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content:end ;
+    justify-content:space-between;
+    margin-top: 6em;
+    margin-bottom: 1em;
 }
 
 .commentContainer, .postContainer {
     width: 40%;
-    height: auto;
-    margin-right: 5%;
-    margin-left: 5%;
-    margin-top: 6%;
-    padding: 0em 2em;
-    padding-bottom: 0em;
+    padding: 0.5em 2em;
     border-radius: 15px;
     background: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 .commentContainer{
-    margin-top: 6%;
-    margin-bottom: 1%;
+    margin: 0% 3%;
 }
 
 .postContainer {
+    position: sticky;
+    top:1em;
     width: 35%;
-    position: fixed;
-    left: 0%;
-    padding-bottom: 0.5em;
+    left: 3%;
+    height: 100%;
 }
 
 .post, .comment {
-    padding: 1em;
+    padding: 0em 1em;
     width: 100%;   
     background-color: #ffffff;
     align-items: center;
     margin-left: -1em;
     border-radius: 5%;
-    padding-bottom: 0em;
-}
-.post{
-    padding-left: 0em;
 }
 
 .comment{
-    margin-top: 1em;
     border-bottom: 1px solid rgb(182, 182, 182);
     margin-bottom: 1.5em;
     border-radius: 0%;
@@ -66,17 +59,22 @@ a {
 
 .user-info a,
 .user-info {
-    margin-top: 0em;
     display: flex;
     flex-direction: row;
+    text-decoration: none;
+    justify-content: space-between;
     color: #000;
+    margin-left: -1em;
 }
+
+
 
 .user-picture {
     height: 4em;
     padding: 1em;
     border-radius: 50%;
 }
+
 
 .user-info .pro{
     display: flex;
@@ -98,14 +96,14 @@ a {
 #certifIcon {
     padding-left: 0.5em;
     padding-top: 2.4em;
-    color: var(--primary-color);
+    color: #38B6FF;
 }
 
 .contentPost, .contentComment {
     font-family: 'Montserrat', sans-serif;
     font-size: 1em;
     padding-top: 1em;
-    margin-left: 6.2em;
+    margin-left: 4.2em;
     margin-top: -2.2em;
 }
 
@@ -121,6 +119,7 @@ a {
     margin-top: 1em;
     margin-bottom: -1.5em;
 }
+
 
 /* Style de la modal */
 .modal {
@@ -210,8 +209,8 @@ a {
 
 .formDeletePost,
 .formDeletePostComment {
-    padding-left: 6em;
-    padding-top: 1em;
+    padding-top: 1.5em;
+    margin-right: 1%;
 }
 
 #deleteButton {
@@ -220,20 +219,38 @@ a {
 }
 
 #deleteImage {
-    height: 3em;
+    height: 2.5em;
 }
 
 .interaction {
-    font-family: 'Montserrat', sans-serif;
     display: flex;
     flex-direction: row;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
     justify-content: space-between; /* Répartit les éléments de manière égale */
     align-items: center; /* Centre verticalement les éléments */
+    font-size: 1em;
     padding-left: 10%;
+    padding-top: 0.5em;
 }
 
-.interaction a {
-    cursor: pointer;
+.interaction a, .interaction , .interaction .Comments{
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between ;
+    align-items: center;
+    padding-left: 1em;
+}
+
+.interaction p {
+    padding-left: 1em;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.icon_commentaire{
+    width: 28px;
+    height: auto;
 }
 
 .heart,
@@ -292,11 +309,6 @@ span {
     margin-top: 0.2em;
 }
 
-.icon_commentaire{
-    width: 25px;
-    height: auto;
-    margin-top: 0.2em;
-}
 
 
 
@@ -344,16 +356,13 @@ span {
 
 
 
-.user-info .pro{
-    display: flex;
-    margin-top: -0.4em;
-    font-family: 'Open Sans', sans-serif;
-}
+
 .promotion{
-    margin-left: -14em;
+    margin-left: 4em;
 }
 .promotion p{
-    margin-top: 3.8em;
+    margin-top: -2em;
+    margin-bottom: 2em;
     font-size: 1em;
     font-family: 'Montserrat', sans-serif;
     color:  #404145;
@@ -375,13 +384,16 @@ span {
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
     text-align: center; /* Alignement du texte à gauche */
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Apparition du texte au survol */
 .promotion:hover .hover-text {
     visibility: visible; /* Rendre visible */
     opacity: 1; /* Rendre opaque */
+    z-index: 6;
 }
+
 
 .notpro h2 {
     font-family: 'Open Sans', sans-serif;
@@ -471,9 +483,6 @@ a {
     height: 50vh;
 }
 
-
-
-
 /* Styles pour le conteneur swipe */
 .swipe {
     position: relative;
@@ -484,7 +493,7 @@ a {
     justify-content: center;
     align-items: center;
     max-height: 80vh; 
-    
+    margin-top: 1em;
 }
 
 .swipe-inner {
@@ -511,7 +520,7 @@ a {
 
 
 .swipe-control-prev, .swipe-control-next {
-    background-color: white; /* Assurez-vous qu'ils sont visibles */
+    background-color: white; 
     border: none;
     color: rgb(109, 109, 109);
     font-size: 1em;
@@ -521,16 +530,16 @@ a {
     top: 50%;
     transform: translateY(-50%);
     border-radius: 50%;
-    z-index: 10; /* Assurez-vous qu'ils sont au-dessus des autres éléments */
+    z-index: 5; 
     opacity: 0;
 }
 
 .swipe-control-prev {
-    left: 10px;
+    left: 60px;
 }
 
 .swipe-control-next {
-    right: 10px;
+    right: 60px;
 }
 
 .swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next {
@@ -545,7 +554,7 @@ a {
     transform: translateX(-50%);
     display: flex;
     gap: 5px;
-    z-index: 10;
+    z-index: 5;
 }
 
 .bullet {
@@ -560,7 +569,6 @@ a {
 .bullet.active {
     background-color: #333;
 }
-
 
 
 .postInput {
@@ -598,4 +606,183 @@ a {
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .commentContainer, .postContainer{
+        margin-left: 2em;
+        margin-right: 2em;
+        width: 100%;
+    }
+    .container{
+        gap:0%;
+    }
+    .promotion p{
+        font-size: 0.8em;
+        margin-top: -1.2em;
+        margin-left: -5em;
+    }
+    .contentPost {
+        margin-left: 0em;
+    }
+    .new_post{
+        padding: 0em 2em;
+        margin-left: -2em;
+        margin-right: -2em;
+    }
+    .new_post form{
+        margin-left: -1em;
+        margin-right: -1em;
+    }
+    .contentPost h2{
+        font-size: 1.1em;
+    }
+    .user-info h2{
+        font-size: 1.2em;
+        font-family: 'Open Sans', sans-serif;
+        margin-left: -0.5em;
+    }
+    .user-info .pro {
+        margin-top: 0.2em;
+    }
+    #certifIcon {
+        padding-top: 1.8em;
+    }
+    .interaction span, .interaction p{
+        font-size: 0.85em;
+    }
+    .icon_commentaire{
+        width: 22px;
+        height: auto;
+    }
+    .heart i,
+    .favorite i {
+        font-size: 20px;
+        color: #000;
+    }
+
+    .interaction a, .interaction form, .interaction .Comments{
+        padding-left: 0.5em;
+    }
+    .interaction button{
+        padding: 0.5em 0em;
+    }
+    .interaction span{
+        padding-left: 0.5em;
+    }
+    .interaction p{
+        padding-left: 0em;
+    }
+
+    .user-info{
+        margin-left: -1em;
+    }
+    .interaction {
+        margin-left: -2em;
+    }
+    .contentComment {
+        font-size: 0.8em;
+        margin-left: 0em;
+    }
+}
+@media (max-width: 540px) {
+    .new_post form{
+        margin-left: 0em;
+        margin-right: 0em;
+    }
+    .postContainer{
+        position: relative;
+        margin-left: 0%;
+        margin-right: 0%;
+        top:0.5em;
+        width: 84%;
+        padding: 0em 1em;
+    }
+    .commentContainer{
+        margin : 2em 0em 0em 0em;
+        width: 79%;
+        margin-left: 2%;
+    }
+    .container{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-top: 4em;
+        justify-content: center;
+        
+    }
+
+    .contentPost {
+        margin-left: 2em;
+    }
+}
+
+@media (max-width: 430px) {
+    .interaction span, .interaction p{
+        font-size: 0.85em;
+    }
+    .icon_commentaire{
+        width: 22px;
+        height: auto;
+    }
+    .heart i,
+    .favorite i {
+        font-size: 20px;
+        color: #000;
+    }
+
+    .interaction a, .interaction form, .interaction .Comments{
+        padding-left: 0.5em;
+    }
+    .interaction button{
+        padding: 0.5em 0em;
+    }
+    .interaction span{
+        padding-left: 0.5em;
+    }
+    .interaction p{
+        padding-left: 0em;
+    }
+
+    .user-info{
+        margin-left: -1em;
+    }
+    .new_post{
+        padding: 0em 2em;
+        margin-left: -2em;
+        margin-right: -2em;
+        bottom: 2em;
+    }
+    .promotion p{
+        font-size: 0.8em;
+        margin-top: -1.2em;
+        margin-left: -5em;
+    }
+    .contentPost {
+        margin-left: 0em;
+    }
+    .contentPost h2{
+        font-size: 1.1em;
+    }
+    .user-info h2{
+        font-size: 1.2em;
+        font-family: 'Open Sans', sans-serif;
+        margin-left: -0.5em;
+    }
+    .user-info .pro {
+        margin-top: 0.2em;
+    }
+    #certifIcon {
+        padding-top: 1.8em;
+    }
+    .contentComment {
+        font-size: 0.8em;
+        margin-left: 0em;
+    }
+    .postInput {
+        margin-left: -1em;
+        margin-right: 3%;
+    }
 }

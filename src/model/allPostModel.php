@@ -67,7 +67,7 @@ class allPostModel
     private function buildQuery($searchQuery, $sortBy, $order)
     {
         $query = "SELECT Post.IdPost, Post.TitlePost, Post.ContentPost, Post.DatePost, Post.Views,
-              User.IdUser, User.FirstName, User.LastName, User.ProfilPicture, User.IsPro 
+              User.IdUser, User.FirstName, User.LastName, User.ProfilPicture, User.IsPro, User.ProfilPromotion
               FROM Post 
               JOIN User ON Post.IdUser = User.IdUser";
 
