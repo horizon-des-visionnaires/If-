@@ -83,8 +83,8 @@ class allPostController
 
             $PicturesPost = [];
             if (isset($_FILES["PicturePost"])) {
-                if (count($_FILES["PicturePost"]["tmp_name"]) > 5) {
-                    echo "You can upload a maximum of 5 images.";
+                if (count($_FILES["PicturePost"]["tmp_name"]) > 6) {
+                    echo "You can upload a maximum of 6 images.";
                     return;
                 }
                 foreach ($_FILES["PicturePost"]["tmp_name"] as $tmpName) {
