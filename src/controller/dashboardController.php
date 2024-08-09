@@ -75,6 +75,8 @@ class dashboardController
         $this->getDeleteUser();
         $countUser = $this->dashboardModel->countNumberUser();
         $countAdvice = $this->dashboardModel->countNumberAdviceSell();
+        $countPost = $this->dashboardModel->countNumberPost();
+        $countComment = $this->dashboardModel->countNumberComment();
 
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
@@ -85,7 +87,9 @@ class dashboardController
             'unreadCount' => $unreadCount,
             'user' => $user,
             'countUser' => $countUser,
-            'countAdvice' => $countAdvice
+            'countAdvice' => $countAdvice,
+            'countPost' => $countPost,
+            'countComment' => $countComment
         ]);
     }
 

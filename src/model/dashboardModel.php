@@ -279,4 +279,34 @@ class dashboardModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function countNumberPost()
+    {
+        try {
+
+            $countNumberUser = $this->dsn->query("SELECT COUNT(*) FROM Post");
+            $countNumberUser->execute();
+            $result = $countNumberUser->fetchColumn();
+
+            return $result;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function countNumberComment()
+    {
+        try {
+
+            $countNumberUser = $this->dsn->query("SELECT COUNT(*) FROM Comment");
+            $countNumberUser->execute();
+            $result = $countNumberUser->fetchColumn();
+
+            return $result;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
 }
