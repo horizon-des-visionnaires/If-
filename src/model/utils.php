@@ -182,11 +182,11 @@ function getRelativeTime($date)
     if ($diff < 60) {
         return $diff . ' s';
     } elseif ($diff < 3600) {
-        return floor($diff / 60) . ' M';
+        return floor($diff / 60) . ' m';
     } elseif ($diff < 86400) {
-        return floor($diff / 3600) . ' H';
+        return floor($diff / 3600) . ' h';
     } elseif ($diff < 604800) {
-        return floor($diff / 86400) . ' J';
+        return floor($diff / 86400) . ' j';
     } else {
         return floor($diff / 604800) . ' sem';
     }

@@ -122,8 +122,8 @@
                     {% set text = Post.ProfilPromotion   %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
-                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
-                    <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                    <p class="truncated-text" data-full-text="{{ text }}"> {{ truncatedText }}</p>
+                    <div class="hover-text"> {{ text }}</div>
                 </div>
                 {% endif %}
             </div>
