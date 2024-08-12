@@ -32,7 +32,7 @@ body {
 
 
 /* Style de la modal */
-.modal, .modal2 {
+.modal, .modal2, .modal3 {
     display: none;
     position: fixed;
     z-index: 20;
@@ -44,7 +44,7 @@ body {
 }
 
 
-.modal-content, .modal-content2 {
+.modal-content, .modal-content2, .modal-content3 {
     background-color: #eeeeee; /* Fond blanc cassé */
     margin: auto;
     margin-top: 8em;
@@ -54,11 +54,11 @@ body {
     border-radius: 2em;
 }
 
-.modal-content2{
+.modal-content2, .modal-content3{
     margin-top: 5em;
 }
 
-.close, .close2 {
+.close, .close2, .close3 {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -69,7 +69,9 @@ body {
 .close:hover,
 .close:focus,
 .close2:hover,
-.close2:focus {
+.close2:focus,
+.close3:hover,
+.close3:focus {
     color: black;
     text-decoration: none;  
 }

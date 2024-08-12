@@ -67,13 +67,11 @@
                 <div class="profilButton" id="Toshow2">
                     <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
                 </div>
+                <div class="deleteProfilButton" id="Toshow3">
+                    <button id="openModalDeleteButton" class="beautiful-button">Supprimer le Profil</button>
+                </div>
                 {% endif %}
             </div>
-            {% if isConnected and userId == user.IdUser %}
-            <button class="filter" id="toggleEditButton2">
-                    <img src="/../public/image/icon/edit_profil.png">
-            </button>
-            {% endif %}
         </div>
 
 
@@ -178,6 +176,21 @@
             <input type="hidden" name="idUser" value="{{ user.IdUser }}">
 
             <button type="submit" name="pushRequest" id="inputField2">Envoyer la demande</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal3" id="deleteModal">
+    <div class="modal-content3">
+        <span class="close3">&times;</span>
+        <form action="/profile-{{ user.IdUser }}" method="post" id="formPassPro" enctype="multipart/form-data">
+
+            <p>Attention cette action supprimeras définitivement toutes vos données.
+                Êtes vous sur de vouloir supprimer votre compte ?
+            </p>
+            <input type="hidden" name="IdUser" value="{{ user.IdUser }}">
+
+            <button type="submit" name="deleteUser" id="inputField2">supprimer le profil</button>
         </form>
     </div>
 </div>
