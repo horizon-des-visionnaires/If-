@@ -14,6 +14,7 @@ class dashboardModel
     public function __construct()
     {
         $this->dsn = connectDB();
+        $this->dsn = connectDB();
     }
 
     public function getAllRequestPassPro()

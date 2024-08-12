@@ -184,6 +184,9 @@ $createTableAdvice = ("CREATE TABLE IF NOT EXISTS
     `DaysOfWeek` VARCHAR(255) DEFAULT NULL,
     `StartTime` TIME NOT NULL,
     `EndTime` TIME NOT NULL,
+    `DaysOfWeek` VARCHAR(255) DEFAULT NULL,
+    `StartTime` TIME NOT NULL,
+    `EndTime` TIME NOT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdAdvice`),
     CONSTRAINT fk_IdUser_Advice FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)

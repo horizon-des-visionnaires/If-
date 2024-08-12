@@ -156,7 +156,7 @@
                 {% endif %}
                 <div class="swipe-inner">
                     {% for picture in Post.PicturesPost %}
-                    <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                    <div class="swipe-item portrait active ">
                         <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
                     </div>
                     {% endfor %}

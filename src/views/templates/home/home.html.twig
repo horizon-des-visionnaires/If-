@@ -88,7 +88,7 @@
                 <div class="swipe-inner">
                     {% for picture in user.Pictures %}
                     <div class="swipe-item {% if loop.first %}active{% endif %}">
-                        <img class="icon" src="data:image;base64,{{ picture }}" alt="Advice Image">
+                        <img src="data:image;base64,{{ picture }}" alt="Advice Image">
                     </div>
                     {% endfor %}
                 </div>

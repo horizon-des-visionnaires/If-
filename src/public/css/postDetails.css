@@ -112,9 +112,6 @@ a {
     font-family: 'Open Sans', sans-serif;
 }
 
-.icon {
-    height: 5em;
-}
 .contentPost button{
     margin-top: 1em;
     margin-bottom: -1.5em;
@@ -445,41 +442,9 @@ a {
 
 
 
-
-
-
-
-
-
-.swipe-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Assure que l'image couvre toute la surface */
-    border-radius: 5%;
-}
-
-/* Styles pour les formats spécifiques */
-.swipe-item.landscape {
-    width: 50vh;
-    height: auto;
-}
-
-.swipe-item.landscape img {
-    max-height: 29vh;
-}
-
 .swipe-item.portrait {
     height: 50vh;
     width: auto;
-}
-
-.swipe-item.portrait img {
-    max-width: 38vw;
-}
-
-.swipe-item.square {
-    width: 50vh;
-    height: 50vh;
 }
 
 /* Styles pour le conteneur swipe */
@@ -487,7 +452,7 @@ a {
     position: relative;
     width: 100%;
     margin: auto;
-    overflow: hidden;
+    overflow: hidden; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -500,45 +465,59 @@ a {
     transition: transform 0.5s ease-in-out;
     align-items: center;
     justify-content: center;
+    max-width: 100%;
+    max-height: 100%;
 }
 
+/* Conteneur de chaque image dans le swipe */
 .swipe-item {
+    position: relative;
+    width: 100%; /* Assure que l'image prend toute la largeur disponible */
+    height: auto;
     transition: opacity 0.5s ease-in-out;
     opacity: 0;
     display: none;
-    width: 100%; /* Unique format */
-    height: auto;
+    overflow: hidden; /* Empêche l'image de dépasser du conteneur */
+    
 }
 
+/* Conteneur actif (visible) */
 .swipe-item.active {
-    display: block;
+    display: flex;
     opacity: 1;
     align-items: center;
-    justify-content: center;
 }
 
+/* Images dans le swipe */
+.swipe-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Garde les proportions de l'image */
+    border-radius: 5%; /* Coins arrondis pour l'image */
+    display: block; /* Supprime les espaces blancs en bas de l'image */
+}
 
 .swipe-control-prev, .swipe-control-next {
-    background-color: white; 
+    background-color: rgba(225, 225, 225, 0.77); /* Assurez-vous qu'ils sont visibles */
     border: none;
     color: rgb(109, 109, 109);
     font-size: 1em;
-    padding: 0.5em;
+    padding: 0.75em 1em;
     cursor: pointer;
     position: absolute; /* Positionner les boutons */
     top: 50%;
     transform: translateY(-50%);
     border-radius: 50%;
-    z-index: 5; 
+    z-index: 10; /* Assurez-vous qu'ils sont au-dessus des autres éléments */
     opacity: 0;
 }
 
 .swipe-control-prev {
-    left: 60px;
+    left: 1%;
 }
 
 .swipe-control-next {
-    right: 60px;
+    right: 1%;
 }
 
 .swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next {
@@ -553,7 +532,7 @@ a {
     transform: translateX(-50%);
     display: flex;
     gap: 5px;
-    z-index: 5;
+    z-index: 1;
 }
 
 .bullet {
