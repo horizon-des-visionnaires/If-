@@ -191,6 +191,7 @@ class profileController
     {
         if (isset($_POST['deleteUser'])) {
             $IdUser = $_POST['IdUser'];
+            session_unset();
 
             $this->profileModel->deleteUser($IdUser);
         }
