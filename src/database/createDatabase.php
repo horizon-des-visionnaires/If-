@@ -229,7 +229,7 @@ $createTableNotifications = ("CREATE TABLE IF NOT EXISTS
 $dsn->exec($createTableNotifications);
 
 $createTableNumberBuyAdvice = ("CREATE TABLE IF NOT EXISTS
-`NumberByAdvice` (
+`NumberBuyAdvice` (
     `Id` int(11) NOT NULL AUTO_INCREMENT,
     `Number` int(11) NOT NULL DEFAULT 0,
     PRIMARY KEY (`Id`)

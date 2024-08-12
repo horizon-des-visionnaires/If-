@@ -251,7 +251,7 @@ class dashboardModel
     {
         try {
 
-            $countNumberUser = $this->dsn->query("SELECT Number FROM NumberByAdvice");
+            $countNumberUser = $this->dsn->query("SELECT Number FROM NumberBuyAdvice");
             $countNumberUser->execute();
             $result = $countNumberUser->fetchColumn();
 
