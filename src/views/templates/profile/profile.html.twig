@@ -88,6 +88,7 @@
             <p>{{ user.ProfilDescription | nl2br }}</p>
         </div>
     </div>
+    <button id="copyLinkButton">Copier le lien</button>
 
     {% if isConnected and userId == user.IdUser %}
     <div class="button-container">
@@ -96,8 +97,6 @@
         <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
     </div>
     {% endif %}
-
-
 </div>
 
 <div id="profileModal" class="modal">
@@ -517,6 +516,7 @@
 <script src="/../public/js/showContent.js"></script>
 <script src="/../public/js/profilPromotion.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 
 <script>
