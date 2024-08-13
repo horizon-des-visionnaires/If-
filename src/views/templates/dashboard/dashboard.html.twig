@@ -69,6 +69,7 @@
 </div>
 
 <div class="tableUserPro">
+    <h2>Tableau des pro</h2>
     <table>
         <tr>
             <th>Prénom</th>
@@ -99,6 +100,7 @@
 </div>
 
 <div class="tableUser">
+    <h2>Tableau des Utilisateurs</h2>
     <table>
         <tr>
             <th>Prénom</th>
@@ -149,6 +151,11 @@
 <p>
     nombre de commentaires :{{ countComment }}
 </p>
+
+<form action="/dashboard" method="post">
+    <input type="text" name="CategoryName">
+    <button type="submit" name="addCategory">ajouter une catégories</button>
+</form>
 
 
 <div id="myModal" class="modal">

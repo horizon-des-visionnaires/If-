@@ -362,4 +362,34 @@ class dashboardModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function insertCategory($CategoryName)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $checkCategoryName = "SELECT COUNT(*) FROM Category WHERE CategoryName = :CategoryName";
+            $checkCategoryNameStmt = $this->dsn->prepare($checkCategoryName);
+            $checkCategoryNameStmt->bindParam(':CategoryName', $CategoryName);
+            $checkCategoryNameStmt->execute();
+            $checkCategoryNameCount = $checkCategoryNameStmt->fetchColumn();
+
+            if ($checkCategoryNameCount > 0) {
+                echo "Cette catégorie existe déjà.";
+            } else {
+                $addCategoryName = "INSERT INTO Category (CategoryName) VALUES (:CategoryName)";
+                $addCategoryStmt = $this->dsn->prepare($addCategoryName);
+                $addCategoryStmt->bindParam(':CategoryName', $CategoryName);
+                $addCategoryStmt->execute();
+
+                $this->dsn->commit();
+
+                header("Location: /dashboard");
+                exit();
+            }
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
 }

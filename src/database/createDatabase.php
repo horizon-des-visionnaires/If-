@@ -175,6 +175,14 @@ $createTableConversationMessages = ("CREATE TABLE IF NOT EXISTS
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableConversationMessages);
 
+$createTableCategory = ("CREATE TABLE IF NOT EXISTS
+`Category` (
+    `IdCategory` int(11) NOT NULL AUTO_INCREMENT,
+    `CategoryName` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`IdCategory`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableCategory);
+
 $createTableAdvice = ("CREATE TABLE IF NOT EXISTS
 `Advice` (
     `IdAdvice` int(11) NOT NULL AUTO_INCREMENT,
@@ -184,9 +192,11 @@ $createTableAdvice = ("CREATE TABLE IF NOT EXISTS
     `DaysOfWeek` VARCHAR(255) DEFAULT NULL,
     `StartTime` TIME NOT NULL,
     `EndTime` TIME NOT NULL,
+    `IdCategory` int(11) DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdAdvice`),
-    CONSTRAINT fk_IdUser_Advice FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
+    CONSTRAINT fk_IdUser_Advice FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdCategory_Advice FOREIGN KEY (`IdCategory`) REFERENCES Category (`IdCategory`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableAdvice);
 
