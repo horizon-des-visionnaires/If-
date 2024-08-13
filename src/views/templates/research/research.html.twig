@@ -12,7 +12,7 @@
 
 {% block body %}
 <div class="search-add">
-    <div class="searchBar">
+    <div class="searchBar ">
         <form action="/research" method="get" class="search-form">
             <div class="group-search">
                 <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
@@ -32,17 +32,21 @@
     <h1>Découvrez des professionnels</h1>
     <div class="allProfil">
         {% for user in userData %}
-        <a href="profile-{{ user.IdUser }}">
-            <div class="profil">
+        <div class="profil">
+            <a href="profile-{{ user.IdUser }}">
                 <div class="profilPictureName">
-                    <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                    {% if user.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
+                    {% endif %}
                     <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"class="fas fa-check-circle"></i>
                 </div>
-                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-                    {{ user.ProfilPromotion }}
-                </div>
+            </a>
+            <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                Je peux t'aider à {{ user.ProfilPromotion }}
             </div>
-        </a>
+        </div>
         {% endfor %}
     </div>
 </div>

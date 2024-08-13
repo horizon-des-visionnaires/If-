@@ -1,6 +1,6 @@
 var modal = document.getElementById("imageModal");
 var modalImg = document.getElementById("img01");
-var captionText = document.getElementById("caption");
+//var captionText = document.getElementById("caption");
 
 document.querySelectorAll('.icon').forEach(function(img) {
     img.onclick = function() {
