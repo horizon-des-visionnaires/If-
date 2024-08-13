@@ -4,6 +4,7 @@ namespace postDetails;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+
 require 'vendor/autoload.php';
 
 require_once __DIR__ . '/../model/postDetailsModel.php';
@@ -30,11 +31,13 @@ class postDetailsController
         $isConnected = false;
         $userId = null;
         $user = null;
+        $isAdmin = null;
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
             $userModel = new \profile\profileModel();
             $user = $userModel->getUserById($userId);
+            $isAdmin = $_SESSION['IsAdmin'];
         }
 
         $IsAdmin = false;
@@ -72,6 +75,8 @@ class postDetailsController
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
+        $this->getUpdatePostData();
+
         echo $this->twig->render('postDetails/postDetails.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -83,7 +88,8 @@ class postDetailsController
             'commentsData' => $commentsData,
             'commentCount' => $commentCount,
             'user' => $user,
-            'unreadCount' => $unreadCount
+            'unreadCount' => $unreadCount,
+            'isAdmin' => $isAdmin
         ]);
     }
 
@@ -139,6 +145,31 @@ class postDetailsController
                 $IdPost = $_POST['IdPost'];
                 $this->postDetailsModel->FavoriteData($IdUser, $IdPost);
             }
+        }
+    }
+
+    public function getUpdatePostData()
+    {
+        if (isset($_POST['updatePost'])) {
+            $TitlePost = $_POST['TitlePost'] ?? null;
+            $ContentPost = $_POST['ContentPost'] ?? null;
+            $IdUser = $_POST['IdUser'];
+            $IdPost = $_POST['IdPost'];
+
+            $PicturesPost = [];
+            if (isset($_FILES["PicturePost"])) {
+                if (count($_FILES["PicturePost"]["tmp_name"]) > 6) {
+                    echo "You can upload a maximum of 6 images.";
+                    return;
+                }
+                foreach ($_FILES["PicturePost"]["tmp_name"] as $tmpName) {
+                    if ($tmpName) {
+                        $PicturesPost[] = file_get_contents($tmpName);
+                    }
+                }
+            }
+
+            $this->postDetailsModel->updatePostData($TitlePost, $ContentPost, $IdUser, $IdPost, $PicturesPost);
         }
     }
 }

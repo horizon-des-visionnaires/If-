@@ -50,6 +50,7 @@ nav li {
 .item,
 .item a,
 .item button {
+    position: relative;
     display: flex;
     flex-direction: row-reverse;
     font-family: 'Montserrat', sans-serif;
@@ -463,12 +464,38 @@ header a {
     gap:2em;
 }
 
+
+#notification-count {
+    position: absolute;
+    top: 0px; 
+    right: 3em;
+    background-color: #ff3b3b; /* Rouge vif */
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 0.3em 0.6em;
+    font-size: 0.8em;
+    line-height: 1em;
+    border: 2px solid white; 
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); 
+}
+
+
 /* Responsive Design */
 @media (max-width: 1080px) {
 
     .item p,.no p {
         display: none;
     }
+    #notification-count {
+        top: 0px; 
+        right: 0em;
+        font-size: 0.7em;
+        line-height: 0.8em;
+        padding: 0.3em 0.5em;
+    }
+    
+    
     .bigsize {
         display: none;
     }
@@ -497,7 +524,12 @@ header a {
         margin-left: 1em;
         margin-right: 1em;
     }
-
+    #notification-count {
+        top: 0px; 
+        right: 0em;
+        font-size: 0.65em;
+        line-height: 0.7em;
+    }
     #logo{
         width: 2.5em;
         height: auto;
@@ -563,7 +595,11 @@ header a {
     .text{
         font-size: 1.1em;
     }
-
+    #notification-count {
+        padding: 0.2em 0.4em;
+        font-size: 0.6em;
+        line-height: 0.8em;
+    }
    
     
 }

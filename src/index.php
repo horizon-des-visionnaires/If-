@@ -1,4 +1,5 @@
 <?php
+// Inclusion des contrôleurs nécessaires pour gérer les différentes routes
 require_once __DIR__ . '/controller/homeController.php';
 require_once __DIR__ . '/controller/registerController.php';
 require_once __DIR__ . '/controller/loginController.php';
@@ -13,9 +14,12 @@ require_once __DIR__ . '/controller/forgotPasswordController.php';
 require_once __DIR__ . '/controller/resetPasswordController.php';
 require_once __DIR__ . '/controller/conversationController.php';
 require_once __DIR__ . '/controller/conversationChatController.php';
+require_once __DIR__ . '/controller/adviceMeetingContoller.php';
+require_once __DIR__ . '/controller/notificationContoller.php';
 
-require_once __DIR__ . '/database/createDatabase.php';
+require_once __DIR__ . '/database/createDatabase.php'; // Inclusion du script de création de la base de données
 
+// Définition des routes avec les contrôleurs et méthodes correspondantes
 $routes = [
   '/' => ['controller' => 'home\homeController', 'method' => 'home'],
   '/register' => ['controller' => 'register\registerController', 'method' => 'register'],
@@ -28,32 +32,42 @@ $routes = [
   '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
   '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
   '/conversation' => ['controller' => 'conversation\conversationController', 'method' => 'conversation'],
+  '/verify' => ['controller' => 'verify\verifyController', 'method' => 'verify'],
+  '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
+  '/reset-password' => ['controller' => 'resetPassword\resetPasswordController', 'method' => 'resetPassword'],
+  '/conversation' => ['controller' => 'conversation\conversationController', 'method' => 'conversation'],
+  '/notification' => ['controller' => 'notification\notificationController', 'method' => 'notification']
 ];
 
-$requestParts = explode('?', $_SERVER['REQUEST_URI'], 2);
-$path = $requestParts[0];
+// Récupération du chemin de la requête
+$requestParts = explode('?', $_SERVER['REQUEST_URI'], 2); // Sépare l'URL pour obtenir le chemin et les paramètres éventuels
+$path = $requestParts[0]; // Récupère le chemin sans les paramètres
 
+// Vérification si le chemin existe dans les routes définies
 if (array_key_exists($path, $routes)) {
-  $controllerName = $routes[$path]['controller'];
-  $methodName = $routes[$path]['method'];
+  $controllerName = $routes[$path]['controller']; // Nom du contrôleur
+  $methodName = $routes[$path]['method']; // Nom de la méthode
 
-  $controller = new $controllerName();
+  $controller = new $controllerName(); // Instanciation du contrôleur
 
-  $params = isset($requestParts[1]) ? $requestParts[1] : '';
+  $params = isset($requestParts[1]) ? $requestParts[1] : ''; // Paramètres de la requête (s'ils existent)
 
-  $controller->$methodName();
+  $controller->$methodName(); // Appel de la méthode correspondante
 } else {
+  // Gestion des routes dynamiques pour les profils, les détails des posts et les conversations de chat
   if (preg_match('/^\/profile-(\d+)$/', $path, $matches)) {
     $controller = new profile\profileController();
-    $controller->profile($matches[1]);
+    $controller->profile($matches[1]); // Appel de la méthode avec l'ID du profil
   } else if (preg_match('/^\/postDetails-(\d+)$/', $path, $matches)) {
     $controller = new postDetails\postDetailsController();
-    $controller->post($matches[1]);
+    $controller->post($matches[1]); // Appel de la méthode avec l'ID du post
   } else if (preg_match('/^\/conversationChat-(\d+)$/', $path, $matches)) {
     $controller = new conversationChat\conversationChatController();
-    $controller->conversationChat($matches[1]);
-  }
-  else {
+    $controller->conversationChat($matches[1]); // Appel de la méthode avec l'ID de la conversation de chat
+  } else if (preg_match('/^\/adviceMeeting-(\d+)$/', $path, $matches)) {
+    $controller = new adviceMeeting\adviceMeetingController();
+    $controller->adviceMeeting($matches[1]); // Appel de la méthode avec l'ID de la conversation de chat
+  } else {
     http_response_code(404);
     echo "Page not found";
   }

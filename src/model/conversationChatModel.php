@@ -44,6 +44,7 @@ class conversationChatModel
     public function insertMessage($IdConversations, $IdUser, $messageContent)
     {
         try {
+            // Check if the user is part of the conversation
             $stmt = $this->dsn->prepare(
                 "SELECT COUNT(*) FROM Conversations
                 WHERE IdConversations = :IdConversations 
@@ -55,6 +56,7 @@ class conversationChatModel
             $isParticipant = $stmt->fetchColumn();
 
             if ($isParticipant) {
+                // Insert the message
                 $stmt = $this->dsn->prepare(
                     "INSERT INTO ConversationMessages (IdConversations, IdSender, ContentMessages)
                     VALUES (:IdConversations, :IdSender, :ContentMessages)"
@@ -63,6 +65,37 @@ class conversationChatModel
                 $stmt->bindParam(':IdSender', $IdUser, PDO::PARAM_INT);
                 $stmt->bindParam(':ContentMessages', $messageContent, PDO::PARAM_STR);
                 $stmt->execute();
+
+                // Determine the recipient
+                $stmt = $this->dsn->prepare(
+                    "SELECT IdUser_1, IdUser_2 FROM Conversations
+                    WHERE IdConversations = :IdConversations"
+                );
+                $stmt->bindParam(':IdConversations', $IdConversations, PDO::PARAM_INT);
+                $stmt->execute();
+                $conversation = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                $recipientId = ($conversation['IdUser_1'] == $IdUser) ? $conversation['IdUser_2'] : $conversation['IdUser_1'];
+
+                // Get the sender's name
+                $stmt = $this->dsn->prepare(
+                    "SELECT FirstName, LastName FROM User WHERE IdUser = :IdSender"
+                );
+                $stmt->bindParam(':IdSender', $IdUser, PDO::PARAM_INT);
+                $stmt->execute();
+                $sender = $stmt->fetch(PDO::FETCH_ASSOC);
+                $senderName = $sender['FirstName'] . ' ' . $sender['LastName'];
+
+                // Create a notification for the recipient
+                $notifMessage = "$senderName vous à envoyer un nouveau message.";
+                $stmt = $this->dsn->prepare(
+                    "INSERT INTO Notifications (IdUser, MessageNotif) 
+                    VALUES (:IdUser, :MessageNotif)"
+                );
+                $stmt->bindParam(':IdUser', $recipientId, PDO::PARAM_INT);
+                $stmt->bindParam(':MessageNotif', $notifMessage, PDO::PARAM_STR);
+                $stmt->execute();
+
                 header("Location: /conversationChat-" . $IdConversations);
                 exit();
             } else {

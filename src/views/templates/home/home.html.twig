@@ -58,18 +58,18 @@
                         <span>10€</span>
                     </div>
                 </div>
-
+                {#
                 <div class="promotion">
                     {% set text = user.ProfilPromotion %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
                     <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
                     <div class="hover-text">{{ text }}</div>
-                </div>
+                </div>#}
             </a>
 
             <div class="advice">
-                <p>{{ user.AdviceType }}</p>
+                <h2>{{ user.AdviceType }}</h2>
                 {% set text = user.AdviceDescription %}
                 {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                 {% set isTruncated = text|length > 60 %}
@@ -157,9 +157,9 @@
             <div class="admin">
                 <div class="user-details">
                     {% if User.ProfilPicture == null %}
-                    <img id="icon" src="/../public/image/user.png" alt="icon">
+                    <img id="icon3" src="/../public/image/user.png" alt="icon">
                     {% else %}
-                    <img id="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon">
+                    <img id="icon3" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon">
                     {% endif %}
                     <h1 class="name1">{{ User.FirstName }} {{ User.LastName }} </h1>
                     {% if isConnected and userId != User.IdUser %}

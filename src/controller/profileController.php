@@ -31,9 +31,11 @@ class profileController
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
+            $isAdmin = $_SESSION['IsAdmin'];
         } else {
             $isConnected = false;
             $userId = null;
+            $isAdmin = null;
         }
 
         $IsAdmin = false;
@@ -72,6 +74,8 @@ class profileController
             $adviceImages = $this->profileModel->getAdviceImages($adviceData['IdAdvice']);
         }
 
+        $this->getDeleteUser();
+
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
             'isConnected' => $isConnected,
@@ -83,7 +87,8 @@ class profileController
             'commentCount' => $commentCount,
             'unreadCount' => $unreadCount,
             'adviceData' => $adviceData,
-            'adviceImages' => $adviceImages
+            'adviceImages' => $adviceImages,
+            'isAdmin' => $isAdmin
         ]);
     }
 
@@ -119,16 +124,16 @@ class profileController
     public function getRequestPassProData()
     {
         if (isset($_POST['pushRequest'])) {
-            $Job = $_POST['Job'];
-            $Age = $_POST['Age'];
-            $Description = $_POST['Description'];
-            $idUser = $_POST['idUser'];
+            $Job = $_POST['Job'] ?? '';
+            $Age = $_POST['Age'] ?? 0; 
+            $Description = $_POST['Description'] ?? ''; 
+            $idUser = $_POST['idUser'] ?? null;
 
             $identityCardRecto = null;
             $identityCardVerso = null;
             $UserPicture = null;
 
-            $Adress = $_POST['Adress'];
+            $Adress = $_POST['Adress'] ?? ''; 
 
             if (isset($_FILES["identityCardRecto"]) && $_FILES["identityCardRecto"]["error"] == UPLOAD_ERR_OK) {
                 $identityCardRecto = file_get_contents($_FILES["identityCardRecto"]["tmp_name"]);
@@ -182,6 +187,16 @@ class profileController
             $IdUser_2 = $_SESSION['IdUser'];
 
             $this->profileModel->addConvertation($idUser_1, $IdUser_2);
+        }
+    }
+
+    public function getDeleteUser()
+    {
+        if (isset($_POST['deleteUser'])) {
+            $IdUser = $_POST['IdUser'];
+            session_unset();
+
+            $this->profileModel->deleteUser($IdUser);
         }
     }
 }

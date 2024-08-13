@@ -25,8 +25,12 @@
                 <a href = "/research" class = "no">
                     <img src="/../public/image/icon/loupe.png" alt="icon" class="icons">Recherche
                 </a>
+                {% if isConnected %}
                 <a href = "/conversation" class = "no">
-                    <img src="/../public/image/icon/message.png" alt="icon" class="icons">Message
+                {% else %}
+                <a href = "/login" class = "no">
+                {% endif %}
+                    <img src="/../public/image/icon/message.png" alt="icon" class="icons">Messagerie
                 </a>
                 <a href = "/allPost" class = "no">
                     <img src="/../public/image/icon/post.png" alt="icon" class="icons">Publication
@@ -80,11 +84,11 @@
         </li>
         <a href = "/conversation" class = "no littlesize">
             <img src="/../public/image/icon/message.png" alt="icon" class="icons">
-            <p>Messages</p>
+            <p>Messagerie</p>
         </a>
         <a href="/advice" class = "no">
             <img src="/../public/image/meeting.png" alt="icon" class="icons">
-            <p>Conseil</p>
+            <p>Consultation</p>
         </a>
     </div>
 
@@ -102,10 +106,10 @@
         <a href="/notification" id="notification-link">
             <div class="item" id="item">
                 <p>Notif</p>
+                <img src="/../public/image/icon/notif.png" id="img2">
                 {% if isConnected and unreadCount > 0 %}
                 <span id="notification-count" class="notification-count">{{ unreadCount }}</span>
                 {% endif %}
-                <img src="/../public/image/icon/notif.png" id="img2">
             </div>
         </a>
     </li>
@@ -136,7 +140,11 @@
     {% endif %}
 </nav>
 
-<a href="/conversation">
+{% if isConnected %}
+<a href = "/conversation" class = "no">
+{% else %}
+<a href = "/login" class = "no">
+{% endif %}
     <div class="Message"  id="Message">
         <img src="/../public/image/icon/chat.png">
     </div>
@@ -148,8 +156,8 @@
 
 {% block scripts %}
 <script src="/../public/js/dropdownMenu.js"></script>
-<script src="/../public/js/MovableChat.js"></script>
-{#<script src="/../public/js/loadFunctions.js"></script> #}
+{#<script src="/../public/js/MovableChat.js"></script>#}
+<script src="/../public/js/loadFunctions.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

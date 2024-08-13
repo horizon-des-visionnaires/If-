@@ -35,7 +35,7 @@
                         </div>
                         {% endif %}
                     </a>
-                    {% if isConnected and userId == Post.IdUser %}
+                    {% if isConnected and (userId == user.IdUser or isAdmin) %}
                     <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
                         <button type="submit" name="deletePost" id="deleteButton">
                             <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
@@ -44,6 +44,10 @@
                             </div>
                         </button>
                     </form>
+
+                    <button id="openModalButton">
+                        <img src="/../public/image/icon/edit_profil.png" id="deleteImage">
+                    </button>
                     {% endif %}
                 </div>
                 {% if Post.IsPro == 1 %}
@@ -51,8 +55,8 @@
                     {% set text =  Post.ProfilPromotion %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
-                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
-                    <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                    <p class="truncated-text" data-full-text="{{ text }}"> {{ truncatedText }}</p>
+                    {# <div class="hover-text">{{ text }}</div> #}
                 </div> 
                 {% endif %}
                 
@@ -131,14 +135,15 @@
                         <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
                         <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
                             {% if Post.IsFavorites %}
-                            <i class="fas fa-star"></i>
+                            <i class="fas fa-solid fa-flag"></i>
                             {% else %}
-                            <i class="far fa-star"></i>
+                            <i class="far fa-regular fa-flag"></i>
                             {% endif %}
                         </button>
                     </form>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} Vues</p>
+                    <button id="copyLinkButton">Copier le lien</button>
                 </div>
                 {% endfor %}
                 {% else %}
@@ -149,10 +154,10 @@
                     <span class="total-likes3">{{ Post.TotalLikes }}</span>
                     <a href="/postDetail-{{Post.IdPost}}" >
                         <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                        <span class="commentCount">{{ Post.commentCount }}17</span>
+                        <span class="commentCount">{{ Post.commentCount }}</span>
                     </a>
                     <button class="favorite" disabled>
-                        <i class="far fa-star"></i>
+                        <i class="far fa-regular fa-flag"></i>
                     </button>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} Vues</p>
@@ -183,7 +188,7 @@
                     </div>
                     {% endif %}
                 </a>
-                {% if isConnected and userId == Comment.IdUser %}
+                {% if isConnected and (userId == Comment.IdUser or isAdmin) %}
                 {% for Post in postData %}
                 <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePostComment">
                     <button type="submit" name="deletePostComment" id="deleteButton">
@@ -244,6 +249,30 @@
     <img class="image-modal-content" id="img01">
     <div id="caption"></div>
 </div>
+
+{% for Post in postData %}
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
+            <input type="text" name="TitlePost" placeholder="TitlePost" id="inputField">
+
+            <div style="position: relative;">
+                <textarea name="ContentPost" placeholder="ContentPost" id="inputFieldPromotion"></textarea>
+            </div>
+
+            <label for="PicturePost">Upload Images (Max 6):</label>
+            <input type="file" name="PicturePost[]" id="PicturePost" accept="image/*" multiple>
+
+            <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+            <input type="hidden" name="IdUser" value="{{ Post.IdUser }}">
+
+            <button type="submit" name="updatePost" id="inputField2">Valider les changements</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}
 
 {% block footer %}{% endblock %}
@@ -253,4 +282,5 @@
 <script src="/../public/js/viewMore.js"></script>
 <script src="/../public/js/modalImage.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
 {% endblock %}

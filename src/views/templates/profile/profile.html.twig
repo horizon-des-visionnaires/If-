@@ -67,13 +67,11 @@
                 <div class="profilButton" id="Toshow2">
                     <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
                 </div>
+                <div class="deleteProfilButton" id="Toshow3">
+                    <button id="openModalDeleteButton" class="beautiful-button">Supprimer le Profil</button>
+                </div>
                 {% endif %}
             </div>
-            {% if isConnected and userId == user.IdUser %}
-            <button class="filter" id="toggleEditButton2">
-                    <img src="/../public/image/icon/edit_profil.png">
-            </button>
-            {% endif %}
         </div>
 
 
@@ -90,6 +88,7 @@
             <p>{{ user.ProfilDescription | nl2br }}</p>
         </div>
     </div>
+    <button id="copyLinkButton">Copier le lien</button>
 
     {% if isConnected and userId == user.IdUser %}
     <div class="button-container">
@@ -98,8 +97,6 @@
         <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
     </div>
     {% endif %}
-
-
 </div>
 
 <div id="profileModal" class="modal">
@@ -182,6 +179,21 @@
     </div>
 </div>
 
+<div class="modal3" id="deleteModal">
+    <div class="modal-content3">
+        <span class="close3">&times;</span>
+        <form action="/profile-{{ user.IdUser }}" method="post" id="formPassPro" enctype="multipart/form-data">
+
+            <p>Attention cette action supprimeras définitivement toutes vos données.
+                Êtes vous sur de vouloir supprimer votre compte ?
+            </p>
+            <input type="hidden" name="IdUser" value="{{ user.IdUser }}">
+
+            <button type="submit" name="deleteUser" id="inputField2">supprimer le profil</button>
+        </form>
+    </div>
+</div>
+
 
 <div class="profilPost">
     {% for Post in userPost %}
@@ -199,7 +211,7 @@
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                 {% endif %}
             </div>
-            {% if isConnected and userId == user.IdUser %}
+            {% if isConnected and (userId == user.IdUser or isAdmin) %}
             <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
                 <button type="submit" name="deletePost" id="deleteButton">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
@@ -285,9 +297,9 @@
                 <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
                 <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
                     {% if Post.IsFavorites %}
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-solid fa-flag"></i>
                     {% else %}
-                    <i class="far fa-star"></i>
+                    <i class="far fa-regular fa-flag"></i>
                     {% endif %}
                 </button>
             </form>
@@ -305,7 +317,7 @@
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
             <button class="favorite" disabled>
-                <i class="far fa-star"></i>
+                <i class="far fa-regular fa-flag"></i>
             </button>
             <p class="datePost">{{ Post.RelativeDatePost }}</p>
             <p class="viewsPost">{{ Post.Views }} Vues</p>
@@ -403,9 +415,9 @@
                 <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
                 <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
                     {% if Post.IsFavorites %}
-                    <i class="fas fa-star"></i>
+                    <i class="fas fa-solid fa-flag"></i>
                     {% else %}
-                    <i class="far fa-star"></i>
+                    <i class="far fa-regular fa-flag"></i>
                     {% endif %}
                 </button>
             </form>
@@ -423,7 +435,7 @@
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
             <button class="favorite" disabled>
-                <i class="far fa-star"></i>
+                <i class="far fa-regular fa-flag"></i>
             </button>
             <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
@@ -436,33 +448,54 @@
 {% if isConnected and userId == user.IdUser %}
 <div class="profilePlanning" style="display: none;">
     {% if adviceData %}
-    <h1>Advice Meeting Details</h1>
+    <h1>Détails de la Consultation</h1>
 
     <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
     <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
 
-    <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('l d F Y') }}</p>
-    <p><strong>Start Time:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
-    <p><strong>End Time:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
+    <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Heure de début:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
+    <p><strong>Heure de fin:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
 
-    <h2>Advice Images</h2>
-    {% if adviceImages is not empty %}
-    <div class="advice-images">
-        {% for image in adviceImages %}
-        {% if image.PictureAdvice %}
-        <img class="icon" src="data:image;base64,{{ image.PictureAdvice }}" alt="Advice Image">
+    <h2>Images de la Consultation</h2>
+        {% if adviceImages|length > 0 %} <!-- user.Pictures -->
+        <div class="swipe">
+            {% if adviceImages|length > 1 %}
+            <button class="swipe-control-prev">
+                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+            </button>
+            {% endif %}
+            <div class="swipe-inner">
+                {% for picture in adviceImages %}
+                <div class="swipe-item portrait active">
+                    <img  src="data:image;base64,{{ picture.PictureAdvice }}" >
+                </div>
+                {% endfor %}
+            </div>
+            {% if adviceImages|length > 1 %}
+            <button class="swipe-control-next">
+                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+            </button>
+            <div class="bullets">
+                {% for i in 0..(adviceImages|length - 1) %}
+                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>Pas d'images disponible.</p>
         {% endif %}
-        {% endfor %}
-    </div>
-    {% endif %}
 
-    <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
+        <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
 
-    <h2>Seller Information</h2>
-    <p><strong>Seller Name:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
-    {% if adviceData.SellerProfilPicture %}
-    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
-    {% endif %}
+        <h2>Information sur le consultant</h2>
+        <p><strong>Nom:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
+        {% if adviceData.SellerProfilPicture %}
+        <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
+        {% else %}
+        <p>Pas de photo de profile disponible.</p>
+        {% endif %}
     {% endif %}
 </div>
 {% endif %}
@@ -504,6 +537,7 @@
 <script src="/../public/js/showContent.js"></script>
 <script src="/../public/js/profilPromotion.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 
 <script>

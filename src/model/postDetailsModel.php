@@ -136,23 +136,96 @@ class postDetailsModel
         return deletePost($this->dsn, $idPost, $idUser);
     }
 
-    public function getIsLike($IdUser, $IdPost) {
+    public function getIsLike($IdUser, $IdPost)
+    {
         return getIsLike($this->dsn, $IdUser, $IdPost);
     }
 
-    public function getIsFavorites($IdUser, $IdPost) {
+    public function getIsFavorites($IdUser, $IdPost)
+    {
         return getIsFavorites($this->dsn, $IdUser, $IdPost);
     }
 
-    public function LikeData($IdUser, $IdPost) {
+    public function LikeData($IdUser, $IdPost)
+    {
         LikeData($this->dsn, $IdUser, $IdPost, "/postDetails-$IdPost");
     }
 
-    public function FavoriteData($IdUser, $IdPost) {
+    public function FavoriteData($IdUser, $IdPost)
+    {
         FavoriteData($this->dsn, $IdUser, $IdPost, "/postDetails-$IdPost");
     }
 
-    public function getCommentCount($idPost) {
+    public function getCommentCount($idPost)
+    {
         return getCommentCount($this->dsn, $idPost);
+    }
+
+    public function updatePostData($TitlePost, $ContentPost, $IdUser, $IdPost, $PicturesPost = [])
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $setClauses = [];
+            if (!empty($TitlePost)) {
+                $setClauses[] = "TitlePost = :TitlePost";
+            }
+            if (!empty($ContentPost)) {
+                $setClauses[] = "ContentPost = :ContentPost";
+            }
+
+            if (empty($setClauses) && empty($PicturesPost)) {
+                echo "No fields to update.";
+                return;
+            }
+
+            if (!empty($setClauses)) {
+                $query = "UPDATE Post SET " . implode(', ', $setClauses) . " WHERE IdUser = :IdUser AND IdPost = :IdPost";
+                $stmt = $this->dsn->prepare($query);
+
+                $stmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
+                $stmt->bindParam(':IdPost', $IdPost, PDO::PARAM_INT);
+
+                if (!empty($TitlePost)) {
+                    $stmt->bindParam(':TitlePost', $TitlePost);
+                }
+                if (!empty($ContentPost)) {
+                    $stmt->bindParam(':ContentPost', $ContentPost);
+                }
+
+                if (!$stmt->execute()) {
+                    throw new PDOException("Failed to update post.");
+                }
+            }
+
+            if (!empty($PicturesPost)) {
+                // First, delete existing images for the post
+                $deleteQuery = "DELETE FROM PicturePost WHERE IdPost = :IdPost";
+                $deleteStmt = $this->dsn->prepare($deleteQuery);
+                $deleteStmt->bindParam(':IdPost', $IdPost, PDO::PARAM_INT);
+                $deleteStmt->execute();
+
+                // Insert new images
+                $insertQuery = "INSERT INTO PicturePost (IdPost, PicturePost) VALUES (:IdPost, :PicturePost)";
+                $insertStmt = $this->dsn->prepare($insertQuery);
+
+                foreach ($PicturesPost as $picture) {
+                    $insertStmt->bindParam(':IdPost', $IdPost, PDO::PARAM_INT);
+                    $insertStmt->bindParam(':PicturePost', $picture, PDO::PARAM_LOB);
+
+                    if (!$insertStmt->execute()) {
+                        throw new PDOException("Failed to insert images.");
+                    }
+                }
+            }
+
+            $this->dsn->commit();
+            header("Location: /postDetails-$IdPost");
+            exit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            $error = "error: " . $e->getMessage();
+            echo $error;
+        }
     }
 }

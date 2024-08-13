@@ -281,12 +281,10 @@ a {
     color: red;
 }
 
-.favorite.active i.fas {
-    color: yellow;
-}
+
 
 .favorite:hover i.far {
-    color: yellow;
+    color: #74C0FC;
 }
 
 span {
