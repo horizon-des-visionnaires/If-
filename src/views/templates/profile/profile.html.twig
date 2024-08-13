@@ -211,7 +211,7 @@
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                 {% endif %}
             </div>
-            {% if isConnected and userId == user.IdUser %}
+            {% if isConnected and (userId == user.IdUser or isAdmin) %}
             <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
                 <button type="submit" name="deletePost" id="deleteButton">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">

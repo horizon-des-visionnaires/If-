@@ -31,9 +31,11 @@ class profileController
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
+            $isAdmin = $_SESSION['IsAdmin'];
         } else {
             $isConnected = false;
             $userId = null;
+            $isAdmin = null;
         }
 
         $IsAdmin = false;
@@ -85,7 +87,8 @@ class profileController
             'commentCount' => $commentCount,
             'unreadCount' => $unreadCount,
             'adviceData' => $adviceData,
-            'adviceImages' => $adviceImages
+            'adviceImages' => $adviceImages,
+            'isAdmin' => $isAdmin
         ]);
     }
 

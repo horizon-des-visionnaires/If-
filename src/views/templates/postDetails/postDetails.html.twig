@@ -35,7 +35,7 @@
                         </div>
                         {% endif %}
                     </a>
-                    {% if isConnected and userId == Post.IdUser %}
+                    {% if isConnected and (userId == user.IdUser or isAdmin) %}
                     <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
                         <button type="submit" name="deletePost" id="deleteButton">
                             <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
@@ -188,7 +188,7 @@
                     </div>
                     {% endif %}
                 </a>
-                {% if isConnected and userId == Comment.IdUser %}
+                {% if isConnected and (userId == Comment.IdUser or isAdmin) %}
                 {% for Post in postData %}
                 <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePostComment">
                     <button type="submit" name="deletePostComment" id="deleteButton">

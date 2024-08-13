@@ -31,11 +31,13 @@ class postDetailsController
         $isConnected = false;
         $userId = null;
         $user = null;
+        $isAdmin = null;
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
             $userModel = new \profile\profileModel();
             $user = $userModel->getUserById($userId);
+            $isAdmin = $_SESSION['IsAdmin'];
         }
 
         $IsAdmin = false;
@@ -86,7 +88,8 @@ class postDetailsController
             'commentsData' => $commentsData,
             'commentCount' => $commentCount,
             'user' => $user,
-            'unreadCount' => $unreadCount
+            'unreadCount' => $unreadCount,
+            'isAdmin' => $isAdmin
         ]);
     }
 
