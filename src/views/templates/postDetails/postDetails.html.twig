@@ -44,6 +44,10 @@
                             </div>
                         </button>
                     </form>
+
+                    <button id="openModalButton">
+                        <img src="/../public/image/icon/edit_profil.png" id="deleteImage">
+                    </button>
                     {% endif %}
                 </div>
                 {% if Post.IsPro == 1 %}
@@ -51,8 +55,8 @@
                     {% set text =  Post.ProfilPromotion %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
-                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
-                    <div class="hover-text">Je peux t'aider à {{ text }}</div>
+                    <p class="truncated-text" data-full-text="{{ text }}"> {{ truncatedText }}</p>
+                    {# <div class="hover-text">{{ text }}</div> #}
                 </div> 
                 {% endif %}
                 
@@ -245,6 +249,30 @@
     <img class="image-modal-content" id="img01">
     <div id="caption"></div>
 </div>
+
+{% for Post in postData %}
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
+            <input type="text" name="TitlePost" placeholder="TitlePost" id="inputField">
+
+            <div style="position: relative;">
+                <textarea name="ContentPost" placeholder="ContentPost" id="inputFieldPromotion"></textarea>
+            </div>
+
+            <label for="PicturePost">Upload Images (Max 6):</label>
+            <input type="file" name="PicturePost[]" id="PicturePost" accept="image/*" multiple>
+
+            <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+            <input type="hidden" name="IdUser" value="{{ Post.IdUser }}">
+
+            <button type="submit" name="updatePost" id="inputField2">Valider les changements</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
 {% endblock %}
 
 {% block footer %}{% endblock %}
