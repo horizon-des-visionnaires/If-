@@ -33,10 +33,12 @@ class adviceController
         $isConnected = false;
         $userId = null;
         $isPro = false;
+        $isAdmin = null;
         // Vérification de la connexion de l'utilisateur
         if (isset($_SESSION['IdUser'])) {
             $isConnected = true;
             $userId = $_SESSION['IdUser'];
+            $isAdmin = $_SESSION['IsAdmin'];
         }
 
         $IsAdmin = false;
@@ -64,6 +66,7 @@ class adviceController
         $this->getDataBuyAdvice($errorMessages);
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+        $this->getDeleteAdviceData($errorMessages);
 
         // Affichage du template Twig avec les données récupérées
         echo $this->twig->render('advice/advice.html.twig', [
@@ -76,7 +79,8 @@ class adviceController
             'sortBy' => $sortBy,
             'order' => $order,
             'unreadCount' => $unreadCount,
-            'errorMessages' => $errorMessages
+            'errorMessages' => $errorMessages,
+            'isAdmin' => $isAdmin
         ]);
     }
 
@@ -154,6 +158,18 @@ class adviceController
             $IdBuyer = $_SESSION['IdUser'];
 
             $result = $this->adviceModel->buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer);
+
+            if (is_string($result)) {
+                $errorMessages[] = $result;
+            }
+        }
+    }
+
+    public function getDeleteAdviceData($errorMessages)
+    {
+        if (isset($_POST['deleteAdvice'])) {
+            $IdAdvice = $_POST['IdAdvice'];
+            $result = $this->adviceModel->deleteAdvice($IdAdvice);
 
             if (is_string($result)) {
                 $errorMessages[] = $result;

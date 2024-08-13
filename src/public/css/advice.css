@@ -533,6 +533,10 @@ input[type="time"]:focus {
     z-index: 10;
 }
 
+#deleteImage {
+    height: 3em;
+}
+
 
 /* Responsive Design */
 @media (max-width: 1080px) {

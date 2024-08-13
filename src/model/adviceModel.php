@@ -362,4 +362,42 @@ class adviceModel
             echo "Erreur lors de la mise à jour du compteur : " . $e->getMessage();
         }
     }
+
+    function deleteAdvice($IdAdvice)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $checkReservations = "SELECT COUNT(*) FROM BuyAdvice WHERE IdAdvice = :IdAdvice";
+            $reservationStmt = $this->dsn->prepare($checkReservations);
+            $reservationStmt->bindParam(':IdAdvice', $IdAdvice);
+            $reservationStmt->execute();
+            $reservationCount = $reservationStmt->fetchColumn();
+
+            if ($reservationCount > 0) {
+                $errorMessage = "Cannot delete advice because there are reservations.";
+            } else {
+                $deletePicturePost = "DELETE FROM PictureAdvice WHERE IdAdvice = :IdAdvice";
+                $picturePost = $this->dsn->prepare($deletePicturePost);
+                $picturePost->bindParam(':IdAdvice', $IdAdvice);
+                $picturePost->execute();
+
+                $deletePost = "DELETE FROM Advice WHERE IdAdvice = :IdAdvice";
+                $stmt = $this->dsn->prepare($deletePost);
+                $stmt->bindParam(':IdAdvice', $IdAdvice);
+                $stmt->execute();
+
+                $this->dsn->commit();
+
+                header("Location: /advice");
+                exit();
+            }
+
+            return $errorMessage;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            $error = "error: " . $e->getMessage();
+            echo $error;
+        }
+    }
 }
