@@ -1,5 +1,14 @@
+/* Palette de couleurs */
+:root {
+    --primary-color: #1DBF73;
+    --secondary-color: #404145;
+    --background-color: #f7f7f7;
+    --text-color: #1C1C1C;
+    --white-color: #ffffff;
+}
+
 #logo {
-    height: 4.5em;
+    height: 3.5em;
 }
 
 header .buttons {
@@ -67,13 +76,19 @@ nav li {
     font-size: 20px;
 }
 
-
-.group {
+/* Barre de recherche */
+.searchBar {
     display: flex;
-    line-height: 28px;
+    justify-content: center;
     align-items: center;
-    position: relative;
 }
+
+.group-search {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
 
 .search {
     width: 20em;
@@ -102,10 +117,25 @@ nav li {
 
 .iconSearch {
     position: absolute;
-    left: 1rem;
-    fill: #9e9ea7;
-    width: 1rem;
-    height: 1rem;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    fill: var(--secondary-color);
+    width: 24px;
+    height: 24px;
+}
+
+.searchBar input[type="search"] {
+    padding: 12px 15px 12px 50px;
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s ease;
+    background-color: var(--white-color);
+}
+.searchBar input[type="search"]:focus {
+    outline: none;
+    border-color: var(--secondary-color);
 }
 
 /* Sélection */
@@ -157,10 +187,11 @@ nav li {
 
 
 .icons {
-    width: 3em; 
-    height: 3em; 
+    width: 2em; 
+    height: 2em; 
     margin-right: 10px;  /* Espace entre l'icône et le texte */
     box-shadow: none;
+    align-self: center;
 }
 
 .no p{
@@ -181,8 +212,8 @@ nav li {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 45px;
-    height: 45px;
+    width: 3em;
+    height: 3em;
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -219,6 +250,7 @@ nav li {
     font-weight: 600;
     transition-duration: .3s;
     font-family: 'Montserrat', sans-serif;
+    padding-left: 0.5em;
 }
 
 .Btn:hover {
@@ -245,6 +277,8 @@ nav li {
 
 #img2 {
     margin-right: 5px;
+    width: 2em;
+    height: auto;
 }
 
 .Btn2 {
@@ -386,12 +420,11 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 15;
-    height: 5em;
+    height: 4em;
     border-bottom: 2px solid #818080;
 }
 
 header a {
-    text-decoration: none;
     color: inherit;
 }
 
@@ -427,18 +460,9 @@ header a {
     list-style: none;
     display: flex;
     justify-content: space-between;
-    gap:4em;
+    gap:2em;
 }
-@media (max-width:1500px) {
-    bottom-nav{
-        gap:2em;
-    }
-}
-@media (max-width:1200px) {
-    bottom-nav{
-        gap:1em;
-    }
-}
+
 /* Responsive Design */
 @media (max-width: 1080px) {
 
@@ -475,22 +499,31 @@ header a {
     }
 
     #logo{
-        width: 4em;
+        width: 2.5em;
         height: auto;
     }
     #img2{
-        width: 2.4em;
+        width: 1.5em;
         height: auto;
     }
     .Btn{
-        width: 3.5em;
-        height: 3.5em;
+        width: 2.5em;
+        height: 2.5em;
     }
     .icons{
-        width: 2.5em; 
+        width: 1.5em; 
         height: auto;
     }
     
+    header {
+        height: 3em;
+    }
+    .text{
+        font-size: 1.2em;
+    }
+    .Btn3{
+        padding: 0.5em 1.8em;
+    }
 }
 
 @media (max-width: 540px) {
@@ -518,11 +551,6 @@ header a {
     .littlesize {
         display: flex;
     }
-    
-    .bottom-nav img {
-        width: 2em;
-        height: auto;
-    }
 
     .Message{
         display: none;
@@ -532,22 +560,12 @@ header a {
         width: 2em;
         margin: -2em;
     }
-    #logo{
-        width: 3.5em;
-        height: auto;
-    }
-    #img2{
-        width: 2.5em;
-        height: auto;
-    }
-    .Btn{
-        width: 3em;
-        height: 3em;
+    .text{
+        font-size: 1.1em;
     }
 
-    header {
-        height: 4em;
-    }
+   
+    
 }
 
 @media (max-width: 80px) {
