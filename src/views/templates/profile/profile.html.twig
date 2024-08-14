@@ -447,65 +447,69 @@
 
 {% if isConnected and userId == user.IdUser %}
 <div class="profilePlanning" style="display: none;">
-    {% if adviceData %}
-    <h1>Détails de la Consultation</h1>
+    {% if adviceData is not empty %}
+        {% for advice in adviceData %}
+        <h2>Détails de la Consultation {{ loop.index }}</h2>
 
-    <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
-    <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
-    <p><strong>Catégorie :</strong> {{ adviceData.CategoryName }}</p>
+        <p><strong>Type:</strong> {{ advice.AdviceType }}</p>
+        <p><strong>Description:</strong> {{ advice.AdviceDescription }}</p>
+        <p><strong>Catégorie :</strong> {{ advice.CategoryName }}</p>
 
-    <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
-    <p><strong>Heure de début:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
-    <p><strong>Heure de fin:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
+        <p><strong>Date:</strong> {{ advice.BuyAdviceDate|date('d-m-Y') }}</p>
+        <p><strong>Heure de début:</strong> {{ advice.BuyAdviceStartTime }}</p>
+        <p><strong>Heure de fin:</strong> {{ advice.BuyAdviceEndTime }}</p>
 
-    <h2>Images de la Consultation</h2>
-    {% if adviceImages|length > 0 %} <!-- user.Pictures -->
-    <div class="swipe">
-        {% if adviceImages|length > 1 %}
-        <button class="swipe-control-prev">
-            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-        </button>
-        {% endif %}
-        <div class="swipe-inner">
-            {% for picture in adviceImages %}
-            <div class="swipe-item portrait active">
-                <img src="data:image;base64,{{ picture.PictureAdvice }}">
+        <h3>Images de la Consultation</h3>
+        {% if advice.adviceImages|length > 0 %}
+        <div class="swipe">
+            {% if advice.adviceImages|length > 1 %}
+            <button class="swipe-control-prev">
+                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+            </button>
+            {% endif %}
+            <div class="swipe-inner">
+                {% for picture in advice.adviceImages %}
+                <div class="swipe-item portrait active">
+                    <img src="data:image;base64,{{ picture.PictureAdvice }}">
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            {% if advice.adviceImages|length > 1 %}
+            <button class="swipe-control-next">
+                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+            </button>
+            <div class="bullets">
+                {% for i in 0..(advice.adviceImages|length - 1) %}
+                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
-        {% if adviceImages|length > 1 %}
-        <button class="swipe-control-next">
-            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-        </button>
-        <div class="bullets">
-            {% for i in 0..(adviceImages|length - 1) %}
-            <span class="bullet {% if i == 0 %}active{% endif %}"></span>
-            {% endfor %}
-        </div>
+        {% else %}
+        <p>Pas d'images disponible.</p>
         {% endif %}
-    </div>
-    {% else %}
-    <p>Pas d'images disponible.</p>
-    {% endif %}
 
-    <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
+        <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}">lien du meeting</a>
 
-    <h2>Information sur {{ userId == adviceData.SellerId ? 'l\'acheteur' : 'le consultant' }}</h2>
-    {% if userId == adviceData.SellerId %}consultant
-    <p><strong>Nom:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
-    {% if adviceData.BuyerProfilPicture %}
-    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
+        <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
+        {% if userId == advice.SellerId %}
+            <p><strong>Nom:</strong> {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
+            {% if advice.BuyerProfilPicture %}
+            <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
+            {% else %}
+            <p>Pas de photo de profile disponible.</p>
+            {% endif %}
+        {% else %}
+            <p><strong>Nom:</strong> {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
+            {% if advice.SellerProfilPicture %}
+            <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
+            {% else %}
+            <p>Pas de photo de profile disponible.</p>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
     {% else %}
-    <p>Pas de photo de profile disponible.</p>
-    {% endif %}
-    {% else %}
-    <p><strong>Nom:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
-    {% if adviceData.SellerProfilPicture %}
-    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
-    {% else %}
-    <p>Pas de photo de profile disponible.</p>
-    {% endif %}
-    {% endif %}
+    <p>Aucune consultation disponible.</p>
     {% endif %}
 </div>
 {% endif %}

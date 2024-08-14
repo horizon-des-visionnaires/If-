@@ -356,47 +356,47 @@ class profileModel
     {
         try {
             $query = "
-            SELECT 
-                A.IdAdvice,
-                A.AdviceType,
-                A.AdviceDescription,
-                C.CategoryName,
-                BA.IdBuyAdvice,
-                BA.Date AS BuyAdviceDate,
-                BA.StartTime AS BuyAdviceStartTime,
-                BA.EndTime AS BuyAdviceEndTime,
-                U1.IdUser AS SellerId,
-                U1.FirstName AS SellerFirstName,
-                U1.LastName AS SellerLastName,
-                U1.ProfilPicture AS SellerProfilPicture,
-                U2.IdUser AS BuyerId,
-                U2.FirstName AS BuyerFirstName,
-                U2.LastName AS BuyerLastName,
-                U2.ProfilPicture AS BuyerProfilPicture
-            FROM BuyAdvice BA
-            INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
-            INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
-            INNER JOIN Category C ON A.IdCategory = C.IdCategory
-            INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
-            WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
+        SELECT 
+            A.IdAdvice,
+            A.AdviceType,
+            A.AdviceDescription,
+            C.CategoryName,
+            BA.IdBuyAdvice,
+            BA.Date AS BuyAdviceDate,
+            BA.StartTime AS BuyAdviceStartTime,
+            BA.EndTime AS BuyAdviceEndTime,
+            U1.IdUser AS SellerId,
+            U1.FirstName AS SellerFirstName,
+            U1.LastName AS SellerLastName,
+            U1.ProfilPicture AS SellerProfilPicture,
+            U2.IdUser AS BuyerId,
+            U2.FirstName AS BuyerFirstName,
+            U2.LastName AS BuyerLastName,
+            U2.ProfilPicture AS BuyerProfilPicture
+        FROM BuyAdvice BA
+        INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
+        INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
+        INNER JOIN Category C ON A.IdCategory = C.IdCategory
+        INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
+        WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
         ";
 
             $stmt = $this->dsn->prepare($query);
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
-            $getAdviceData = $stmt->fetch(PDO::FETCH_ASSOC);
+            $adviceData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($getAdviceData) {
-                // Encode profile pictures
-                $getAdviceData['SellerProfilPicture'] = $getAdviceData['SellerProfilPicture'] ? base64_encode($getAdviceData['SellerProfilPicture']) : '';
-                $getAdviceData['BuyerProfilPicture'] = $getAdviceData['BuyerProfilPicture'] ? base64_encode($getAdviceData['BuyerProfilPicture']) : '';
+            // Encode profile pictures
+            foreach ($adviceData as &$advice) {
+                $advice['SellerProfilPicture'] = $advice['SellerProfilPicture'] ? base64_encode($advice['SellerProfilPicture']) : '';
+                $advice['BuyerProfilPicture'] = $advice['BuyerProfilPicture'] ? base64_encode($advice['BuyerProfilPicture']) : '';
             }
 
-            return $getAdviceData;
+            return $adviceData;
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
-            return null;
+            return [];
         }
     }
 

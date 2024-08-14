@@ -69,9 +69,10 @@ class profileController
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
         $adviceData = $this->profileModel->getBuyAdviceData($userId);
-        $adviceImages = [];
-        if ($adviceData && isset($adviceData['IdAdvice'])) {
-            $adviceImages = $this->profileModel->getAdviceImages($adviceData['IdAdvice']);
+        if ($adviceData) {
+            foreach ($adviceData as &$advice) {
+                $advice['adviceImages'] = $this->profileModel->getAdviceImages($advice['IdAdvice']);
+            }
         }
 
         $this->getDeleteUser();
@@ -87,7 +88,6 @@ class profileController
             'commentCount' => $commentCount,
             'unreadCount' => $unreadCount,
             'adviceData' => $adviceData,
-            'adviceImages' => $adviceImages,
             'isAdmin' => $isAdmin
         ]);
     }
@@ -125,15 +125,15 @@ class profileController
     {
         if (isset($_POST['pushRequest'])) {
             $Job = $_POST['Job'] ?? '';
-            $Age = $_POST['Age'] ?? 0; 
-            $Description = $_POST['Description'] ?? ''; 
+            $Age = $_POST['Age'] ?? 0;
+            $Description = $_POST['Description'] ?? '';
             $idUser = $_POST['idUser'] ?? null;
 
             $identityCardRecto = null;
             $identityCardVerso = null;
             $UserPicture = null;
 
-            $Adress = $_POST['Adress'] ?? ''; 
+            $Adress = $_POST['Adress'] ?? '';
 
             if (isset($_FILES["identityCardRecto"]) && $_FILES["identityCardRecto"]["error"] == UPLOAD_ERR_OK) {
                 $identityCardRecto = file_get_contents($_FILES["identityCardRecto"]["tmp_name"]);
