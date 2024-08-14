@@ -360,7 +360,7 @@ class adviceModel
     {
         try {
             // Préparer la requête pour insérer une ligne si elle n'existe pas, ou mettre à jour le compteur si elle existe
-            $query = "INSERT INTO NumberByAdvice (Id, Number) 
+            $query = "INSERT INTO NumberBuyAdvice (Id, Number) 
                   VALUES (1, 1)
                   ON DUPLICATE KEY UPDATE Number = Number + 1";
 
