@@ -368,7 +368,11 @@ class profileModel
                 U1.IdUser AS SellerId,
                 U1.FirstName AS SellerFirstName,
                 U1.LastName AS SellerLastName,
-                U1.ProfilPicture AS SellerProfilPicture
+                U1.ProfilPicture AS SellerProfilPicture,
+                U2.IdUser AS BuyerId,
+                U2.FirstName AS BuyerFirstName,
+                U2.LastName AS BuyerLastName,
+                U2.ProfilPicture AS BuyerProfilPicture
             FROM BuyAdvice BA
             INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
             INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
@@ -377,20 +381,16 @@ class profileModel
             WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
         ";
 
-
             $stmt = $this->dsn->prepare($query);
             $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
             $getAdviceData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // if ($getAdviceData === false) {
-            //     echo "No data found for ID: " . htmlspecialchars($userId);
-            //     return null;
-            // }
-
             if ($getAdviceData) {
+                // Encode profile pictures
                 $getAdviceData['SellerProfilPicture'] = $getAdviceData['SellerProfilPicture'] ? base64_encode($getAdviceData['SellerProfilPicture']) : '';
+                $getAdviceData['BuyerProfilPicture'] = $getAdviceData['BuyerProfilPicture'] ? base64_encode($getAdviceData['BuyerProfilPicture']) : '';
             }
 
             return $getAdviceData;
