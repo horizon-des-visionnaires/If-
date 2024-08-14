@@ -96,17 +96,6 @@ $createTableLike = ("CREATE TABLE IF NOT EXISTS
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableLike);
 
-// $createTableSubscriber = ("CREATE TABLE IF NOT EXISTS
-// `Subscriber` (
-//     `Id` int(11) NOT NULL AUTO_INCREMENT,
-//     `IdUser` int(11) DEFAULT NULL,
-//     `IdSubscriber` int(11) DEFAULT NULL,
-//     PRIMARY KEY (`Id`),
-//     CONSTRAINT fk_IdUser_Subscriber FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
-//     CONSTRAINT fk_IdSubscriber_Subscriber FOREIGN KEY (`IdSubscriber`) REFERENCES User (`IdUser`)
-// ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
-// $dsn->exec($createTableSubscriber);
-
 $createTableRequestPassPro = ("CREATE TABLE IF NOT EXISTS
 `RequestPassPro` (
     `IdRequest` int(11) NOT NULL AUTO_INCREMENT,
@@ -175,6 +164,14 @@ $createTableConversationMessages = ("CREATE TABLE IF NOT EXISTS
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableConversationMessages);
 
+$createTableCategory = ("CREATE TABLE IF NOT EXISTS
+`Category` (
+    `IdCategory` int(11) NOT NULL AUTO_INCREMENT,
+    `CategoryName` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`IdCategory`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableCategory);
+
 $createTableAdvice = ("CREATE TABLE IF NOT EXISTS
 `Advice` (
     `IdAdvice` int(11) NOT NULL AUTO_INCREMENT,
@@ -184,9 +181,11 @@ $createTableAdvice = ("CREATE TABLE IF NOT EXISTS
     `DaysOfWeek` VARCHAR(255) DEFAULT NULL,
     `StartTime` TIME NOT NULL,
     `EndTime` TIME NOT NULL,
+    `IdCategory` int(11) DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdAdvice`),
-    CONSTRAINT fk_IdUser_Advice FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
+    CONSTRAINT fk_IdUser_Advice FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdCategory_Advice FOREIGN KEY (`IdCategory`) REFERENCES Category (`IdCategory`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableAdvice);
 
@@ -223,6 +222,7 @@ $createTableNotifications = ("CREATE TABLE IF NOT EXISTS
     `MessageNotif` TEXT DEFAULT NULL,
     `IsRead` tinyint(1) DEFAULT '0',
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `ReadAt` DATETIME DEFAULT NULL,
     PRIMARY KEY (`IdNotification`),
     CONSTRAINT fk_IdUser_Notifications FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");

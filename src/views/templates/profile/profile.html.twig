@@ -312,7 +312,7 @@
                 <i class="far fa-heart"></i>
             </button>
             <span class="total-likes">{{ Post.TotalLikes }}</span>
-            <a href="/postDetail-{{Post.IdPost}}" >
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
@@ -406,7 +406,7 @@
                 </button>
                 <span class="total-likes">{{ Post.TotalLikes }}</span>
             </form>
-            <a href="/postDetail-{{Post.IdPost}}" >
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
@@ -430,7 +430,7 @@
                 <i class="far fa-heart"></i>
             </button>
             <span class="total-likes">{{ Post.TotalLikes }}</span>
-            <a href="/postDetail-{{Post.IdPost}}" >
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
@@ -452,50 +452,60 @@
 
     <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
     <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
+    <p><strong>Catégorie :</strong> {{ adviceData.CategoryName }}</p>
 
     <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
     <p><strong>Heure de début:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
     <p><strong>Heure de fin:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
 
     <h2>Images de la Consultation</h2>
-        {% if adviceImages|length > 0 %} <!-- user.Pictures -->
-        <div class="swipe">
-            {% if adviceImages|length > 1 %}
-            <button class="swipe-control-prev">
-                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-            </button>
-            {% endif %}
-            <div class="swipe-inner">
-                {% for picture in adviceImages %}
-                <div class="swipe-item portrait active">
-                    <img  src="data:image;base64,{{ picture.PictureAdvice }}" >
-                </div>
-                {% endfor %}
+    {% if adviceImages|length > 0 %} <!-- user.Pictures -->
+    <div class="swipe">
+        {% if adviceImages|length > 1 %}
+        <button class="swipe-control-prev">
+            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+        </button>
+        {% endif %}
+        <div class="swipe-inner">
+            {% for picture in adviceImages %}
+            <div class="swipe-item portrait active">
+                <img src="data:image;base64,{{ picture.PictureAdvice }}">
             </div>
-            {% if adviceImages|length > 1 %}
-            <button class="swipe-control-next">
-                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-            </button>
-            <div class="bullets">
-                {% for i in 0..(adviceImages|length - 1) %}
-                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
-                {% endfor %}
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
-        {% else %}
-        <p>Pas d'images disponible.</p>
+        {% if adviceImages|length > 1 %}
+        <button class="swipe-control-next">
+            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+        </button>
+        <div class="bullets">
+            {% for i in 0..(adviceImages|length - 1) %}
+            <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+            {% endfor %}
+        </div>
         {% endif %}
+    </div>
+    {% else %}
+    <p>Pas d'images disponible.</p>
+    {% endif %}
 
-        <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
+    <a href="/adviceMeeting-{{ adviceData.IdBuyAdvice }}">lien du meeting</a>
 
-        <h2>Information sur le consultant</h2>
-        <p><strong>Nom:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
-        {% if adviceData.SellerProfilPicture %}
-        <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
-        {% else %}
-        <p>Pas de photo de profile disponible.</p>
-        {% endif %}
+    <h2>Information sur {{ userId == adviceData.SellerId ? 'l\'acheteur' : 'le consultant' }}</h2>
+    {% if userId == adviceData.SellerId %}consultant
+    <p><strong>Nom:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
+    {% if adviceData.BuyerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>Pas de photo de profile disponible.</p>
+    {% endif %}
+    {% else %}
+    <p><strong>Nom:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
+    {% if adviceData.SellerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>Pas de photo de profile disponible.</p>
+    {% endif %}
+    {% endif %}
     {% endif %}
 </div>
 {% endif %}
@@ -541,28 +551,28 @@
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton2 = document.getElementById('toggleEditButton2');
-    const Edit = document.getElementById('Toshow');  
-    const Edit2 = document.getElementById('Toshow2'); 
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButton2 = document.getElementById('toggleEditButton2');
+        const Edit = document.getElementById('Toshow');
+        const Edit2 = document.getElementById('Toshow2');
 
-    function toggleEdit(event) {
-        event.stopPropagation();
-        Edit2.classList.toggle('show');
-        if (Edit) {
-            Edit.classList.toggle('show');
-        }
-    }
-    toggleButton2.addEventListener('click', toggleEdit);
-
-    document.addEventListener('click', function (event) {
-        if (!Edit.contains(event.target) && !toggleButton2.contains(event.target) ) {
-            Edit2.classList.remove('show');
+        function toggleEdit(event) {
+            event.stopPropagation();
+            Edit2.classList.toggle('show');
             if (Edit) {
-                Edit.classList.remove('show');
+                Edit.classList.toggle('show');
             }
         }
+        toggleButton2.addEventListener('click', toggleEdit);
+
+        document.addEventListener('click', function (event) {
+            if (!Edit.contains(event.target) && !toggleButton2.contains(event.target)) {
+                Edit2.classList.remove('show');
+                if (Edit) {
+                    Edit.classList.remove('show');
+                }
+            }
+        });
     });
-});
 </script>
 {% endblock %}

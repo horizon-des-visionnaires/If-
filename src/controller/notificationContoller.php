@@ -44,6 +44,8 @@ class notificationController
 
         $userInfo = $this->notificationModel->getUserInfo($userId);
 
+        $this->notificationModel->deleteExpiredNotifications();
+
         echo $this->twig->render('notification/notification.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,

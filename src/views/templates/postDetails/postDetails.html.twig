@@ -36,6 +36,7 @@
                         {% endif %}
                     </a>
                     {% if isConnected and (userId == user.IdUser or isAdmin) %}
+                    <div class="changements">
                     <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
                         <button type="submit" name="deletePost" id="deleteButton">
                             <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
@@ -46,8 +47,9 @@
                     </form>
 
                     <button id="openModalButton">
-                        <img src="/../public/image/icon/edit_profil.png" id="deleteImage">
+                        <img class="icon_commentaire" src="/../public/image/icon/edit_profil.png">
                     </button>
+                    </div>
                     {% endif %}
                 </div>
                 {% if Post.IsPro == 1 %}
@@ -55,7 +57,7 @@
                     {% set text =  Post.ProfilPromotion %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
-                    <p class="truncated-text" data-full-text="{{ text }}"> {{ truncatedText }}</p>
+                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
                     {# <div class="hover-text">{{ text }}</div> #}
                 </div> 
                 {% endif %}
@@ -143,7 +145,7 @@
                     </form>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} Vues</p>
-                    <button id="copyLinkButton">Copier le lien</button>
+                    <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
                 </div>
                 {% endfor %}
                 {% else %}
@@ -161,6 +163,7 @@
                     </button>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} Vues</p>
+                    <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
                 </div>
                 {% endif %}
             </div>
@@ -255,13 +258,12 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
-            <input type="text" name="TitlePost" placeholder="TitlePost" id="inputField">
+            <input type="text" name="TitlePost" placeholder="Titre de la Publication" id="inputField">
 
-            <div style="position: relative;">
-                <textarea name="ContentPost" placeholder="ContentPost" id="inputFieldPromotion"></textarea>
-            </div>
+            <textarea name="ContentPost" placeholder="Contenu de la Publication" id="inputFieldDesc"></textarea>
 
-            <label for="PicturePost">Upload Images (Max 6):</label>
+
+            <label for="PicturePost">Ajout d'images (Max 6):</label>
             <input type="file" name="PicturePost[]" id="PicturePost" accept="image/*" multiple>
 
             <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">

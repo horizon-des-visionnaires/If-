@@ -362,4 +362,79 @@ class dashboardModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function insertCategory($CategoryName)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $checkCategoryName = "SELECT COUNT(*) FROM Category WHERE CategoryName = :CategoryName";
+            $checkCategoryNameStmt = $this->dsn->prepare($checkCategoryName);
+            $checkCategoryNameStmt->bindParam(':CategoryName', $CategoryName);
+            $checkCategoryNameStmt->execute();
+            $checkCategoryNameCount = $checkCategoryNameStmt->fetchColumn();
+
+            if ($checkCategoryNameCount > 0) {
+                echo "Cette catégorie existe déjà.";
+            } else {
+                $addCategoryName = "INSERT INTO Category (CategoryName) VALUES (:CategoryName)";
+                $addCategoryStmt = $this->dsn->prepare($addCategoryName);
+                $addCategoryStmt->bindParam(':CategoryName', $CategoryName);
+                $addCategoryStmt->execute();
+
+                $this->dsn->commit();
+
+                header("Location: /dashboard");
+                exit();
+            }
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function getCategory()
+    {
+        try {
+            $queryCategory = "SELECT * FROM Category";
+            $stmtCategory = $this->dsn->prepare($queryCategory);
+            $stmtCategory->execute();
+            $categoryData = $stmtCategory->fetchAll(PDO::FETCH_ASSOC);
+
+            return $categoryData;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            $error = "error: " . $e->getMessage();
+            echo $error;
+        }
+    }
+
+    public function deleteCategory($IdCategory)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $checkAdviceQuery = "SELECT COUNT(*) FROM Advice WHERE IdCategory = :IdCategory";
+            $stmt = $this->dsn->prepare($checkAdviceQuery);
+            $stmt->bindParam(':IdCategory', $IdCategory, PDO::PARAM_INT);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+
+            if ($count > 0) {
+                echo "La catégorie est utilisée par des conseils (Advice). Suppression impossible.";
+            }
+
+            $deleteCategoryQuery = "DELETE FROM Category WHERE IdCategory = :IdCategory";
+            $stmt = $this->dsn->prepare($deleteCategoryQuery);
+            $stmt->bindParam(':IdCategory', $IdCategory, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->dsn->commit();
+            header("Location: /dashboard");
+            exit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
 }

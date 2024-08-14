@@ -16,7 +16,7 @@ class adviceModel
         $this->dsn = connectDB();
     }
 
-    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime, $PictureAdvice)
+    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime, $PictureAdvice, $CategoryId)
     {
         try {
             $countAdviceQuery = "SELECT COUNT(*) FROM Advice WHERE IdUser = :IdUser";
@@ -29,8 +29,8 @@ class adviceModel
                 return "L'utilisateur a déjà trois conseils, impossible d'en ajouter d'autres.";
             }
 
-            $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser, DaysOfWeek, StartTime, EndTime)
-            VALUES (:AdviceType, :AdviceDescription, :IdUser, :DaysOfWeek, :StartTime, :EndTime)";
+            $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser, DaysOfWeek, StartTime, EndTime, IdCategory)
+                              VALUES (:AdviceType, :AdviceDescription, :IdUser, :DaysOfWeek, :StartTime, :EndTime, :IdCategory)";
             $execInsertAdvice = $this->dsn->prepare($insertAdviceQuery);
             $execInsertAdvice->bindParam(':AdviceType', $AdviceType);
             $execInsertAdvice->bindParam(':AdviceDescription', $AdviceDescription);
@@ -38,6 +38,7 @@ class adviceModel
             $execInsertAdvice->bindParam(':DaysOfWeek', $DaysOfWeek);
             $execInsertAdvice->bindParam(':StartTime', $StartTime);
             $execInsertAdvice->bindParam(':EndTime', $EndTime);
+            $execInsertAdvice->bindParam(':IdCategory', $CategoryId);
             $execInsertAdvice->execute();
 
             $IdAdvice = $this->dsn->lastInsertId();
@@ -58,9 +59,12 @@ class adviceModel
     public function getAdviceAndUserInfo()
     {
         try {
-            $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+            $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, 
+                         p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion, 
+                         c.CategoryName
                   FROM Advice a
-                  JOIN User p ON a.IdUser = p.IdUser";
+                  JOIN User p ON a.IdUser = p.IdUser
+                  JOIN Category c ON a.IdCategory = c.IdCategory";
 
             $stmt = $this->dsn->prepare($query);
             $stmt->execute();
@@ -120,15 +124,19 @@ class adviceModel
 
     private function buildAdviceQuery($searchQuery, $sortBy, $order)
     {
-        $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
-                  FROM Advice a
-                  JOIN User p ON a.IdUser = p.IdUser";
+        $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, 
+            p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion, 
+            c.CategoryName
+            FROM Advice a
+            JOIN User p ON a.IdUser = p.IdUser
+            JOIN Category c ON a.IdCategory = c.IdCategory";  // Jointure sur Category
 
         if ($searchQuery) {
             $query .= " WHERE (a.AdviceType LIKE :searchQuery 
-                    OR a.AdviceDescription LIKE :searchQuery
-                    OR p.FirstName LIKE :searchQuery 
-                    OR p.LastName LIKE :searchQuery)";
+            OR a.AdviceDescription LIKE :searchQuery
+            OR p.FirstName LIKE :searchQuery 
+            OR p.LastName LIKE :searchQuery
+            OR c.CategoryName LIKE :searchQuery)";  // Inclure la recherche par nom de catégorie
         }
 
         if ($sortBy) {
@@ -352,7 +360,7 @@ class adviceModel
     {
         try {
             // Préparer la requête pour insérer une ligne si elle n'existe pas, ou mettre à jour le compteur si elle existe
-            $query = "INSERT INTO NumberByAdvice (Id, Number) 
+            $query = "INSERT INTO NumberBuyAdvice (Id, Number) 
                   VALUES (1, 1)
                   ON DUPLICATE KEY UPDATE Number = Number + 1";
 
@@ -360,6 +368,60 @@ class adviceModel
             $stmt->execute();
         } catch (PDOException $e) {
             echo "Erreur lors de la mise à jour du compteur : " . $e->getMessage();
+        }
+    }
+
+    function deleteAdvice($IdAdvice)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $checkReservations = "SELECT COUNT(*) FROM BuyAdvice WHERE IdAdvice = :IdAdvice";
+            $reservationStmt = $this->dsn->prepare($checkReservations);
+            $reservationStmt->bindParam(':IdAdvice', $IdAdvice);
+            $reservationStmt->execute();
+            $reservationCount = $reservationStmt->fetchColumn();
+
+            if ($reservationCount > 0) {
+                $errorMessage = "Cannot delete advice because there are reservations.";
+            } else {
+                $deletePicturePost = "DELETE FROM PictureAdvice WHERE IdAdvice = :IdAdvice";
+                $picturePost = $this->dsn->prepare($deletePicturePost);
+                $picturePost->bindParam(':IdAdvice', $IdAdvice);
+                $picturePost->execute();
+
+                $deletePost = "DELETE FROM Advice WHERE IdAdvice = :IdAdvice";
+                $stmt = $this->dsn->prepare($deletePost);
+                $stmt->bindParam(':IdAdvice', $IdAdvice);
+                $stmt->execute();
+
+                $this->dsn->commit();
+
+                header("Location: /advice");
+                exit();
+            }
+
+            return $errorMessage;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            $error = "error: " . $e->getMessage();
+            echo $error;
+        }
+    }
+
+    public function getCategory()
+    {
+        try {
+            $queryCategory = "SELECT * FROM Category";
+            $stmtCategory = $this->dsn->prepare($queryCategory);
+            $stmtCategory->execute();
+            $categoryData = $stmtCategory->fetchAll(PDO::FETCH_ASSOC);
+
+            return $categoryData;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            $error = "error: " . $e->getMessage();
+            echo $error;
         }
     }
 }
