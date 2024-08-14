@@ -233,6 +233,7 @@ $createTableNotifications = ("CREATE TABLE IF NOT EXISTS
     `MessageNotif` TEXT DEFAULT NULL,
     `IsRead` tinyint(1) DEFAULT '0',
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `ReadAt` DATETIME DEFAULT NULL,
     PRIMARY KEY (`IdNotification`),
     CONSTRAINT fk_IdUser_Notifications FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");

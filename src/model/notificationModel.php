@@ -39,7 +39,7 @@ class notificationModel
         try {
             $stmt = $this->dsn->prepare("
             UPDATE Notifications 
-            SET IsRead = 1 
+            SET IsRead = 1, ReadAt = NOW() 
             WHERE IdNotification = :IdNotification
         ");
             $stmt->bindParam(':IdNotification', $notificationId);
@@ -89,6 +89,19 @@ class notificationModel
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return null;
+        }
+    }
+
+    public function deleteExpiredNotifications()
+    {
+        try {
+            $stmt = $this->dsn->prepare("
+            DELETE FROM Notifications 
+            WHERE IsRead = 1 AND ReadAt < NOW() - INTERVAL 1 DAY
+        ");
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
         }
     }
 }
