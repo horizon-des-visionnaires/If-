@@ -4,6 +4,8 @@ namespace adviceMeeting;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use DateTime;
+use DateTimeZone;
 
 require 'vendor/autoload.php';
 
@@ -43,7 +45,8 @@ class adviceMeetingController
 
         $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
         $adviceImages = [];
-        $showReminder = false;
+        $showSatisfactionForm = false;
+
         if ($adviceData) {
             if ($userId !== $adviceData['SellerId'] && $userId !== $adviceData['BuyerId']) {
                 header('Location: /advice');
@@ -51,14 +54,16 @@ class adviceMeetingController
             }
             $adviceImages = $this->adviceMeetingModel->getAdviceImages($adviceData['IdAdvice']);
 
-            $currentDateTime = new \DateTime();
-            $adviceStartDateTime = new \DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceStartTime']);
-            $adviceEndDateTime = new \DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceEndTime']);
+            $timezone = new DateTimeZone('Europe/Paris');
+            $currentDateTime = new DateTime('now', $timezone);
+            $adviceEndDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceEndTime'], $timezone);
 
-            if ($currentDateTime->format('Y-m-d') === $adviceData['BuyAdviceDate'] && $currentDateTime <= $adviceEndDateTime) {
-                if ($currentDateTime > $adviceStartDateTime && $currentDateTime <= $adviceEndDateTime) {
-                    $showReminder = true;
-                }
+            // Debugging output
+            error_log("Current DateTime: " . $currentDateTime->format('Y-m-d H:i:s'));
+            error_log("Advice End DateTime: " . $adviceEndDateTime->format('Y-m-d H:i:s'));
+
+            if ($adviceEndDateTime <= $currentDateTime) {
+                $showSatisfactionForm = true;
             }
         }
 
@@ -71,7 +76,7 @@ class adviceMeetingController
             'adviceData' => $adviceData,
             'adviceImages' => $adviceImages,
             'unreadCount' => $unreadCount,
-            'showReminder' => $showReminder
+            'showSatisfactionForm' => $showSatisfactionForm,
         ]);
     }
 }

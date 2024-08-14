@@ -26,9 +26,8 @@
     <p><strong>Heure de fin:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
 
     <h2>Images de la Consultation</h2>
-    
 
-    {% if adviceImages|length > 0 %} <!-- user.Pictures -->
+    {% if adviceImages|length > 0 %}
     <div class="swipe">
         {% if adviceImages|length > 1 %}
         <button class="swipe-control-prev">
@@ -38,7 +37,7 @@
         <div class="swipe-inner">
             {% for picture in adviceImages %}
             <div class="swipe-item portrait active">
-                <img  src="data:image;base64,{{ picture.PictureAdvice }}" >
+                <img src="data:image;base64,{{ picture.PictureAdvice }}">
             </div>
             {% endfor %}
         </div>
@@ -62,7 +61,7 @@
     {% if adviceData.BuyerProfilPicture %}
     <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
     {% else %}
-    <p>Pas de photo de profile disponible.</p>
+    <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
     <h2>Information sur le consultant</h2>
@@ -70,10 +69,10 @@
     {% if adviceData.SellerProfilPicture %}
     <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
     {% else %}
-    <p>Pas de photo de profile disponible.</p>
+    <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
-    {% if showReminder %}
+    {% if showSatisfactionForm %}
     <div class="reminder-div">
         <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
             <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
