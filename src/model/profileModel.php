@@ -360,6 +360,7 @@ class profileModel
                 A.IdAdvice,
                 A.AdviceType,
                 A.AdviceDescription,
+                C.CategoryName,
                 BA.IdBuyAdvice,
                 BA.Date AS BuyAdviceDate,
                 BA.StartTime AS BuyAdviceStartTime,
@@ -371,6 +372,7 @@ class profileModel
             FROM BuyAdvice BA
             INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
             INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
+            INNER JOIN Category C ON A.IdCategory = C.IdCategory
             INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
             WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
         ";
