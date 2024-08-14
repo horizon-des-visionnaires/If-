@@ -7,7 +7,6 @@ require_once __DIR__ . '/controller/profileController.php';
 require_once __DIR__ . '/controller/postDetailsController.php';
 require_once __DIR__ . '/controller/dashboardController.php';
 require_once __DIR__ . '/controller/allPostController.php';
-require_once __DIR__ . '/controller/researchController.php';
 require_once __DIR__ . '/controller/adviceController.php';
 require_once __DIR__ . '/controller/verifyController.php';
 require_once __DIR__ . '/controller/forgotPasswordController.php';
@@ -26,7 +25,6 @@ $routes = [
   '/login' => ['controller' => 'login\loginController', 'method' => 'login'],
   '/dashboard' => ['controller' => 'dashboard\dashboardController', 'method' => 'dashboard'],
   '/allPost' => ['controller' => 'allPost\allPostController', 'method' => 'allPost'],
-  '/research' => ['controller' => 'research\researchContoller', 'method' => 'research'],
   '/advice' => ['controller' => 'advice\adviceController', 'method' => 'advice'],
   '/verify' => ['controller' => 'verify\verifyController', 'method' => 'verify'],
   '/forgot-password' => ['controller' => 'forgotPassword\forgotPasswordController', 'method' => 'forgotPassword'],
