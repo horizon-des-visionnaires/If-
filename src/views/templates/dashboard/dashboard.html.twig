@@ -108,7 +108,7 @@
             <th>Email</th>
             <th>Photo de Profil</th>
             <th>Lien page profile</th>
-            <th>Supprimer</th>
+            <th>Supprimer user</th>
         </tr>
         {% for User in user %}
         <tr>
@@ -157,6 +157,26 @@
     <button type="submit" name="addCategory">ajouter une catégories</button>
 </form>
 
+<div class="tableCategory">
+    <h2>Tableau des catégories</h2>
+    <table>
+        <tr>
+            <th>Nom de la catégories</th>
+            <th>Supprimer catégories</th>
+        </tr>
+        {% for Category in getCategory %}
+        <tr>
+            <td>{{ Category.CategoryName }}</td>
+            <td>
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdCategory" value="{{ Category.IdCategory }}">
+                    <button type="submit" name="deleteCategory">Supprimer la catégories</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 <div id="myModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>

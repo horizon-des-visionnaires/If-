@@ -77,7 +77,10 @@ class dashboardController
         $countAdvice = $this->dashboardModel->countNumberAdviceSell();
         $countPost = $this->dashboardModel->countNumberPost();
         $countComment = $this->dashboardModel->countNumberComment();
-        $this->getAddCategoty();
+        $this->getAddCategory();
+
+        $getCategory = $this->dashboardModel->getCategory();
+        $this->getDeleteCategory();
 
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
@@ -90,7 +93,8 @@ class dashboardController
             'countUser' => $countUser,
             'countAdvice' => $countAdvice,
             'countPost' => $countPost,
-            'countComment' => $countComment
+            'countComment' => $countComment,
+            'getCategory' => $getCategory
         ]);
     }
 
@@ -188,12 +192,21 @@ class dashboardController
         }
     }
 
-    public function getAddCategoty()
+    public function getAddCategory()
     {
         if (isset($_POST['addCategory'])) {
             $CategoryName = $_POST['CategoryName'];
 
             $this->dashboardModel->insertCategory($CategoryName);
+        }
+    }
+
+    public function getDeleteCategory()
+    {
+        if (isset($_POST['deleteCategory'])) {
+            $IdCategory = $_POST['IdCategory'];
+
+            $this->dashboardModel->deleteCategory($IdCategory);
         }
     }
 }

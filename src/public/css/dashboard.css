@@ -161,7 +161,8 @@
 
 /* Table des utilisateurs professionnels */
 .tableUserPro,
-.tableUser {
+.tableUser,
+.tableCategory {
     margin: 20px;
     background: #fff;
     border-radius: 8px;
@@ -170,7 +171,8 @@
 }
 
 .tableUserPro table,
-.tableUser table {
+.tableUser table,
+.tableCategory table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -178,21 +180,25 @@
 .tableUserPro th,
 .tableUserPro td,
 .tableUser th,
-.tableUser td {
+.tableUser td,
+.tableCategory th,
+.tableCategory td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 .tableUserPro th,
-.tableUser th {
+.tableUser th,
+.tableCategory th {
     background-color: #f8f9fa;
     color: #333;
     font-weight: bold;
 }
 
 .tableUserPro tr:hover,
-.tableUser tr:hover {
+.tableUser tr:hover,
+.tableCategory tr:hover {
     background-color: #f1f1f1;
 }
 
@@ -211,7 +217,8 @@
 }
 
 .tableUserPro button,
-.tableUser button {
+.tableUser button,
+.tableCategory button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -222,12 +229,14 @@
 }
 
 .tableUserPro button,
-.tableUser button {
+.tableUser button,
+.tableCategory button {
     background-color: #dc3545;
 }
 
 .tableUserPro button:hover,
-.tableUser button:hover {
+.tableUser button:hover,
+.tableCategory button:hover {
     background-color: #c82333;
 }
 
