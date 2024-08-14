@@ -29,6 +29,7 @@ class adviceMeetingModel
                 BA.Date AS BuyAdviceDate,
                 BA.StartTime AS BuyAdviceStartTime,
                 BA.EndTime AS BuyAdviceEndTime,
+                BA.IsAdviceValid,
                 U1.IdUser AS SellerId,
                 U1.FirstName AS SellerFirstName,
                 U1.LastName AS SellerLastName,
@@ -92,6 +93,26 @@ class adviceMeetingModel
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return [];
+        }
+    }
+
+    public function updateAdviceValidity($idBuyAdvice, $satisfaction)
+    {
+        try {
+            $query = "
+        UPDATE BuyAdvice
+        SET IsAdviceValid = :satisfaction
+        WHERE IdBuyAdvice = :idBuyAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':satisfaction', $satisfaction, PDO::PARAM_INT);
+            $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
     }
 }

@@ -69,6 +69,8 @@ class adviceMeetingController
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
+        $this->getDataIsSatisfactory();
+
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -78,5 +80,21 @@ class adviceMeetingController
             'unreadCount' => $unreadCount,
             'showSatisfactionForm' => $showSatisfactionForm,
         ]);
+    }
+
+    public function getDataIsSatisfactory()
+    {
+        if (isset($_POST['isSatisfactoryAdvice'])) {
+            $idBuyAdvice = $_POST['idBuyAdvice'];
+            $satisfaction = $_POST['satisfaction'];
+            
+            if ($this->adviceMeetingModel->updateAdviceValidity($idBuyAdvice, $satisfaction)) {
+                // Redirect to avoid resubmission on refresh
+                header('Location: /adviceMeeting-' . $idBuyAdvice);
+                exit;
+            } else {
+                echo "Error updating advice validity.";
+            }
+        }
     }
 }
