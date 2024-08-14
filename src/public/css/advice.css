@@ -537,6 +537,18 @@ input[type="time"]:focus {
     height: 3em;
 }
 
+select {
+    width: 100%;  /* Prendre toute la largeur disponible */
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    appearance: none;  /* Supprimer le style natif du navigateur */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('data:image/svg+xml;base64,...') no-repeat right center; /* Ajouter une flèche personnalisée */
+    background-size: 10px; /* Taille de la flèche */
+}
 
 /* Responsive Design */
 @media (max-width: 1080px) {

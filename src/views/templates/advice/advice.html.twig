@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block header %}
-{% include 'header.html.twig' %}
+{# {% include 'header.html.twig' %} #}
 {% endblock %}
 
 {% block body %}
@@ -34,6 +34,14 @@
                 <textarea name="AdviceDescription" placeholder="Description du service" id="inputFieldDesc"
                     required></textarea>
             </div>
+
+            <label for="category">Catégorie:</label>
+            <select name="CategoryId" id="category" required>
+                {% for Category in getCategory %}
+                <option value="{{ Category.IdCategory }}">{{ Category.CategoryName }}</option>
+                {% endfor %}
+            </select>
+
             <div class="availability-section">
                 <label>Disponibilités:</label>
                 <label for="dayOfWeek">Jours:</label>
@@ -173,7 +181,8 @@
 
         {% if isConnected and userId != Advice.IdUser %}
         <div class="BuyAdviceButton">
-            <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">Planifier une Consultation</button>
+            <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">Planifier une
+                Consultation</button>
         </div>
         {% endif %}
     </div>

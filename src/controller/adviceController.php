@@ -68,6 +68,8 @@ class adviceController
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
         $this->getDeleteAdviceData($errorMessages);
 
+        $getCategory = $this->adviceModel->getCategory();
+
         // Affichage du template Twig avec les données récupérées
         echo $this->twig->render('advice/advice.html.twig', [
             'isConnected' => $isConnected,
@@ -80,7 +82,8 @@ class adviceController
             'order' => $order,
             'unreadCount' => $unreadCount,
             'errorMessages' => $errorMessages,
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'getCategory' => $getCategory
         ]);
     }
 
@@ -92,6 +95,7 @@ class adviceController
             $DaysOfWeekArray = $_POST['DaysOfWeek'] ?? []; // Liste des jours sélectionnés
             $StartTime = $_POST['StartTime'] ?? '';
             $EndTime = $_POST['EndTime'] ?? '';
+            $CategoryId = $_POST['CategoryId'];
             $IdUser = $_SESSION['IdUser'];
 
             // Vérifier que les deux champs de temps sont remplis
@@ -139,7 +143,8 @@ class adviceController
                 $DaysOfWeek,
                 $StartTime,
                 $EndTime,
-                $PictureAdvice
+                $PictureAdvice,
+                $CategoryId
             );
 
             if (is_string($result)) {

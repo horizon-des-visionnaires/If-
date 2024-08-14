@@ -16,7 +16,7 @@ class adviceModel
         $this->dsn = connectDB();
     }
 
-    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime, $PictureAdvice)
+    public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime, $PictureAdvice, $CategoryId)
     {
         try {
             $countAdviceQuery = "SELECT COUNT(*) FROM Advice WHERE IdUser = :IdUser";
@@ -29,8 +29,8 @@ class adviceModel
                 return "L'utilisateur a déjà trois conseils, impossible d'en ajouter d'autres.";
             }
 
-            $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser, DaysOfWeek, StartTime, EndTime)
-            VALUES (:AdviceType, :AdviceDescription, :IdUser, :DaysOfWeek, :StartTime, :EndTime)";
+            $insertAdviceQuery = "INSERT INTO Advice (AdviceType, AdviceDescription, IdUser, DaysOfWeek, StartTime, EndTime, IdCategory)
+                              VALUES (:AdviceType, :AdviceDescription, :IdUser, :DaysOfWeek, :StartTime, :EndTime, :IdCategory)";
             $execInsertAdvice = $this->dsn->prepare($insertAdviceQuery);
             $execInsertAdvice->bindParam(':AdviceType', $AdviceType);
             $execInsertAdvice->bindParam(':AdviceDescription', $AdviceDescription);
@@ -38,6 +38,7 @@ class adviceModel
             $execInsertAdvice->bindParam(':DaysOfWeek', $DaysOfWeek);
             $execInsertAdvice->bindParam(':StartTime', $StartTime);
             $execInsertAdvice->bindParam(':EndTime', $EndTime);
+            $execInsertAdvice->bindParam(':IdCategory', $CategoryId);
             $execInsertAdvice->execute();
 
             $IdAdvice = $this->dsn->lastInsertId();
@@ -394,6 +395,22 @@ class adviceModel
             }
 
             return $errorMessage;
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            $error = "error: " . $e->getMessage();
+            echo $error;
+        }
+    }
+
+    public function getCategory()
+    {
+        try {
+            $queryCategory = "SELECT * FROM Category";
+            $stmtCategory = $this->dsn->prepare($queryCategory);
+            $stmtCategory->execute();
+            $categoryData = $stmtCategory->fetchAll(PDO::FETCH_ASSOC);
+
+            return $categoryData;
         } catch (PDOException $e) {
             $this->dsn->rollBack();
             $error = "error: " . $e->getMessage();
