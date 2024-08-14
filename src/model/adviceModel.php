@@ -59,9 +59,12 @@ class adviceModel
     public function getAdviceAndUserInfo()
     {
         try {
-            $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion
+            $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.DaysOfWeek, a.StartTime, a.EndTime, 
+                         p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion, 
+                         c.CategoryName
                   FROM Advice a
-                  JOIN User p ON a.IdUser = p.IdUser";
+                  JOIN User p ON a.IdUser = p.IdUser
+                  JOIN Category c ON a.IdCategory = c.IdCategory";
 
             $stmt = $this->dsn->prepare($query);
             $stmt->execute();
@@ -121,15 +124,19 @@ class adviceModel
 
     private function buildAdviceQuery($searchQuery, $sortBy, $order)
     {
-        $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion 
-                  FROM Advice a
-                  JOIN User p ON a.IdUser = p.IdUser";
+        $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, 
+            p.IdUser, p.FirstName, p.LastName, p.ProfilPicture, p.ProfilPromotion, 
+            c.CategoryName
+            FROM Advice a
+            JOIN User p ON a.IdUser = p.IdUser
+            JOIN Category c ON a.IdCategory = c.IdCategory";  // Jointure sur Category
 
         if ($searchQuery) {
             $query .= " WHERE (a.AdviceType LIKE :searchQuery 
-                    OR a.AdviceDescription LIKE :searchQuery
-                    OR p.FirstName LIKE :searchQuery 
-                    OR p.LastName LIKE :searchQuery)";
+            OR a.AdviceDescription LIKE :searchQuery
+            OR p.FirstName LIKE :searchQuery 
+            OR p.LastName LIKE :searchQuery
+            OR c.CategoryName LIKE :searchQuery)";  // Inclure la recherche par nom de catégorie
         }
 
         if ($sortBy) {
