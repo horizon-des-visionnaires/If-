@@ -54,7 +54,7 @@
             <input type="file" id="images" name="PictureAdvice[]" multiple accept="image/*"
                 onchange="openCropperModal(this)">
 
-            <button type="submit" name="addAdvice" id="inputField2">Soumettre le form</button>
+            <button type="submit" name="addAdvice" id="inputField2">Soumettre la Consultation</button>
         </form>
     </div>
 </div>
@@ -81,7 +81,7 @@
         </div>
         {% if isConnected and isPro %}
         <div class="profilButton">
-            <button id="openModalButton" class="beautiful-button">ajouter un conseil</button>
+            <button id="openModalButton" class="beautiful-button">Ajouter une Consultation</button>
         </div>
         {% endif %}
     </div>
@@ -173,8 +173,7 @@
 
         {% if isConnected and userId != Advice.IdUser %}
         <div class="BuyAdviceButton">
-            <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">Acheter ce
-                conseil</button>
+            <button data-modal-id="BuyAdviceModal-{{ Advice.IdAdvice }}" class="beautiful-button">Planifier une Consultation</button>
         </div>
         {% endif %}
     </div>

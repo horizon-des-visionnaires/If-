@@ -23,7 +23,7 @@ body {
 }
 
 .ProfilContainer {
-    margin-top: 7em;
+    margin-top: 5em;
     height: 35%;
     width: 60%;
     margin-left: 20%;
@@ -251,7 +251,7 @@ input[type=file]::file-selector-button {
     margin-bottom: 1.5em;
 }
 
-.profilPost, .profilFavorites{
+.profilPost, .profilFavorites, .profilePlanning{
     height: 100%;
     margin-right: 25%;
     margin-left: 25%;
@@ -263,7 +263,11 @@ input[type=file]::file-selector-button {
     background: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
+.profilePlanning{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 .post {
     width: 100%;
     padding: 1em;
@@ -425,12 +429,10 @@ input[type=file]::file-selector-button {
     color: red;
 }
 
-.favorite.active i.fas {
-    color: yellow;
-}
+
 
 .favorite:hover i.far {
-    color: yellow;
+    color: #74C0FC;
 }
 
 
@@ -444,12 +446,12 @@ span {
 
 .notpro h2 {
     font-family: 'Open Sans', sans-serif;
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 .pro h2 {
     font-family: 'Open Sans', sans-serif;
-    font-size: 2em;
+    font-size: 1.5em;
     
 }
 
@@ -530,7 +532,7 @@ span {
 }
 
 .pro #certifIcon {
-    margin-top: 2.7em;
+    margin-top: 1.8em;
 }
 #certifIcon {
     margin-top: 0.5em;
@@ -734,7 +736,7 @@ button {
         font-family: 'Open Sans', sans-serif;
     }
 
-    .profilPost, .profilFavorites{
+    .profilPost, .profilFavorites, .profilePlanning{
         margin-right: 20%;
         margin-left: 20%;
     }
@@ -752,7 +754,7 @@ button {
     }
 }
 
-@media (max-width: 790px) {
+@media (max-width: 740px) {
     
     #icon {
         height: 4em;
@@ -763,7 +765,7 @@ button {
     .pro #certifIcon {
         margin-top: 1.8em;
     }
-    .profilPost, .profilFavorites{
+    .profilPost, .profilFavorites,.profilePlanning{
         margin-right: 5%;
         margin-left: 5%;
     }
@@ -771,6 +773,7 @@ button {
     .ProfilContainer {
         width: 96%;
         margin-left: 2%;
+        margin-top: 4em;
     }
 }
 
@@ -797,7 +800,7 @@ button {
     }
     .ProfilContainer {
         width: 96%;
-        margin-top: 19%;
+        
     }
     input[type=file] { 
         margin-left: 2.5em;

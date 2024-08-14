@@ -89,12 +89,12 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     text-align: center;
-    width: 200px;
+    width: 250px;
     margin: auto 0;
-    height: 35px;
     align-items: center;
     font-size: 1rem;
     overflow: hidden;
+    font-size: 0.9em;
 }
 
 .beautiful-button:hover {

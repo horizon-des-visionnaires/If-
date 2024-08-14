@@ -101,6 +101,7 @@ h1 {
     transition: transform 0.2s;
     width: 25em;
 }
+
 .profil h1,
 .post h1, 
 .admin h1{
@@ -135,6 +136,17 @@ h1 {
 #icon {
     height: 6em;
     border-radius: 50%;
+}
+#icon3 {
+    height: 3em;
+    border-radius: 50%;
+}
+
+.adminContainer h1{
+    font-size: 2em;
+}
+.admin h1{
+    font-size: 1.5em;
 }
 
 .promotion p,
@@ -286,7 +298,9 @@ a {
 .price{
     margin-right: 7%;
 }
-
+.advice{
+    word-wrap: break-word;
+}
 
 .swipe-item.portrait {
     height: 50vh;
@@ -392,7 +406,6 @@ a {
 
 .bullet.active {
     background-color: #333;
-
 }
 
 #icon2 {

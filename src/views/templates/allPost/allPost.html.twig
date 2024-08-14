@@ -198,9 +198,9 @@
                     <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
                     <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
                         {% if Post.IsFavorites %}
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-solid fa-flag"></i>
                         {% else %}
-                        <i class="far fa-star"></i>
+                        <i class="far fa-regular fa-flag"></i>
                         {% endif %}
                     </button>
                 </form>
@@ -220,7 +220,7 @@
                     <span class="commentCount">{{ Post.commentCount }}</span>
                 </a>
                 <button class="favorite" disabled>
-                    <i class="far fa-star"></i>
+                    <i class="far fa-regular fa-flag"></i>
                 </button>
                 <p class="datePost">{{ Post.RelativeDatePost }}</p>
                 <p class="viewsPost">{{ Post.Views }} Vues</p>
