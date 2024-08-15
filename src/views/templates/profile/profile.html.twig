@@ -543,7 +543,13 @@
     {% else %}
     <p>Aucune notation trouvée.</p>
     {% endfor %}
+    {% if notations|length > 0 %}
+    <div class="average-note">
+        <p>Moyenne des notes: {{ averageNote|number_format(1) }}</p>
+    </div>
+    {% endif %}
 </div>
+
 
 
 

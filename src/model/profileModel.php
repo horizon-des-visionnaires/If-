@@ -500,20 +500,21 @@ class profileModel
     public function getNotationsById($id)
     {
         try {
+            // Requête pour obtenir les notations et les informations utilisateur
             $getData = "
-            SELECT 
-                u.FirstName,
-                u.LastName,
-                u.ProfilPicture,
-                u.IsPro,
-                n.Note,
-                n.CommentNote
-            FROM 
-                Notations n
-            JOIN 
-                User u ON n.IdUser = u.IdUser
-            WHERE 
-                n.IdUserIsPro = :id
+        SELECT 
+            u.FirstName,
+            u.LastName,
+            u.ProfilPicture,
+            u.IsPro,
+            n.Note,
+            n.CommentNote
+        FROM 
+            Notations n
+        JOIN 
+            User u ON n.IdUser = u.IdUser
+        WHERE 
+            n.IdUserIsPro = :id
         ";
 
             $stmt = $this->dsn->prepare($getData);
@@ -522,22 +523,32 @@ class profileModel
 
             $notations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Débogage pour vérifier la requête
-            if ($stmt->errorCode() != '00000') {
-                $errorInfo = $stmt->errorInfo();
-                echo 'SQL Error: ' . $errorInfo[2];
-            }
-
+            // Encoder les images en base64
             foreach ($notations as &$notation) {
                 if ($notation['ProfilPicture']) {
                     $notation['ProfilPicture'] = base64_encode($notation['ProfilPicture']);
                 }
             }
 
-            return $notations;
+            // Calculer la moyenne des notes
+            $averageNote = 0;
+            $noteCount = count($notations);
+
+            if ($noteCount > 0) {
+                $totalNote = array_sum(array_column($notations, 'Note'));
+                $averageNote = $totalNote / $noteCount;
+            }
+
+            return [
+                'notations' => $notations,
+                'averageNote' => $averageNote
+            ];
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-            return [];
+            return [
+                'notations' => [],
+                'averageNote' => 0
+            ];
         }
     }
 }

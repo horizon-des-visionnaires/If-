@@ -76,7 +76,7 @@ class profileController
         }
 
         $this->getDeleteUser();
-        $notations = $this->profileModel->getNotationsById($id);
+        $notationData = $this->profileModel->getNotationsById($id);
 
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
@@ -90,7 +90,8 @@ class profileController
             'unreadCount' => $unreadCount,
             'adviceData' => $adviceData,
             'isAdmin' => $isAdmin,
-            'notations' => $notations
+            'notations' => $notationData['notations'],
+            'averageNote' => $notationData['averageNote']
         ]);
     }
 
