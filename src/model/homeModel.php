@@ -82,32 +82,55 @@ class homeModel
                 User.FirstName,
                 User.LastName,
                 User.ProfilPicture,
-                User.IsPro
+                User.IsPro,
+                PicturePost.PicturePost
             FROM Post
             INNER JOIN User ON Post.IdUser = User.IdUser
+            LEFT JOIN PicturePost ON Post.IdPost = PicturePost.IdPost
             ORDER BY Post.Views DESC
             LIMIT 10
         ");
             $top10Posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (count($top10Posts) > 5) {
-                $randomKeys = array_rand($top10Posts, 5);
-                $randomPosts = array_intersect_key($top10Posts, array_flip($randomKeys));
+            $posts = [];
+            foreach ($top10Posts as $row) {
+                $postId = $row['IdPost'];
+
+                if (!isset($posts[$postId])) {
+                    $posts[$postId] = [
+                        'IdPost' => $row['IdPost'],
+                        'TitlePost' => $row['TitlePost'],
+                        'ContentPost' => $row['ContentPost'],
+                        'DatePost' => $row['DatePost'],
+                        'Views' => $row['Views'],
+                        'IdUser' => $row['IdUser'],
+                        'FirstName' => $row['FirstName'],
+                        'LastName' => $row['LastName'],
+                        'ProfilPicture' => $row['ProfilPicture'] ? base64_encode($row['ProfilPicture']) : null,
+                        'IsPro' => $row['IsPro'],
+                        'Pictures' => []
+                    ];
+                }
+
+                if ($row['PicturePost']) {
+                    $posts[$postId]['Pictures'][] = base64_encode($row['PicturePost']);
+                }
+            }
+
+            if (count($posts) > 5) {
+                $randomKeys = array_rand($posts, 5);
+                $randomPosts = array_intersect_key($posts, array_flip($randomKeys));
             } else {
-                $randomPosts = $top10Posts;
+                $randomPosts = $posts;
             }
 
             foreach ($randomPosts as &$post) {
-                if (!is_null($post['ProfilPicture'])) {
-                    $post['ProfilPicture'] = base64_encode($post['ProfilPicture']);
-                }
                 $post['RelativeDatePost'] = $this->getRelativeTime($post['DatePost']);
             }
 
             return $randomPosts;
         } catch (PDOException $e) {
-            $error = "error: " . $e->getMessage();
-            echo $error;
+            echo "error: " . $e->getMessage();
         }
     }
 
