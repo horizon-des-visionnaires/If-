@@ -109,7 +109,25 @@
     {% endif %}
     
     {% if adviceData.IsAdviceValid == 2 and userId == adviceData.BuyerId %}
-    <p>veiller test gfi</p>
+    <p>veiller metter un avis</p>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+        <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
+        <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
+        <label for="Note">Veiller mettre une note</label>
+        <select name="Note" id="Note" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <div style="position: relative;">
+            <textarea name="CommentNote" placeholder="Metter un commentaires à la personne"id="inputFieldPromotion" required></textarea>
+        </div>
+
+        <button type="submit" name="addNotations">Valider</button>
+    </form>
     {% endif %}
 
     {% else %}

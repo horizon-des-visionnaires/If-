@@ -106,9 +106,10 @@ class adviceMeetingController
             $IdUser = $_POST['IdUser'];
             $Note = $_POST['Note'];
             $CommentNote = $_POST['CommentNote'];
+            $IdBuyAdvice = $_POST['IdBuyAdvice'];
 
             if ($this->adviceMeetingModel->insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)) {
-                header('Location: /profile-' . $IdUserIsPro);
+                header('Location: /adviceMeeting-' . $IdBuyAdvice);
                 exit;
             } else {
                 echo "Error add notations.";

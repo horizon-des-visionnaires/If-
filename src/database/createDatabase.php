@@ -133,6 +133,7 @@ $createTableNotaions = ("CREATE TABLE IF NOT EXISTS
     `DateNotation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `IdUser` int(11) DEFAULT NULL,
     `IdUserIsPro` int(11) DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`idNotations`),
     CONSTRAINT fk_IdUser_Notations FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
     CONSTRAINT fk_IdUserIsPro_Notations FOREIGN KEY (`IdUserIsPro`) REFERENCES User (`IdUser`)

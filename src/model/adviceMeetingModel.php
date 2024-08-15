@@ -119,14 +119,25 @@ class adviceMeetingModel
     public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)
     {
         try {
-            $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro)";
-            $Notations = $this->dsn->prepare($insertNotations);
-            $Notations->bindParam(':Note', $Note, PDO::PARAM_INT);
-            $Notations->bindParam(':CommentNote', $CommentNote);
-            $Notations->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
-            $Notations->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
-            $Notations->execute();
-            return true;
+            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro AND DATE(DateNotation) = CURDATE()";
+            $checkStmt = $this->dsn->prepare($checkQuery);
+            $checkStmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
+            $checkStmt->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+            $checkStmt->execute();
+            $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['count'] > 0) {
+                return false;
+            } else {
+                $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro)";
+                $Notations = $this->dsn->prepare($insertNotations);
+                $Notations->bindParam(':Note', $Note, PDO::PARAM_INT);
+                $Notations->bindParam(':CommentNote', $CommentNote);
+                $Notations->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
+                $Notations->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+                $Notations->execute();
+                return true;
+            }
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;
