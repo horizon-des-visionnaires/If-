@@ -206,6 +206,7 @@
                 </form>
                 <p class="datePost">{{ Post.RelativeDatePost }}</p>
                 <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
             </div>
             {% else %}
             <div class="interaction">
@@ -224,6 +225,7 @@
                 </button>
                 <p class="datePost">{{ Post.RelativeDatePost }}</p>
                 <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <button id="copyLinkButton"><img class="icon_commentaire2" src="/../public/image/icon/share.png"></button>
             </div>
             {% endif %}
         </div>
@@ -289,4 +291,5 @@
 <script src="/../public/js/NewPost.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
 <script src="/../public/js/ImageCrop.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
 {% endblock %}

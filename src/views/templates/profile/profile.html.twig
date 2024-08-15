@@ -313,6 +313,7 @@
             </button>
             <span class="total-likes">{{ Post.TotalLikes }}</span>
             <a href="/postDetail-{{Post.IdPost}}">
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
@@ -407,6 +408,7 @@
                 <span class="total-likes">{{ Post.TotalLikes }}</span>
             </form>
             <a href="/postDetail-{{Post.IdPost}}">
+            <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
             </a>
@@ -430,6 +432,7 @@
                 <i class="far fa-heart"></i>
             </button>
             <span class="total-likes">{{ Post.TotalLikes }}</span>
+            <a href="/postDetail-{{Post.IdPost}}">
             <a href="/postDetail-{{Post.IdPost}}">
                 <img class="icon_commentaire" src="/../public/image/icon/message.png">
                 <span class="commentCount">{{ Post.commentCount }}</span>
@@ -559,6 +562,10 @@
         const toggleButton2 = document.getElementById('toggleEditButton2');
         const Edit = document.getElementById('Toshow');
         const Edit2 = document.getElementById('Toshow2');
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleButton2 = document.getElementById('toggleEditButton2');
+        const Edit = document.getElementById('Toshow');
+        const Edit2 = document.getElementById('Toshow2');
 
         function toggleEdit(event) {
             event.stopPropagation();
@@ -568,7 +575,24 @@
             }
         }
         toggleButton2.addEventListener('click', toggleEdit);
+        function toggleEdit(event) {
+            event.stopPropagation();
+            Edit2.classList.toggle('show');
+            if (Edit) {
+                Edit.classList.toggle('show');
+            }
+        }
+        toggleButton2.addEventListener('click', toggleEdit);
 
+        document.addEventListener('click', function (event) {
+            if (!Edit.contains(event.target) && !toggleButton2.contains(event.target)) {
+                Edit2.classList.remove('show');
+                if (Edit) {
+                    Edit.classList.remove('show');
+                }
+            }
+        });
+    });
         document.addEventListener('click', function (event) {
             if (!Edit.contains(event.target) && !toggleButton2.contains(event.target)) {
                 Edit2.classList.remove('show');

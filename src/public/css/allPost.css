@@ -106,10 +106,9 @@ a{
     overflow: auto;
     word-wrap: break-word;
     white-space: pre-wrap;
-    min-width: 30em;
-    max-width: 50em;
-    min-height: 15em;
-    max-height: 50em;
+    width: 80%;
+    max-width: 30em;
+    height: 15em;
     resize: none; /* Empêcher le redimensionnement */
 }
 
@@ -289,7 +288,10 @@ input[type=file] {
     width: 28px;
     height: auto;
 }
-
+.icon_commentaire2{
+    width: 22px;
+    height: auto;
+}
 .heart,
 .favorite {
     background-color: transparent;
@@ -630,6 +632,10 @@ button {
 .bullet.active {
     background-color: #333;
 }
+#copyLinkButton{
+    background: white;
+    border: none;
+}
 
 /* Style pour le menu déroulant sur le côté gauche de l'écran */
 .allPostFiltre {
@@ -652,10 +658,6 @@ button {
     display: block; /* Afficher le menu lorsque la classe 'show' est ajoutée */
 }
 
-.allPostFiltre .iconSearch{
-    margin-top: 0.65em;
-    margin-left: 1.5em;
-}
 
 
 .filter-toggle{
@@ -772,6 +774,13 @@ button {
     input[type=file] { 
         margin-left: 5em;
     }
+    .inputFieldDesc {
+        height: 7em;
+    }
+    .icon_commentaire2{
+        width: 18px;
+        height: auto;
+    }
 }
 
 @media (max-width: 430px) {
@@ -782,6 +791,7 @@ button {
         width: 22px;
         height: auto;
     }
+    
     .heart i,
     .favorite i {
         font-size: 20px;

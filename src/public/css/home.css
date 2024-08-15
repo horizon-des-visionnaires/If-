@@ -101,6 +101,14 @@ h1 {
     transition: transform 0.2s;
     width: 25em;
 }
+.head{
+    display: flex;
+    justify-content: space-between;
+}
+.admin button {
+    border:none;
+    background-color: var(--background-color);
+}
 
 .profil h1,
 .post h1, 
@@ -302,13 +310,16 @@ a {
     word-wrap: break-word;
 }
 
-.swipe-item.portrait {
+.swipe-item.portrait , .swipe-item2.portrait2 {
     height: 50vh;
     width: auto;
 }
+.swipe-item2.portrait2{
+    height: 15vh;
+}
 
 /* Styles pour le conteneur swipe */
-.swipe {
+.swipe, .swipe2 {
     position: relative;
     width: 100%;
     margin: auto;
@@ -319,8 +330,11 @@ a {
     max-height: 80vh; 
     margin-top: 1em;
 }
+.swipe2 {
+    max-height: 24vh;
+}
 
-.swipe-inner {
+.swipe-inner, .swipe-inner2 {
     display: flex;
     transition: transform 0.5s ease-in-out;
     align-items: center;
@@ -330,7 +344,7 @@ a {
 }
 
 /* Conteneur de chaque image dans le swipe */
-.swipe-item {
+.swipe-item, .swipe-item2 {
     position: relative;
     width: 100%; /* Assure que l'image prend toute la largeur disponible */
     height: auto;
@@ -342,14 +356,14 @@ a {
 }
 
 /* Conteneur actif (visible) */
-.swipe-item.active {
+.swipe-item.active , .swipe-item2.active {
     display: flex;
     opacity: 1;
     align-items: center;
 }
 
 /* Images dans le swipe */
-.swipe-item img {
+.swipe-item img , .swipe-item2 img{
     max-width: 100%;
     max-height: 100%;
     object-fit: contain; /* Garde les proportions de l'image */
@@ -357,7 +371,7 @@ a {
     display: block; /* Supprime les espaces blancs en bas de l'image */
 }
 
-.swipe-control-prev, .swipe-control-next {
+.swipe-control-prev, .swipe-control-next, .swipe-control-prev2, .swipe-control-next2 {
     background-color: rgba(225, 225, 225, 0.77); /* Assurez-vous qu'ils sont visibles */
     border: none;
     color: rgb(109, 109, 109);
@@ -372,15 +386,15 @@ a {
     opacity: 0;
 }
 
-.swipe-control-prev {
+.swipe-control-prev, .swipe-control-prev2 {
     left: 1%;
 }
 
-.swipe-control-next {
+.swipe-control-next, .swipe-control-next2 {
     right: 1%;
 }
 
-.swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next {
+.swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next, .swipe2:hover .swipe-control-prev2, .swipe2:hover .swipe-control-next2 {
     opacity: 1;
 }
 

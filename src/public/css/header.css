@@ -82,6 +82,10 @@ nav li {
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
 }
 
 .group-search {
@@ -147,12 +151,15 @@ nav li {
 }
 
  /* Style du conteneur du menu */
- .dropdown {
+ .dropdown, .dropdown2 {
     position: relative;
     display: inline-block;
     background-color: transparent;
 }
-
+.dropdown2{
+    margin-left: 0em;
+    margin-right: 0em;
+}
 
 
 .dropdown-content {
@@ -160,7 +167,6 @@ nav li {
     position: fixed;
     background-color: transparent;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 16;
     margin-left: -5.5em;
 }
@@ -185,9 +191,12 @@ nav li {
 .dropdown-content.show {
     display: block;
 }
+#drop {
+    background-color: white;
+    border:none;
+}
 
-
-.icons {
+.icons ,#drop img{
     width: 2em; 
     height: 2em; 
     margin-right: 10px;  /* Espace entre l'icône et le texte */
@@ -460,7 +469,7 @@ header a {
 .bottom-nav{
     list-style: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap:2em;
 }
 
@@ -479,6 +488,7 @@ header a {
     border: 2px solid white; 
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); 
 }
+
 
 
 /* Responsive Design */
@@ -513,7 +523,10 @@ header a {
         margin-left: 2em;
         margin-right: 2em;
     }
-
+    .dropdown2{
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+    }
     
 }
 
@@ -542,7 +555,7 @@ header a {
         width: 2.5em;
         height: 2.5em;
     }
-    .icons{
+    .icons, #drop img{
         width: 1.5em; 
         height: auto;
     }
@@ -601,13 +614,19 @@ header a {
         line-height: 0.8em;
     }
    
-    
+    .dropdown2{
+        margin-left: 0.7em;
+        margin-right: 0.7em;
+    }
+    #myDropsearch .searchBar{
+        margin-top: -5em;
+        margin-left: 2em;
+    }
 }
 
-@media (max-width: 80px) {
-    .bottom-nav li {
-        width: 2em;
-        margin: 0em;
+@media (max-width: 400px) {
+    #myDropsearch .searchBar{
+        margin-left: 1em;
     }
 }
 
