@@ -378,7 +378,8 @@ class profileModel
         INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
         INNER JOIN Category C ON A.IdCategory = C.IdCategory
         INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
-        WHERE BA.IdBuyer = :userId OR A.IdUser = :userId
+        WHERE (BA.IdBuyer = :userId OR A.IdUser = :userId)
+          AND (BA.Date > CURDATE() OR (BA.Date = CURDATE() AND BA.EndTime > CURTIME()))
         ";
 
             $stmt = $this->dsn->prepare($query);
