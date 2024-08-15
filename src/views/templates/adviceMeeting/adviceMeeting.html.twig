@@ -86,7 +86,7 @@
     </div>
     {% endif %}
 
-    {% if adviceData.IsAdviceValid == 1 %}
+    {% if adviceData.IsAdviceValid == 1 and userId == adviceData.BuyerId %}
     <p>veiller metter un avis</p>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
         <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
@@ -108,7 +108,7 @@
     </form>
     {% endif %}
     
-    {% if adviceData.IsAdviceValid == 2 %}
+    {% if adviceData.IsAdviceValid == 2 and userId == adviceData.BuyerId %}
     <p>veiller test gfi</p>
     {% endif %}
 
