@@ -143,4 +143,30 @@ class adviceMeetingModel
             return false;
         }
     }
+
+    public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund)
+    {
+        try {
+            $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, ContentRequest)
+                              VALUES (:IdBuyAdvice, :ContentRequest)";
+            $execInsertAdvice = $this->dsn->prepare($insertRequestQuery);
+            $execInsertAdvice->bindParam(':IdBuyAdvice', $IdBuyAdvice);
+            $execInsertAdvice->bindParam(':ContentRequest', $ContentRequest);
+            $execInsertAdvice->execute();
+
+            $IdRequestForRefund = $this->dsn->lastInsertId();
+            $stmt = $this->dsn->prepare("INSERT INTO RequestForRefundPicture (IdRequestForRefund, PictureRequest) VALUES (:IdRequestForRefund, :PictureRequest)");
+            foreach ($PictureRequestForRefund as $PictureRequest) {
+                $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund);
+                $stmt->bindParam(':PictureRequest', $PictureRequest, PDO::PARAM_LOB);
+                $stmt->execute();
+            }
+
+            header('Location: /');
+            exit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 }

@@ -71,6 +71,7 @@ class adviceMeetingController
 
         $this->getDataIsSatisfactory();
         $this->getDataAddNotations();
+        $this->getDataRequestForRefund();
 
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
@@ -88,7 +89,7 @@ class adviceMeetingController
         if (isset($_POST['isSatisfactoryAdvice'])) {
             $idBuyAdvice = $_POST['idBuyAdvice'];
             $satisfaction = $_POST['satisfaction'];
-            
+
             if ($this->adviceMeetingModel->updateAdviceValidity($idBuyAdvice, $satisfaction)) {
                 // Redirect to avoid resubmission on refresh
                 header('Location: /adviceMeeting-' . $idBuyAdvice);
@@ -114,6 +115,30 @@ class adviceMeetingController
             } else {
                 echo "Error add notations.";
             }
+        }
+    }
+
+    public function getDataRequestForRefund()
+    {
+        if (isset($_POST['addRequestForRefund'])) {
+
+            $IdBuyAdvice = $_POST['IdBuyAdvice'];
+            $ContentRequest = $_POST['ContentRequest'];
+
+            $PictureRequestForRefund = [];
+            if (isset($_FILES["PictureRequestForRefund"])) {
+                if (count($_FILES["PictureRequestForRefund"]["tmp_name"]) > 10) {
+                    echo "Vous pouvez télécharger un maximum de 10 images.";
+                    return;
+                }
+                foreach ($_FILES["PictureRequestForRefund"]["tmp_name"] as $tmpName) {
+                    if ($tmpName) {
+                        $PictureRequestForRefund[] = file_get_contents($tmpName);
+                    }
+                }
+            }
+
+            $this->adviceMeetingModel->insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund);
         }
     }
 }

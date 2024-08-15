@@ -129,6 +129,19 @@
 
         <button type="submit" name="addNotations">Valider</button>
     </form>
+
+    <p>Voulez vous, vous faire rembourser ? <br>si oui veulliez nous dire les raisons et en apportante des preuves (photos, ...)</p>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+
+        <div style="position: relative;">
+            <textarea name="ContentRequest" placeholder="contenue de la demande"id="inputFieldPromotion" required></textarea>
+        </div>
+
+        <input type="file" id="images" name="PictureRequestForRefund[]" multiple accept="image/*">
+
+        <button type="submit" name="addRequestForRefund">envoyer la demande</button>
+    </form>
     {% endif %}
 
     {% else %}
