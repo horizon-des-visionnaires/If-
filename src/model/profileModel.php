@@ -508,6 +508,7 @@ class profileModel
             u.LastName,
             u.ProfilPicture,
             u.IsPro,
+            n.CreatedAt,
             n.Note,
             n.CommentNote
         FROM 
@@ -529,6 +530,7 @@ class profileModel
                 if ($notation['ProfilPicture']) {
                     $notation['ProfilPicture'] = base64_encode($notation['ProfilPicture']);
                 }
+                $notation['RelativeDateNotations'] = $this->getRelativeTime($notation['CreatedAt']);
             }
 
             // Calculer la moyenne des notes
