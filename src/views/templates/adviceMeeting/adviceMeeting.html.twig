@@ -113,6 +113,7 @@
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
         <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
         <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
+        <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
         <label for="Note">Veiller mettre une note</label>
         <select name="Note" id="Note" required>
             <option value="1">1</option>
