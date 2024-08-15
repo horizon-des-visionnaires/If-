@@ -70,6 +70,7 @@ class adviceMeetingController
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
         $this->getDataIsSatisfactory();
+        $this->getDataAddNotations();
 
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
@@ -94,6 +95,23 @@ class adviceMeetingController
                 exit;
             } else {
                 echo "Error updating advice validity.";
+            }
+        }
+    }
+
+    public function getDataAddNotations()
+    {
+        if (isset($_POST['addNotations'])) {
+            $IdUserIsPro = $_POST['IdUserIsPro'];
+            $IdUser = $_POST['IdUser'];
+            $Note = $_POST['Note'];
+            $CommentNote = $_POST['CommentNote'];
+
+            if ($this->adviceMeetingModel->insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)) {
+                header('Location: /profile-' . $IdUserIsPro);
+                exit;
+            } else {
+                echo "Error add notations.";
             }
         }
     }

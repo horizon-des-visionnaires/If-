@@ -115,4 +115,21 @@ class adviceMeetingModel
             return false;
         }
     }
+
+    public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)
+    {
+        try {
+            $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro)";
+            $Notations = $this->dsn->prepare($insertNotations);
+            $Notations->bindParam(':Note', $Note, PDO::PARAM_INT);
+            $Notations->bindParam(':CommentNote', $CommentNote);
+            $Notations->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
+            $Notations->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+            $Notations->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 }
