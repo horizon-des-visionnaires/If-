@@ -496,4 +496,48 @@ class profileModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function getNotationsById($id)
+    {
+        try {
+            $getData = "
+            SELECT 
+                u.FirstName,
+                u.LastName,
+                u.ProfilPicture,
+                u.IsPro,
+                n.Note,
+                n.CommentNote
+            FROM 
+                Notations n
+            JOIN 
+                User u ON n.IdUser = u.IdUser
+            WHERE 
+                n.IdUserIsPro = :id
+        ";
+
+            $stmt = $this->dsn->prepare($getData);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $notations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Débogage pour vérifier la requête
+            if ($stmt->errorCode() != '00000') {
+                $errorInfo = $stmt->errorInfo();
+                echo 'SQL Error: ' . $errorInfo[2];
+            }
+
+            foreach ($notations as &$notation) {
+                if ($notation['ProfilPicture']) {
+                    $notation['ProfilPicture'] = base64_encode($notation['ProfilPicture']);
+                }
+            }
+
+            return $notations;
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+            return [];
+        }
+    }
 }

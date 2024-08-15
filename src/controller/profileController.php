@@ -76,6 +76,7 @@ class profileController
         }
 
         $this->getDeleteUser();
+        $notations = $this->profileModel->getNotationsById($id);
 
         echo $this->twig->render('profile/profile.html.twig', [
             'user' => $user,
@@ -88,7 +89,8 @@ class profileController
             'commentCount' => $commentCount,
             'unreadCount' => $unreadCount,
             'adviceData' => $adviceData,
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'notations' => $notations
         ]);
     }
 

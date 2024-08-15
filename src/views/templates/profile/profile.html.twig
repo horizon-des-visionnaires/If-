@@ -90,13 +90,16 @@
     </div>
     <button id="copyLinkButton">Copier le lien</button>
 
-    {% if isConnected and userId == user.IdUser %}
     <div class="button-container">
         <button id="showPosts" class="beautiful-button">Voir les Publications</button>
+        {% if user.IsPro == 1 %}
+        <button id="showNotations" class="beautiful-button">Voir les Notations</button>
+        {% endif %}
+        {% if isConnected and userId == user.IdUser %}
         <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
         <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 
 <div id="profileModal" class="modal">
@@ -313,15 +316,15 @@
             </button>
             <span class="total-likes">{{ Post.TotalLikes }}</span>
             <a href="/postDetail-{{Post.IdPost}}">
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-            <button class="favorite" disabled>
-                <i class="far fa-regular fa-flag"></i>
-            </button>
-            <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
+                    <i class="far fa-regular fa-flag"></i>
+                </button>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% endif %}
     </div>
@@ -408,23 +411,23 @@
                 <span class="total-likes">{{ Post.TotalLikes }}</span>
             </form>
             <a href="/postDetail-{{Post.IdPost}}">
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-            <form action="/profile-{{ Post.IdUser }}" method="post">
-                <input type="hidden" name="AddFavorite" value="1">
-                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
-                <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
-                    {% if Post.IsFavorites %}
-                    <i class="fas fa-solid fa-flag"></i>
-                    {% else %}
-                    <i class="far fa-regular fa-flag"></i>
-                    {% endif %}
-                </button>
-            </form>
-            <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <form action="/profile-{{ Post.IdUser }}" method="post">
+                    <input type="hidden" name="AddFavorite" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                        {% if Post.IsFavorites %}
+                        <i class="fas fa-solid fa-flag"></i>
+                        {% else %}
+                        <i class="far fa-regular fa-flag"></i>
+                        {% endif %}
+                    </button>
+                </form>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% else %}
         <div class="interaction">
@@ -433,14 +436,14 @@
             </button>
             <span class="total-likes">{{ Post.TotalLikes }}</span>
             <a href="/postDetail-{{Post.IdPost}}">
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-            <button class="favorite" disabled>
-                <i class="far fa-regular fa-flag"></i>
-            </button>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
+                    <i class="far fa-regular fa-flag"></i>
+                </button>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
         </div>
         {% endif %}
     </div>
@@ -451,66 +454,66 @@
 {% if isConnected and userId == user.IdUser %}
 <div class="profilePlanning" style="display: none;">
     {% if adviceData is not empty %}
-        {% for advice in adviceData %}
-        <h2>Détails de la Consultation {{ loop.index }}</h2>
+    {% for advice in adviceData %}
+    <h2>Détails de la Consultation {{ loop.index }}</h2>
 
-        <p><strong>Type:</strong> {{ advice.AdviceType }}</p>
-        <p><strong>Description:</strong> {{ advice.AdviceDescription }}</p>
-        <p><strong>Catégorie :</strong> {{ advice.CategoryName }}</p>
+    <p><strong>Type:</strong> {{ advice.AdviceType }}</p>
+    <p><strong>Description:</strong> {{ advice.AdviceDescription }}</p>
+    <p><strong>Catégorie :</strong> {{ advice.CategoryName }}</p>
 
-        <p><strong>Date:</strong> {{ advice.BuyAdviceDate|date('d-m-Y') }}</p>
-        <p><strong>Heure de début:</strong> {{ advice.BuyAdviceStartTime }}</p>
-        <p><strong>Heure de fin:</strong> {{ advice.BuyAdviceEndTime }}</p>
+    <p><strong>Date:</strong> {{ advice.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Heure de début:</strong> {{ advice.BuyAdviceStartTime }}</p>
+    <p><strong>Heure de fin:</strong> {{ advice.BuyAdviceEndTime }}</p>
 
-        <h3>Images de la Consultation</h3>
-        {% if advice.adviceImages|length > 0 %}
-        <div class="swipe">
-            {% if advice.adviceImages|length > 1 %}
-            <button class="swipe-control-prev">
-                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-            </button>
-            {% endif %}
-            <div class="swipe-inner">
-                {% for picture in advice.adviceImages %}
-                <div class="swipe-item portrait active">
-                    <img src="data:image;base64,{{ picture.PictureAdvice }}">
-                </div>
-                {% endfor %}
+    <h3>Images de la Consultation</h3>
+    {% if advice.adviceImages|length > 0 %}
+    <div class="swipe">
+        {% if advice.adviceImages|length > 1 %}
+        <button class="swipe-control-prev">
+            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+        </button>
+        {% endif %}
+        <div class="swipe-inner">
+            {% for picture in advice.adviceImages %}
+            <div class="swipe-item portrait active">
+                <img src="data:image;base64,{{ picture.PictureAdvice }}">
             </div>
-            {% if advice.adviceImages|length > 1 %}
-            <button class="swipe-control-next">
-                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-            </button>
-            <div class="bullets">
-                {% for i in 0..(advice.adviceImages|length - 1) %}
-                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
-                {% endfor %}
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
-        {% else %}
-        <p>Pas d'images disponible.</p>
+        {% if advice.adviceImages|length > 1 %}
+        <button class="swipe-control-next">
+            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+        </button>
+        <div class="bullets">
+            {% for i in 0..(advice.adviceImages|length - 1) %}
+            <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+            {% endfor %}
+        </div>
         {% endif %}
+    </div>
+    {% else %}
+    <p>Pas d'images disponible.</p>
+    {% endif %}
 
-        <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}">lien du meeting</a>
+    <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}">lien du meeting</a>
 
-        <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
-        {% if userId == advice.SellerId %}
-            <p><strong>Nom:</strong> {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
-            {% if advice.BuyerProfilPicture %}
-            <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
-            {% else %}
-            <p>Pas de photo de profile disponible.</p>
-            {% endif %}
-        {% else %}
-            <p><strong>Nom:</strong> {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
-            {% if advice.SellerProfilPicture %}
-            <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
-            {% else %}
-            <p>Pas de photo de profile disponible.</p>
-            {% endif %}
-        {% endif %}
-        {% endfor %}
+    <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
+    {% if userId == advice.SellerId %}
+    <p><strong>Nom:</strong> {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
+    {% if advice.BuyerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>Pas de photo de profile disponible.</p>
+    {% endif %}
+    {% else %}
+    <p><strong>Nom:</strong> {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
+    {% if advice.SellerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>Pas de photo de profile disponible.</p>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
     {% else %}
     <p>Aucune consultation disponible.</p>
     {% endif %}
@@ -518,7 +521,30 @@
 {% endif %}
 
 
-<div class="profilNotations"></div>
+<div class="profilNotations" style="display: none;">
+    {% for Notations in notations %}
+    <div class="notation">
+        <div class="user-info2">
+            {% if Notations.ProfilPicture is empty %}
+            <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+            {% else %}
+            <img class="user-picture" src="data:image/jpeg;base64,{{ Notations.ProfilPicture }}" alt="profile picture">
+            {% endif %}
+            {% if userId == Notations.IdUser and Notations.IsPro == 0 %}
+            <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2>
+            {% else %}
+            <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2> <i id="certifIcon"
+                class="fas fa-check-circle"></i>
+            {% endif %}
+        </div>
+        <p>Note: {{ Notations.Note }}</p>
+        <p>Comment: {{ Notations.CommentNote }}</p>
+    </div>
+    {% else %}
+    <p>Aucune notation trouvée.</p>
+    {% endfor %}
+</div>
+
 
 
 <!-- Modal de découpe d'image -->
@@ -562,37 +588,37 @@
         const toggleButton2 = document.getElementById('toggleEditButton2');
         const Edit = document.getElementById('Toshow');
         const Edit2 = document.getElementById('Toshow2');
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggleButton2 = document.getElementById('toggleEditButton2');
-        const Edit = document.getElementById('Toshow');
-        const Edit2 = document.getElementById('Toshow2');
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton2 = document.getElementById('toggleEditButton2');
+            const Edit = document.getElementById('Toshow');
+            const Edit2 = document.getElementById('Toshow2');
 
-        function toggleEdit(event) {
-            event.stopPropagation();
-            Edit2.classList.toggle('show');
-            if (Edit) {
-                Edit.classList.toggle('show');
-            }
-        }
-        toggleButton2.addEventListener('click', toggleEdit);
-        function toggleEdit(event) {
-            event.stopPropagation();
-            Edit2.classList.toggle('show');
-            if (Edit) {
-                Edit.classList.toggle('show');
-            }
-        }
-        toggleButton2.addEventListener('click', toggleEdit);
-
-        document.addEventListener('click', function (event) {
-            if (!Edit.contains(event.target) && !toggleButton2.contains(event.target)) {
-                Edit2.classList.remove('show');
+            function toggleEdit(event) {
+                event.stopPropagation();
+                Edit2.classList.toggle('show');
                 if (Edit) {
-                    Edit.classList.remove('show');
+                    Edit.classList.toggle('show');
                 }
             }
+            toggleButton2.addEventListener('click', toggleEdit);
+            function toggleEdit(event) {
+                event.stopPropagation();
+                Edit2.classList.toggle('show');
+                if (Edit) {
+                    Edit.classList.toggle('show');
+                }
+            }
+            toggleButton2.addEventListener('click', toggleEdit);
+
+            document.addEventListener('click', function (event) {
+                if (!Edit.contains(event.target) && !toggleButton2.contains(event.target)) {
+                    Edit2.classList.remove('show');
+                    if (Edit) {
+                        Edit.classList.remove('show');
+                    }
+                }
+            });
         });
-    });
         document.addEventListener('click', function (event) {
             if (!Edit.contains(event.target) && !toggleButton2.contains(event.target)) {
                 Edit2.classList.remove('show');
