@@ -249,9 +249,11 @@ input[type=file]::file-selector-button {
     width: 100%;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
+    flex-wrap: wrap;
+    gap: 0.3em;
 }
 
-.profilPost, .profilFavorites, .profilePlanning{
+.profilPost, .profilFavorites, .profilePlanning, .profilNotations{
     height: 100%;
     margin-right: 25%;
     margin-left: 25%;
@@ -263,7 +265,7 @@ input[type=file]::file-selector-button {
     background: #ffffff;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-.profilePlanning{
+.profilePlanning, .profilNotations{
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -494,12 +496,12 @@ span {
     margin-left: 0.5em;
     }
 
-.passProButton, .profilButton{
+.passProButton, .profilButton ,.deleteProfilButton{
     margin-right: 5%;
     margin-top: 1.5%;
     margin-left: -5%;
 }
-.passProButton.show,.profilButton.show  {
+.passProButton.show,.profilButton.show , .deleteProfilButton.show {
     display: block; /* Afficher le menu lorsque la classe 'show' est ajoutée */
 }
 
@@ -723,8 +725,29 @@ button {
     
     filter: invert(1);
 }
-
-
+.button-container button{
+    width: 200px;
+}
+.average-note{
+    border-bottom: 1px solid rgb(182, 182, 182);
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.average-note .rating {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1em;
+    justify-content: center;
+}
+.stars {
+    color: #febb3e;
+}
+.notation{
+    margin-bottom: 1em;
+    border-bottom: 1px solid rgb(182, 182, 182);
+}
 /* Responsive Design */
 @media (max-width: 1050px) {/*display le button avec le edit button*/
     
@@ -736,7 +759,7 @@ button {
         font-family: 'Open Sans', sans-serif;
     }
 
-    .profilPost, .profilFavorites, .profilePlanning{
+    .profilPost, .profilFavorites, .profilePlanning, .profilNotations{
         margin-right: 20%;
         margin-left: 20%;
     }
@@ -765,7 +788,7 @@ button {
     .pro #certifIcon {
         margin-top: 1.8em;
     }
-    .profilPost, .profilFavorites,.profilePlanning{
+    .profilPost, .profilFavorites,.profilePlanning, .profilNotations{
         margin-right: 5%;
         margin-left: 5%;
     }
@@ -782,7 +805,7 @@ button {
         position: sticky;
         padding-right: 0em;
     }
-    .profilButton, .passProButton{
+    .profilButton, .passProButton, .deleteProfilButton{
         display: none;
     }
     .filter{
@@ -891,6 +914,15 @@ button {
 
     .modal-content2{
         margin-top: 4em;
+    }
+
+    .average-note{
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+    .average-note .rating {
+        margin-top: 0em;
+        margin-bottom: 1em;
     }
 }
 

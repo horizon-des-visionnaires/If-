@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block header %}
-{% include 'header.html.twig' %}
+{% include 'header.html.twig' %} 
 {% endblock %}
 
 {% block body %}
@@ -26,9 +26,8 @@
     <p><strong>Heure de fin:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
 
     <h2>Images de la Consultation</h2>
-    
 
-    {% if adviceImages|length > 0 %} <!-- user.Pictures -->
+    {% if adviceImages|length > 0 %}
     <div class="swipe">
         {% if adviceImages|length > 1 %}
         <button class="swipe-control-prev">
@@ -38,7 +37,7 @@
         <div class="swipe-inner">
             {% for picture in adviceImages %}
             <div class="swipe-item portrait active">
-                <img  src="data:image;base64,{{ picture.PictureAdvice }}" >
+                <img src="data:image;base64,{{ picture.PictureAdvice }}">
             </div>
             {% endfor %}
         </div>
@@ -62,7 +61,7 @@
     {% if adviceData.BuyerProfilPicture %}
     <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
     {% else %}
-    <p>Pas de photo de profile disponible.</p>
+    <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
     <h2>Information sur le consultant</h2>
@@ -70,21 +69,82 @@
     {% if adviceData.SellerProfilPicture %}
     <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
     {% else %}
-    <p>Pas de photo de profile disponible.</p>
+    <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
-    {% if showReminder %}
+    {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}
     <div class="reminder-div">
         <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
             <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
-            <label for="satisfaction">Êtes-vous satisfait du conseil?</label>
-            <select name="satisfaction" id="satisfaction" required>
-                <option value="1">Oui</option>
-                <option value="0">Non</option>
-            </select>
-            <button type="submit" name="isSatisfactoryAdvice">Valider</button>
+            <div>
+                <label for="satisfaction">Êtes-vous satisfait du conseil?</label>
+                <select name="satisfaction" id="satisfaction" required>
+                    <option value="1">Oui</option>
+                    <option value="2">Non</option>
+                </select>
+            </div>
+            <button type="submit" name="isSatisfactoryAdvice" id="inputField2">Valider</button>
         </form>
     </div>
+    {% endif %}
+
+    {% if adviceData.IsAdviceValid == 1 and userId == adviceData.BuyerId %}
+    <h2>Veuillez mettre un avis</h2>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+        <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
+        <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
+        <div class= "flex">
+            <label for="Note">Mettre une note : </label>
+            <select name="Note" id="Note" type="note" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div style="position: relative;">
+            <textarea name="CommentNote" placeholder="Commentaire sur la consultation..."id="inputFieldDesc" required></textarea>
+        </div>
+
+        <button type="submit" name="addNotations" id="inputField2">Valider</button>
+    </form>
+    {% endif %}
+    
+    {% if adviceData.IsAdviceValid == 2 and userId == adviceData.BuyerId %}
+    <h2>Veuillez mettre un avis</h2>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+        <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
+        <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
+        <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+        <label for="Note">Mettre une note : </label>
+        <select name="Note" id="Note" type="note" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <div style="position: relative;">
+            <textarea name="CommentNote" placeholder="Metter un commentaires à la personne"id="inputFieldPromotion" required></textarea>
+        </div>
+
+        <button type="submit" name="addNotations">Valider</button>
+    </form>
+
+    <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des raisons/preuves (photos, ...)</p>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+
+        <div style="position: relative;">
+            <textarea name="ContentRequest" placeholder="contenue de la demande"id="inputFieldPromotion" required></textarea>
+        </div>
+
+        <input type="file" id="images" name="PictureRequestForRefund[]" multiple accept="image/*">
+
+        <button type="submit" name="addRequestForRefund" id="inputField2">envoyer la demande</button>
+    </form>
     {% endif %}
 
     {% else %}

@@ -36,7 +36,7 @@
 
                 <div class="advice-number">
                     <div class="rating">
-                        {% set rating = 3.9 %} <!-- user.Rating-->
+                        {% set rating = averageNote|number_format(1) %} <!-- user.Rating-->
                         <span class="ratings">{{rating }} </span>
                         <div class="stars">
                             {% set fullStars = rating|round(0, 'floor') %}
@@ -44,15 +44,16 @@
                             {% set hasHalfStar = decimalPart >= 0.5 %}
 
                             {% for i in 1..5 %}
-                            {% if i <= fullStars %} <i class="fa fa-star"></i>
+                                {% if i <= fullStars %} 
+                                <i class="fa fa-star"></i>
                                 {% elseif i == fullStars + 1 and hasHalfStar %}
                                 <i class="fa fa-star-half-alt"></i>
                                 {% else %}
                                 <i class="far fa-star"></i>
                                 {% endif %}
-                                {% endfor %}
+                            {% endfor %}
                         </div>
-                        <span class="rating-count">({{ user.RatingCount }}19 Revues)</span>
+                        <span class="rating-count">({{ notations|length }})</span>
                     </div>
                     <div class="price">
                         <span>10€</span>
@@ -115,70 +116,78 @@
     <h1>Publications populaires</h1>
     <div class="allPosts">
         {% for post in randomPosts %}
-            <div class="post">
-                <a href="postDetails-{{ post.IdPost }}">
-                    <div class="user-details">
-                        {% if post.ProfilPicture == null %}
-                        <img id="icon" src="/../public/image/user.png" alt="icon">
-                        {% else %}
-                        <img id="icon" src="data:image;base64,{{post.ProfilPicture}}" alt="icon">
-                        {% endif %}
-                        {% if post.IsPro == 1 %}
-                        <h1 class="name1">{{ post.FirstName }} {{ post.LastName }} </h1>
-                        <i id="certifIcon" class="fas fa-check-circle"></i>
-                        {% else %}
-                        <h1 class="name2">{{ post.FirstName }} {{ post.LastName }} </h1>
-                        {% endif %}
-                    </div>
-                    <p id="date">{{ post.RelativeDatePost }}</p>
-                    <p id="views">{{ post.Views }} Vues</p>
-                    <div class="contentPost">
-                        {% set text = post.TitlePost %}
-                        {% set truncatedText = text|length > 32 ? text|slice(0, 32) ~ '...' : text %}
-                        {% set isTruncated = text|length > 32 %}
-                        <h2 class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</h2>
-                        <div class="hover-text">{{ text }}</div>
-                    </div>
-                </a>
-                {% set post = {
-                    Pictures: [
-                    'https://www.francetravail.fr/files/live/sites/PE/files/secteurs-metiers/Humanitaire/Humanitaire-850x523.jpg',
-                    'https://ih1.redbubble.net/image.5117968600.6985/bg,f8f8f8-flat,750x,075,f-pad,750x1000,f8f8f8.jpg',
-                    'https://feelloo.com/wp-content/uploads/2019/10/pexels-photo-979003-1.jpg'
-                ]} %}
-                {% if post.Pictures|length > 0 %}
-                <div class="swipe2">
-                    {% if post.Pictures|length > 1 %}
-                    <button class="swipe-control-prev2">
-                        <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-                    </button>
+        {% if post.Pictures is not empty %}
+        <div class="post">
+            <a href="postDetails-{{ post.IdPost }}">
+                <div class="user-details">
+                    {% if post.ProfilPicture == null %}
+                    <img id="icon3" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                    <img id="icon3" src="data:image;base64,{{post.ProfilPicture}}" alt="icon">
                     {% endif %}
-                    <div class="swipe-inner">
-                        {% for picture in post.Pictures %}
-                        <div class="swipe-item2 {% if loop.first %}active{% endif %} portrait2">
-                            <img src="{{ picture }}" alt="Advice Image">{#src="data:image;base64,{{ picture }}"#}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% if post.Pictures|length > 1 %}
-                    <button class="swipe-control-next2">
-                        <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-                    </button>
-                    <div class="bullets">
-                        {% for i in 0..(post.Pictures|length - 1) %}
-                        <span class="bullet2 {% if i == 0 %}active{% endif %}"></span>
-                        {% endfor %}
-                    </div>
+                    {% if post.IsPro == 1 %}
+                    <h1 class="name1">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <i id="certifIcon" class="fas fa-check-circle"></i>
+                    {% else %}
+                    <h1 class="name2">{{ post.FirstName }} {{ post.LastName }} </h1>
                     {% endif %}
+                </div>
+                <div class="contentPost">
+                    {% set text = post.TitlePost %}
+                    {% set truncatedText = text|length > 32 ? text|slice(0, 32) ~ '...' : text %}
+                    {% set isTruncated = text|length > 32 %}
+                    <h2 class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</h2>
+                    <div class="hover-text">{{ text }}</div>
+                </div>
+            </a>
+
+            {% if post.Pictures|length > 0 %}
+            <div class="swipe2">
+                {% if post.Pictures|length > 1 %}
+                <button class="swipe-control-prev2">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in post.Pictures %}
+                    <div class="swipe-item2 {% if loop.first %}active{% endif %} portrait2">
+                        <img src="data:image;base64,{{ picture }}" alt="Post Image">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if post.Pictures|length > 1 %}
+                <button class="swipe-control-next2">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(post.Pictures|length - 1) %}
+                    <span class="bullet2 {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
                 </div>
                 {% endif %}
             </div>
+            {% endif %}
+            <div class="interaction">
+                <a href="postDetails-{{ post.IdPost }}" id="interact">
+                    <p id="date">{{ post.RelativeDatePost }}</p>
+                    <p id="views">{{ post.Views }} Vues</p>
+                    <div>
+                        <i class="fas fa-heart"></i>
+                        <span class="total-likes">{{ post.TotalLikes }}</span>
+                    </div>
+                    <div >
+                        <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                        <span class="commentCount">{{ post.commentCount }}</span>
+                    </div>
+                </a>
+                <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
+            </div>
+        </div>
+        {% endif %}
         {% endfor %}
         <a href="/allPost" class="beautiful-button">Découvrir d'autres publications</a>
     </div>
 </div>
-
-
 
 <div class="adminContainer">
     <h1>admin du site</h1>
@@ -218,4 +227,5 @@
 
 {% block scripts %}
 <script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
 {% endblock %}

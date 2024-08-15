@@ -82,38 +82,76 @@ class homeModel
                 User.FirstName,
                 User.LastName,
                 User.ProfilPicture,
-                User.IsPro
+                User.IsPro,
+                PicturePost.PicturePost
             FROM Post
             INNER JOIN User ON Post.IdUser = User.IdUser
+            LEFT JOIN PicturePost ON Post.IdPost = PicturePost.IdPost
             ORDER BY Post.Views DESC
             LIMIT 10
         ");
             $top10Posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            if (count($top10Posts) > 5) {
-                $randomKeys = array_rand($top10Posts, 5);
-                $randomPosts = array_intersect_key($top10Posts, array_flip($randomKeys));
+            $posts = [];
+            foreach ($top10Posts as $row) {
+                $postId = $row['IdPost'];
+
+                if (!isset($posts[$postId])) {
+                    $posts[$postId] = [
+                        'IdPost' => $row['IdPost'],
+                        'TitlePost' => $row['TitlePost'],
+                        'ContentPost' => $row['ContentPost'],
+                        'DatePost' => $row['DatePost'],
+                        'Views' => $row['Views'],
+                        'IdUser' => $row['IdUser'],
+                        'FirstName' => $row['FirstName'],
+                        'LastName' => $row['LastName'],
+                        'ProfilPicture' => $row['ProfilPicture'] ? base64_encode($row['ProfilPicture']) : null,
+                        'IsPro' => $row['IsPro'],
+                        'Pictures' => []
+                    ];
+                }
+
+                if ($row['PicturePost']) {
+                    $posts[$postId]['Pictures'][] = base64_encode($row['PicturePost']);
+                }
+            }
+
+            if (count($posts) > 5) {
+                $randomKeys = array_rand($posts, 5);
+                $randomPosts = array_intersect_key($posts, array_flip($randomKeys));
             } else {
-                $randomPosts = $top10Posts;
+                $randomPosts = $posts;
             }
 
             foreach ($randomPosts as &$post) {
-                if (!is_null($post['ProfilPicture'])) {
-                    $post['ProfilPicture'] = base64_encode($post['ProfilPicture']);
-                }
                 $post['RelativeDatePost'] = $this->getRelativeTime($post['DatePost']);
+                $post['TotalLikes'] = $this->getTotalLikes($post['IdPost']);
+                $post['commentCount'] = $this->getCommentCount($post['IdPost']);
             }
+            
+            
 
             return $randomPosts;
         } catch (PDOException $e) {
-            $error = "error: " . $e->getMessage();
-            echo $error;
+            echo "error: " . $e->getMessage();
         }
     }
 
     public function getRelativeTime($date)
     {
         return getRelativeTime($date);
+    }
+
+    private function getTotalLikes($idPost)
+    {
+        $stmtLikes = $this->dsn->prepare("SELECT COUNT(*) AS TotalLikes FROM LikeFavorites WHERE IdPost = :IdPost AND IsLike = 1");
+        $stmtLikes->bindParam(':IdPost', $idPost);
+        $stmtLikes->execute();
+        return $stmtLikes->fetch(PDO::FETCH_ASSOC)['TotalLikes'];
+    }
+    public function getCommentCount($idPost) {
+        return getCommentCount($this->dsn, $idPost);
     }
 
     public function getUserAdmin()

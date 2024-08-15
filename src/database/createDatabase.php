@@ -133,6 +133,7 @@ $createTableNotaions = ("CREATE TABLE IF NOT EXISTS
     `DateNotation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `IdUser` int(11) DEFAULT NULL,
     `IdUserIsPro` int(11) DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`idNotations`),
     CONSTRAINT fk_IdUser_Notations FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
     CONSTRAINT fk_IdUserIsPro_Notations FOREIGN KEY (`IdUserIsPro`) REFERENCES User (`IdUser`)
@@ -235,3 +236,24 @@ $createTableNumberBuyAdvice = ("CREATE TABLE IF NOT EXISTS
     PRIMARY KEY (`Id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableNumberBuyAdvice);
+
+$createTableRequestForRefund = ("CREATE TABLE IF NOT EXISTS
+`RequestForRefund` (
+    `IdRequestForRefund` int(11) NOT NULL AUTO_INCREMENT,
+    `IdBuyAdvice` int(11) DEFAULT NULL,
+    `ContentRequest` TEXT DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`IdRequestForRefund`),
+    CONSTRAINT fk_IdBuyAdvice_RequestForRefund FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableRequestForRefund);
+
+$createTableRequestForRefundPicture = ("CREATE TABLE IF NOT EXISTS
+`RequestForRefundPicture` (
+    `IdPictureRequest` int(11) NOT NULL AUTO_INCREMENT,
+    `IdRequestForRefund` int(11) DEFAULT NULL,
+    `PictureRequest` LONGBLOB DEFAULT NULL,
+    PRIMARY KEY (`IdPictureRequest`),
+    CONSTRAINT fk_RequestForRefundPicture_IdRequestForRefund FOREIGN KEY (`IdRequestForRefund`) REFERENCES RequestForRefund (`IdRequestForRefund`)
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
+$dsn->exec($createTableRequestForRefundPicture);

@@ -29,6 +29,7 @@ class adviceMeetingModel
                 BA.Date AS BuyAdviceDate,
                 BA.StartTime AS BuyAdviceStartTime,
                 BA.EndTime AS BuyAdviceEndTime,
+                BA.IsAdviceValid,
                 U1.IdUser AS SellerId,
                 U1.FirstName AS SellerFirstName,
                 U1.LastName AS SellerLastName,
@@ -92,6 +93,80 @@ class adviceMeetingModel
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return [];
+        }
+    }
+
+    public function updateAdviceValidity($idBuyAdvice, $satisfaction)
+    {
+        try {
+            $query = "
+        UPDATE BuyAdvice
+        SET IsAdviceValid = :satisfaction
+        WHERE IdBuyAdvice = :idBuyAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':satisfaction', $satisfaction, PDO::PARAM_INT);
+            $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)
+    {
+        try {
+            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro AND DATE(DateNotation) = CURDATE()";
+            $checkStmt = $this->dsn->prepare($checkQuery);
+            $checkStmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
+            $checkStmt->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+            $checkStmt->execute();
+            $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['count'] > 0) {
+                return false;
+            } else {
+                $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro)";
+                $Notations = $this->dsn->prepare($insertNotations);
+                $Notations->bindParam(':Note', $Note, PDO::PARAM_INT);
+                $Notations->bindParam(':CommentNote', $CommentNote);
+                $Notations->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
+                $Notations->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+                $Notations->execute();
+                return true;
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund)
+    {
+        try {
+            $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, ContentRequest)
+                              VALUES (:IdBuyAdvice, :ContentRequest)";
+            $execInsertAdvice = $this->dsn->prepare($insertRequestQuery);
+            $execInsertAdvice->bindParam(':IdBuyAdvice', $IdBuyAdvice);
+            $execInsertAdvice->bindParam(':ContentRequest', $ContentRequest);
+            $execInsertAdvice->execute();
+
+            $IdRequestForRefund = $this->dsn->lastInsertId();
+            $stmt = $this->dsn->prepare("INSERT INTO RequestForRefundPicture (IdRequestForRefund, PictureRequest) VALUES (:IdRequestForRefund, :PictureRequest)");
+            foreach ($PictureRequestForRefund as $PictureRequest) {
+                $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund);
+                $stmt->bindParam(':PictureRequest', $PictureRequest, PDO::PARAM_LOB);
+                $stmt->execute();
+            }
+
+            header('Location: /');
+            exit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
     }
 }
