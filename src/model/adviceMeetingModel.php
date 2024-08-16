@@ -147,6 +147,20 @@ class adviceMeetingModel
     public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund)
     {
         try {
+
+            $checkQuery = "SELECT COUNT(*) AS count FROM RequestForRefund WHERE IdBuyer = :IdBuyer AND IdSeller = :IdSeller";
+            $checkStmt = $this->dsn->prepare($checkQuery);
+            $checkStmt->bindParam(':IdBuyer', $IdBuyer);
+            $checkStmt->bindParam(':IdSeller', $IdSeller);
+            $checkStmt->execute();
+            $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['count'] > 0) {
+                // IdBuyer et IdSeller ne sont pas dans la même ligne, donc erreur
+                echo "Erreur : IdBuyer et IdSeller ne sont pas dans la même ligne.";
+                return false;
+            }
+
             $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, IdBuyer, IdSeller, ContentRequest)
                               VALUES (:IdBuyAdvice, :IdBuyer, :IdSeller, :ContentRequest)";
             $execInsertAdvice = $this->dsn->prepare($insertRequestQuery);
@@ -163,6 +177,14 @@ class adviceMeetingModel
                 $stmt->bindParam(':PictureRequest', $PictureRequest, PDO::PARAM_LOB);
                 $stmt->execute();
             }
+
+            // Créer une notification pour l'utilisateur IdUser_1
+            $MessageNotif = $_SESSION['FirstName'] . " " . $_SESSION['LastName'] . "à demander un remboursement suite à votre entretien, cette demande sera traité par un administrateur, vous aurez un retour prochainement.";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdSeller);
+            $stmt4->bindParam(':MessageNotif', $MessageNotif);
+            $stmt4->execute();
 
             header('Location: /');
             exit();

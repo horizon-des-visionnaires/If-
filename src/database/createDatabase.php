@@ -19,6 +19,7 @@ $createTableUser = ("CREATE TABLE IF NOT EXISTS
     `IsAdmin` tinyint(1) DEFAULT '0',
     `ProfilPromotion` varchar(100) DEFAULT NULL,
     `Location` varchar(255) DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdUser`),
     CONSTRAINT unique_User_Email UNIQUE (`Email`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE utf8mb4_unicode_ci");
