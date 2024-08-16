@@ -130,7 +130,6 @@ $createTableNotaions = ("CREATE TABLE IF NOT EXISTS
     `idNotations` int(11) NOT NULL AUTO_INCREMENT,
     `Note` int(11) DEFAULT NULL,
     `CommentNote` TEXT DEFAULT NULL,
-    `DateNotation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `IdUser` int(11) DEFAULT NULL,
     `IdUserIsPro` int(11) DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

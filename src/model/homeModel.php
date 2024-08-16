@@ -129,8 +129,8 @@ class homeModel
                 $post['TotalLikes'] = $this->getTotalLikes($post['IdPost']);
                 $post['commentCount'] = $this->getCommentCount($post['IdPost']);
             }
-            
-            
+
+
 
             return $randomPosts;
         } catch (PDOException $e) {
@@ -150,7 +150,8 @@ class homeModel
         $stmtLikes->execute();
         return $stmtLikes->fetch(PDO::FETCH_ASSOC)['TotalLikes'];
     }
-    public function getCommentCount($idPost) {
+    public function getCommentCount($idPost)
+    {
         return getCommentCount($this->dsn, $idPost);
     }
 
@@ -233,6 +234,22 @@ class homeModel
         } catch (PDOException $e) {
             $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function getAverageRating($IdUserIsPro)
+    {
+        try {
+            $stmt = $this->dsn->prepare("
+            SELECT AVG(Note) as averageNote, COUNT(*) as ratingCount 
+            FROM Notations 
+            WHERE IdUserIsPro = :IdUserIsPro
+        ");
+            $stmt->bindParam(':IdUserIsPro', $IdUserIsPro);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "error: " . $e->getMessage();
         }
     }
 }
