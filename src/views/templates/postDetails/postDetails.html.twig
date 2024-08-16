@@ -30,27 +30,34 @@
                             <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                         </div> 
                         {% else %}
-                        <div <div class ="notpro">
+                        <div class ="notpro">
                             <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2>
                         </div>
                         {% endif %}
                     </a>
                     {% if isConnected and (userId == user.IdUser or isAdmin) %}
-                    <div class="changements">
-                    <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
-                        <button type="submit" name="deletePost" id="deleteButton">
-                            <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                            <div class="Delete">
-                                <img src="/../public/image/bin.png" id="deleteImage">
-                            </div>
-                        </button>
-                    </form>
+                    <div class="changements" id="Toshow2">
+                        <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
+                            <button type="submit" name="deletePost" id="deleteButton">
+                                <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                                <div class="Delete">
+                                    <img src="/../public/image/bin.png" id="deleteImage">
+                                </div>
+                            </button>
+                        </form>
 
-                    <button id="openModalButton">
-                        <img class="icon_commentaire" src="/../public/image/icon/edit_profil.png">
-                    </button>
+                        <button id="openModalButton">
+                            <img class="icon_commentaire" src="/../public/image/icon/edit_profil.png">
+                        </button>
+                        <button id="copyLinkButton">
+                            <img class="icon_commentaire" src="/../public/image/icon/share.png">
+                        </button>
                     </div>
+                    <button class="filter" id="toggleEditButton2">
+                        <img class="icon_commentaire" src="/../public/image/icon/3dots.png">
+                    </button>
                     {% endif %}
+                    
                 </div>
                 {% if Post.IsPro == 1 %}
                 <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
@@ -145,7 +152,7 @@
                     </form>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} Vues</p>
-                    <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
+                    
                 </div>
                 {% endfor %}
                 {% else %}
@@ -163,7 +170,7 @@
                     </button>
                     <p class="datePost">{{ Post.RelativeDatePost }}</p>
                     <p class="viewsPost">{{ Post.Views }} Vues</p>
-                    <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
+                    
                 </div>
                 {% endif %}
             </div>
@@ -186,7 +193,7 @@
                         <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                     </div> 
                     {% else %}
-                    <div <div class ="notpro">
+                    <div class ="notpro">
                         <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2>
                     </div>
                     {% endif %}
@@ -258,10 +265,9 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
-            <input type="text" name="TitlePost" placeholder="Titre de la Publication" id="inputField">
+            <input type="text" name="TitlePost" placeholder="{{ Post.TitlePost }}" id="inputField">
 
-            <textarea name="ContentPost" placeholder="Contenu de la Publication" id="inputFieldDesc"></textarea>
-
+            <textarea name="ContentPost" placeholder="{{ Post.ContentPost }}" id="inputFieldDesc"></textarea>
 
             <label for="PicturePost">Ajout d'images (Max 6):</label>
             <input type="file" name="PicturePost[]" id="PicturePost" accept="image/*" multiple>
@@ -285,4 +291,5 @@
 <script src="/../public/js/modalImage.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
 <script src="/../public/js/copyLinkPage.js"></script>
+<script src="/../public/js/showProfileButton.js"></script>
 {% endblock %}

@@ -173,6 +173,10 @@ input[type=file] {
 .user-info{
     flex-direction: column;
 }
+.user-info2{
+    width: 100%;
+    margin-right: 1em;
+}
 .notpro h2 {
     font-family: 'Open Sans', sans-serif;
     margin-top: 1.2em;
@@ -672,28 +676,33 @@ button {
     border-radius: 5px;
     outline: none;
     height: 3em;
-    margin-top: 2em;
+    margin-left: -0.5em;
 }
 .new_post{
     padding: 0 1em 1em 1em;
     margin-left: -1em;
     border-bottom:1px solid #bbb;
     margin-bottom: 1%;
-}
-.NewPost {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 18%;
+    margin-top: -1em;
 }
-
-.new_media button, .post_button button {
+.user-info2 input{
+    width: 100%;
+}
+.user-info2{
+    align-items: center;
+    display: flex;
+}
+.post_button button {
     background-color: #2e7d32;
     color: #fff;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
+    text-align: center;
 }
 
 .filter{
@@ -814,7 +823,9 @@ button {
     .user-info, .user-info2{
         margin-left: -2em;
     }
-
+    .user-info2{
+        margin-right: 0.5em;
+    }
     .promotion p{
         font-size: 0.9em;
     }
@@ -833,6 +844,18 @@ button {
     }
     input[type=file] {
         font-size: 0.7em; 
+    }
+
+    .post_button button {
+        padding: 10px 0px;
+        width: 60px;  
+    }
+    .user-info2 img{
+        width: 3em;
+        height: auto;
+    }
+    .new_post{
+        padding-bottom: 0em;
     }
 }
 

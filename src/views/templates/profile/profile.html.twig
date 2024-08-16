@@ -67,9 +67,6 @@
                 <div class="profilButton" id="Toshow2">
                     <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
                 </div>
-                <div class="deleteProfilButton" id="Toshow3">
-                    <button id="openModalDeleteButton" class="beautiful-button">Supprimer le Profil</button>
-                </div>
                 {% endif %}
             </div>
             {% if isConnected and userId == user.IdUser %}
@@ -97,18 +94,27 @@
 
     {% if isConnected and userId == user.IdUser %}
     <div class="button-container">
-        <button id="showPosts" class="beautiful-button">Voir les Publications</button>
+        <button id="showPosts" class="beautiful-button"><img src="/../public/image/icon/post2.png">
+        </button>
         {% if user.IsPro == 1 %}
-        <button id="showNotations" class="beautiful-button">Voir les Notations</button>
+        <button id="showNotations" class="beautiful-button"><i class="fa fa-star"></i>
+        </button>
         {% endif %}
-        <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
-        <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
+        <button id="showFavorites" class="beautiful-button"><i class="fas fa-solid fa-flag"></i>
+        </button>
+        <button id="showPlanning" class="beautiful-button"><img src="/../public/image/icon/planning.png" >
+        </button>
     </div>
     {% endif %}
 </div>    
 
 <div id="profileModal" class="modal">
     <div class="modal-content">
+        <div class="deleteProfilButton" id="Toshow3">
+            <button id="openModalDeleteButton" class="beautiful-button">
+                <img src="/../public/image/bin.png">
+            </button>
+        </div>
         <span class="close">&times;</span>
         <form action="/profile-{{ user.IdUser }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
             <input type="text" name="FirstName" placeholder="{{ user.FirstName }}" id="inputField">
@@ -120,21 +126,21 @@
             {% else %}
             <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField">
             {% endif %}
-
-            {% if user.ProfilPromotion == null %}
-            <div style="position: relative;">
-                <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: je peux t'aider à ...)"
-                    id="inputFieldPromotion" maxlength="100"></textarea>
-                <div id="charCount2" class="char-count">0/100</div>
-            </div>
-            {% else %}
-            <div style="position: relative;">
-                <textarea name="ProfilPromotion" placeholder="{{ user.ProfilPromotion }}" id="inputFieldPromotion"
-                    maxlength="100"></textarea>
-                <div id="charCount2" class="char-count">0/100</div>
-            </div>
+            {% if user.IsPro == 1   %}
+                {% if user.ProfilPromotion == null   %}
+                <div style="position: relative;">
+                    <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: Je peux t'aider à ...)"
+                        id="inputFieldPromotion" maxlength="100"></textarea>
+                    <div id="charCount2" class="char-count">0/100</div>
+                </div>
+                {% else %}
+                <div style="position: relative;">
+                    <textarea name="ProfilPromotion" placeholder="Je peux t'aider à {{ user.ProfilPromotion }}" id="inputFieldPromotion"
+                        maxlength="100"></textarea>
+                    <div id="charCount2" class="char-count">0/100</div>
+                </div>
+                {% endif %}
             {% endif %}
-
             {% if user.ProfilDescription == null %}
             <div style="position: relative;">
                 <textarea name="ProfilDescription" placeholder="Description du profil" id="inputFieldDesc"
@@ -204,14 +210,157 @@
 
 
 <div class="profilPost">
-    {% for Post in userPost %}
-    <div class="post">
-        <div class="user-info">
-            <div class="flex">
+    {% if userPost is not empty %}
+        {% for Post in userPost %}
+        <div class="post">
+            <div class="user-info">
+                <div class="flex">
+                    {% if Post.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                    {% endif %}
+                    {% if userId == user.IdUser and user.IsPro == 0 %}
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                    {% else %}
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                    {% endif %}
+                </div>
+                {% if isConnected and (userId == user.IdUser or isAdmin) %}
+                <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
+                    <button type="submit" name="deletePost" id="deleteButton">
+                        <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                        <input type="hidden" name="idUser" value="{{ user.IdUser }}">
+                        <div class="hover-text">
+                            <img src="/../public/image/bin.png" id="deleteImage">
+                        </div>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+
+            
+            <div class="contentPost">
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <h2>{{ Post.TitlePost }}</h2>
+                    <p>
+                        {% set contentLines = Post.ContentPost | split("\n") %}
+                        {% if contentLines %}
+                        {% for i in 0..2 %}
+                        {% if contentLines[i] is defined %}
+                        {{ contentLines[i] }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </p>
+                    <a>
+                    <form action="/profile-{{ Post.IdUser }}" method="post">
+                    <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                    <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+                </form>
+            </div>
+               
+                
+            
+
+            {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+            <div class="swipe">
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-prev">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in Post.PicturesPost %}
+                    <div
+                        class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                        <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-next">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(Post.PicturesPost|length - 1) %}
+                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+
+            {% if isConnected %}
+            <div class="interaction">
+                <form action="/profile-{{ user.IdUser }}" method="post">
+                    <input type="hidden" name="AddLike" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                        {% if Post.IsLike %}
+                        <i class="fas fa-heart"></i>
+                        {% else %}
+                        <i class="far fa-heart"></i>
+                        {% endif %}
+                    </button>
+                    <span class="total-likes">{{ Post.TotalLikes }}</span>
+                </form>
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+
+                <form action="/profile-{{ user.IdUser }}" method="post">
+                    <input type="hidden" name="AddFavorite" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                        {% if Post.IsFavorites %}
+                        <i class="fas fa-solid fa-flag"></i>
+                        {% else %}
+                        <i class="far fa-regular fa-flag"></i>
+                        {% endif %}
+                    </button>
+                </form>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+            </div>
+            {% else %}
+            <div class="interaction">
+                <button class="heart" disabled>
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="total-likes">{{ Post.TotalLikes }}</span>
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
+                    <i class="far fa-regular fa-flag"></i>
+                </button>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+    <p class="aucun_dispo">Aucune Publication publiée.</p>
+    {% endif %}
+</div>
+
+
+
+{% if isConnected and userId == user.IdUser %}
+<div class="profilFavorites" style="display: none;">
+    {% if postFav is not empty %}
+        {% for Post in postFav %}
+        <div class="post">
+            <div class="user-info2">
                 {% if Post.ProfilPicture == null %}
                 <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
                 {% else %}
-                <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
                 {% endif %}
                 {% if userId == user.IdUser and user.IsPro == 0 %}
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
@@ -219,237 +368,106 @@
                 <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                 {% endif %}
             </div>
-            {% if isConnected and (userId == user.IdUser or isAdmin) %}
-            <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
-                <button type="submit" name="deletePost" id="deleteButton">
+
+
+            <div class="contentPost">
+                <h2>{{ Post.TitlePost }}</h2>
+                <p>
+                    {% set contentLines = Post.ContentPost | split("\n") %}
+                    {% if contentLines %}
+                    {% for i in 0..2 %}
+                    {% if contentLines[i] is defined %}
+                    {{ contentLines[i] }}<br>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+
+                <form action="/profile-{{ Post.IdUser }}" method="post">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                    <input type="hidden" name="idUser" value="{{ user.IdUser }}">
-                    <div class="hover-text">
-                        <img src="/../public/image/bin.png" id="deleteImage">
+                    <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+                </form>
+                </p>
+            </div>
+            {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+            <div class="swipe">
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-prev">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in Post.PicturesPost %}
+                    <div
+                        class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                        <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
                     </div>
-                </button>
-            </form>
-            {% endif %}
-        </div>
-
-
-        <div class="contentPost">
-            <h2>{{ Post.TitlePost }}</h2>
-            <p>
-                {% set contentLines = Post.ContentPost | split("\n") %}
-                {% if contentLines %}
-                {% for i in 0..2 %}
-                {% if contentLines[i] is defined %}
-                {{ contentLines[i] }}<br>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-            <form action="/profile-{{ Post.IdUser }}" method="post">
-                <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
-            </form>
-            </p>
-        </div>
-
-
-        {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
-        <div class="swipe">
-            {% if Post.PicturesPost|length > 1 %}
-            <button class="swipe-control-prev">
-                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-            </button>
-            {% endif %}
-            <div class="swipe-inner">
-                {% for picture in Post.PicturesPost %}
-                <div
-                    class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
-                    <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                    {% endfor %}
                 </div>
-                {% endfor %}
-            </div>
-            {% if Post.PicturesPost|length > 1 %}
-            <button class="swipe-control-next">
-                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-            </button>
-            <div class="bullets">
-                {% for i in 0..(Post.PicturesPost|length - 1) %}
-                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
-                {% endfor %}
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-next">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(Post.PicturesPost|length - 1) %}
+                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
             {% endif %}
-        </div>
-        {% endif %}
-
-
-        {% if isConnected %}
-        <div class="interaction">
-            <form action="/profile-{{ user.IdUser }}" method="post">
-                <input type="hidden" name="AddLike" value="1">
-                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
-                <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
-                    {% if Post.IsLike %}
-                    <i class="fas fa-heart"></i>
-                    {% else %}
+            {% if isConnected %}
+            <div class="interaction">
+                <form action="/profile-{{ Post.IdUser }}" method="post">
+                    <input type="hidden" name="AddLike" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                        {% if Post.IsLike %}
+                        <i class="fas fa-heart"></i>
+                        {% else %}
+                        <i class="far fa-heart"></i>
+                        {% endif %}
+                    </button>
+                    <span class="total-likes">{{ Post.TotalLikes }}</span>
+                </form>
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <form action="/profile-{{ Post.IdUser }}" method="post">
+                    <input type="hidden" name="AddFavorite" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                        {% if Post.IsFavorites %}
+                        <i class="fas fa-solid fa-flag"></i>
+                        {% else %}
+                        <i class="far fa-regular fa-flag"></i>
+                        {% endif %}
+                    </button>
+                </form>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+            </div>
+            {% else %}
+            <div class="interaction">
+                <button class="heart" disabled>
                     <i class="far fa-heart"></i>
-                    {% endif %}
                 </button>
                 <span class="total-likes">{{ Post.TotalLikes }}</span>
-            </form>
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-
-            <form action="/profile-{{ user.IdUser }}" method="post">
-                <input type="hidden" name="AddFavorite" value="1">
-                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
-                <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
-                    {% if Post.IsFavorites %}
-                    <i class="fas fa-solid fa-flag"></i>
-                    {% else %}
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
                     <i class="far fa-regular fa-flag"></i>
-                    {% endif %}
                 </button>
-            </form>
-            <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
-        </div>
-        {% else %}
-        <div class="interaction">
-            <button class="heart" disabled>
-                <i class="far fa-heart"></i>
-            </button>
-            <span class="total-likes">{{ Post.TotalLikes }}</span>
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-            <button class="favorite" disabled>
-                <i class="far fa-regular fa-flag"></i>
-            </button>
-            <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
-        </div>
-        {% endif %}
-    </div>
-    {% endfor %}
-</div>
-
-
-
-{% if isConnected and userId == user.IdUser %}
-<div class="profilFavorites" style="display: none;">
-    {% for Post in postFav %}
-    <div class="post">
-        <div class="user-info2">
-            {% if Post.ProfilPicture == null %}
-            <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
-            {% else %}
-            <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
-            {% endif %}
-            {% if userId == user.IdUser and user.IsPro == 0 %}
-            <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-            {% else %}
-            <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
-            {% endif %}
-        </div>
-
-
-        <div class="contentPost">
-            <h2>{{ Post.TitlePost }}</h2>
-            <p>
-                {% set contentLines = Post.ContentPost | split("\n") %}
-                {% if contentLines %}
-                {% for i in 0..2 %}
-                {% if contentLines[i] is defined %}
-                {{ contentLines[i] }}<br>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-
-            <form action="/profile-{{ Post.IdUser }}" method="post">
-                <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
-            </form>
-            </p>
-        </div>
-        {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
-        <div class="swipe">
-            {% if Post.PicturesPost|length > 1 %}
-            <button class="swipe-control-prev">
-                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-            </button>
-            {% endif %}
-            <div class="swipe-inner">
-                {% for picture in Post.PicturesPost %}
-                <div
-                    class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
-                    <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
-                </div>
-                {% endfor %}
-            </div>
-            {% if Post.PicturesPost|length > 1 %}
-            <button class="swipe-control-next">
-                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-            </button>
-            <div class="bullets">
-                {% for i in 0..(Post.PicturesPost|length - 1) %}
-                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
-                {% endfor %}
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
             </div>
             {% endif %}
         </div>
-        {% endif %}
-        {% if isConnected %}
-        <div class="interaction">
-            <form action="/profile-{{ Post.IdUser }}" method="post">
-                <input type="hidden" name="AddLike" value="1">
-                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
-                <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
-                    {% if Post.IsLike %}
-                    <i class="fas fa-heart"></i>
-                    {% else %}
-                    <i class="far fa-heart"></i>
-                    {% endif %}
-                </button>
-                <span class="total-likes">{{ Post.TotalLikes }}</span>
-            </form>
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-            <form action="/profile-{{ Post.IdUser }}" method="post">
-                <input type="hidden" name="AddFavorite" value="1">
-                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
-                <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
-                    {% if Post.IsFavorites %}
-                    <i class="fas fa-solid fa-flag"></i>
-                    {% else %}
-                    <i class="far fa-regular fa-flag"></i>
-                    {% endif %}
-                </button>
-            </form>
-            <p class="datePost">{{ Post.RelativeDatePost }}</p>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
-        </div>
-        {% else %}
-        <div class="interaction">
-            <button class="heart" disabled>
-                <i class="far fa-heart"></i>
-            </button>
-            <span class="total-likes">{{ Post.TotalLikes }}</span>
-            <a href="/postDetail-{{Post.IdPost}}">
-                <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                <span class="commentCount">{{ Post.commentCount }}</span>
-            </a>
-            <button class="favorite" disabled>
-                <i class="far fa-regular fa-flag"></i>
-            </button>
-            <p class="viewsPost">{{ Post.Views }} Vues</p>
-        </div>
-        {% endif %}
-    </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+    <p class="aucun_dispo">Aucune Publication enregistrée.</p>
+    {% endif %}
 </div>
 {% endif %}
 
@@ -497,7 +515,7 @@
         <p>Pas d'images disponible.</p>
         {% endif %}
 
-        <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}">lien du meeting</a>
+        <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}" class="meeting_link">lien du meeting</a>
 
         <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
         {% if userId == advice.SellerId %}
@@ -517,7 +535,7 @@
         {% endif %}
         {% endfor %}
     {% else %}
-    <p>Aucune consultation disponible.</p>
+    <p class="aucun_dispo">Aucune Consultation disponible.</p>
     {% endif %}
 </div>
 {% endif %}
@@ -594,7 +612,7 @@
         {% endfor %}
 
     {% else %}
-    <p>Aucune notation trouvée.</p>
+    <p class="aucun_dispo">Aucune Notation trouvée.</p>
     {% endif %}
 </div>
 
@@ -630,12 +648,8 @@
 <script src="/../public/js/modalImage.js"></script>
 <script src="/../public/js/ImageCrop.js"></script>
 <script src="/../public/js/showContent.js"></script>
-<script src="/../public/js/profilPromotion.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
 <script src="/../public/js/copyLinkPage.js"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
-
-<script src="/../public/js/showProfileButton.js">
-    
-</script>
+<script src="/../public/js/showProfileButton.js"></script>
 {% endblock %}
