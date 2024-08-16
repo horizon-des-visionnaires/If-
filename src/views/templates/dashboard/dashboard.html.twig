@@ -107,6 +107,7 @@
             <th>Prénom</th>
             <th>Nom de Famille</th>
             <th>Email</th>
+            <th>Inscris depuis</th>
             <th>Photo de Profil</th>
             <th>Lien page profile</th>
             <th>Supprimer user</th>
@@ -116,6 +117,7 @@
             <td>{{ User.FirstName }}</td>
             <td>{{ User.LastName }}</td>
             <td>{{ User.Email }}</td>
+            <td>{{ User.RelativeDateUser }}</td>
             <td>
                 {% if User.ProfilPicture == null %}
                 <img class="icon" src="/../public/image/user.png" alt="icon" onclick="openModal(this)">
