@@ -28,13 +28,13 @@ class profileModel
             return null;
         }
 
-        foreach ($getUserData as $key => &$User) {
+        foreach ($getUserData as $key => $value) {
             if ($key === 'ProfilPicture') {
-                if ($User !== null) {
-                    $User = base64_encode($User);
-                } else {
-                    $User = '';
-                }
+                // Assurez-vous que $value est une chaîne et encodez-le
+                $getUserData[$key] = $value !== null ? base64_encode($value) : '';
+            } elseif ($key === 'CreatedAt') {
+                // Traitez la date
+                $getUserData['RelativeDateUser'] = $this->getRelativeTime($value);
             }
         }
 
