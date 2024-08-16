@@ -229,10 +229,63 @@
     background-color: #333;
 }
 
+select {    
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    appearance: none;  /* Supprimer le style natif du navigateur */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: url('data:image/svg+xml;base64,...') no-repeat right center; /* Ajouter une flèche personnalisée */
+    background-size: 10px; /* Taille de la flèche */
+}
+.flex{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    margin-right: 1em;
+}
+select{
+    margin-left: 10px;
+}
+#inputField2 {
+    border: 2px solid #2e7d32; /* Bordure vert foncé */
+    font-family: 'Montserrat', sans-serif;
+    font-weight:510;
+    padding: 1em;
+    box-sizing: border-box;
+    color: black;
+    width: 80%;
+    max-width: 30em;
+    height: 3em;
+    border-radius: 10em;
+    background-color: #2e7d32; /* Fond vert foncé */
+    color: #ffffff; /* Texte blanc */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-left: 13%;
+}
+#inputFieldDesc {
+    border-radius: 1em;
+    background-color: #ffffff;
+    overflow: auto;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    width: 20em;
+    min-height: 7em;
+    max-height: 50em;
+    resize: none; /* Empêcher le redimensionnement */
+}
 
 @media (max-width: 740px) {
     .advice-meeting-container {
         margin-top: 4em;
     }
-
+ 
 }

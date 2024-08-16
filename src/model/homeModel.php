@@ -126,7 +126,11 @@ class homeModel
 
             foreach ($randomPosts as &$post) {
                 $post['RelativeDatePost'] = $this->getRelativeTime($post['DatePost']);
+                $post['TotalLikes'] = $this->getTotalLikes($post['IdPost']);
+                $post['commentCount'] = $this->getCommentCount($post['IdPost']);
             }
+            
+            
 
             return $randomPosts;
         } catch (PDOException $e) {
@@ -137,6 +141,17 @@ class homeModel
     public function getRelativeTime($date)
     {
         return getRelativeTime($date);
+    }
+
+    private function getTotalLikes($idPost)
+    {
+        $stmtLikes = $this->dsn->prepare("SELECT COUNT(*) AS TotalLikes FROM LikeFavorites WHERE IdPost = :IdPost AND IsLike = 1");
+        $stmtLikes->bindParam(':IdPost', $idPost);
+        $stmtLikes->execute();
+        return $stmtLikes->fetch(PDO::FETCH_ASSOC)['TotalLikes'];
+    }
+    public function getCommentCount($idPost) {
+        return getCommentCount($this->dsn, $idPost);
     }
 
     public function getUserAdmin()

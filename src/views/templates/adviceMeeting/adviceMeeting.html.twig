@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block header %}
-{% include 'header.html.twig' %}
+{% include 'header.html.twig' %} 
 {% endblock %}
 
 {% block body %}
@@ -76,46 +76,49 @@
     <div class="reminder-div">
         <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
             <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
-            <label for="satisfaction">Êtes-vous satisfait du conseil?</label>
-            <select name="satisfaction" id="satisfaction" required>
-                <option value="1">Oui</option>
-                <option value="2">Non</option>
-            </select>
-            <button type="submit" name="isSatisfactoryAdvice">Valider</button>
+            <div>
+                <label for="satisfaction">Êtes-vous satisfait du conseil?</label>
+                <select name="satisfaction" id="satisfaction" required>
+                    <option value="1">Oui</option>
+                    <option value="2">Non</option>
+                </select>
+            </div>
+            <button type="submit" name="isSatisfactoryAdvice" id="inputField2">Valider</button>
         </form>
     </div>
     {% endif %}
 
     {% if adviceData.IsAdviceValid == 1 and userId == adviceData.BuyerId %}
-    <p>veiller metter un avis</p>
+    <h2>Veuillez mettre un avis</h2>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
         <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
         <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
-        <label for="Note">Veiller mettre une note</label>
-        <select name="Note" id="Note" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-
+        <div class= "flex">
+            <label for="Note">Mettre une note : </label>
+            <select name="Note" id="Note" type="note" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
         <div style="position: relative;">
-            <textarea name="CommentNote" placeholder="Metter un commentaires à la personne"id="inputFieldPromotion" required></textarea>
+            <textarea name="CommentNote" placeholder="Commentaire sur la consultation..."id="inputFieldDesc" required></textarea>
         </div>
 
-        <button type="submit" name="addNotations">Valider</button>
+        <button type="submit" name="addNotations" id="inputField2">Valider</button>
     </form>
     {% endif %}
     
     {% if adviceData.IsAdviceValid == 2 and userId == adviceData.BuyerId %}
-    <p>veiller metter un avis</p>
+    <h2>Veuillez mettre un avis</h2>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
         <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
         <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
         <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
-        <label for="Note">Veiller mettre une note</label>
-        <select name="Note" id="Note" required>
+        <label for="Note">Mettre une note : </label>
+        <select name="Note" id="Note" type="note" required>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -130,7 +133,7 @@
         <button type="submit" name="addNotations">Valider</button>
     </form>
 
-    <p>Voulez vous, vous faire rembourser ? <br>si oui veulliez nous dire les raisons et en apportante des preuves (photos, ...)</p>
+    <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des raisons/preuves (photos, ...)</p>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
 
@@ -140,7 +143,7 @@
 
         <input type="file" id="images" name="PictureRequestForRefund[]" multiple accept="image/*">
 
-        <button type="submit" name="addRequestForRefund">envoyer la demande</button>
+        <button type="submit" name="addRequestForRefund" id="inputField2">envoyer la demande</button>
     </form>
     {% endif %}
 

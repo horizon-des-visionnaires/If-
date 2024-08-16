@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     var profilPost = document.querySelector('.profilPost');
     var profilFavorites = document.querySelector('.profilFavorites');
