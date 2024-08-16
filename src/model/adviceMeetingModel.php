@@ -144,13 +144,15 @@ class adviceMeetingModel
         }
     }
 
-    public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund)
+    public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund)
     {
         try {
-            $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, ContentRequest)
-                              VALUES (:IdBuyAdvice, :ContentRequest)";
+            $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, IdBuyer, IdSeller, ContentRequest)
+                              VALUES (:IdBuyAdvice, :IdBuyer, :IdSeller, :ContentRequest)";
             $execInsertAdvice = $this->dsn->prepare($insertRequestQuery);
             $execInsertAdvice->bindParam(':IdBuyAdvice', $IdBuyAdvice);
+            $execInsertAdvice->bindParam(':IdBuyer', $IdBuyer);
+            $execInsertAdvice->bindParam(':IdSeller', $IdSeller);
             $execInsertAdvice->bindParam(':ContentRequest', $ContentRequest);
             $execInsertAdvice->execute();
 

@@ -240,10 +240,14 @@ $createTableRequestForRefund = ("CREATE TABLE IF NOT EXISTS
 `RequestForRefund` (
     `IdRequestForRefund` int(11) NOT NULL AUTO_INCREMENT,
     `IdBuyAdvice` int(11) DEFAULT NULL,
+    `IdBuyer` int(11) DEFAULT NULL,
+    `IdSeller` int(11) DEFAULT NULL,
     `ContentRequest` TEXT DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdRequestForRefund`),
-    CONSTRAINT fk_IdBuyAdvice_RequestForRefund FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`)
+    CONSTRAINT fk_IdBuyAdvice_RequestForRefund FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`),
+    CONSTRAINT fk_IdBuyer_RequestForRefund FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdSeller_RequestForRefund FOREIGN KEY (`IdSeller`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableRequestForRefund);
 

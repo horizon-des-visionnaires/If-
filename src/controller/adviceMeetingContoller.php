@@ -124,6 +124,8 @@ class adviceMeetingController
 
             $IdBuyAdvice = $_POST['IdBuyAdvice'];
             $ContentRequest = $_POST['ContentRequest'];
+            $IdBuyer = $_POST['IdBuyer'];
+            $IdSeller = $_POST['IdSeller'];
 
             $PictureRequestForRefund = [];
             if (isset($_FILES["PictureRequestForRefund"])) {
@@ -138,7 +140,7 @@ class adviceMeetingController
                 }
             }
 
-            $this->adviceMeetingModel->insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund);
+            $this->adviceMeetingModel->insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund);
         }
     }
 }

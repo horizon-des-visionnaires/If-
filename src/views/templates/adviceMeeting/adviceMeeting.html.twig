@@ -136,6 +136,8 @@
     <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des raisons/preuves (photos, ...)</p>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+        <input type="hidden" name="IdBuyer" value="{{ adviceData.BuyerId }}">
+        <input type="hidden" name="IdSeller" value="{{ adviceData.SellerId }}">
 
         <div style="position: relative;">
             <textarea name="ContentRequest" placeholder="contenue de la demande"id="inputFieldPromotion" required></textarea>
