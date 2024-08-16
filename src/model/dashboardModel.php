@@ -437,4 +437,77 @@ class dashboardModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
+    public function getRequestForRefundData()
+    {
+        try {
+            $stmt = $this->dsn->query("
+            SELECT 
+                uBuyer.IdUser AS BuyerId,
+                uBuyer.FirstName AS BuyerFirstName,
+                uBuyer.LastName AS BuyerLastName,
+                uBuyer.ProfilPicture AS BuyerProfilePicture,
+                uSeller.IdUser AS SellerId,
+                uSeller.FirstName AS SellerFirstName,
+                uSeller.LastName AS SellerLastName,
+                uSeller.ProfilPicture AS SellerProfilePicture,
+                a.AdviceType AS AdviceTitle,
+                ba.Date AS AdviceDate,
+                ba.StartTime AS AdviceStartTime,
+                ba.EndTime AS AdviceEndTime,
+                r.ContentRequest,
+                r.IdRequestForRefund AS RequestId,
+                rp.PictureRequest AS PictureRequest
+            FROM RequestForRefund r
+            LEFT JOIN BuyAdvice ba ON r.IdBuyAdvice = ba.IdBuyAdvice
+            LEFT JOIN Advice a ON ba.IdAdvice = a.IdAdvice
+            LEFT JOIN User uBuyer ON r.IdBuyer = uBuyer.IdUser
+            LEFT JOIN User uSeller ON r.IdSeller = uSeller.IdUser
+            LEFT JOIN RequestForRefundPicture rp ON r.IdRequestForRefund = rp.IdRequestForRefund
+            ORDER BY r.IdRequestForRefund
+        ");
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $refundData = [];
+            foreach ($results as $row) {
+                $requestId = $row['RequestId'];
+
+                if (!isset($refundData[$requestId])) {
+                    $refundData[$requestId] = [
+                        'RequestId' => $row['RequestId'],
+                        'Buyer' => [
+                            'IdUser' => $row['BuyerId'],
+                            'FirstName' => $row['BuyerFirstName'],
+                            'LastName' => $row['BuyerLastName'],
+                            'ProfilePicture' => $row['BuyerProfilePicture'] ? base64_encode($row['BuyerProfilePicture']) : null,
+                        ],
+                        'Seller' => [
+                            'IdUser' => $row['SellerId'],
+                            'FirstName' => $row['SellerFirstName'],
+                            'LastName' => $row['SellerLastName'],
+                            'ProfilePicture' => $row['SellerProfilePicture'] ? base64_encode($row['SellerProfilePicture']) : null,
+                        ],
+                        'Advice' => [
+                            'Title' => $row['AdviceTitle'],
+                            'Date' => $row['AdviceDate'],
+                            'StartTime' => $row['AdviceStartTime'],
+                            'EndTime' => $row['AdviceEndTime'],
+                        ],
+                        'ContentRequest' => $row['ContentRequest'],
+                        'Pictures' => []
+                    ];
+                }
+
+                if ($row['PictureRequest']) {
+                    $refundData[$requestId]['Pictures'][] = base64_encode($row['PictureRequest']);
+                }
+            }
+
+            return array_values($refundData);
+        } catch (PDOException $e) {
+            $error = "Error: " . $e->getMessage();
+            echo $error;
+            return [];
+        }
+    }
 }

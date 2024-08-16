@@ -82,6 +82,8 @@ class dashboardController
         $getCategory = $this->dashboardModel->getCategory();
         $this->getDeleteCategory();
 
+        $refundRequests = $this->dashboardModel->getRequestForRefundData();
+
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -94,7 +96,8 @@ class dashboardController
             'countAdvice' => $countAdvice,
             'countPost' => $countPost,
             'countComment' => $countComment,
-            'getCategory' => $getCategory
+            'getCategory' => $getCategory,
+            'refundRequests' => $refundRequests
         ]);
     }
 
