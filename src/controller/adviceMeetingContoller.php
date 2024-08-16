@@ -46,6 +46,7 @@ class adviceMeetingController
         $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
         $adviceImages = [];
         $showSatisfactionForm = false;
+        $showJoinButton = false;
 
         if ($adviceData) {
             if ($userId !== $adviceData['SellerId'] && $userId !== $adviceData['BuyerId']) {
@@ -56,14 +57,20 @@ class adviceMeetingController
 
             $timezone = new DateTimeZone('Europe/Paris');
             $currentDateTime = new DateTime('now', $timezone);
+            $adviceStartDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceStartTime'], $timezone);
             $adviceEndDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceEndTime'], $timezone);
 
             // Debugging output
             error_log("Current DateTime: " . $currentDateTime->format('Y-m-d H:i:s'));
+            error_log("Advice Start DateTime: " . $adviceStartDateTime->format('Y-m-d H:i:s'));
             error_log("Advice End DateTime: " . $adviceEndDateTime->format('Y-m-d H:i:s'));
 
             if ($adviceEndDateTime <= $currentDateTime) {
                 $showSatisfactionForm = true;
+            }
+
+            if ($adviceStartDateTime <= $currentDateTime && $adviceEndDateTime > $currentDateTime) {
+                $showJoinButton = true;
             }
         }
 
@@ -81,6 +88,7 @@ class adviceMeetingController
             'adviceImages' => $adviceImages,
             'unreadCount' => $unreadCount,
             'showSatisfactionForm' => $showSatisfactionForm,
+            'showJoinButton' => $showJoinButton,
             'roomName' => 'adviceMeeting-' . $IdBuyAdvice
         ]);
     }

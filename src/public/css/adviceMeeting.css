@@ -14,12 +14,6 @@
     text-align: center;
 }
 
-#meet {
-    width: 100%;  /* Prendre toute la largeur disponible */
-    height: 100vh;  /* Prendre toute la hauteur de la fenêtre visible */
-    position: relative;
-}
-
 .advice-meeting-container h1 {
     font-size: 24px;
     color: #333333;

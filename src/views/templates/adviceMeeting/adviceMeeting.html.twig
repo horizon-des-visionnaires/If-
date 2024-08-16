@@ -72,7 +72,9 @@
     <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
+    {% if showJoinButton %}
     <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')">Rejoindre la réunion</button>
+    {% endif %}
 
     {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}
     <div class="reminder-div">
