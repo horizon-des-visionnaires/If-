@@ -72,6 +72,8 @@
     <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
+    <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')">Rejoindre la réunion</button>
+
     {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}
     <div class="reminder-div">
         <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
@@ -166,4 +168,30 @@
 {% block scripts %}
 <script src="/../public/js/modalImage.js"></script>
 <script src="/../public/js/swipePicturePost.js"></script>
+
+<script src='https://meet.jit.si/external_api.js'></script>
+<script>
+    const domain = "meet.jit.si";
+    const roomName = "{{ roomName }}"; // Récupération du nom de la réunion
+    const options = {
+        roomName: roomName,
+        parentNode: document.querySelector('#meet'),
+        interfaceConfigOverwrite: { 
+            filmStripOnly: false,
+            SHOW_JITSI_WATERMARK: false
+        },
+        configOverwrite: {
+            startWithVideoMuted: true,
+            startWithAudioMuted: true
+        }
+    };
+    const api = new JitsiMeetExternalAPI(domain, options);
+    
+    // Fin de l'appel après 1 heure
+    setTimeout(() => {
+        api.executeCommand('hangup');
+        alert("La réunion est terminée après 1 heure.");
+    }, 3600000); // 1 heure en millisecondes
+</script>
+
 {% endblock %}

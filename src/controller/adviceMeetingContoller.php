@@ -81,6 +81,7 @@ class adviceMeetingController
             'adviceImages' => $adviceImages,
             'unreadCount' => $unreadCount,
             'showSatisfactionForm' => $showSatisfactionForm,
+            'roomName' => 'adviceMeeting-' . $IdBuyAdvice
         ]);
     }
 
