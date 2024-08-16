@@ -100,11 +100,11 @@
         {% if user.IsPro == 1 %}
         <button id="showNotations" class="beautiful-button">Voir les Notations</button>
         {% endif %}
+        {% if isConnected and userId == user.IdUser %}
         <button id="showFavorites" class="beautiful-button">Voir les Favoris</button>
         <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
         {% endif %}
     </div>
-    {% endif %}
 </div>    
 
 <div id="profileModal" class="modal">
