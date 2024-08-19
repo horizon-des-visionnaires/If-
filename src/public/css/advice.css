@@ -7,7 +7,7 @@
 
 .search-add {
     align-self: center;
-    display: none;
+    /* display: none; */
 }
 
 .group-search {
@@ -212,6 +212,7 @@
     flex-direction: row;
     text-decoration: none;
     color: #000;
+    justify-content: space-between;
 }
 .adviceData {
     flex-direction: column;
@@ -534,7 +535,10 @@ input[type="time"]:focus {
 }
 
 #deleteImage {
-    height: 3em;
+    height: 2em;
+}
+#deleteButton{
+    background-color: white;
 }
 
 select {

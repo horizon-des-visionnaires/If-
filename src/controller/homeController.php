@@ -46,6 +46,12 @@ class homeController
         $userAdmin = $this->homeModel->getUserAdmin();
         $this->getConversationData();
 
+        foreach ($userProData as &$user) {
+            $ratingData = $this->homeModel->getAverageRating($user['IdUser']);
+            $user['averageNote'] = $ratingData['averageNote'];
+            $user['ratingCount'] = $ratingData['ratingCount'];
+        }
+
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
 
         echo $this->twig->render('home/home.html.twig', [

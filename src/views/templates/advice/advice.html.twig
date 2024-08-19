@@ -95,8 +95,8 @@
     </div>
     {% for Advice in adviceData %}
     <div class="advice">
-        <a href="profile-{{ Advice.IdUser }}">
-            <div class="profilPictureName">
+        <div class="profilPictureName">
+            <a href="profile-{{ Advice.IdUser }}">
                 {% if Advice.ProfilPicture == null %}
                 <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
                 {% else %}
@@ -104,8 +104,19 @@
                 {% endif %}
                 <h2>{{ Advice.FirstName }} {{ Advice.LastName }}</h2>
                 <i id="certifIcon" class="fas fa-check-circle"></i>
-            </div>
-        </a>
+            </a>
+        
+            {% if isConnected and (userId == Advice.IdUser or isAdmin) %}
+            <form action="/advice" method="post" class="formDeleteAdvice">
+                <button type="submit" name="deleteAdvice" id="deleteButton">
+                    <input type="hidden" name="IdAdvice" value="{{ Advice.IdAdvice }}">
+                    <div class="Delete">
+                        <img src="/../public/image/bin.png" id="deleteImage">
+                    </div>
+                </button>
+            </form>
+            {% endif %}
+        </div>
         <div class="promotion">
             <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
             {% set text = Advice.ProfilPromotion %}
@@ -115,16 +126,7 @@
             <div class="hover-text"> {{ text }}</div>
         </div>
 
-        {% if isConnected and (userId == Advice.IdUser or isAdmin) %}
-        <form action="/advice" method="post" class="formDeleteAdvice">
-            <button type="submit" name="deleteAdvice" id="deleteButton">
-                <input type="hidden" name="IdAdvice" value="{{ Advice.IdAdvice }}">
-                <div class="Delete">
-                    <img src="/../public/image/bin.png" id="deleteImage">
-                </div>
-            </button>
-        </form>
-        {% endif %}
+        
 
         <div class="adviceData">
             <h2>{{ Advice.AdviceType }} </h2>

@@ -1,6 +1,5 @@
 /* Conteneur de la demande */
-.requestContainer {
-
+.requestContainer{
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -8,12 +7,26 @@
     margin-top: 3em;
 }
 
+
 /* Chaque demande */
-.request {
+.request,.refundRequest {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
+}
+.refundRequest
+ {
+    padding: 1px 20px;
+    text-align: center;
+}
+.buyerInfo, .sellerInfo {
+    border-bottom: 1px solid rgb(182, 182, 182);
+}
+.requestbutton{
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 /* Informations utilisateur */
@@ -163,7 +176,7 @@
 .tableUser,
 .tableCategory,
 .tableStat,
-.Categorie_form
+.Categorie_form, .refundRequests
  {
     margin: 20px;
     background: #fff;

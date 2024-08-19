@@ -30,6 +30,7 @@ class adviceMeetingModel
                 BA.StartTime AS BuyAdviceStartTime,
                 BA.EndTime AS BuyAdviceEndTime,
                 BA.IsAdviceValid,
+                BA.WantRefund,
                 U1.IdUser AS SellerId,
                 U1.FirstName AS SellerFirstName,
                 U1.LastName AS SellerLastName,
@@ -144,13 +145,29 @@ class adviceMeetingModel
         }
     }
 
-    public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund)
+    public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund)
     {
         try {
-            $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, ContentRequest)
-                              VALUES (:IdBuyAdvice, :ContentRequest)";
+
+            $checkQuery = "SELECT COUNT(*) AS count FROM RequestForRefund WHERE IdBuyer = :IdBuyer AND IdSeller = :IdSeller";
+            $checkStmt = $this->dsn->prepare($checkQuery);
+            $checkStmt->bindParam(':IdBuyer', $IdBuyer);
+            $checkStmt->bindParam(':IdSeller', $IdSeller);
+            $checkStmt->execute();
+            $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result['count'] > 0) {
+                // IdBuyer et IdSeller ne sont pas dans la même ligne, donc erreur
+                echo "Erreur : IdBuyer et IdSeller ne sont pas dans la même ligne.";
+                return false;
+            }
+
+            $insertRequestQuery = "INSERT INTO RequestForRefund (IdBuyAdvice, IdBuyer, IdSeller, ContentRequest)
+                              VALUES (:IdBuyAdvice, :IdBuyer, :IdSeller, :ContentRequest)";
             $execInsertAdvice = $this->dsn->prepare($insertRequestQuery);
             $execInsertAdvice->bindParam(':IdBuyAdvice', $IdBuyAdvice);
+            $execInsertAdvice->bindParam(':IdBuyer', $IdBuyer);
+            $execInsertAdvice->bindParam(':IdSeller', $IdSeller);
             $execInsertAdvice->bindParam(':ContentRequest', $ContentRequest);
             $execInsertAdvice->execute();
 
@@ -162,8 +179,36 @@ class adviceMeetingModel
                 $stmt->execute();
             }
 
+            // Créer une notification pour l'utilisateur IdUser_1
+            $MessageNotif = $_SESSION['FirstName'] . " " . $_SESSION['LastName'] . "à demander un remboursement suite à votre entretien, cette demande sera traité par un administrateur, vous aurez un retour prochainement.";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdSeller);
+            $stmt4->bindParam(':MessageNotif', $MessageNotif);
+            $stmt4->execute();
+
             header('Location: /');
             exit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateAdviceWantRefund($idBuyAdvice, $wantRefund)
+    {
+        try {
+            $query = "
+        UPDATE BuyAdvice
+        SET WantRefund = :WantRefund
+        WHERE IdBuyAdvice = :idBuyAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':WantRefund', $wantRefund, PDO::PARAM_INT);
+            $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
+
+            return $stmt->execute();
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;

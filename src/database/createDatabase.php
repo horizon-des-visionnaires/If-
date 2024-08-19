@@ -19,6 +19,7 @@ $createTableUser = ("CREATE TABLE IF NOT EXISTS
     `IsAdmin` tinyint(1) DEFAULT '0',
     `ProfilPromotion` varchar(100) DEFAULT NULL,
     `Location` varchar(255) DEFAULT NULL,
+    `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`IdUser`),
     CONSTRAINT unique_User_Email UNIQUE (`Email`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE utf8mb4_unicode_ci");
@@ -130,7 +131,6 @@ $createTableNotaions = ("CREATE TABLE IF NOT EXISTS
     `idNotations` int(11) NOT NULL AUTO_INCREMENT,
     `Note` int(11) DEFAULT NULL,
     `CommentNote` TEXT DEFAULT NULL,
-    `DateNotation` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `IdUser` int(11) DEFAULT NULL,
     `IdUserIsPro` int(11) DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -200,6 +200,7 @@ $createTableBuyAdvice = ("CREATE TABLE IF NOT EXISTS
     `EndTime` TIME NOT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `IsAdviceValid` tinyint(1) DEFAULT NULL,
+    `WantRefund` tinyint(1) DEFAULT NULL,
     PRIMARY KEY (`IdBuyAdvice`),
     CONSTRAINT fk_IdAdvice_BuyAdvice FOREIGN KEY (`IdAdvice`) REFERENCES Advice (`IdAdvice`),
     CONSTRAINT fk_IdBuyer_BuyAdvice FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`)
@@ -241,10 +242,15 @@ $createTableRequestForRefund = ("CREATE TABLE IF NOT EXISTS
 `RequestForRefund` (
     `IdRequestForRefund` int(11) NOT NULL AUTO_INCREMENT,
     `IdBuyAdvice` int(11) DEFAULT NULL,
+    `IdBuyer` int(11) DEFAULT NULL,
+    `IdSeller` int(11) DEFAULT NULL,
     `ContentRequest` TEXT DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `IsValidRequest` tinyint(1) DEFAULT NULL,
     PRIMARY KEY (`IdRequestForRefund`),
-    CONSTRAINT fk_IdBuyAdvice_RequestForRefund FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`)
+    CONSTRAINT fk_IdBuyAdvice_RequestForRefund FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`),
+    CONSTRAINT fk_IdBuyer_RequestForRefund FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdSeller_RequestForRefund FOREIGN KEY (`IdSeller`) REFERENCES User (`IdUser`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableRequestForRefund);
 

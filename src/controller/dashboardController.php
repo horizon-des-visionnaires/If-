@@ -82,6 +82,11 @@ class dashboardController
         $getCategory = $this->dashboardModel->getCategory();
         $this->getDeleteCategory();
 
+        $refundRequests = $this->dashboardModel->getRequestForRefundData();
+
+        $this->getDataValidRequest();
+        $this->getDataRefuseRequest();
+
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -94,7 +99,8 @@ class dashboardController
             'countAdvice' => $countAdvice,
             'countPost' => $countPost,
             'countComment' => $countComment,
-            'getCategory' => $getCategory
+            'getCategory' => $getCategory,
+            'refundRequests' => $refundRequests
         ]);
     }
 
@@ -207,6 +213,24 @@ class dashboardController
             $IdCategory = $_POST['IdCategory'];
 
             $this->dashboardModel->deleteCategory($IdCategory);
+        }
+    }
+
+    public function getDataValidRequest()
+    {
+        if (isset($_POST['validRequest'])) {
+            $IdRequestForRefund = $_POST['IdRequestForRefund'];
+
+            $this->dashboardModel->validRequest($IdRequestForRefund);
+        }
+    }
+
+    public function getDataRefuseRequest()
+    {
+        if (isset($_POST['refuseRequest'])) {
+            $IdRequestForRefund = $_POST['IdRequestForRefund'];
+
+            $this->dashboardModel->refuseRequest($IdRequestForRefund);
         }
     }
 }

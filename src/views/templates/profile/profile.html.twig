@@ -46,6 +46,8 @@
                     <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
                 </div>
                 {% endif %}
+            </div>
+            <div class="flex">
                 {% if isConnected and userId != user.IdUser %}
                 <div class="message">
                     <form action="/profile-{{ user.IdUser }}" method="post">
@@ -56,29 +58,32 @@
                     </form>
                 </div>
                 {% endif %}
-            </div>
-            <div class="EditButton">
+                <div>
+                    <div class="EditButton">
+                        {% if isConnected and userId == user.IdUser %}
+                        {% if userId == user.IdUser and user.IsPro == 0 %}
+                        <div class="passProButton" id="Toshow">
+                            <button id="openModalButtonPro" class="beautiful-button">Passer Professionnel</button>
+                        </div>
+                        {% endif %}
+                        <div class="profilButton" id="Toshow2">
+                            <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
                 {% if isConnected and userId == user.IdUser %}
-                {% if userId == user.IdUser and user.IsPro == 0 %}
-                <div class="passProButton" id="Toshow">
-                    <button id="openModalButtonPro" class="beautiful-button">Passer Professionnel</button>
-                </div>
-                {% endif %}
-                <div class="profilButton" id="Toshow2">
-                    <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
-                </div>
+                <button class="filter" id="toggleEditButton2">
+                        <img src="/../public/image/icon/edit_profil.png">
+                </button>
                 {% endif %}
             </div>
-            {% if isConnected and userId == user.IdUser %}
-            <button class="filter" id="toggleEditButton2">
-                    <img src="/../public/image/icon/edit_profil.png">
-            </button>
-            {% endif %}
         </div>
 
 
         <div class="country">
             <p>Pays : {{ user.Location }}</p>
+            <p >inscrit depuis : {{ user.RelativeDateUser }}</p>
         </div>
         {% if user.IsPro == 1 %}
         <div class="promotion">
@@ -92,20 +97,26 @@
     </div>
     <button id="copyLinkButton">Partager le profile</button>
 
-    {% if isConnected and userId == user.IdUser %}
+    
     <div class="button-container">
-        <button id="showPosts" class="beautiful-button"><img src="/../public/image/icon/post2.png">
+        <button id="showPosts" class="beautiful-button">
+            <img src="/../public/image/icon/post2.png">
         </button>
         {% if user.IsPro == 1 %}
-        <button id="showNotations" class="beautiful-button"><i class="fa fa-star"></i>
+        <button id="showNotations" class="beautiful-button">
+            <i class="fa fa-star"></i>
         </button>
         {% endif %}
-        <button id="showFavorites" class="beautiful-button"><i class="fas fa-solid fa-flag"></i>
+        {% if isConnected and userId == user.IdUser %}
+        <button id="showFavorites" class="beautiful-button">
+            <i class="fas fa-solid fa-flag"></i>
         </button>
-        <button id="showPlanning" class="beautiful-button"><img src="/../public/image/icon/planning.png" >
+        <button id="showPlanning" class="beautiful-button">
+            <img src="/../public/image/icon/planning.png">
         </button>
+        {% endif %}
     </div>
-    {% endif %}
+    
 </div>    
 
 <div id="profileModal" class="modal">
@@ -253,8 +264,8 @@
                         {% endfor %}
                         {% endif %}
                     </p>
-                    <a>
-                    <form action="/profile-{{ Post.IdUser }}" method="post">
+                </a>
+                <form action="/profile-{{ Post.IdUser }}" method="post">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
                     <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
                 </form>
@@ -272,9 +283,8 @@
                 {% endif %}
                 <div class="swipe-inner">
                     {% for picture in Post.PicturesPost %}
-                    <div
-                        class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
-                        <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                    <div class="swipe-item portrait active">
+                        <img src="data:image/jpeg;base64,{{ picture }}">
                     </div>
                     {% endfor %}
                 </div>
@@ -519,19 +529,25 @@
 
         <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
         {% if userId == advice.SellerId %}
-            <p><strong>Nom:</strong> {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
-            {% if advice.BuyerProfilPicture %}
-            <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
-            {% else %}
-            <p>Pas de photo de profile disponible.</p>
-            {% endif %}
+            <p><strong>Nom:</strong> 
+            <a href="/profile-{{ advice.BuyerId}}">
+                {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
+                {% if advice.BuyerProfilPicture %}
+                <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
+                {% else %}
+                <p>Pas de photo de profile disponible.</p>
+                {% endif %}
+            </a>
         {% else %}
-            <p><strong>Nom:</strong> {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
-            {% if advice.SellerProfilPicture %}
-            <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
-            {% else %}
-            <p>Pas de photo de profile disponible.</p>
-            {% endif %}
+            <p><strong>Nom:</strong> 
+            <a href="/profile-{{ advice.SellerId }}">
+                {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
+                {% if advice.SellerProfilPicture %}
+                <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
+                {% else %}
+                <p>Pas de photo de profile disponible.</p>
+                {% endif %}
+            </a>
         {% endif %}
         {% endfor %}
     {% else %}

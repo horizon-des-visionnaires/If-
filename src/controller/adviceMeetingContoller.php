@@ -46,6 +46,7 @@ class adviceMeetingController
         $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
         $adviceImages = [];
         $showSatisfactionForm = false;
+        $showJoinButton = false;
 
         if ($adviceData) {
             if ($userId !== $adviceData['SellerId'] && $userId !== $adviceData['BuyerId']) {
@@ -56,14 +57,20 @@ class adviceMeetingController
 
             $timezone = new DateTimeZone('Europe/Paris');
             $currentDateTime = new DateTime('now', $timezone);
+            $adviceStartDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceStartTime'], $timezone);
             $adviceEndDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceEndTime'], $timezone);
 
             // Debugging output
             error_log("Current DateTime: " . $currentDateTime->format('Y-m-d H:i:s'));
+            error_log("Advice Start DateTime: " . $adviceStartDateTime->format('Y-m-d H:i:s'));
             error_log("Advice End DateTime: " . $adviceEndDateTime->format('Y-m-d H:i:s'));
 
             if ($adviceEndDateTime <= $currentDateTime) {
                 $showSatisfactionForm = true;
+            }
+
+            if ($adviceStartDateTime <= $currentDateTime && $adviceEndDateTime > $currentDateTime) {
+                $showJoinButton = true;
             }
         }
 
@@ -72,6 +79,7 @@ class adviceMeetingController
         $this->getDataIsSatisfactory();
         $this->getDataAddNotations();
         $this->getDataRequestForRefund();
+        $this->getDataWantRefund();
 
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
@@ -81,6 +89,8 @@ class adviceMeetingController
             'adviceImages' => $adviceImages,
             'unreadCount' => $unreadCount,
             'showSatisfactionForm' => $showSatisfactionForm,
+            'showJoinButton' => $showJoinButton,
+            'roomName' => 'adviceMeeting-' . $IdBuyAdvice
         ]);
     }
 
@@ -124,6 +134,8 @@ class adviceMeetingController
 
             $IdBuyAdvice = $_POST['IdBuyAdvice'];
             $ContentRequest = $_POST['ContentRequest'];
+            $IdBuyer = $_POST['IdBuyer'];
+            $IdSeller = $_POST['IdSeller'];
 
             $PictureRequestForRefund = [];
             if (isset($_FILES["PictureRequestForRefund"])) {
@@ -138,7 +150,23 @@ class adviceMeetingController
                 }
             }
 
-            $this->adviceMeetingModel->insertRequestForRefund($IdBuyAdvice, $ContentRequest, $PictureRequestForRefund);
+            $this->adviceMeetingModel->insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund);
+        }
+    }
+
+    public function getDataWantRefund()
+    {
+        if (isset($_POST['wantRefundButton'])) {
+            $idBuyAdvice = $_POST['idBuyAdvice'];
+            $wantRefund = $_POST['wantRefund'];
+
+            if ($this->adviceMeetingModel->updateAdviceWantRefund($idBuyAdvice, $wantRefund)) {
+                // Redirect to avoid resubmission on refresh
+                header('Location: /adviceMeeting-' . $idBuyAdvice);
+                exit;
+            } else {
+                echo "Error updating advice wantRefund.";
+            }
         }
     }
 }

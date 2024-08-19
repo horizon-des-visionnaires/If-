@@ -60,7 +60,8 @@
             <div class="DownloadPdf">
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdRequest" value="{{ requestId }}">
-                    <button type="submit" name="downloadPDFAndImages" id="inputField2">Télécharger PDF et Images</button>
+                    <button type="submit" name="downloadPDFAndImages" id="inputField2">Télécharger PDF et
+                        Images</button>
                 </form>
             </div>
         </div>
@@ -106,6 +107,7 @@
             <th>Prénom</th>
             <th>Nom de Famille</th>
             <th>Email</th>
+            <th>Inscris depuis</th>
             <th>Photo de Profil</th>
             <th>Lien page profile</th>
             <th>Supprimer user</th>
@@ -115,6 +117,7 @@
             <td>{{ User.FirstName }}</td>
             <td>{{ User.LastName }}</td>
             <td>{{ User.Email }}</td>
+            <td>{{ User.RelativeDateUser }}</td>
             <td>
                 {% if User.ProfilPicture == null %}
                 <img class="icon" src="/../public/image/user.png" alt="icon" onclick="openModal(this)">
@@ -190,6 +193,74 @@
             <td>{{ countComment }}</td>
         </tr>
     </table>
+</div>
+
+<div class="refundRequests">
+    <h2>Demandes de Remboursement</h2>
+    {% for request in refundRequests %}
+    <div class="refundRequest">
+        <h3>Demandes de Remboursement N°: {{ request.RequestId }}</h3>
+        <div class="buyerInfo">
+            <h4>Acheteur:</h4>
+            <p>Prénom: {{ request.Buyer.FirstName }}</p>
+            <p>Nom: {{ request.Buyer.LastName }}</p>
+            <p>
+                Photo:
+                {% if request.Buyer.ProfilePicture %}
+                <img class="icon" src="data:image/jpeg;base64,{{ request.Buyer.ProfilePicture }}" alt="Buyer Picture">
+                {% else %}
+                <img class="icon" src="/../public/image/user.png" alt="Buyer Picture">
+                {% endif %}
+            </p>
+        </div>
+        <div class="sellerInfo">
+            <h4>Vendeur:</h4>
+            <p>Prénom: {{ request.Seller.FirstName }}</p>
+            <p>Nom: {{ request.Seller.LastName }}</p>
+            <p>
+                Photo:
+                {% if request.Seller.ProfilePicture %}
+                <img class="icon" src="data:image/jpeg;base64,{{ request.Seller.ProfilePicture }}" alt="Seller Picture">
+                {% else %}
+                <img class="icon" src="/../public/image/user.png" alt="Seller Picture">
+                {% endif %}
+            </p>
+        </div>
+        <div class="adviceInfo">
+            <p>Titre de la Consulation: {{ request.Advice.Title }}</p>
+            <p>Date: {{ request.Advice.Date }}</p>
+            <p>Heure Début: {{ request.Advice.StartTime }}</p>
+            <p>Heure Fin: {{ request.Advice.EndTime }}</p>
+        </div>
+        <div class="requestContent">
+            <p>Contenu de la Demande: {{ request.ContentRequest | nl2br }}</p>
+            <p>
+                Photos Preuve:
+                {% if request.Pictures %}
+                {% for picture in request.Pictures %}
+                <img class="icon" src="data:image/jpeg;base64,{{ picture }}" alt="Request Picture" onclick="openModal(this)">
+                {% endfor %}
+                {% else %}
+                Aucune photo
+                {% endif %}
+            </p>
+        </div>        
+    </div>
+    <div class="requestbutton button">
+        <div class="buttonValid ">
+            <form action="/dashboard" method="post">
+                <input type="hidden" name="IdRequestForRefund" value="{{ request.RequestId }}">
+                <button type="submit" name="validRequest">Valider la requete</button>
+            </form>
+        </div> 
+        <div class="buttonInvalid">
+            <form action="/dashboard" method="post">
+                <input type="hidden" name="IdRequestForRefund" value="{{ request.RequestId }}">
+                <button type="submit" name="refuseRequest">Refuser la requete</button>
+            </form>
+        </div> 
+    </div>
+    {% endfor %}
 </div>
 
 <div id="myModal" class="modal">
