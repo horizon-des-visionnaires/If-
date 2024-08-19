@@ -11,35 +11,62 @@ document.addEventListener("DOMContentLoaded", function () {
     var showNotationsButton = document.getElementById('showNotations');
 
     profilPost.style.display = 'block';
-    profilFavorites.style.display = 'none';
-    profilePlanning.style.display = 'none';
-    profilNotations.style.display = 'none';
+    if(showFavoritesButton){
+        profilFavorites.style.display = 'none';
+    }
+    if(showPlanningButton){
+        profilePlanning.style.display = 'none';
+    }
+    if(showNotationsButton){
+        profilNotations.style.display = 'none';
+    }
 
     showPostsButton.addEventListener('click', function () {
         profilPost.style.display = 'block';
-        profilFavorites.style.display = 'none';
-        profilePlanning.style.display = 'none';
-        profilNotations.style.display = 'none';
+        if(showFavoritesButton){
+            profilFavorites.style.display = 'none';
+        }
+        if(showPlanningButton){
+            profilePlanning.style.display = 'none';
+        }
+        if(showNotationsButton){
+            profilNotations.style.display = 'none';
+        }
     });
-
-    showFavoritesButton.addEventListener('click', function () {
-        profilPost.style.display = 'none';
-        profilFavorites.style.display = 'block';
-        profilePlanning.style.display = 'none';
-        profilNotations.style.display = 'none';
-    });
-
-    showPlanningButton.addEventListener('click', function () {
-        profilPost.style.display = 'none';
-        profilFavorites.style.display = 'none';
-        profilePlanning.style.display = 'block';
-        profilNotations.style.display = 'none';
-    });
-
-    showNotationsButton.addEventListener('click', function () {
-        profilPost.style.display = 'none';
-        profilFavorites.style.display = 'none';
-        profilePlanning.style.display = 'none';
-        profilNotations.style.display = 'block';
-    });
+    if(showFavoritesButton){
+        showFavoritesButton.addEventListener('click', function () {
+            profilPost.style.display = 'none';
+            profilFavorites.style.display = 'block';
+            if(showPlanningButton){
+                profilePlanning.style.display = 'none';
+            }
+            if(showNotationsButton){
+                profilNotations.style.display = 'none';
+            }
+        });
+    }
+    if(showPlanningButton){
+        showPlanningButton.addEventListener('click', function () {
+            profilPost.style.display = 'none';
+            if(showFavoritesButton){
+                profilFavorites.style.display = 'none';
+            }
+            profilePlanning.style.display = 'block';
+            if(showNotationsButton){
+                profilNotations.style.display = 'none';
+            }
+        });
+    }
+    if(showNotationsButton){
+        showNotationsButton.addEventListener('click', function () {
+            profilPost.style.display = 'none';
+            if(showFavoritesButton){
+                profilFavorites.style.display = 'none';
+            }
+            if(showPlanningButton){
+                profilePlanning.style.display = 'none';
+            }
+            profilNotations.style.display = 'block';
+        });
+    }
 });

@@ -91,6 +91,7 @@ a{
     justify-content: space-between;
     padding-top: 1em;
     padding-left: 1em;
+    padding-right: 1em;
 }
 
 .allprofil{
@@ -482,9 +483,15 @@ span {
 }
 .country p {
     margin-top: 0.5em;
-    font-size: 1em;
+    font-size: 0.8em;
     font-family: 'Montserrat', sans-serif;
 }
+.country {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
 
 .promotion p {
     font-size: 1em;
@@ -584,35 +591,10 @@ span {
 
 
 
-.swipe-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Assure que l'image couvre toute la surface */
-    border-radius: 5%;
-}
-
-/* Styles pour les formats spécifiques */
-.swipe-item.landscape {
-    width: 50vh;
-    height: auto;
-}
-
-.swipe-item.landscape img {
-    max-height: 29vh;
-}
 
 .swipe-item.portrait {
     height: 50vh;
     width: auto;
-}
-
-.swipe-item.portrait img {
-    max-width: 38vw;
-}
-
-.swipe-item.square {
-    width: 50vh;
-    height: 50vh;
 }
 
 /* Styles pour le conteneur swipe */
@@ -620,12 +602,13 @@ span {
     position: relative;
     width: 100%;
     margin: auto;
-    overflow: hidden;
+    overflow: hidden; 
     display: flex;
     justify-content: center;
     align-items: center;
     max-height: 80vh; 
-    margin-top: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .swipe-inner {
@@ -633,30 +616,44 @@ span {
     transition: transform 0.5s ease-in-out;
     align-items: center;
     justify-content: center;
+    max-width: 100%;
+    max-height: 100%;
 }
 
+/* Conteneur de chaque image dans le swipe */
 .swipe-item {
+    position: relative;
+    width: 100%; /* Assure que l'image prend toute la largeur disponible */
+    height: auto;
     transition: opacity 0.5s ease-in-out;
     opacity: 0;
     display: none;
-    width: 100%; /* Unique format */
-    height: auto;
+    overflow: hidden; /* Empêche l'image de dépasser du conteneur */
+    
 }
 
+/* Conteneur actif (visible) */
 .swipe-item.active {
-    display: block;
+    display: flex;
     opacity: 1;
     align-items: center;
-    justify-content: center;
 }
 
+/* Images dans le swipe */
+.swipe-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Garde les proportions de l'image */
+    border-radius: 5%; /* Coins arrondis pour l'image */
+    display: block; /* Supprime les espaces blancs en bas de l'image */
+}
 
 .swipe-control-prev, .swipe-control-next {
-    background-color: white; /* Assurez-vous qu'ils sont visibles */
+    background-color: rgba(225, 225, 225, 0.77); /* Assurez-vous qu'ils sont visibles */
     border: none;
     color: rgb(109, 109, 109);
     font-size: 1em;
-    padding: 0.5em;
+    padding: 0.75em 1em;
     cursor: pointer;
     position: absolute; /* Positionner les boutons */
     top: 50%;
@@ -667,11 +664,11 @@ span {
 }
 
 .swipe-control-prev {
-    left: 60px;
+    left: 1%;
 }
 
 .swipe-control-next {
-    right: 60px;
+    right: 1%;
 }
 
 .swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next {
@@ -703,6 +700,7 @@ span {
 }
 
 
+
 .crop-container {
     max-width: 100%;
     max-height: 400px;
@@ -725,7 +723,6 @@ button {
     font-family: 'Montserrat', sans-serif;
     transition: background-color 0.3s ease;
     margin-bottom: 2px;
-    height: 20px;
 }
 
 .filter:hover {
@@ -743,7 +740,7 @@ button {
     transition: all 0.3s ease-in-out;
     margin: auto 0; /* Centrer le bouton */
     align-items: center;
-    padding: 1.7em 0.5em;
+    padding: 0.4em 0.5em;
 }
 
 .filter img{
@@ -772,6 +769,13 @@ button {
 .notation{
     margin-bottom: 1em;
     border-bottom: 1px solid rgb(182, 182, 182);
+}
+.message {
+    display: flex;
+    align-items: center;
+}
+.message button{
+    background-color: white;
 }
 
 /* Responsive Design */

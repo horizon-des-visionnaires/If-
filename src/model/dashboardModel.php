@@ -7,6 +7,7 @@ use PDOException;
 
 require_once __DIR__ . '/../database/connectDB.php';
 require_once __DIR__ . '/utils.php';
+require_once __DIR__ . '/utils.php';
 
 class dashboardModel
 {
@@ -217,6 +218,7 @@ class dashboardModel
     {
         try {
             $getUser = "SELECT IdUser, FirstName, LastName, Email, ProfilPicture, CreatedAt FROM User";
+            $getUser = "SELECT IdUser, FirstName, LastName, Email, ProfilPicture, CreatedAt FROM User";
             $stmt = $this->dsn->prepare($getUser);
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -226,6 +228,7 @@ class dashboardModel
                     $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
                 }
                 $row['RelativeDateUser'] = $this->getRelativeTime($row['CreatedAt']);
+                $row['RelativeDateUser'] = $this->getRelativeTime($row['CreatedAt']);
             }
 
             return $results;
@@ -233,6 +236,11 @@ class dashboardModel
             $this->dsn->rollBack();
             echo "Erreur : " . $e->getMessage();
         }
+    }
+
+    public function getRelativeTime($date)
+    {
+        return getRelativeTime($date);
     }
 
     public function getRelativeTime($date)
