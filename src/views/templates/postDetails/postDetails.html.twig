@@ -35,7 +35,7 @@
                         </div>
                         {% endif %}
                     </a>
-                    {% if isConnected and (userId == user.IdUser or isAdmin) %}
+                    {% if (isConnected and ( userId == Post.IdUser or isAdmin)) %}
                     <div class="changements" id="Toshow2">
                         <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
                             <button type="submit" name="deletePost" id="deleteButton">
@@ -55,6 +55,10 @@
                     </div>
                     <button class="filter" id="toggleEditButton2">
                         <img class="icon_commentaire" src="/../public/image/icon/3dots.png">
+                    </button>
+                    {% else %}
+                    <button id="copyLinkButton">
+                        <img class="icon_commentaire" src="/../public/image/icon/share.png">
                     </button>
                     {% endif %}
                     
