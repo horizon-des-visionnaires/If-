@@ -79,6 +79,7 @@ class adviceMeetingController
         $this->getDataIsSatisfactory();
         $this->getDataAddNotations();
         $this->getDataRequestForRefund();
+        $this->getDataWantRefund();
 
         echo $this->twig->render('adviceMeeting/adviceMeeting.html.twig', [
             'isConnected' => $isConnected,
@@ -150,6 +151,22 @@ class adviceMeetingController
             }
 
             $this->adviceMeetingModel->insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund);
+        }
+    }
+
+    public function getDataWantRefund()
+    {
+        if (isset($_POST['wantRefundButton'])) {
+            $idBuyAdvice = $_POST['idBuyAdvice'];
+            $wantRefund = $_POST['wantRefund'];
+
+            if ($this->adviceMeetingModel->updateAdviceWantRefund($idBuyAdvice, $wantRefund)) {
+                // Redirect to avoid resubmission on refresh
+                header('Location: /adviceMeeting-' . $idBuyAdvice);
+                exit;
+            } else {
+                echo "Error updating advice wantRefund.";
+            }
         }
     }
 }

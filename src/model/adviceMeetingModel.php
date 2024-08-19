@@ -30,6 +30,7 @@ class adviceMeetingModel
                 BA.StartTime AS BuyAdviceStartTime,
                 BA.EndTime AS BuyAdviceEndTime,
                 BA.IsAdviceValid,
+                BA.WantRefund,
                 U1.IdUser AS SellerId,
                 U1.FirstName AS SellerFirstName,
                 U1.LastName AS SellerLastName,
@@ -188,6 +189,26 @@ class adviceMeetingModel
 
             header('Location: /');
             exit();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateAdviceWantRefund($idBuyAdvice, $wantRefund)
+    {
+        try {
+            $query = "
+        UPDATE BuyAdvice
+        SET WantRefund = :WantRefund
+        WHERE IdBuyAdvice = :idBuyAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':WantRefund', $wantRefund, PDO::PARAM_INT);
+            $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
+
+            return $stmt->execute();
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
             return false;

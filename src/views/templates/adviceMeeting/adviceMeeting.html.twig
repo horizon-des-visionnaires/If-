@@ -137,6 +137,23 @@
         <button type="submit" name="addNotations">Valider</button>
     </form>
 
+    {% if userId == adviceData.BuyerId and adviceData.WantRefund == null %}
+    <div class="reminder-div">
+        <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+            <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+            <div>
+                <label for="wantRefund">Au vu de votre non satifaction, <br> souhaiter vous faire une demande de remboursement ? <br> attention le remboursement n'est pas assuré vous devrez apporter des preuves</label>
+                <select name="wantRefund" id="wantRefund" required>
+                    <option value="1">Oui</option>
+                    <option value="2">Non</option>
+                </select>
+            </div>
+            <button type="submit" name="wantRefundButton" id="inputField2">Valider</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if adviceData.WantRefund == 1 and userId == adviceData.BuyerId %}
     <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des raisons/preuves (photos, ...)</p>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
@@ -151,6 +168,7 @@
 
         <button type="submit" name="addRequestForRefund" id="inputField2">envoyer la demande</button>
     </form>
+    {% endif %}
     {% endif %}
 
     {% else %}
