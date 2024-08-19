@@ -84,6 +84,9 @@ class dashboardController
 
         $refundRequests = $this->dashboardModel->getRequestForRefundData();
 
+        $this->getDataValidRequest();
+        $this->getDataRefuseRequest();
+
         echo $this->twig->render('dashboard/dashboard.html.twig', [
             'isConnected' => $isConnected,
             'userId' => $userId,
@@ -210,6 +213,24 @@ class dashboardController
             $IdCategory = $_POST['IdCategory'];
 
             $this->dashboardModel->deleteCategory($IdCategory);
+        }
+    }
+
+    public function getDataValidRequest()
+    {
+        if (isset($_POST['validRequest'])) {
+            $IdRequestForRefund = $_POST['IdRequestForRefund'];
+
+            $this->dashboardModel->validRequest($IdRequestForRefund);
+        }
+    }
+
+    public function getDataRefuseRequest()
+    {
+        if (isset($_POST['refuseRequest'])) {
+            $IdRequestForRefund = $_POST['IdRequestForRefund'];
+
+            $this->dashboardModel->refuseRequest($IdRequestForRefund);
         }
     }
 }

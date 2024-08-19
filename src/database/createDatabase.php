@@ -246,6 +246,7 @@ $createTableRequestForRefund = ("CREATE TABLE IF NOT EXISTS
     `IdSeller` int(11) DEFAULT NULL,
     `ContentRequest` TEXT DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `IsValidRequest` tinyint(1) DEFAULT NULL,
     PRIMARY KEY (`IdRequestForRefund`),
     CONSTRAINT fk_IdBuyAdvice_RequestForRefund FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`),
     CONSTRAINT fk_IdBuyer_RequestForRefund FOREIGN KEY (`IdBuyer`) REFERENCES User (`IdUser`),

@@ -226,7 +226,6 @@ class dashboardModel
                     $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
                 }
                 $row['RelativeDateUser'] = $this->getRelativeTime($row['CreatedAt']);
-
             }
 
             return $results;
@@ -472,6 +471,7 @@ class dashboardModel
             LEFT JOIN User uBuyer ON r.IdBuyer = uBuyer.IdUser
             LEFT JOIN User uSeller ON r.IdSeller = uSeller.IdUser
             LEFT JOIN RequestForRefundPicture rp ON r.IdRequestForRefund = rp.IdRequestForRefund
+            WHERE r.IsValidRequest IS NULL
             ORDER BY r.IdRequestForRefund
         ");
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -516,6 +516,42 @@ class dashboardModel
             $error = "Error: " . $e->getMessage();
             echo $error;
             return [];
+        }
+    }
+
+    public function validRequest($IdRequestForRefund)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $stmt = $this->dsn->prepare("UPDATE RequestForRefund SET IsValidRequest = 1 WHERE IdRequestForRefund = :IdRequestForRefund");
+            $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->dsn->commit();
+            header("Location: /dashboard");
+            exit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
+        }
+    }
+
+    public function refuseRequest($IdRequestForRefund)
+    {
+        try {
+            $this->dsn->beginTransaction();
+
+            $stmt = $this->dsn->prepare("UPDATE RequestForRefund SET IsValidRequest = 2 WHERE IdRequestForRefund = :IdRequestForRefund");
+            $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->dsn->commit();
+            header("Location: /dashboard");
+            exit();
+        } catch (PDOException $e) {
+            $this->dsn->rollBack();
+            echo "Erreur : " . $e->getMessage();
         }
     }
 }
