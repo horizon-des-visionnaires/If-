@@ -243,11 +243,6 @@ class dashboardModel
         return getRelativeTime($date);
     }
 
-    public function getRelativeTime($date)
-    {
-        return getRelativeTime($date);
-    }
-
     public function countNumberUser()
     {
         try {
