@@ -71,7 +71,7 @@
             </div>
             {% if isConnected and userId == user.IdUser %}
             <button class="filter" id="toggleEditButton2">
-                    <img src="/../public/image/icon/edit_profil.png">
+                <img src="/../public/image/icon/edit_profil.png">
             </button>
             {% endif %}
         </div>
@@ -105,7 +105,7 @@
         <button id="showPlanning" class="beautiful-button">Voir mon planning</button>
         {% endif %}
     </div>
-</div>    
+</div>
 
 <div id="profileModal" class="modal">
     <div class="modal-content">
@@ -125,20 +125,20 @@
             {% else %}
             <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField">
             {% endif %}
-            {% if user.IsPro == 1   %}
-                {% if user.ProfilPromotion == null   %}
-                <div style="position: relative;">
-                    <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: Je peux t'aider à ...)"
-                        id="inputFieldPromotion" maxlength="100"></textarea>
-                    <div id="charCount2" class="char-count">0/100</div>
-                </div>
-                {% else %}
-                <div style="position: relative;">
-                    <textarea name="ProfilPromotion" placeholder="Je peux t'aider à {{ user.ProfilPromotion }}" id="inputFieldPromotion"
-                        maxlength="100"></textarea>
-                    <div id="charCount2" class="char-count">0/100</div>
-                </div>
-                {% endif %}
+            {% if user.IsPro == 1 %}
+            {% if user.ProfilPromotion == null %}
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: Je peux t'aider à ...)"
+                    id="inputFieldPromotion" maxlength="100"></textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
+            {% else %}
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="Je peux t'aider à {{ user.ProfilPromotion }}"
+                    id="inputFieldPromotion" maxlength="100"></textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
+            {% endif %}
             {% endif %}
             {% if user.ProfilDescription == null %}
             <div style="position: relative;">
@@ -210,105 +210,102 @@
 
 <div class="profilPost">
     {% if userPost is not empty %}
-        {% for Post in userPost %}
-        <div class="post">
-            <div class="user-info">
-                <div class="flex">
-                    {% if Post.ProfilPicture == null %}
-                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
-                    {% else %}
-                    <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
-                    {% endif %}
-                    {% if userId == user.IdUser and user.IsPro == 0 %}
-                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-                    {% else %}
-                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
-                    {% endif %}
-                </div>
-                {% if isConnected and (userId == user.IdUser or isAdmin) %}
-                <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
-                    <button type="submit" name="deletePost" id="deleteButton">
-                        <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                        <input type="hidden" name="idUser" value="{{ user.IdUser }}">
-                        <div class="hover-text">
-                            <img src="/../public/image/bin.png" id="deleteImage">
-                        </div>
-                    </button>
-                </form>
+    {% for Post in userPost %}
+    <div class="post">
+        <div class="user-info">
+            <div class="flex">
+                {% if Post.ProfilPicture == null %}
+                <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                {% else %}
+                <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                {% endif %}
+                {% if userId == user.IdUser and user.IsPro == 0 %}
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                {% else %}
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
                 {% endif %}
             </div>
-
-            
-            <div class="contentPost">
-                <a href="/postDetail-{{Post.IdPost}}">
-                    <h2>{{ Post.TitlePost }}</h2>
-                    <p>
-                        {% set contentLines = Post.ContentPost | split("\n") %}
-                        {% if contentLines %}
-                        {% for i in 0..2 %}
-                        {% if contentLines[i] is defined %}
-                        {{ contentLines[i] }}<br>
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}
-                    </p>
-                    <a>
-                    <form action="/profile-{{ Post.IdUser }}" method="post">
+            {% if isConnected and (userId == user.IdUser or isAdmin) %}
+            <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
+                <button type="submit" name="deletePost" id="deleteButton">
                     <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
-                    <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
-                </form>
-            </div>
-               
-                
-            
-
-            {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
-            <div class="swipe">
-                {% if Post.PicturesPost|length > 1 %}
-                <button class="swipe-control-prev">
-                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-                </button>
-                {% endif %}
-                <div class="swipe-inner">
-                    {% for picture in Post.PicturesPost %}
-                    <div
-                        class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
-                        <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                    <input type="hidden" name="idUser" value="{{ user.IdUser }}">
+                    <div class="hover-text">
+                        <img src="/../public/image/bin.png" id="deleteImage">
                     </div>
-                    {% endfor %}
-                </div>
-                {% if Post.PicturesPost|length > 1 %}
-                <button class="swipe-control-next">
-                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
                 </button>
-                <div class="bullets">
-                    {% for i in 0..(Post.PicturesPost|length - 1) %}
-                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+            </form>
+            {% endif %}
+        </div>
+
+
+        <div class="contentPost">
+            <a href="/postDetail-{{Post.IdPost}}">
+                <h2>{{ Post.TitlePost }}</h2>
+                <p>
+                    {% set contentLines = Post.ContentPost | split("\n") %}
+                    {% if contentLines %}
+                    {% for i in 0..2 %}
+                    {% if contentLines[i] is defined %}
+                    {{ contentLines[i] }}<br>
+                    {% endif %}
                     {% endfor %}
+                    {% endif %}
+                </p>
+                <a>
+                    <form action="/profile-{{ Post.IdUser }}" method="post">
+                        <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                        <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+                    </form>
+        </div>
+
+        {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+        <div class="swipe">
+            {% if Post.PicturesPost|length > 1 %}
+            <button class="swipe-control-prev">
+                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+            </button>
+            {% endif %}
+            <div class="swipe-inner">
+                {% for picture in Post.PicturesPost %}
+                <div
+                    class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                    <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
                 </div>
-                {% endif %}
+                {% endfor %}
+            </div>
+            {% if Post.PicturesPost|length > 1 %}
+            <button class="swipe-control-next">
+                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+            </button>
+            <div class="bullets">
+                {% for i in 0..(Post.PicturesPost|length - 1) %}
+                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                {% endfor %}
             </div>
             {% endif %}
+        </div>
+        {% endif %}
 
 
-            {% if isConnected %}
-            <div class="interaction">
-                <form action="/profile-{{ user.IdUser }}" method="post">
-                    <input type="hidden" name="AddLike" value="1">
-                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
-                    <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
-                        {% if Post.IsLike %}
-                        <i class="fas fa-heart"></i>
-                        {% else %}
-                        <i class="far fa-heart"></i>
-                        {% endif %}
-                    </button>
-                    <span class="total-likes">{{ Post.TotalLikes }}</span>
-                </form>
-                <a href="/postDetail-{{Post.IdPost}}">
-                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
-                    <span class="commentCount">{{ Post.commentCount }}</span>
-                </a>
+        {% if isConnected %}
+        <div class="interaction">
+            <form action="/profile-{{ user.IdUser }}" method="post">
+                <input type="hidden" name="AddLike" value="1">
+                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                    {% if Post.IsLike %}
+                    <i class="fas fa-heart"></i>
+                    {% else %}
+                    <i class="far fa-heart"></i>
+                    {% endif %}
+                </button>
+                <span class="total-likes">{{ Post.TotalLikes }}</span>
+            </form>
+            <a href="/postDetail-{{Post.IdPost}}">
+                <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                <span class="commentCount">{{ Post.commentCount }}</span>
+            </a>
 
             <form action="/profile-{{ user.IdUser }}" method="post">
                 <input type="hidden" name="AddFavorite" value="1">
@@ -344,6 +341,7 @@
         {% endif %}
     </div>
     {% endfor %}
+    {% endif %}
 </div>
 
 
@@ -351,33 +349,33 @@
 {% if isConnected and userId == user.IdUser %}
 <div class="profilFavorites" style="display: none;">
     {% if postFav is not empty %}
-        {% for Post in postFav %}
-        <div class="post">
-            <div class="user-info2">
-                {% if Post.ProfilPicture == null %}
-                <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
-                {% else %}
-                <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
-                {% endif %}
-                {% if userId == user.IdUser and user.IsPro == 0 %}
-                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-                {% else %}
-                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
-                {% endif %}
-            </div>
+    {% for Post in postFav %}
+    <div class="post">
+        <div class="user-info2">
+            {% if Post.ProfilPicture == null %}
+            <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+            {% else %}
+            <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
+            {% endif %}
 
+            {% if userId == user.IdUser and user.IsPro == 0 %}
+            <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+            {% else %}
+            <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+            {% endif %}
+        </div>
 
-            <div class="contentPost">
-                <h2>{{ Post.TitlePost }}</h2>
-                <p>
-                    {% set contentLines = Post.ContentPost | split("\n") %}
-                    {% if contentLines %}
-                    {% for i in 0..2 %}
-                    {% if contentLines[i] is defined %}
-                    {{ contentLines[i] }}<br>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
+        <div class="contentPost">
+            <h2>{{ Post.TitlePost }}</h2>
+            <p>
+                {% set contentLines = Post.ContentPost | split("\n") %}
+                {% if contentLines %}
+                {% for i in 0..2 %}
+                {% if contentLines[i] is defined %}
+                {{ contentLines[i] }}<br>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
 
             <form action="/profile-{{ Post.IdUser }}" method="post">
                 <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
@@ -412,6 +410,7 @@
             {% endif %}
         </div>
         {% endif %}
+
         {% if isConnected %}
         <div class="interaction">
             <form action="/profile-{{ Post.IdUser }}" method="post">
@@ -464,72 +463,73 @@
         {% endif %}
     </div>
     {% endfor %}
+    {% endif %}
 </div>
 {% endif %}
 
 {% if isConnected and userId == user.IdUser %}
 <div class="profilePlanning" style="display: none;">
     {% if adviceData is not empty %}
-        {% for advice in adviceData %}
-        <h2>Détails de la Consultation {{ loop.index }}</h2>
+    {% for advice in adviceData %}
+    <h2>Détails de la Consultation {{ loop.index }}</h2>
 
-        <p><strong>Type:</strong> {{ advice.AdviceType }}</p>
-        <p><strong>Description:</strong> {{ advice.AdviceDescription }}</p>
-        <p><strong>Catégorie :</strong> {{ advice.CategoryName }}</p>
+    <p><strong>Type:</strong> {{ advice.AdviceType }}</p>
+    <p><strong>Description:</strong> {{ advice.AdviceDescription }}</p>
+    <p><strong>Catégorie :</strong> {{ advice.CategoryName }}</p>
 
-        <p><strong>Date:</strong> {{ advice.BuyAdviceDate|date('d-m-Y') }}</p>
-        <p><strong>Heure de début:</strong> {{ advice.BuyAdviceStartTime }}</p>
-        <p><strong>Heure de fin:</strong> {{ advice.BuyAdviceEndTime }}</p>
+    <p><strong>Date:</strong> {{ advice.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Heure de début:</strong> {{ advice.BuyAdviceStartTime }}</p>
+    <p><strong>Heure de fin:</strong> {{ advice.BuyAdviceEndTime }}</p>
 
-        <h3>Images de la Consultation</h3>
-        {% if advice.adviceImages|length > 0 %}
-        <div class="swipe">
-            {% if advice.adviceImages|length > 1 %}
-            <button class="swipe-control-prev">
-                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
-            </button>
-            {% endif %}
-            <div class="swipe-inner">
-                {% for picture in advice.adviceImages %}
-                <div class="swipe-item portrait active">
-                    <img src="data:image;base64,{{ picture.PictureAdvice }}">
-                </div>
-                {% endfor %}
+    <h3>Images de la Consultation</h3>
+    {% if advice.adviceImages|length > 0 %}
+    <div class="swipe">
+        {% if advice.adviceImages|length > 1 %}
+        <button class="swipe-control-prev">
+            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+        </button>
+        {% endif %}
+        <div class="swipe-inner">
+            {% for picture in advice.adviceImages %}
+            <div class="swipe-item portrait active">
+                <img src="data:image;base64,{{ picture.PictureAdvice }}">
             </div>
-            {% if advice.adviceImages|length > 1 %}
-            <button class="swipe-control-next">
-                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
-            </button>
-            <div class="bullets">
-                {% for i in 0..(advice.adviceImages|length - 1) %}
-                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
-                {% endfor %}
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
-        {% else %}
-        <p>Pas d'images disponible.</p>
+        {% if advice.adviceImages|length > 1 %}
+        <button class="swipe-control-next">
+            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+        </button>
+        <div class="bullets">
+            {% for i in 0..(advice.adviceImages|length - 1) %}
+            <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+            {% endfor %}
+        </div>
         {% endif %}
+    </div>
+    {% else %}
+    <p>Pas d'images disponible.</p>
+    {% endif %}
 
-        <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}" class="meeting_link">lien du meeting</a>
+    <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}" class="meeting_link">lien du meeting</a>
 
-        <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
-        {% if userId == advice.SellerId %}
-            <p><strong>Nom:</strong> {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
-            {% if advice.BuyerProfilPicture %}
-            <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
-            {% else %}
-            <p>Pas de photo de profile disponible.</p>
-            {% endif %}
-        {% else %}
-            <p><strong>Nom:</strong> {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
-            {% if advice.SellerProfilPicture %}
-            <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
-            {% else %}
-            <p>Pas de photo de profile disponible.</p>
-            {% endif %}
-        {% endif %}
-        {% endfor %}
+    <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
+    {% if userId == advice.SellerId %}
+    <p><strong>Nom:</strong> {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
+    {% if advice.BuyerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>Pas de photo de profile disponible.</p>
+    {% endif %}
+    {% else %}
+    <p><strong>Nom:</strong> {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
+    {% if advice.SellerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
+    {% else %}
+    <p>Pas de photo de profile disponible.</p>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
     {% else %}
     <p class="aucun_dispo">Aucune Consultation disponible.</p>
     {% endif %}
@@ -539,73 +539,71 @@
 
 <div class="profilNotations" style="display: none;">
     {% if notations|length > 0 %}
-        <div class="average-note">
-            {% set rating = averageNote|number_format(1) %}
-            <p>Moyenne des notes: </p> 
-            <div class="rating">
-                <span>{{ rating }} </span> 
-                <div class="stars">
-                    {% set fullStars = rating|round(0, 'floor') %}
-                    {% set decimalPart = rating - fullStars %}
-                    {% set hasHalfStar = decimalPart >= 0.5 %}
+    <div class="average-note">
+        {% set rating = averageNote|number_format(1) %}
+        <p>Moyenne des notes: </p>
+        <div class="rating">
+            <span>{{ rating }} </span>
+            <div class="stars">
+                {% set fullStars = rating|round(0, 'floor') %}
+                {% set decimalPart = rating - fullStars %}
+                {% set hasHalfStar = decimalPart >= 0.5 %}
 
-                    {% for i in 1..5 %}
-                        {% if i <= fullStars %} 
-                        <i class="fa fa-star"></i>
-                        {% elseif i == fullStars + 1 and hasHalfStar %}
-                        <i class="fa fa-star-half-alt"></i>
-                        {% else %}
-                        <i class="far fa-star"></i>
-                        {% endif %}
+                {% for i in 1..5 %}
+                {% if i <= fullStars %} <i class="fa fa-star"></i>
+                    {% elseif i == fullStars + 1 and hasHalfStar %}
+                    <i class="fa fa-star-half-alt"></i>
+                    {% else %}
+                    <i class="far fa-star"></i>
+                    {% endif %}
                     {% endfor %}
-                </div>
-                <span class="rating-count"> ({{ notations|length }})</span>
+            </div>
+            <span class="rating-count"> ({{ notations|length }})</span>
+        </div>
+    </div>
+    {% for Notations in notations %}
+    <div class="notation">
+        <div class="user-info2">
+            {% if Notations.ProfilPicture is empty %}
+            <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+            {% else %}
+            <img class="user-picture" src="data:image/jpeg;base64,{{ Notations.ProfilPicture }}" alt="profile picture">
+            {% endif %}
+            {% if userId == Notations.IdUser and Notations.IsPro == 0 %}
+            <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2>
+            {% else %}
+            <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2> <i id="certifIcon"
+                class="fas fa-check-circle"></i>
+            {% endif %}
+        </div>
+
+
+        <div class="rating">
+            <p>Note: {{ Notations.Note }}</p>
+            {% set rating = Notations.Note %}
+            <div class="stars">
+                {% set fullStars = rating|round(0, 'floor') %}
+                {% set decimalPart = rating - fullStars %}
+                {% set hasHalfStar = decimalPart >= 0.5 %}
+
+                {% for i in 1..5 %}
+                {% if i <= fullStars %} <i class="fa fa-star"></i>
+                    {% elseif i == fullStars + 1 and hasHalfStar %}
+                    <i class="fa fa-star-half-alt"></i>
+                    {% else %}
+                    <i class="far fa-star"></i>
+                    {% endif %}
+                    {% endfor %}
             </div>
         </div>
-        {% for Notations in notations %}
-        <div class="notation">
-            <div class="user-info2">
-                {% if Notations.ProfilPicture is empty %}
-                <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
-                {% else %}
-                <img class="user-picture" src="data:image/jpeg;base64,{{ Notations.ProfilPicture }}" alt="profile picture">
-                {% endif %}
-                {% if userId == Notations.IdUser and Notations.IsPro == 0 %}
-                <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2>
-                {% else %}
-                <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2> <i id="certifIcon"
-                    class="fas fa-check-circle"></i>
-                {% endif %}
-            </div>
-            
-
-            <div class="rating">
-                <p>Note: {{ Notations.Note }}</p>
-                {% set rating = Notations.Note %} 
-                <div class="stars">
-                    {% set fullStars = rating|round(0, 'floor') %}
-                    {% set decimalPart = rating - fullStars %}
-                    {% set hasHalfStar = decimalPart >= 0.5 %}
-
-                    {% for i in 1..5 %}
-                        {% if i <= fullStars %} 
-                        <i class="fa fa-star"></i>
-                        {% elseif i == fullStars + 1 and hasHalfStar %}
-                        <i class="fa fa-star-half-alt"></i>
-                        {% else %}
-                        <i class="far fa-star"></i>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
 
 
 
 
-            <p>Comment: {{ Notations.CommentNote }}</p>
-            <p class="datePost">{{ Notations.RelativeDateNotations }}</p>
-        </div>
-        {% endfor %}
+        <p>Comment: {{ Notations.CommentNote }}</p>
+        <p class="datePost">{{ Notations.RelativeDateNotations }}</p>
+    </div>
+    {% endfor %}
 
     {% else %}
     <p class="aucun_dispo">Aucune Notation trouvée.</p>
