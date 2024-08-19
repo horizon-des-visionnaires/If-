@@ -329,8 +329,9 @@ input[type=file]::file-selector-button {
     margin-bottom: -1em;
 }
 
-.icon {
+.icon2 {
     height: 5em;
+    border-radius: 50%;
 }
 
 .formDeletePost {

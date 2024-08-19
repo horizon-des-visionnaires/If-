@@ -17,7 +17,7 @@
 
 
 {% block body %}
-{% if messages is not empty %}
+{% if messages is not empty and isConnected and userId == user.IdUser%}
 <div class="alert">
     {% for message in messages %}
     <h1>{{ message }}</h1>
@@ -284,7 +284,7 @@
                 <div class="swipe-inner">
                     {% for picture in Post.PicturesPost %}
                     <div class="swipe-item portrait active">
-                        <img src="data:image/jpeg;base64,{{ picture }}">
+                        <img src="data:image/jpeg;base64,{{ picture }}" class="icon" >
                     </div>
                     {% endfor %}
                 </div>
@@ -408,7 +408,7 @@
                 <div class="swipe-inner">
                     {% for picture in Post.PicturesPost %}
                     <div
-                        class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                        class="swipe-item portrait {% if loop.first %}active{% endif %}">
                         <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
                     </div>
                     {% endfor %}
@@ -506,7 +506,7 @@
             <div class="swipe-inner">
                 {% for picture in advice.adviceImages %}
                 <div class="swipe-item portrait active">
-                    <img src="data:image;base64,{{ picture.PictureAdvice }}">
+                    <img src="data:image;base64,{{ picture.PictureAdvice }}" class="icon" >
                 </div>
                 {% endfor %}
             </div>
@@ -533,7 +533,7 @@
             <a href="/profile-{{ advice.BuyerId}}">
                 {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
                 {% if advice.BuyerProfilPicture %}
-                <img class="icon" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
+                <img class="icon2" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
                 {% else %}
                 <p>Pas de photo de profile disponible.</p>
                 {% endif %}
@@ -543,7 +543,7 @@
             <a href="/profile-{{ advice.SellerId }}">
                 {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
                 {% if advice.SellerProfilPicture %}
-                <img class="icon" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
+                <img class="icon2" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
                 {% else %}
                 <p>Pas de photo de profile disponible.</p>
                 {% endif %}
