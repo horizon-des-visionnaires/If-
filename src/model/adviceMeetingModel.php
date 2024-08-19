@@ -199,6 +199,25 @@ class adviceMeetingModel
         }
     }
 
+    public function isRequestForRefundExists($IdBuyAdvice, $IdBuyer, $IdSeller)
+    {
+        try {
+            $query = "SELECT COUNT(*) AS count FROM RequestForRefund WHERE IdBuyAdvice = :IdBuyAdvice AND IdBuyer = :IdBuyer AND IdSeller = :IdSeller";
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':IdBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
+            $stmt->bindParam(':IdBuyer', $IdBuyer, PDO::PARAM_INT);
+            $stmt->bindParam(':IdSeller', $IdSeller, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result['count'] > 0;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
     public function updateAdviceWantRefund($idBuyAdvice, $wantRefund)
     {
         try {

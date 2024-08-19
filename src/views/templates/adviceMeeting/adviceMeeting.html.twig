@@ -169,7 +169,7 @@
     </div>
     {% endif %}
 
-    {% if adviceData.WantRefund == 1 and userId == adviceData.BuyerId %}
+    {% if adviceData.WantRefund == 1 and userId == adviceData.BuyerId and not isRequestAlreadyMade %}
     <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des
         raisons/preuves (photos, ...)</p>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">

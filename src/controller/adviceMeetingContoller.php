@@ -67,6 +67,8 @@ class adviceMeetingController
             if ($adviceStartDateTime <= $currentDateTime && $adviceEndDateTime > $currentDateTime) {
                 $showJoinButton = true;
             }
+
+            $isRequestAlreadyMade = $this->adviceMeetingModel->isRequestForRefundExists($adviceData['IdBuyAdvice'], $adviceData['BuyerId'], $adviceData['SellerId']);
         }
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
@@ -85,6 +87,7 @@ class adviceMeetingController
             'unreadCount' => $unreadCount,
             'showSatisfactionForm' => $showSatisfactionForm,
             'showJoinButton' => $showJoinButton,
+            'isRequestAlreadyMade' => $isRequestAlreadyMade,
             'roomName' => 'adviceMeeting-' . $IdBuyAdvice
         ]);
     }
