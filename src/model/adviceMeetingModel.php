@@ -120,7 +120,7 @@ class adviceMeetingModel
     public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)
     {
         try {
-            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro AND DATE(DateNotation) = CURDATE()";
+            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro";
             $checkStmt = $this->dsn->prepare($checkQuery);
             $checkStmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
             $checkStmt->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
