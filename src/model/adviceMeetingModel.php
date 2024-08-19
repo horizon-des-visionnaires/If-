@@ -117,25 +117,27 @@ class adviceMeetingModel
         }
     }
 
-    public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)
+    public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote, $IdBuyAdvice)
     {
         try {
-            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro";
+            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro AND IdBuyAdvice = :IdBuyAdvice";
             $checkStmt = $this->dsn->prepare($checkQuery);
             $checkStmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
             $checkStmt->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+            $checkStmt->bindParam(':IdBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
             $checkStmt->execute();
             $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
             if ($result['count'] > 0) {
                 return false;
             } else {
-                $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro)";
+                $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro, IdBuyAdvice) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro, :IdBuyAdvice)";
                 $Notations = $this->dsn->prepare($insertNotations);
                 $Notations->bindParam(':Note', $Note, PDO::PARAM_INT);
                 $Notations->bindParam(':CommentNote', $CommentNote);
                 $Notations->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
                 $Notations->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+                $Notations->bindParam(':IdBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
                 $Notations->execute();
                 return true;
             }

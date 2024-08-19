@@ -74,6 +74,8 @@
 
     {% if showJoinButton %}
     <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')">Rejoindre la réunion</button>
+    {% else %}
+        <p>le boutton pour rejoindre la réunion apparaiteras quand l'heure de début auras commencer</p>
     {% endif %}
 
     {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}

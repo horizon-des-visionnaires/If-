@@ -134,9 +134,11 @@ $createTableNotaions = ("CREATE TABLE IF NOT EXISTS
     `IdUser` int(11) DEFAULT NULL,
     `IdUserIsPro` int(11) DEFAULT NULL,
     `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `IdBuyAdvice` int(11) DEFAULT NULL,
     PRIMARY KEY (`idNotations`),
     CONSTRAINT fk_IdUser_Notations FOREIGN KEY (`IdUser`) REFERENCES User (`IdUser`),
-    CONSTRAINT fk_IdUserIsPro_Notations FOREIGN KEY (`IdUserIsPro`) REFERENCES User (`IdUser`)
+    CONSTRAINT fk_IdUserIsPro_Notations FOREIGN KEY (`IdUserIsPro`) REFERENCES User (`IdUser`),
+    CONSTRAINT fk_IdBuyAdvice_Notations FOREIGN KEY (`IdBuyAdvice`) REFERENCES BuyAdvice (`IdBuyAdvice`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = latin1");
 $dsn->exec($createTableNotaions);
 

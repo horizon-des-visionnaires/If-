@@ -119,7 +119,7 @@ class adviceMeetingController
             $CommentNote = $_POST['CommentNote'];
             $IdBuyAdvice = $_POST['IdBuyAdvice'];
 
-            if ($this->adviceMeetingModel->insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)) {
+            if ($this->adviceMeetingModel->insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote, $IdBuyAdvice)) {
                 header('Location: /adviceMeeting-' . $IdBuyAdvice);
                 exit;
             } else {
