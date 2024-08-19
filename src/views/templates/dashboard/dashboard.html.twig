@@ -21,8 +21,8 @@
                     onclick="openModal(this)">
                 <h1>{{ RequestPassPro.FirstName }}</h1>
                 <h1>{{ RequestPassPro.LastName }}</h1>
-                <p>{{ RequestPassPro.UserAge }} ans</p>
             </div>
+            <p>{{ RequestPassPro.UserAge }} ans</p>
             <div class="job">
                 <p>Métier : {{ RequestPassPro.UserJob }}</p>
             </div>
@@ -47,14 +47,14 @@
             <div class="buttonValid">
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdRequest" value="{{ RequestPassPro.IdRequest }}">
-                    <button name="requestValid" type="submit" id="inputField2">Valider la demande</button>
+                    <button name="requestValid" type="submit" id="inputField2">Valider</button>
                 </form>
             </div>
             <div class="buttonInvalid">
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdRequest" value="{{ RequestPassPro.IdRequest }}">
                     <textarea name="rejectReason" placeholder="Raison du refus" rows="1" cols="30"></textarea>
-                    <button name="requestInvalid" type="submit" id="inputField2">Refuser la demande</button>
+                    <button name="requestInvalid" type="submit" id="inputField2">Refuser</button>
                 </form>
             </div>
             <div class="DownloadPdf">
@@ -92,7 +92,7 @@
             <td>
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdUser" value="{{ User.IdUser }}">
-                    <button type="submit" name="deletePro">Supprimer des Pro</button>
+                    <button type="submit" name="deletePro">Suppr. Pro</button>
                 </form>
             </td>
         </tr>
@@ -131,7 +131,7 @@
             <td>
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdUser" value="{{ User.IdUser }}">
-                    <button type="submit" name="deleteUser">Supprimer l'utilisateur</button>
+                    <button type="submit" name="deleteUser">Suppr. Utilisateur</button>
                 </form>
             </td>
         </tr>
@@ -139,26 +139,13 @@
     </table>
 </div>
 
-<p>
-    nombre d'user :{{ countUser }}
-</p>
 
-<p>
-    nombre de conseil vendu :{{ countAdvice }}
-</p>
-
-<p>
-    nombre de post :{{ countPost }}
-</p>
-
-<p>
-    nombre de commentaires :{{ countComment }}
-</p>
-
-<form action="/dashboard" method="post">
-    <input type="text" name="CategoryName">
-    <button type="submit" name="addCategory">ajouter une catégories</button>
-</form>
+<div class="Categorie_form">
+    <form action="/dashboard" method="post">
+        <input type="text" name="CategoryName" placeholder="Nom de la Categorie" class="input_name">
+        <button type="submit" name="addCategory">Ajouter Catégories</button>
+    </form>
+</div>
 
 <div class="tableCategory">
     <h2>Tableau des catégories</h2>
@@ -173,11 +160,38 @@
             <td>
                 <form action="/dashboard" method="post">
                     <input type="hidden" name="IdCategory" value="{{ Category.IdCategory }}">
-                    <button type="submit" name="deleteCategory">Supprimer la catégories</button>
+                    <button type="submit" name="deleteCategory">Suppr. Catégories</button>
                 </form>
             </td>
         </tr>
         {% endfor %}
+    </table>
+</div>
+
+<div class="tableStat">
+    <h2>Tableau des Statistiques</h2>
+    <table>
+        <tr>
+            <th>Nom de la statistiques</th>
+            <th>Nombre</th>
+        </tr>
+
+        <tr>
+            <td>Utilisateurs</td>
+            <td>{{ countUser }}</td>
+        </tr>
+        <tr>
+            <td>Conseils Vendus</td>
+            <td>{{ countAdvice }}</td>
+        </tr>
+        <tr>
+            <td>Publications</td>
+            <td>{{ countPost }}</td>
+        </tr>
+        <tr>
+            <td>Commentaires</td>
+            <td>{{ countComment }}</td>
+        </tr>
     </table>
 </div>
 
@@ -234,8 +248,6 @@
     </div>
     {% endfor %}
 </div>
-
-
 <div id="myModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="img01">

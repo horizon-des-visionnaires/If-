@@ -15,7 +15,7 @@ a {
     display: flex;
     flex-direction: row;
     justify-content:space-between;
-    margin-top: 6em;
+    margin-top: 5em;
     margin-bottom: 1em;
 }
 
@@ -37,6 +37,7 @@ a {
     width: 35%;
     left: 3%;
     height: 100%;
+    overflow-y: hidden;
 }
 
 .post, .comment {
@@ -106,6 +107,13 @@ a {
     padding-top: 1em;
     margin-left: 4.2em;
     margin-top: -2.2em;
+    word-break:break-all ;
+}
+.contentPost{
+    margin-top: -1em;
+}
+.contentComment{
+    margin-left: 4em;
 }
 
 .contentPost h2 {
@@ -118,7 +126,7 @@ a {
     margin-bottom: -1.5em;
 }
 #copyLinkButton, #openModalButton{
-    background: white;
+    background: transparent;
     border: none;
 }
 
@@ -244,9 +252,10 @@ input[type=file] {
 
 .formDeletePost,
 .formDeletePostComment {
-    padding-top: 1.5em;
     margin-right: 1%;
 }
+.formDeletePostComment {
+    margin-top: 1.5em}
 
 #deleteButton {
     background-color: transparent;
@@ -254,7 +263,8 @@ input[type=file] {
 }
 
 #deleteImage {
-    height: 2.5em;
+    width: 28px;
+    height: auto;
 }
 
 .interaction {
@@ -286,8 +296,14 @@ input[type=file] {
 .icon_commentaire{
     width: 28px;
     height: auto;
+    background-color: transparent;
 }
-
+.filter{
+    background-color: white;
+    border: none;
+    height: 100%;
+    padding-top: 1.5em;
+}
 
 .heart,
 .favorite {
@@ -592,7 +608,6 @@ a {
     border-radius: 5px;
     outline: none;
     height: 2.5em;
-    margin-top: 1em;
     margin-right: 3%;
 }
 .new_post{
@@ -629,6 +644,13 @@ a {
     align-items: center;
     justify-items: center;
     gap: 10%;
+    display: none;
+    position:absolute;
+    margin-left:70%;
+}
+
+.changements.show {
+    display: flex; /* Afficher le menu lorsque la classe 'show' est ajoutée */
 }
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -674,7 +696,7 @@ a {
     .interaction span, .interaction p{
         font-size: 0.85em;
     }
-    .icon_commentaire{
+    .icon_commentaire, #deleteImage{
         width: 22px;
         height: auto;
     }
@@ -711,8 +733,12 @@ a {
     .modal-content {
         width: 60%;
     }
+
+    .changements{
+        margin-left:65%;
+    }
 }
-@media (max-width: 540px) {
+@media (max-width: 640px) {
     .new_post form{
         margin-left: 0em;
         margin-right: 0em;
@@ -734,9 +760,12 @@ a {
         width: 100%;
         display: flex;
         flex-direction: column;
-        margin-top: 4em;
-        justify-content: center;
+        margin-top: 3em;
+
         
+    }
+    .user-picture {
+        margin-left: 1em;
     }
     input[type=file] { 
         margin-left: 5em;
@@ -746,6 +775,12 @@ a {
     }
     #inputFieldDesc {
         height: 7em;
+    }
+    .changements{
+        margin-left: 80%;
+    }
+    .contentComment {
+        margin-left: 5.5em;
     }
 }
 
@@ -815,5 +850,8 @@ a {
     }
     input[type=file] {
         font-size: 0.7em; 
+    }
+    .changements{
+        margin-left: 75%;
     }
 }

@@ -29,7 +29,14 @@ body {
     margin-left: 20%;
 }
 
-
+a{
+    text-decoration: none;
+    color: #000;
+}
+.meeting_link{
+    text-decoration:underline;
+    color:blue;
+}
 
 /* Style de la modal */
 .modal, .modal2, .modal3 {
@@ -107,18 +114,17 @@ body {
     background: var(--primary-color);
     color: white;
     font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
+    font-weight: 550;
     border: none;
     border-radius: 30px;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
     text-align: center;
-    width: 230px; /* Taille fixe */
+    width: 160px; /* Taille fixe */
     margin: auto 0; /* Centrer le bouton */
     height: 40px;
     align-items: center;
-    font-size: 1rem; /* Taille de police ajustée pour meilleure lisibilité */
     overflow: hidden; /* Évite que le texte dépasse du bouton */
 }
 
@@ -245,12 +251,20 @@ input[type=file]::file-selector-button {
 
 .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     width: 100%;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     flex-wrap: wrap;
-    gap: 0.3em;
+}
+.button-container button, .deleteProfilButton button{
+    width: 50px;
+    font-size: 1rem;
+}
+.button-container img{
+    width: 20px;
+    height: auto;
+    filter: invert(1);
 }
 
 .profilPost, .profilFavorites, .profilePlanning, .profilNotations{
@@ -268,6 +282,9 @@ input[type=file]::file-selector-button {
 .profilePlanning, .profilNotations{
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+.aucun_dispo{
     text-align: center;
 }
 .post {
@@ -304,6 +321,7 @@ input[type=file]::file-selector-button {
 
 .contentPost h2 {
     font-family: 'Open Sans', sans-serif;
+    font: 1em;
 }
 .contentPost button{
     margin-top: -0.5em;
@@ -494,15 +512,26 @@ span {
 }
 .ProfilUser h2{
     margin-left: 0.5em;
-    }
+}
 
-.passProButton, .profilButton ,.deleteProfilButton{
+.passProButton, .profilButton{
     margin-right: 5%;
     margin-top: 1.5%;
     margin-left: -5%;
 }
-.passProButton.show,.profilButton.show , .deleteProfilButton.show {
+.passProButton.show,.profilButton.show {
     display: block; /* Afficher le menu lorsque la classe 'show' est ajoutée */
+}
+.deleteProfilButton img{
+    width:  20px;
+    height: auto;
+    filter: invert();
+}
+.deleteProfilButton{
+    position: absolute;
+}
+.deleteProfilButton button{
+    background-color: #aa3a06;
 }
 
 .user-info, .user-info2 {
@@ -515,7 +544,7 @@ span {
     margin-top: -1em;
 }
 .user-info h2,.user-info2 h2{
-    font-size: 2em;
+    font-size: 1.2em;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -544,9 +573,7 @@ span {
 
 .EditButton{
     display: flex;
-    flex-direction: column;
-    margin-left: -5.5em;
-    
+    flex-direction: column;    
 }
 
 
@@ -698,6 +725,7 @@ button {
     font-family: 'Montserrat', sans-serif;
     transition: background-color 0.3s ease;
     margin-bottom: 2px;
+    height: 20px;
 }
 
 .filter:hover {
@@ -707,7 +735,6 @@ button {
 }
 .filter{
     display: none;
-    padding: 0.5em;
     justify-self: center;
     background: var(--primary-color);
     border-radius: 50%;
@@ -716,17 +743,15 @@ button {
     transition: all 0.3s ease-in-out;
     margin: auto 0; /* Centrer le bouton */
     align-items: center;
+    padding: 1.7em 0.5em;
 }
 
 .filter img{
-    padding: 0.5em;
-    width: 30px;
-    background: transparent;
     
+    width: 20px;
+    background: transparent;
+    padding: 0.5em;
     filter: invert(1);
-}
-.button-container button{
-    width: 200px;
 }
 .average-note{
     border-bottom: 1px solid rgb(182, 182, 182);
@@ -748,6 +773,7 @@ button {
     margin-bottom: 1em;
     border-bottom: 1px solid rgb(182, 182, 182);
 }
+
 /* Responsive Design */
 @media (max-width: 1050px) {/*display le button avec le edit button*/
     
@@ -755,7 +781,7 @@ button {
         font-size: 1.2em;
     }
     .user-info h2, .user-info2 h2{
-        font-size: 1.5em;
+        font-size: 1.1em;
         font-family: 'Open Sans', sans-serif;
     }
 
@@ -772,7 +798,7 @@ button {
     .interaction {
         padding-left: 0%;
     }
-    .modal-content, .modal-content2 {
+    .modal-content, .modal-content2, .modal-content3 {
         width: 60%;
     }
 }
@@ -802,10 +828,9 @@ button {
 
 @media (max-width: 570px) {
     .EditButton{
-        position: sticky;
         padding-right: 0em;
     }
-    .profilButton, .passProButton, .deleteProfilButton{
+    .profilButton, .passProButton{
         display: none;
     }
     .filter{
@@ -831,6 +856,10 @@ button {
     #inputFieldDesc, #inputFieldPromotion, #inputFieldDesc2{
         min-width: 16em;
         min-height: 7em;
+    }
+    
+    #inputField{
+        margin-left: 10%;
     }
 }
 
@@ -879,40 +908,34 @@ button {
         margin-left: 0em;
     }
     .user-info h2, .user-info2 h2{
-        font-size: 1.2em;
+        font-size: 1.1em;
         font-family: 'Open Sans', sans-serif;
     }
     #deleteImage {
         height: 2em;
     }
 
-    .filter{
-        padding: 0.25em;
-    }
-    
-    .filter img{
-        padding: 0.5em;
-        width: 20px;
-    }
+ 
     .ProfilUser h2{
         font-size: 1.2em;
     }
     .EditButton button{
         width: 150px;
         font-size: 0.8em;
+        margin-left: -5.5em;
     }
     .pro #certifIcon {
         margin-top: 1.5em;
     }
 
-    .modal-content, .modal-content2 {
+    .modal-content, .modal-content2, .modal-content3 {
         width: 80%;
     }
     input[type=file] {
         font-size: 0.7em; 
     }
 
-    .modal-content2{
+    .modal-content2, .modal-content3{
         margin-top: 4em;
     }
 

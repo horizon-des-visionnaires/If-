@@ -54,17 +54,23 @@ h2 {
 
 /* Conversations */
 .convContainer {
-    width: 50%;
-    margin-left: 25%;
+    width: 60%;
+    margin: auto;
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 1em;
-    margin-top: 6em;
+    margin-top: 5em;
+    flex-direction: column;
+    align-items: flex-start;
 }
-
+.convContainer p{
+    text-align: center;
+    padding: 1em 0em;
+}
 .conv {
     display: flex;
+    flex-direction: row;
     align-items: center;
     padding: 1em;
     border-bottom: 1px solid #e4e4e4;
@@ -74,6 +80,7 @@ h2 {
 .conv-info{
     border: none;
     display: flex;
+    flex-direction: row;
 }
 
 #icon2 {
@@ -82,9 +89,8 @@ h2 {
 }
 
 .conv p {
-    margin: 0;
-    font-weight: bold;
-    margin-right: 1em;
+    font-weight: 500;
+    font-size: 1em;
 }
 
 .conv .pro, .conv .notpro {
@@ -108,14 +114,80 @@ a {
     text-decoration: none;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    .profile, .convContainer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.conv a{
+    display: flex;
+    flex-direction: row ;
+    justify-content: space-between;
+    text-align: center;
+}
+.conv h2{
+    font-size: 1.2em;
+}
 
-    .profile img, .conv img {
-        margin-bottom: 1em;
+/* Mobile responsiveness */
+@media (max-width: 1050px) {
+    
+    .conv h2{
+        font-size: 1em;
+    }
+    #icon2 {
+        height: 3em;
+    }
+    .convContainer {
+        width: 70%;
+    }
+}
+
+@media (max-width: 740px) {
+    
+    .conv h2{
+        font-size: 1em;
+    }
+    #icon2 {
+        height: 3em;
+    }
+    .convContainer {
+        width: 80%;
+        margin-top: 4em;
+    }
+    .conv p {
+        font-weight: 500;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 540px) {
+    
+    .conv h2{
+        font-size: 1em;
+    }
+    #icon2 {
+        height: 3em;
+    }
+    .convContainer {
+        width: 80%;
+        margin-top: 4em;
+    }
+    .conv p {
+        font-weight: 500;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 400px) {
+    
+    .conv h2{
+        font-size: 0.8em;
+    }
+    #icon2 {
+        height: 2.5em;
+    }
+    .convContainer {
+        width: 90%;
+        margin-top: 4em;
+    }
+    .conv p {
+        font-weight: 500;
+        font-size: 0.7em;
     }
 }
