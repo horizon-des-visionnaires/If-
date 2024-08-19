@@ -524,9 +524,41 @@ class dashboardModel
         try {
             $this->dsn->beginTransaction();
 
+            $stmt = $this->dsn->prepare("SELECT IdBuyer, IdSeller FROM RequestForRefund WHERE IdRequestForRefund = :IdRequestForRefund");
+            $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $IdBuyer = $result['IdBuyer'];
+            $IdSeller = $result['IdSeller'];
+
+            $stmt = $this->dsn->prepare("SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer");
+            $stmt->bindParam(':IdBuyer', $IdBuyer, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $buyerInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+            $FirstNameBuyer = $buyerInfo['FirstName'];
+            $LastNameBuyer = $buyerInfo['LastName'];
+
             $stmt = $this->dsn->prepare("UPDATE RequestForRefund SET IsValidRequest = 1 WHERE IdRequestForRefund = :IdRequestForRefund");
             $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
             $stmt->execute();
+
+            // Créer une notification pour le buyer
+            $MessageNotifBuyer = "Félicitations votre demande de remboursement de à été valider, pour toute question veuillez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdBuyer);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifBuyer);
+            $stmt4->execute();
+
+            // Créer une notification pour le seller
+            $MessageNotifSeller = "La demande de remboursement de de " . $FirstNameBuyer . " " . $LastNameBuyer . " à été accépter, pour toute question veulliez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdSeller);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifSeller);
+            $stmt4->execute();
 
             $this->dsn->commit();
             header("Location: /dashboard");
@@ -542,9 +574,41 @@ class dashboardModel
         try {
             $this->dsn->beginTransaction();
 
+            $stmt = $this->dsn->prepare("SELECT IdBuyer, IdSeller FROM RequestForRefund WHERE IdRequestForRefund = :IdRequestForRefund");
+            $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $IdBuyer = $result['IdBuyer'];
+            $IdSeller = $result['IdSeller'];
+
+            $stmt = $this->dsn->prepare("SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer");
+            $stmt->bindParam(':IdBuyer', $IdBuyer, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $buyerInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+            $FirstNameBuyer = $buyerInfo['FirstName'];
+            $LastNameBuyer = $buyerInfo['LastName'];
+
             $stmt = $this->dsn->prepare("UPDATE RequestForRefund SET IsValidRequest = 2 WHERE IdRequestForRefund = :IdRequestForRefund");
             $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
             $stmt->execute();
+
+            // Créer une notification pour le buyer
+            $MessageNotifBuyer = "Votre demande de remboursement à été refuser, pour toute question veuillez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdBuyer);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifBuyer);
+            $stmt4->execute();
+
+            // Créer une notification pour le seller
+            $MessageNotifSeller = "La demande de remboursement de " . $FirstNameBuyer . " " . $LastNameBuyer . " à été refuser, pour toute question veulliez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdSeller);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifSeller);
+            $stmt4->execute();
 
             $this->dsn->commit();
             header("Location: /dashboard");
