@@ -237,4 +237,24 @@ class adviceMeetingModel
             return false;
         }
     }
+
+    public function updateAdviceAfter24Hours($idBuyAdvice)
+    {
+        try {
+            $query = "
+        UPDATE BuyAdvice
+        SET IsAdviceValid = IF(IsAdviceValid IS NULL, 1, IsAdviceValid),
+            WantRefund = IF(WantRefund IS NULL, 2, WantRefund)
+        WHERE IdBuyAdvice = :idBuyAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 }

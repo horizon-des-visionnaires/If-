@@ -68,6 +68,14 @@ class adviceMeetingController
                 $showJoinButton = true;
             }
 
+            $interval = $adviceEndDateTime->diff($currentDateTime);
+            if ($interval->h >= 24 || $interval->d > 0) {
+                // Si IsAdviceValid ou WantRefund est NULL, mettez à jour
+                if (is_null($adviceData['IsAdviceValid']) || is_null($adviceData['WantRefund'])) {
+                    $this->adviceMeetingModel->updateAdviceAfter24Hours($IdBuyAdvice);
+                }
+            }
+
             $isRequestAlreadyMade = $this->adviceMeetingModel->isRequestForRefundExists($adviceData['IdBuyAdvice'], $adviceData['BuyerId'], $adviceData['SellerId']);
         }
 
