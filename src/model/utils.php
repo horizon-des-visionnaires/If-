@@ -1,5 +1,6 @@
 <?php
 
+// fonction pour vérifier si le post est liké
 function getIsLike(PDO $dsn, $IdUser, $IdPost)
 {
     try {
@@ -20,6 +21,7 @@ function getIsLike(PDO $dsn, $IdUser, $IdPost)
     }
 }
 
+// fonction pour vérifier si le post est en favoris
 function getIsFavorites(PDO $dsn, $IdUser, $IdPost)
 {
     try {
@@ -40,6 +42,7 @@ function getIsFavorites(PDO $dsn, $IdUser, $IdPost)
     }
 }
 
+// fonction pour liké le post
 function LikeData(PDO $dsn, $IdUser, $IdPost, $redirectUrl)
 {
     try {
@@ -72,6 +75,7 @@ function LikeData(PDO $dsn, $IdUser, $IdPost, $redirectUrl)
     }
 }
 
+// fonction pour mettre le post en favoris
 function FavoriteData(PDO $dsn, $IdUser, $IdPost, $redirectUrl)
 {
     try {
@@ -104,6 +108,7 @@ function FavoriteData(PDO $dsn, $IdUser, $IdPost, $redirectUrl)
     }
 }
 
+// fonction pour compter le nombre de commentaires sur un post
 function getCommentCount(PDO $dsn, $idPost)
 {
     try {
@@ -123,6 +128,7 @@ function getCommentCount(PDO $dsn, $idPost)
     }
 }
 
+// fonction pour modifier le nombre de vu d'un post
 function updateViews(PDO $dsn, $idPost)
 {
     try {
@@ -138,6 +144,7 @@ function updateViews(PDO $dsn, $idPost)
     }
 }
 
+// fonction pour supprimer un post
 function deletePost(PDO $dsn, $idPost, $idUser)
 {
     try {
@@ -174,6 +181,7 @@ function deletePost(PDO $dsn, $idPost, $idUser)
     }
 }
 
+// fonction pour affihcer les date d'une meilleur manière
 function getRelativeTime($date)
 {
     $timestamp = strtotime($date);

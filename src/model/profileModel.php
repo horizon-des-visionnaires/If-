@@ -17,6 +17,7 @@ class profileModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour afficher les informations d'un user en fonction de son id
     public function getUserById($id)
     {
         $stmt = $this->dsn->prepare("SELECT * FROM User WHERE IdUser = :id");
@@ -41,7 +42,7 @@ class profileModel
         return $getUserData;
     }
 
-
+    // fonction pour modifier les info d'un user
     public function updateUserData($IdUser, $FirstName, $LastName, $ProfilDescription, $ProfilPromotion, $Location, $ProfilPicture = null)
     {
         try {
@@ -107,6 +108,7 @@ class profileModel
         }
     }
 
+    // fonction pour afficher tous les post d'un user en fonction de son id
     public function getUserPosts($id)
     {
         $stmt = $this->dsn->prepare(
@@ -151,6 +153,7 @@ class profileModel
         return $getPostData;
     }
 
+    // fonction pour insert la demande pour passez pro
     public function insertRequestPassProData($Job, $Age, $Description, $idUser, $Adress, $identityCardRecto = null, $identityCardVerso = null, $UserPicture = null)
     {
         try {
@@ -179,6 +182,7 @@ class profileModel
         }
     }
 
+    // fonction lié au post et au like/favoris appeler depuis le fichier utils.php
     public function getRelativeTime($date)
     {
         return getRelativeTime($date);
@@ -219,6 +223,7 @@ class profileModel
         return updateViews($this->dsn, $idPost);
     }
 
+    // fonction pour récupérer tous les post mis en favoris par l'user
     public function getUserFavorites($id)
     {
         $stmt = $this->dsn->prepare(
@@ -264,6 +269,7 @@ class profileModel
         return $getFavPostData;
     }
 
+    // fonction pour afficher les retours lié a la demande pour passez pro
     public function getUserMessages($id)
     {
         try {
@@ -276,6 +282,7 @@ class profileModel
         }
     }
 
+    // fonction pour supprimer les retours
     public function cleanupOldData()
     {
         try {
@@ -298,6 +305,7 @@ class profileModel
         }
     }
 
+    // fonction pour ajouté une conversation
     public function addConvertation($idUser_1, $IdUser_2)
     {
         try {
@@ -352,6 +360,7 @@ class profileModel
         }
     }
 
+    // fonction pour afficher les conseils acheter par l'user
     public function getBuyAdviceData($userId)
     {
         try {
@@ -401,6 +410,7 @@ class profileModel
         }
     }
 
+    // function pour récupérer les images lié au conseil
     public function getAdviceImages($IdAdvice)
     {
         try {
@@ -428,6 +438,7 @@ class profileModel
         }
     }
 
+    // fonctions pour supprimer un user
     public function deleteUser($IdUser)
     {
         try {
@@ -498,6 +509,7 @@ class profileModel
         }
     }
 
+    // fonction pour récupérer toutes les notations lié a un user
     public function getNotationsById($id)
     {
         try {

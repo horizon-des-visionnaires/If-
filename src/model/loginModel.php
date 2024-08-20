@@ -16,6 +16,7 @@ class loginModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour se connecter
     public function checkLoginData($email, $userPassword)
     {
         try {

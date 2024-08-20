@@ -183,6 +183,7 @@
     </div>
 
     <div class="commentContainer">
+        {% if commentsData is not empty or isConnected %}    
         {% for Comment in commentsData %}
         <div class="comment">
             <div class="user-info">
@@ -254,7 +255,10 @@
             {% endfor %}
         </div>
         {% endif %}
-        
+
+        {% else %}
+        <p class="aucun_dispo">Aucun Commentaire disponible.</p>
+        {% endif %}
     </div>
 </div>
 

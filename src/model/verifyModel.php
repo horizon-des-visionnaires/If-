@@ -16,6 +16,7 @@ class verifyModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour insert l'user apres avoir  reçu le token dans un email
     public function verifyToken($token)
     {
         try {

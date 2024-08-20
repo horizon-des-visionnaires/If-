@@ -17,6 +17,7 @@ class homeModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour afficher 5 conseil random
     public function get5UserProRandom()
     {
         try {
@@ -68,6 +69,7 @@ class homeModel
         }
     }
 
+    // fonction pour afficher 5 post random parmis les 10 plus populaires
     public function get5RandomPostsFromTop10()
     {
         try {
@@ -143,6 +145,7 @@ class homeModel
         return getRelativeTime($date);
     }
 
+    // fonction pour récupérer le snombres total de like
     private function getTotalLikes($idPost)
     {
         $stmtLikes = $this->dsn->prepare("SELECT COUNT(*) AS TotalLikes FROM LikeFavorites WHERE IdPost = :IdPost AND IsLike = 1");
@@ -150,11 +153,13 @@ class homeModel
         $stmtLikes->execute();
         return $stmtLikes->fetch(PDO::FETCH_ASSOC)['TotalLikes'];
     }
+
     public function getCommentCount($idPost)
     {
         return getCommentCount($this->dsn, $idPost);
     }
 
+    // fonction pour affihcer tous les user admin
     public function getUserAdmin()
     {
         try {
@@ -183,6 +188,7 @@ class homeModel
         }
     }
 
+    // fonction pour créer une conversation entre 2 user
     public function addConversation($idUser_1, $IdUser_2)
     {
         try {
@@ -237,6 +243,7 @@ class homeModel
         }
     }
 
+    // fonction pour avoir la moyenne des note d'un user pro
     public function getAverageRating($IdUserIsPro)
     {
         try {

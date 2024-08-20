@@ -15,9 +15,9 @@ class dashboardModel
     public function __construct()
     {
         $this->dsn = connectDB();
-        $this->dsn = connectDB();
     }
 
+    // fonction pour récupérer toutes les demande pour passez pro
     public function getAllRequestPassPro()
     {
         try {
@@ -58,6 +58,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour valider la demande pour passez pro
     public function requestValid($IdRequest)
     {
         try {
@@ -89,6 +90,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour récupérer une demande pour passez pro en fonction de l'id d'un user
     public function getRequestPassProById($IdRequest)
     {
         try {
@@ -130,6 +132,8 @@ class dashboardModel
 
         return false;
     }
+
+    // fonction pour envoyer un message à l'user pour lui dire le résultat de ça demande
     public function addUserMessage($IdUser, $message)
     {
         try {
@@ -143,6 +147,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour refuser la demande
     public function requestInvalid($IdRequest, $rejectReason)
     {
         try {
@@ -174,6 +179,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour afficher tous les user pro
     public function getUserPro()
     {
         try {
@@ -195,6 +201,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour supprimer le status de pro à un user
     public function deletePro($IdUser)
     {
         try {
@@ -213,9 +220,11 @@ class dashboardModel
         }
     }
 
+    // fonction pour afficher tous les user
     public function getUser()
     {
         try {
+            $getUser = "SELECT IdUser, FirstName, LastName, Email, ProfilPicture, CreatedAt FROM User";
             $getUser = "SELECT IdUser, FirstName, LastName, Email, ProfilPicture, CreatedAt FROM User";
             $stmt = $this->dsn->prepare($getUser);
             $stmt->execute();
@@ -225,6 +234,7 @@ class dashboardModel
                 if (!is_null($row['ProfilPicture'])) {
                     $row['ProfilPicture'] = base64_encode($row['ProfilPicture']);
                 }
+                $row['RelativeDateUser'] = $this->getRelativeTime($row['CreatedAt']);
                 $row['RelativeDateUser'] = $this->getRelativeTime($row['CreatedAt']);
             }
 
@@ -240,6 +250,7 @@ class dashboardModel
         return getRelativeTime($date);
     }
 
+    // fonction pour compter le nombre d'user inscrit
     public function countNumberUser()
     {
         try {
@@ -255,6 +266,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour afficher le nombre de conseil vendu
     public function countNumberAdviceSell()
     {
         try {
@@ -270,6 +282,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour compter les nombre de post
     public function countNumberPost()
     {
         try {
@@ -285,6 +298,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour compter le nombre de commentaires
     public function countNumberComment()
     {
         try {
@@ -300,6 +314,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour supprimer un user
     public function deleteUser($IdUser)
     {
         try {
@@ -370,6 +385,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour ajouter une catégories
     public function insertCategory($CategoryName)
     {
         try {
@@ -400,6 +416,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour récupérer et afficher les catégories
     public function getCategory()
     {
         try {
@@ -416,6 +433,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour supprimer une catégories
     public function deleteCategory($IdCategory)
     {
         try {
@@ -445,6 +463,7 @@ class dashboardModel
         }
     }
 
+    // pour fonction afficher toutes les demandes de remboursement
     public function getRequestForRefundData()
     {
         try {
@@ -519,14 +538,47 @@ class dashboardModel
         }
     }
 
+    // fonction pour valider la demande de remboursement
     public function validRequest($IdRequestForRefund)
     {
         try {
             $this->dsn->beginTransaction();
 
+            $stmt = $this->dsn->prepare("SELECT IdBuyer, IdSeller FROM RequestForRefund WHERE IdRequestForRefund = :IdRequestForRefund");
+            $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $IdBuyer = $result['IdBuyer'];
+            $IdSeller = $result['IdSeller'];
+
+            $stmt = $this->dsn->prepare("SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer");
+            $stmt->bindParam(':IdBuyer', $IdBuyer, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $buyerInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+            $FirstNameBuyer = $buyerInfo['FirstName'];
+            $LastNameBuyer = $buyerInfo['LastName'];
+
             $stmt = $this->dsn->prepare("UPDATE RequestForRefund SET IsValidRequest = 1 WHERE IdRequestForRefund = :IdRequestForRefund");
             $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
             $stmt->execute();
+
+            // Créer une notification pour le buyer
+            $MessageNotifBuyer = "Félicitations votre demande de remboursement de à été valider, pour toute question veuillez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdBuyer);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifBuyer);
+            $stmt4->execute();
+
+            // Créer une notification pour le seller
+            $MessageNotifSeller = "La demande de remboursement de de " . $FirstNameBuyer . " " . $LastNameBuyer . " à été accépter, pour toute question veulliez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdSeller);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifSeller);
+            $stmt4->execute();
 
             $this->dsn->commit();
             header("Location: /dashboard");
@@ -537,14 +589,47 @@ class dashboardModel
         }
     }
 
+    // fonction pour refuser la demande de remboursement
     public function refuseRequest($IdRequestForRefund)
     {
         try {
             $this->dsn->beginTransaction();
 
+            $stmt = $this->dsn->prepare("SELECT IdBuyer, IdSeller FROM RequestForRefund WHERE IdRequestForRefund = :IdRequestForRefund");
+            $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $IdBuyer = $result['IdBuyer'];
+            $IdSeller = $result['IdSeller'];
+
+            $stmt = $this->dsn->prepare("SELECT FirstName, LastName FROM User WHERE IdUser = :IdBuyer");
+            $stmt->bindParam(':IdBuyer', $IdBuyer, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $buyerInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+            $FirstNameBuyer = $buyerInfo['FirstName'];
+            $LastNameBuyer = $buyerInfo['LastName'];
+
             $stmt = $this->dsn->prepare("UPDATE RequestForRefund SET IsValidRequest = 2 WHERE IdRequestForRefund = :IdRequestForRefund");
             $stmt->bindParam(':IdRequestForRefund', $IdRequestForRefund, PDO::PARAM_INT);
             $stmt->execute();
+
+            // Créer une notification pour le buyer
+            $MessageNotifBuyer = "Votre demande de remboursement à été refuser, pour toute question veuillez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdBuyer);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifBuyer);
+            $stmt4->execute();
+
+            // Créer une notification pour le seller
+            $MessageNotifSeller = "La demande de remboursement de " . $FirstNameBuyer . " " . $LastNameBuyer . " à été refuser, pour toute question veulliez contactez un admin";
+            $addNotification = "INSERT INTO Notifications (IdUser, MessageNotif) VALUES (:IdUser, :MessageNotif)";
+            $stmt4 = $this->dsn->prepare($addNotification);
+            $stmt4->bindParam(':IdUser', $IdSeller);
+            $stmt4->bindParam(':MessageNotif', $MessageNotifSeller);
+            $stmt4->execute();
 
             $this->dsn->commit();
             header("Location: /dashboard");

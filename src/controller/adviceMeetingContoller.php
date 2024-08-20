@@ -43,7 +43,7 @@ class adviceMeetingController
             $IsAdmin = true;
         }
 
-        $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice);
+        $adviceData = $this->adviceMeetingModel->getBuyAdviceData($IdBuyAdvice, $userId);
         $adviceImages = [];
         $showSatisfactionForm = false;
         $showJoinButton = false;
@@ -60,11 +60,6 @@ class adviceMeetingController
             $adviceStartDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceStartTime'], $timezone);
             $adviceEndDateTime = new DateTime($adviceData['BuyAdviceDate'] . ' ' . $adviceData['BuyAdviceEndTime'], $timezone);
 
-            // Debugging output
-            error_log("Current DateTime: " . $currentDateTime->format('Y-m-d H:i:s'));
-            error_log("Advice Start DateTime: " . $adviceStartDateTime->format('Y-m-d H:i:s'));
-            error_log("Advice End DateTime: " . $adviceEndDateTime->format('Y-m-d H:i:s'));
-
             if ($adviceEndDateTime <= $currentDateTime) {
                 $showSatisfactionForm = true;
             }
@@ -72,6 +67,16 @@ class adviceMeetingController
             if ($adviceStartDateTime <= $currentDateTime && $adviceEndDateTime > $currentDateTime) {
                 $showJoinButton = true;
             }
+
+            $interval = $adviceEndDateTime->diff($currentDateTime);
+            if ($interval->h >= 24 || $interval->d > 0) {
+                // Si IsAdviceValid ou WantRefund est NULL, mettez à jour
+                if (is_null($adviceData['IsAdviceValid']) || is_null($adviceData['WantRefund'])) {
+                    $this->adviceMeetingModel->updateAdviceAfter24Hours($IdBuyAdvice);
+                }
+            }
+
+            $isRequestAlreadyMade = $this->adviceMeetingModel->isRequestForRefundExists($adviceData['IdBuyAdvice'], $adviceData['BuyerId'], $adviceData['SellerId']);
         }
 
         $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
@@ -90,6 +95,7 @@ class adviceMeetingController
             'unreadCount' => $unreadCount,
             'showSatisfactionForm' => $showSatisfactionForm,
             'showJoinButton' => $showJoinButton,
+            'isRequestAlreadyMade' => $isRequestAlreadyMade,
             'roomName' => 'adviceMeeting-' . $IdBuyAdvice
         ]);
     }
@@ -119,7 +125,7 @@ class adviceMeetingController
             $CommentNote = $_POST['CommentNote'];
             $IdBuyAdvice = $_POST['IdBuyAdvice'];
 
-            if ($this->adviceMeetingModel->insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)) {
+            if ($this->adviceMeetingModel->insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote, $IdBuyAdvice)) {
                 header('Location: /adviceMeeting-' . $IdBuyAdvice);
                 exit;
             } else {

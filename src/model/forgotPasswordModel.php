@@ -16,6 +16,7 @@ class forgotPasswordModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour stockée temporairement un token pour reset le mot de passse d'un user
     public function storeTempForgotPasswordData($email, $token)
     {
         try {

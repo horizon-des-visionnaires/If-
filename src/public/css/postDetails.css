@@ -65,8 +65,10 @@ a {
     flex-direction: row;
     text-decoration: none;
     justify-content: space-between;
+    align-items: center;
     color: #000;
     margin-left: -1em;
+    margin-bottom: 0.5em;
 }
 
 
@@ -82,6 +84,7 @@ a {
     display: flex;
     margin-top: -0.4em;
     font-family: 'Open Sans', sans-serif;
+    align-items: center;
 }
 
 .pro p{
@@ -97,7 +100,6 @@ a {
 
 #certifIcon {
     padding-left: 0.5em;
-    padding-top: 2.4em;
     color: #38B6FF;
 }
 
@@ -117,7 +119,7 @@ a {
 }
 
 .contentPost h2 {
-    margin-top: 1%;
+    margin-top: 1em;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -254,8 +256,6 @@ input[type=file] {
 .formDeletePostComment {
     margin-right: 1%;
 }
-.formDeletePostComment {
-    margin-top: 1.5em}
 
 #deleteButton {
     background-color: transparent;
@@ -302,7 +302,6 @@ input[type=file] {
     background-color: white;
     border: none;
     height: 100%;
-    padding-top: 1.5em;
 }
 
 .heart,
@@ -446,11 +445,11 @@ span {
 
 .notpro h2 {
     font-family: 'Open Sans', sans-serif;
-    margin-top: 1.2em;
+    font-size: 1.2em;
 }
 .pro h2 {
-    margin-top: 1.1em;
     font-family: 'Open Sans', sans-serif;
+    font-size: 1.2em;
 }
 
 /* Liens */
@@ -652,6 +651,11 @@ a {
 .changements.show {
     display: flex; /* Afficher le menu lorsque la classe 'show' est ajoutée */
 }
+
+.aucun_dispo{
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;;
+}
 /* Responsive Design */
 @media (max-width: 1024px) {
     .commentContainer, .postContainer{
@@ -683,16 +687,14 @@ a {
         font-size: 1.1em;
     }
     .user-info h2{
-        font-size: 1.2em;
+        font-size: 1em;
         font-family: 'Open Sans', sans-serif;
         margin-left: -0.5em;
     }
     .user-info .pro {
         margin-top: 0.2em;
     }
-    #certifIcon {
-        padding-top: 1.8em;
-    }
+
     .interaction span, .interaction p{
         font-size: 0.85em;
     }
@@ -719,7 +721,9 @@ a {
     .interaction p{
         padding-left: 0em;
     }
-
+    .user-picture {
+        height: 3em;
+    }
     .user-info{
         margin-left: -1em;
     }
@@ -836,9 +840,6 @@ a {
     }
     .user-info .pro {
         margin-top: 0.2em;
-    }
-    #certifIcon {
-        padding-top: 1.8em;
     }
     .contentComment {
         font-size: 0.8em;

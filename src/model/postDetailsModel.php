@@ -17,6 +17,7 @@ class postDetailsModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour afficher les données d'un post
     public function getPost($idPost)
     {
         $stmt = $this->dsn->prepare(
@@ -60,6 +61,7 @@ class postDetailsModel
         return $getPostData;
     }
 
+    // fonction pour afficher les commentaires lié a un post
     public function getComment($idPost)
     {
         $stmt = $this->dsn->prepare(
@@ -84,6 +86,7 @@ class postDetailsModel
         return $comments;
     }
 
+    // fonction  pour ajouter un commentaires
     public function addComment($idPost, $ContentComment, $IdUser)
     {
         try {
@@ -105,6 +108,7 @@ class postDetailsModel
         }
     }
 
+    // fonction pour supprimer un commentaires
     public function deleteComment($idComment, $idPost)
     {
         try {
@@ -126,6 +130,7 @@ class postDetailsModel
         }
     }
 
+    // fonction lié au post et au like/favoris appeler depuis le fichier utils.php
     public function getRelativeTime($date)
     {
         return getRelativeTime($date);
@@ -161,6 +166,7 @@ class postDetailsModel
         return getCommentCount($this->dsn, $idPost);
     }
 
+    // fonction pour modifier les données d'un post
     public function updatePostData($TitlePost, $ContentPost, $IdUser, $IdPost, $PicturesPost = [])
     {
         try {

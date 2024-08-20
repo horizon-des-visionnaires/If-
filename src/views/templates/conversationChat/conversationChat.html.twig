@@ -39,8 +39,9 @@
         </div>
         <p class="{% if ConversationMessages.IdSender == userId %}right {% endif %}">{{ ConversationMessages.ContentMessages }}</p>
         {% endfor %}
+        <div id="scroll-target"></div><!--permet de scroll jusqu'ici avec js-->
     </div>
-    <div id="scroll-target"></div><!--permet de scroll jusqu'ici avec js-->
+    
 
     {% if convChat is not empty %}
     <form action="/conversationChat-{{ convChat[0].IdConversations }}" method="post" class="poster">

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block header %}
-{% include 'header.html.twig' %} 
+{% include 'header.html.twig' %}
 {% endblock %}
 
 {% block body %}
@@ -74,6 +74,10 @@
 
     {% if showJoinButton %}
     <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')">Rejoindre la réunion</button>
+    {% else %}
+        {% if not showSatisfactionForm %}
+        <p>le boutton pour rejoindre la réunion apparaiteras quand l'heure de début auras commencer</p>
+        {% endif %}
     {% endif %}
 
     {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}
@@ -93,11 +97,12 @@
     {% endif %}
 
     {% if adviceData.IsAdviceValid == 1 and userId == adviceData.BuyerId %}
+    {% if not adviceData.hasUserNotated %}
     <h2>Veuillez mettre un avis</h2>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
         <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
         <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
-        <div class= "flex">
+        <div class="flex">
             <label for="Note">Mettre une note : </label>
             <select name="Note" id="Note" type="note" required>
                 <option value="1">1</option>
@@ -108,14 +113,19 @@
             </select>
         </div>
         <div style="position: relative;">
-            <textarea name="CommentNote" placeholder="Commentaire sur la consultation..."id="inputFieldDesc" required></textarea>
+            <textarea name="CommentNote" placeholder="Commentaire sur la consultation..." id="inputFieldDesc"
+                required></textarea>
         </div>
 
         <button type="submit" name="addNotations" id="inputField2">Valider</button>
     </form>
+    {% else %}
+    <p>Vous avez déjà donné un avis pour cette consultation.</p>
     {% endif %}
-    
+    {% endif %}
+
     {% if adviceData.IsAdviceValid == 2 and userId == adviceData.BuyerId %}
+    {% if not adviceData.hasUserNotated %}
     <h2>Veuillez mettre un avis</h2>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
         <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
@@ -131,18 +141,24 @@
         </select>
 
         <div style="position: relative;">
-            <textarea name="CommentNote" placeholder="Metter un commentaires à la personne"id="inputFieldDesc" required></textarea>
+            <textarea name="CommentNote" placeholder="Metter un commentaires à la personne" id="inputFieldDesc"
+                required></textarea>
         </div>
 
         <button type="submit" name="addNotations">Valider</button>
     </form>
+    {% else %}
+    <p>Vous avez déjà donné un avis pour cette consultation.</p>
+    {% endif %}
 
     {% if userId == adviceData.BuyerId and adviceData.WantRefund == null %}
     <div class="reminder-div">
         <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
             <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
             <div>
-                <label for="wantRefund">Au vu de votre non satifaction, <br> souhaiter vous faire une demande de remboursement ? <br> attention le remboursement n'est pas assuré vous devrez apporter des preuves</label>
+                <label for="wantRefund">Au vu de votre non satifaction, <br> souhaiter vous faire une demande de
+                    remboursement ? <br> attention le remboursement n'est pas assuré vous devrez apporter des
+                    preuves</label>
                 <select name="wantRefund" id="wantRefund" required>
                     <option value="1">Oui</option>
                     <option value="2">Non</option>
@@ -153,15 +169,17 @@
     </div>
     {% endif %}
 
-    {% if adviceData.WantRefund == 1 and userId == adviceData.BuyerId %}
-    <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des raisons/preuves (photos, ...)</p>
+    {% if adviceData.WantRefund == 1 and userId == adviceData.BuyerId and not isRequestAlreadyMade %}
+    <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des
+        raisons/preuves (photos, ...)</p>
     <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
         <input type="hidden" name="IdBuyer" value="{{ adviceData.BuyerId }}">
         <input type="hidden" name="IdSeller" value="{{ adviceData.SellerId }}">
 
         <div style="position: relative;">
-            <textarea name="ContentRequest" placeholder="contenue de la demande"id="inputFieldPromotion" required></textarea>
+            <textarea name="ContentRequest" placeholder="contenue de la demande" id="inputFieldPromotion"
+                required></textarea>
         </div>
 
         <input type="file" id="images" name="PictureRequestForRefund[]" multiple accept="image/*">
@@ -196,7 +214,7 @@
     const options = {
         roomName: roomName,
         parentNode: document.querySelector('#meet'),
-        interfaceConfigOverwrite: { 
+        interfaceConfigOverwrite: {
             filmStripOnly: false,
             SHOW_JITSI_WATERMARK: false
         },
@@ -206,7 +224,7 @@
         }
     };
     const api = new JitsiMeetExternalAPI(domain, options);
-    
+
     // Fin de l'appel après 1 heure
     setTimeout(() => {
         api.executeCommand('hangup');

@@ -16,6 +16,7 @@ class registerModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour inserer temporairement les info d'un user en attendant uen vérification de l'email
     public function storeTempRegisterData($firstName, $lastName, $email, $hashed_password, $token)
     {
         try {
@@ -34,6 +35,7 @@ class registerModel
         }
     }
 
+    // vérifier que l'email n'exist pas déjà
     public function emailExists($email)
     {
         try {

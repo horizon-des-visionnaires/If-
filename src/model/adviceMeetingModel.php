@@ -16,39 +16,42 @@ class adviceMeetingModel
         $this->dsn = connectDB();
     }
 
-    public function getBuyAdviceData($IdBuyAdvice)
+    // fonction pour récupérer les données d'un conseil acheter par un user
+    public function getBuyAdviceData($IdBuyAdvice, $userId = null)
     {
         try {
             $query = "
-            SELECT 
-                A.IdAdvice,
-                A.AdviceType,
-                A.AdviceDescription,
-                C.CategoryName,
-                BA.IdBuyAdvice,
-                BA.Date AS BuyAdviceDate,
-                BA.StartTime AS BuyAdviceStartTime,
-                BA.EndTime AS BuyAdviceEndTime,
-                BA.IsAdviceValid,
-                BA.WantRefund,
-                U1.IdUser AS SellerId,
-                U1.FirstName AS SellerFirstName,
-                U1.LastName AS SellerLastName,
-                U2.IdUser AS BuyerId,
-                U2.FirstName AS BuyerFirstName,
-                U2.LastName AS BuyerLastName,
-                U1.ProfilPicture AS SellerProfilPicture,
-                U2.ProfilPicture AS BuyerProfilPicture
-            FROM BuyAdvice BA
-            INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
-            INNER JOIN Category C ON A.IdCategory = C.IdCategory
-            INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
-            INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
-            WHERE BA.IdBuyAdvice = :idBuyAdvice
+        SELECT 
+            A.IdAdvice,
+            A.AdviceType,
+            A.AdviceDescription,
+            C.CategoryName,
+            BA.IdBuyAdvice,
+            BA.Date AS BuyAdviceDate,
+            BA.StartTime AS BuyAdviceStartTime,
+            BA.EndTime AS BuyAdviceEndTime,
+            BA.IsAdviceValid,
+            BA.WantRefund,
+            U1.IdUser AS SellerId,
+            U1.FirstName AS SellerFirstName,
+            U1.LastName AS SellerLastName,
+            U2.IdUser AS BuyerId,
+            U2.FirstName AS BuyerFirstName,
+            U2.LastName AS BuyerLastName,
+            U1.ProfilPicture AS SellerProfilPicture,
+            U2.ProfilPicture AS BuyerProfilPicture,
+            (SELECT COUNT(*) FROM Notations WHERE IdUser = :userId AND IdUserIsPro = U1.IdUser AND IdBuyAdvice = BA.IdBuyAdvice) AS hasUserNotated
+        FROM BuyAdvice BA
+        INNER JOIN Advice A ON BA.IdAdvice = A.IdAdvice
+        INNER JOIN Category C ON A.IdCategory = C.IdCategory
+        INNER JOIN User U1 ON A.IdUser = U1.IdUser -- Seller
+        INNER JOIN User U2 ON BA.IdBuyer = U2.IdUser -- Buyer
+        WHERE BA.IdBuyAdvice = :idBuyAdvice
         ";
 
             $stmt = $this->dsn->prepare($query);
             $stmt->bindParam(':idBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
             $stmt->execute();
 
             $getAdviceData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -70,6 +73,7 @@ class adviceMeetingModel
         }
     }
 
+    // function pour récupérer les images lié au conseil récupérer dans la fonction getBuyAdviceData
     public function getAdviceImages($IdAdvice)
     {
         try {
@@ -97,6 +101,7 @@ class adviceMeetingModel
         }
     }
 
+    // function pour modifié la satisfaction d'un achat par un user
     public function updateAdviceValidity($idBuyAdvice, $satisfaction)
     {
         try {
@@ -117,25 +122,28 @@ class adviceMeetingModel
         }
     }
 
-    public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote)
+    // fonction pour inserer la notations d'un user
+    public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote, $IdBuyAdvice)
     {
         try {
-            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro AND DATE(DateNotation) = CURDATE()";
+            $checkQuery = "SELECT COUNT(*) AS count FROM Notations WHERE IdUser = :IdUser AND IdUserIsPro = :IdUserIsPro AND IdBuyAdvice = :IdBuyAdvice";
             $checkStmt = $this->dsn->prepare($checkQuery);
             $checkStmt->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
             $checkStmt->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+            $checkStmt->bindParam(':IdBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
             $checkStmt->execute();
             $result = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
             if ($result['count'] > 0) {
                 return false;
             } else {
-                $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro)";
+                $insertNotations = "INSERT INTO Notations (Note, CommentNote, IdUser, IdUserIsPro, IdBuyAdvice) VALUES (:Note, :CommentNote, :IdUser, :IdUserIsPro, :IdBuyAdvice)";
                 $Notations = $this->dsn->prepare($insertNotations);
                 $Notations->bindParam(':Note', $Note, PDO::PARAM_INT);
                 $Notations->bindParam(':CommentNote', $CommentNote);
                 $Notations->bindParam(':IdUser', $IdUser, PDO::PARAM_INT);
                 $Notations->bindParam(':IdUserIsPro', $IdUserIsPro, PDO::PARAM_INT);
+                $Notations->bindParam(':IdBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
                 $Notations->execute();
                 return true;
             }
@@ -145,6 +153,7 @@ class adviceMeetingModel
         }
     }
 
+    // function pour inserrer une demande de remboursement
     public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund)
     {
         try {
@@ -195,6 +204,26 @@ class adviceMeetingModel
         }
     }
 
+    // fonction pour vérifier si un user n'a pas déja fait de demande de remboursement pour un conseil précis
+    public function isRequestForRefundExists($IdBuyAdvice, $IdBuyer, $IdSeller)
+    {
+        try {
+            $query = "SELECT COUNT(*) AS count FROM RequestForRefund WHERE IdBuyAdvice = :IdBuyAdvice AND IdBuyer = :IdBuyer AND IdSeller = :IdSeller";
+            $stmt = $this->dsn->prepare($query);
+            $stmt->bindParam(':IdBuyAdvice', $IdBuyAdvice, PDO::PARAM_INT);
+            $stmt->bindParam(':IdBuyer', $IdBuyer, PDO::PARAM_INT);
+            $stmt->bindParam(':IdSeller', $IdSeller, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result['count'] > 0;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    // fonction pour savoir si u user veux un remboursement
     public function updateAdviceWantRefund($idBuyAdvice, $wantRefund)
     {
         try {
@@ -206,6 +235,27 @@ class adviceMeetingModel
 
             $stmt = $this->dsn->prepare($query);
             $stmt->bindParam(':WantRefund', $wantRefund, PDO::PARAM_INT);
+            $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    // met fin au conseil apres 24h -> conseil valid et pas de remboursement
+    public function updateAdviceAfter24Hours($idBuyAdvice)
+    {
+        try {
+            $query = "
+        UPDATE BuyAdvice
+        SET IsAdviceValid = IF(IsAdviceValid IS NULL, 1, IsAdviceValid),
+            WantRefund = IF(WantRefund IS NULL, 2, WantRefund)
+        WHERE IdBuyAdvice = :idBuyAdvice
+        ";
+
+            $stmt = $this->dsn->prepare($query);
             $stmt->bindParam(':idBuyAdvice', $idBuyAdvice, PDO::PARAM_INT);
 
             return $stmt->execute();
