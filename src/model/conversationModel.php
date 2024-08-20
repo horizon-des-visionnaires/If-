@@ -16,6 +16,7 @@ class conversationModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour récupérer toute les conversation d'un user en fonction de son id
     public function getUsersByConversation($userId)
     {
         $stmt = $this->dsn->prepare("

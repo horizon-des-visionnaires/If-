@@ -16,6 +16,7 @@ class notificationModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour récupérer toutes les notification en fonctions de l'id d'un user
     public function getUserNotifications($userId)
     {
         try {
@@ -34,6 +35,7 @@ class notificationModel
         }
     }
 
+    // fonction pour marqué les notifications comme lues
     public function markNotificationAsRead($notificationId)
     {
         try {
@@ -52,6 +54,7 @@ class notificationModel
         }
     }
 
+    // fonction pour compter le nombre de notifications non lues
     public function getUnreadNotificationCount($userId)
     {
         try {
@@ -72,6 +75,7 @@ class notificationModel
         }
     }
 
+    // function pour récupérer les données d'un user en fonction de son id
     public function getUserInfo($userId)
     {
         try {
@@ -92,6 +96,7 @@ class notificationModel
         }
     }
 
+    // fonction pour supprimer les notifications marqué comme lue
     public function deleteExpiredNotifications()
     {
         try {

@@ -16,6 +16,7 @@ class resetPasswordModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour modifier le mot de passe apres avoir reçu le token dans un mail
     public function resetPassword($token, $hashed_password)
     {
         $query = "SELECT * FROM TempTokenResetPassword WHERE token = :token";

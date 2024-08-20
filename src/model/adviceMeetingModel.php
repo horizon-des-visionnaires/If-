@@ -16,6 +16,7 @@ class adviceMeetingModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour récupérer les données d'un conseil acheter par un user
     public function getBuyAdviceData($IdBuyAdvice, $userId = null)
     {
         try {
@@ -72,6 +73,7 @@ class adviceMeetingModel
         }
     }
 
+    // function pour récupérer les images lié au conseil récupérer dans la fonction getBuyAdviceData
     public function getAdviceImages($IdAdvice)
     {
         try {
@@ -99,6 +101,7 @@ class adviceMeetingModel
         }
     }
 
+    // function pour modifié la satisfaction d'un achat par un user
     public function updateAdviceValidity($idBuyAdvice, $satisfaction)
     {
         try {
@@ -119,6 +122,7 @@ class adviceMeetingModel
         }
     }
 
+    // fonction pour inserer la notations d'un user
     public function insertNotations($IdUserIsPro, $IdUser, $Note, $CommentNote, $IdBuyAdvice)
     {
         try {
@@ -149,6 +153,7 @@ class adviceMeetingModel
         }
     }
 
+    // function pour inserrer une demande de remboursement
     public function insertRequestForRefund($IdBuyAdvice, $ContentRequest, $IdBuyer, $IdSeller, $PictureRequestForRefund)
     {
         try {
@@ -199,6 +204,7 @@ class adviceMeetingModel
         }
     }
 
+    // fonction pour vérifier si un user n'a pas déja fait de demande de remboursement pour un conseil précis
     public function isRequestForRefundExists($IdBuyAdvice, $IdBuyer, $IdSeller)
     {
         try {
@@ -217,7 +223,7 @@ class adviceMeetingModel
         }
     }
 
-
+    // fonction pour savoir si u user veux un remboursement
     public function updateAdviceWantRefund($idBuyAdvice, $wantRefund)
     {
         try {
@@ -238,6 +244,7 @@ class adviceMeetingModel
         }
     }
 
+    // met fin au conseil apres 24h -> conseil valid et pas de remboursement
     public function updateAdviceAfter24Hours($idBuyAdvice)
     {
         try {

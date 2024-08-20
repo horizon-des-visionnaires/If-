@@ -16,6 +16,7 @@ class adviceModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour inserer un conseil
     public function insertAdviceData($AdviceType, $AdviceDescription, $IdUser, $DaysOfWeek, $StartTime, $EndTime, $PictureAdvice, $CategoryId)
     {
         try {
@@ -56,6 +57,7 @@ class adviceModel
         }
     }
 
+    // fonction pour afficher tous les conseil
     public function getAdviceAndUserInfo()
     {
         try {
@@ -91,6 +93,7 @@ class adviceModel
         }
     }
 
+    // fonction pour filtrer les conseil
     public function getFilteredAdvice($searchQuery = '', $sortBy = '', $order = 'DESC')
     {
         $query = $this->buildAdviceQuery($searchQuery, $sortBy, $order);
@@ -122,6 +125,7 @@ class adviceModel
         return $adviceData;
     }
 
+    // fonction pour filtrer les conseil
     private function buildAdviceQuery($searchQuery, $sortBy, $order)
     {
         $query = "SELECT a.AdviceType, a.IdAdvice, a.AdviceDescription, a.CreatedAt, a.DaysOfWeek, a.StartTime, a.EndTime, 
@@ -158,6 +162,7 @@ class adviceModel
         return $query;
     }
 
+    // fonction pour acheter un conseil
     public function buyAdvice($Date, $StartTime, $EndTime, $IdAdvice, $IdBuyer)
     {
         try {
@@ -202,6 +207,7 @@ class adviceModel
         }
     }
 
+    // fonction pour vérifier la durée et que le conseil ne sont pas réserver dans le passé
     private function validateReservation($Date, $StartTime, $EndTime)
     {
         $start = new \DateTime("$Date $StartTime");
@@ -224,6 +230,7 @@ class adviceModel
         return $errorMessage;
     }
 
+    // fonction pour récupérer les données d'un conseil en fonction de l'id
     private function getAdviceData($IdAdvice)
     {
         $queryAdvice = "SELECT DaysOfWeek, StartTime, EndTime, IdUser FROM Advice WHERE IdAdvice = :IdAdvice";
@@ -239,6 +246,7 @@ class adviceModel
         return $adviceData;
     }
 
+    // fonction pour vérifier qu ele jour et l'horaire sont renseigner par le pro
     private function checkAdviceAvailability($adviceData, $Date, $StartTime, $EndTime)
     {
         $start = new \DateTime("$Date $StartTime");
@@ -265,6 +273,7 @@ class adviceModel
         return $errorMessage;
     }
 
+    // fonction pour vérifier qu'un cosneil n'est pas acheter 2 fois au meme momment
     private function checkOverlappingReservations($IdAdvice, $Date, $StartTime, $EndTime, $IdBuyer)
     {
         $errorMessage = '';
@@ -304,6 +313,7 @@ class adviceModel
         return $errorMessage;
     }
 
+    // foncton pour inserer l'achat du conseil
     private function insertBuyAdvice($IdAdvice, $IdBuyer, $Date, $StartTime, $EndTime)
     {
         $insertBuyAdviceQuery = "INSERT INTO BuyAdvice (IdAdvice, IdBuyer, Date, StartTime, EndTime)
@@ -317,6 +327,7 @@ class adviceModel
         $stmtInsertBuyAdvice->execute();
     }
 
+    // fonction pour envoyer une notification au buyer et au seller
     private function sendNotification($adviceData, $IdBuyer, $Date, $StartTime, $EndTime)
     {
         $errorMessage = '';
@@ -356,6 +367,7 @@ class adviceModel
         return $errorMessage;
     }
 
+    // fonction pour compter le nombre de conseil vendu
     private function updateAdviceCounter()
     {
         try {
@@ -371,6 +383,7 @@ class adviceModel
         }
     }
 
+    // fonction pour supprimer un conseil
     function deleteAdvice($IdAdvice)
     {
         try {
@@ -409,6 +422,7 @@ class adviceModel
         }
     }
 
+    // fonction pour récupérer les catégories
     public function getCategory()
     {
         try {

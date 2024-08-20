@@ -16,6 +16,7 @@ class conversationChatModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour récupérer les messages d'une conversation
     public function getChat($IdConversations)
     {
         $stmt = $this->dsn->prepare(
@@ -41,6 +42,7 @@ class conversationChatModel
         return $getConvChatData;
     }
 
+    // fonction pour ajouter un message
     public function insertMessage($IdConversations, $IdUser, $messageContent)
     {
         try {
@@ -107,6 +109,7 @@ class conversationChatModel
         }
     }
 
+    //fonction pour récupérer le nom et prenom des 2 user dans la conversation
     public function getConversationDetails($IdConversations, $userId)
     {
         $stmt = $this->dsn->prepare(

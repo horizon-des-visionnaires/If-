@@ -17,6 +17,7 @@ class allPostModel
         $this->dsn = connectDB();
     }
 
+    // fonction pour ajouter un post
     public function addPost($TitlePost, $ContentPost, $PicturesPost, $IdUser)
     {
         try {
@@ -44,6 +45,7 @@ class allPostModel
         }
     }
 
+    // fonction pour filtrer et afficher le spost les post
     public function getFilteredPosts($searchQuery = '', $sortBy = '', $order = 'DESC')
     {
         $query = $this->buildQuery($searchQuery, $sortBy, $order);
@@ -64,6 +66,7 @@ class allPostModel
         return $getPostData;
     }
 
+    // fonction pour filtrer les post
     private function buildQuery($searchQuery, $sortBy, $order)
     {
         $query = "SELECT Post.IdPost, Post.TitlePost, Post.ContentPost, Post.DatePost, Post.Views,
@@ -96,6 +99,7 @@ class allPostModel
         return $query;
     }
 
+    // fonction pour récupérer toutes les donées lié a un post
     private function processPost(&$post)
     {
         $post['ProfilPicture'] = $this->processProfilePicture($post['ProfilPicture']);
@@ -106,11 +110,13 @@ class allPostModel
         $post['TotalLikes'] = $this->getTotalLikes($post['IdPost']);
     }
 
+    // fonction pour récupérer la photo de profile d'un user
     private function processProfilePicture($picture)
     {
         return $picture !== null ? base64_encode($picture) : '';
     }
 
+    // fonction pour récupérer les images lié a un post
     private function getPictures($idPost)
     {
         $stmtPictures = $this->dsn->prepare("SELECT PicturePost FROM PicturePost WHERE IdPost = :IdPost");
@@ -121,6 +127,7 @@ class allPostModel
         return array_map('base64_encode', $pictures);
     }
 
+    // fonction pour récupérer le nombre totale de like
     private function getTotalLikes($idPost)
     {
         $stmtLikes = $this->dsn->prepare("SELECT COUNT(*) AS TotalLikes FROM LikeFavorites WHERE IdPost = :IdPost AND IsLike = 1");
@@ -129,6 +136,7 @@ class allPostModel
         return $stmtLikes->fetch(PDO::FETCH_ASSOC)['TotalLikes'];
     }
 
+    // divers fonction lié au like/favoris/commentaire appeler depuis le fichier utils.php
     public function getRelativeTime($date)
     {
         return getRelativeTime($date);

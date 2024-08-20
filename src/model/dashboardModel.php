@@ -7,7 +7,6 @@ use PDOException;
 
 require_once __DIR__ . '/../database/connectDB.php';
 require_once __DIR__ . '/utils.php';
-require_once __DIR__ . '/utils.php';
 
 class dashboardModel
 {
@@ -16,9 +15,9 @@ class dashboardModel
     public function __construct()
     {
         $this->dsn = connectDB();
-        $this->dsn = connectDB();
     }
 
+    // fonction pour récupérer toutes les demande pour passez pro
     public function getAllRequestPassPro()
     {
         try {
@@ -59,6 +58,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour valider la demande pour passez pro
     public function requestValid($IdRequest)
     {
         try {
@@ -90,6 +90,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour récupérer une demande pour passez pro en fonction de l'id d'un user
     public function getRequestPassProById($IdRequest)
     {
         try {
@@ -131,6 +132,8 @@ class dashboardModel
 
         return false;
     }
+
+    // fonction pour envoyer un message à l'user pour lui dire le résultat de ça demande
     public function addUserMessage($IdUser, $message)
     {
         try {
@@ -144,6 +147,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour refuser la demande
     public function requestInvalid($IdRequest, $rejectReason)
     {
         try {
@@ -175,6 +179,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour afficher tous les user pro
     public function getUserPro()
     {
         try {
@@ -196,6 +201,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour supprimer le status de pro à un user
     public function deletePro($IdUser)
     {
         try {
@@ -214,6 +220,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour afficher tous les user
     public function getUser()
     {
         try {
@@ -243,6 +250,7 @@ class dashboardModel
         return getRelativeTime($date);
     }
 
+    // fonction pour compter le nombre d'user inscrit
     public function countNumberUser()
     {
         try {
@@ -258,6 +266,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour afficher le nombre de conseil vendu
     public function countNumberAdviceSell()
     {
         try {
@@ -273,6 +282,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour compter les nombre de post
     public function countNumberPost()
     {
         try {
@@ -288,6 +298,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour compter le nombre de commentaires
     public function countNumberComment()
     {
         try {
@@ -303,6 +314,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour supprimer un user
     public function deleteUser($IdUser)
     {
         try {
@@ -373,6 +385,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour ajouter une catégories
     public function insertCategory($CategoryName)
     {
         try {
@@ -403,6 +416,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour récupérer et afficher les catégories
     public function getCategory()
     {
         try {
@@ -419,6 +433,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour supprimer une catégories
     public function deleteCategory($IdCategory)
     {
         try {
@@ -448,6 +463,7 @@ class dashboardModel
         }
     }
 
+    // pour fonction afficher toutes les demandes de remboursement
     public function getRequestForRefundData()
     {
         try {
@@ -522,6 +538,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour valider la demande de remboursement
     public function validRequest($IdRequestForRefund)
     {
         try {
@@ -572,6 +589,7 @@ class dashboardModel
         }
     }
 
+    // fonction pour refuser la demande de remboursement
     public function refuseRequest($IdRequestForRefund)
     {
         try {
