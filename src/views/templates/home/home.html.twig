@@ -55,9 +55,7 @@
                         </div>
                         <span class="rating-count">({{ user.ratingCount }})</span>
                     </div>
-                    <div class="price">
-                        <span>10€</span>
-                    </div>
+                    
                 </div>
                 {#
                 <div class="promotion">
@@ -68,16 +66,16 @@
                     <div class="hover-text">{{ text }}</div>
                 </div>#}
             </a>
-
-            <div class="advice">
-                <h2>{{ user.AdviceType }}</h2>
-                {% set text = user.AdviceDescription %}
-                {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
-                {% set isTruncated = text|length > 60 %}
-                <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
-                <div class="hover-text">{{ text }}</div>
-            </div>
-
+            <a href="advice">
+                <div class="advice">
+                    <h2>{{ user.AdviceType }}</h2>
+                    {% set text = user.AdviceDescription %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    <div class="hover-text">{{ text }}</div>
+                </div>
+            </a>
             <!-- Swipe des images Advice -->
             {% if user.Pictures|length > 0 %}
             <div class="swipe">
@@ -89,7 +87,7 @@
                 <div class="swipe-inner">
                     {% for picture in user.Pictures %}
                     <div class="swipe-item {% if loop.first %}active{% endif %} portrait">
-                        <img src="data:image;base64,{{ picture }}" alt="Advice Image">
+                        <img src="data:image;base64,{{ picture }}" alt="Advice Image" >
                     </div>
                     {% endfor %}
                 </div>

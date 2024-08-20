@@ -296,6 +296,7 @@ a {
     justify-content: space-between; /* Espace entre les enfants */
     align-items: center; /* Alignement vertical des enfants */
     gap: 15px; /* Espacement entre les enfants */
+    justify-content: center;
 }
 .price{
     margin-right: 7%;

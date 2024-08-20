@@ -37,7 +37,7 @@
         <div class="swipe-inner">
             {% for picture in adviceImages %}
             <div class="swipe-item portrait active">
-                <img src="data:image;base64,{{ picture.PictureAdvice }}">
+                <img src="data:image;base64,{{ picture.PictureAdvice }}" class="icon">
             </div>
             {% endfor %}
         </div>
@@ -59,7 +59,7 @@
     <h2>Information sur le consulteur</h2>
     <p><strong>Nom:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
     {% if adviceData.BuyerProfilPicture %}
-    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture">
+    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture" id="icon">
     {% else %}
     <p>Pas de photo de profil disponible.</p>
     {% endif %}
@@ -67,7 +67,7 @@
     <h2>Information sur le consultant</h2>
     <p><strong>Nom:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
     {% if adviceData.SellerProfilPicture %}
-    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture">
+    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture" id="icon">
     {% else %}
     <p>Pas de photo de profil disponible.</p>
     {% endif %}

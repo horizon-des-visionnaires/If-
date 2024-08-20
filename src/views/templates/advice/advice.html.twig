@@ -15,7 +15,7 @@
 
 {% block body %}
 
-{% if errorMessages is not empty %}
+{% if errorMessages is not empty  %}
 <div class="alert">
     <ul>
         {% for message in errorMessages %}
@@ -164,7 +164,7 @@
             <div class="swipe-inner">
                 {% for picture in Advice.PicturesAdvice %}
                 <div class="swipe-item portrait active">
-                    <img src="data:image/jpeg;base64,{{ picture }}">
+                    <img src="data:image/jpeg;base64,{{ picture }}" class="icon">
                 </div>
                 {% endfor %}
             </div>
