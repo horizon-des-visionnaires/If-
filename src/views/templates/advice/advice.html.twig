@@ -43,9 +43,8 @@
             </select>
 
             <div class="availability-section">
-                <label>Disponibilités:</label>
-                <label for="dayOfWeek">Jours:</label>
-                <div>
+                <label for="dayOfWeek">Jours de disponibilités:</label>
+                <div class="daysweek">
                     <label><input type="checkbox" name="DaysOfWeek[]" value="Monday"> Lundi</label>
                     <label><input type="checkbox" name="DaysOfWeek[]" value="Tuesday"> Mardi</label>
                     <label><input type="checkbox" name="DaysOfWeek[]" value="Wednesday"> Mercredi</label>
@@ -122,7 +121,7 @@
             {% set text = Advice.ProfilPromotion %}
             {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
             {% set isTruncated = text|length > 60 %}
-            <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+            <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
             <div class="hover-text"> {{ text }}</div>
         </div>
 

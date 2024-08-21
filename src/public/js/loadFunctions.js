@@ -12,7 +12,9 @@ function loadNotifications() {
             if (newNotificationCount) {
                 notificationCountElement.textContent = newNotificationCount.textContent;
             } else {
-                notificationCountElement.textContent = '0'; // or remove the element
+                if (notificationCountElement) {
+                    notificationCountElement.textContent = '0'; // or remove the element
+                }
             }
         }
     };
@@ -56,11 +58,14 @@ function loadMessages() {
         if (xhr.status >= 200 && xhr.status < 300) {
             const parser = new DOMParser();
             const doc = parser.parseFromString(xhr.responseText, 'text/html');
-            const newMessages = doc.querySelector('#messages').innerHTML; // Sélectionne uniquement les nouveaux messages
-            const chat = document.getElementById('messages');
-            chat.innerHTML = newMessages; // Met à jour uniquement la partie des messages
-            const scrollTarget = document.getElementById('scroll-target');
-            chat.appendChild(scrollTarget); // Ajouter le cible de défilement
+            const newMessage = doc.querySelector('#messages');
+            if(newMessage){
+                const newMessages= newMessage.innerHTML; // Sélectionne uniquement les nouveaux messages
+                const chat = document.getElementById('messages');
+                chat.innerHTML = newMessages; // Met à jour uniquement la partie des messages
+                const scrollTarget = document.getElementById('scroll-target');
+                chat.appendChild(scrollTarget); // Ajouter le cible de défilement
+            }
         }
     };
     xhr.send();
@@ -68,3 +73,4 @@ function loadMessages() {
 
 // Charger les messages toutes les secondes
 setInterval(loadMessages, 1000);
+

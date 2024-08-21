@@ -117,7 +117,7 @@ h1 {
 .profil h1,
 .post h1, 
 .admin h1{
-    font-size: 1.7em;
+    font-size: 1.3em;
 }
 
 .profil:hover,
@@ -146,7 +146,7 @@ h1 {
 }
 
 #icon {
-    height: 6em;
+    height: 4em;
     border-radius: 50%;
 }
 #icon3 {
