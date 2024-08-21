@@ -68,7 +68,7 @@
                     {% set text =  Post.ProfilPromotion %}
                     {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
                     {% set isTruncated = text|length > 60 %}
-                    <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
                     {# <div class="hover-text">{{ text }}</div> #}
                 </div> 
                 {% endif %}
@@ -273,11 +273,11 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
-            <input type="text" name="TitlePost" placeholder="{{ Post.TitlePost }}" id="inputField">
+            <input type="text" name="TitlePost" placeholder="{{ Post.TitlePost }}" id="inputField" value="{{ Post.TitlePost }}">
 
-            <textarea name="ContentPost" placeholder="{{ Post.ContentPost }}" id="inputFieldDesc"></textarea>
+            <textarea name="ContentPost" placeholder="{{ Post.ContentPost }}" id="inputFieldDesc">{{ Post.ContentPost }}</textarea>
 
-            <label for="PicturePost">Ajout d'images (Max 6):</label>
+            <label for="PicturePost">Ajout d'images (Max. 6):</label>
             <input type="file" name="PicturePost[]" id="PicturePost" accept="image/*" multiple>
 
             <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">

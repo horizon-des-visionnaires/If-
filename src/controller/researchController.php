@@ -14,14 +14,12 @@ class researchContoller
     protected $twig;
     private $loader;
     private $researchModel;
-    private $notificationModel;
 
     public function __construct()
     {
         $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
         $this->twig = new Environment($this->loader);
         $this->researchModel = new \research\researchModel();
-        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function research()
@@ -42,7 +40,7 @@ class researchContoller
 
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
         $userData = $this->researchModel->getFilteredProUsers($searchQuery);
-        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
 
         echo $this->twig->render('research/research.html.twig', [
             'isConnected' => $isConnected,
@@ -50,7 +48,6 @@ class researchContoller
             'IsAdmin' => $IsAdmin,
             'userData' => $userData,
             'searchQuery' => $searchQuery,
-            'unreadCount' => $unreadCount
         ]);
     }
 }

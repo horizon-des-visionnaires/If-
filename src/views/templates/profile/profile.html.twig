@@ -47,7 +47,8 @@
                 </div>
                 {% endif %}
             </div>
-            <div class="flex">
+            <div class="flex2">
+            
                 {% if isConnected and userId != user.IdUser %}
                 <div class="message">
                     <form action="/profile-{{ user.IdUser }}" method="post">
@@ -58,7 +59,7 @@
                     </form>
                 </div>
                 {% endif %}
-                <div>
+                <div class="flex">
                     <div class="EditButton">
                         {% if isConnected and userId == user.IdUser %}
                         {% if userId == user.IdUser and user.IsPro == 0 %}
@@ -71,12 +72,14 @@
                         </div>
                         {% endif %}
                     </div>
+                    {% if isConnected and userId == user.IdUser %}
+                    <button class="filter beautiful-button" id="toggleEditButton2">
+                            <img src="/../public/image/icon/edit_profil.png">
+                    </button>
+                    {% endif %}
                 </div>
-                {% if isConnected and userId == user.IdUser %}
-                <button class="filter" id="toggleEditButton2">
-                        <img src="/../public/image/icon/edit_profil.png">
-                </button>
-                {% endif %}
+                
+                <button id="copyLinkButton"  class="beautiful-button"><img class="share" src="/../public/image/icon/share.png"></button>
             </div>
         </div>
 
@@ -88,14 +91,14 @@
         {% if user.IsPro == 1 %}
         <div class="promotion">
             <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
-            <p>Je peux t'aider à {{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
+            <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
         </div>
         {% endif %}
         <div class="description">
             <p>{{ user.ProfilDescription | nl2br }}</p>
         </div>
     </div>
-    <button id="copyLinkButton">Partager le profile</button>
+    
 
     
     <div class="button-container">
@@ -128,14 +131,14 @@
         </div>
         <span class="close">&times;</span>
         <form action="/profile-{{ user.IdUser }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
-            <input type="text" name="FirstName" placeholder="{{ user.FirstName }}" id="inputField">
+            <input type="text" name="FirstName" placeholder="{{ user.FirstName }}" id="inputField" value="{{ user.FirstName }}">
 
-            <input type="text" name="LastName" placeholder="{{ user.LastName }}" id="inputField">
+            <input type="text" name="LastName" placeholder="{{ user.LastName }}" id="inputField" value="{{ user.LastName }}">
 
             {% if user.Location == null %}
             <input type="text" name="Location" placeholder="Localisation (ex: france, espagne, ...)" id="inputField">
             {% else %}
-            <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField">
+            <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField" value="{{ user.Location }}">
             {% endif %}
             {% if user.IsPro == 1 %}
             {% if user.ProfilPromotion == null %}
@@ -146,8 +149,8 @@
             </div>
             {% else %}
             <div style="position: relative;">
-                <textarea name="ProfilPromotion" placeholder="Je peux t'aider à {{ user.ProfilPromotion }}"
-                    id="inputFieldPromotion" maxlength="100"></textarea>
+                <textarea name="ProfilPromotion" placeholder="{{ user.ProfilPromotion }}"
+                    id="inputFieldPromotion" maxlength="100">{{ user.ProfilPromotion }}</textarea>
                 <div id="charCount2" class="char-count">0/100</div>
             </div>
             {% endif %}
@@ -161,7 +164,7 @@
             {% else %}
             <div style="position: relative;">
                 <textarea name="ProfilDescription" placeholder="{{ user.ProfilDescription }}" id="inputFieldDesc"
-                    maxlength="255"></textarea>
+                    maxlength="255">{{ user.ProfilDescription }}</textarea>
                 <div id="charCount" class="char-count">0/255</div>
             </div>
             {% endif %}
