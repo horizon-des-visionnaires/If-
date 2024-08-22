@@ -15,6 +15,13 @@
 {% block body %}
 <div class="advice-meeting-container">
     {% if adviceData %}
+    {% if showJoinButton %}
+    <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')" class="beautiful-button">Rejoindre la réunion</button>
+    {% else %}
+        {% if not showSatisfactionForm %}
+        <p>Le bouton pour rejoindre la réunion apparaîtra lorsque l'heure de début aura commencé.</p>
+        {% endif %}
+    {% endif %}
     <h1>Détails de la Consultation</h1>
 
     <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
@@ -72,13 +79,6 @@
     <p>Pas de photo de profil disponible.</p>
     {% endif %}
 
-    {% if showJoinButton %}
-    <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')">Rejoindre la réunion</button>
-    {% else %}
-        {% if not showSatisfactionForm %}
-        <p>le boutton pour rejoindre la réunion apparaiteras quand l'heure de début auras commencer</p>
-        {% endif %}
-    {% endif %}
 
     {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}
     <div class="reminder-div">
@@ -117,7 +117,7 @@
                 required></textarea>
         </div>
 
-        <button type="submit" name="addNotations" id="inputField2">Valider</button>
+        <button type="submit" name="addNotations" id="inputField2">Valider la Notation</button>
     </form>
     {% else %}
     <p>Vous avez déjà donné un avis pour cette consultation.</p>
@@ -141,11 +141,11 @@
         </select>
 
         <div style="position: relative;">
-            <textarea name="CommentNote" placeholder="Metter un commentaires à la personne" id="inputFieldDesc"
+            <textarea name="CommentNote" placeholder="Mettre un commentaire sur le Consultant" id="inputFieldDesc"
                 required></textarea>
         </div>
 
-        <button type="submit" name="addNotations">Valider</button>
+        <button type="submit" name="addNotations" id="inputField2">Valider la Notation</button>
     </form>
     {% else %}
     <p>Vous avez déjà donné un avis pour cette consultation.</p>
@@ -156,12 +156,13 @@
         <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
             <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
             <div>
-                <label for="wantRefund">Au vu de votre non satifaction, <br> souhaiter vous faire une demande de
-                    remboursement ? <br> attention le remboursement n'est pas assuré vous devrez apporter des
-                    preuves</label>
+                <label for="wantRefund">Au vu de votre insatisfaction, 
+                    <br> souhaitez-vous faire une demande de remboursement ? 
+                    <br> Attention, le remboursement n'est pas assuré ; vous devrez fournir des preuves.
+                </label>
                 <select name="wantRefund" id="wantRefund" required>
-                    <option value="1">Oui</option>
                     <option value="2">Non</option>
+                    <option value="1">Oui</option>
                 </select>
             </div>
             <button type="submit" name="wantRefundButton" id="inputField2">Valider</button>
@@ -178,13 +179,13 @@
         <input type="hidden" name="IdSeller" value="{{ adviceData.SellerId }}">
 
         <div style="position: relative;">
-            <textarea name="ContentRequest" placeholder="contenue de la demande" id="inputFieldPromotion"
+            <textarea name="ContentRequest" placeholder="Contenue de la Réclamation" id="inputFieldPromotion"
                 required></textarea>
         </div>
 
         <input type="file" id="images" name="PictureRequestForRefund[]" multiple accept="image/*">
 
-        <button type="submit" name="addRequestForRefund" id="inputField2">envoyer la demande</button>
+        <button type="submit" name="addRequestForRefund" id="inputField2">Soumettre le dossier</button>
     </form>
     {% endif %}
     {% endif %}

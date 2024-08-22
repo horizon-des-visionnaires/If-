@@ -20,6 +20,17 @@
     padding: 1px 20px;
     text-align: center;
 }
+.refundRequest p
+ {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.refundRequest p img
+ {
+    margin-left: 10px;
+}
 .buyerInfo, .sellerInfo {
     border-bottom: 1px solid rgb(182, 182, 182);
 }

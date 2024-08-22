@@ -121,7 +121,7 @@
             {% set text = Advice.ProfilPromotion %}
             {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
             {% set isTruncated = text|length > 60 %}
-            <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+            <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
             <div class="hover-text"> {{ text }}</div>
         </div>
 
@@ -148,7 +148,7 @@
                 </p>
                 <p>de {{ Advice.StartTime }} à {{ Advice.EndTime }}</p>
                 <p></p>
-                <p>prix : 10 €</p>
+                <p>prix : 29.99 €</p>
             </ul>
 
         </div>

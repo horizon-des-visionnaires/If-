@@ -182,6 +182,7 @@ nav li {
     align-items: center;
     border: 2px solid #3c6650;
     margin-top: 4px;
+    justify-content: center;
 }
 
 /* Effet de survol pour les liens du menu */
