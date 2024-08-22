@@ -3,7 +3,7 @@
 require_once 'database/connectDB.php';
 require 'vendor/autoload.php';
 
-$dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
+$dsn = new PDO("mysql:host=db5016086482.hosting-data.io;dbname=dbs13100519", "dbu4818780", "kw9chr98Xn7ygXV5Fp");
 $dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $createTableUser = ("CREATE TABLE IF NOT EXISTS

@@ -2,9 +2,9 @@
 
 function connectDB()
 {
-    $dsn = 'mysql:host=mysql;dbname=ifa_database';
-    $username = 'ifa_user';
-    $password = 'ifa_password';
+    $dsn = 'mysql:host=db5016086482.hosting-data.io;dbname=dbs13100519';
+    $username = 'dbu4818780';
+    $password = 'kw9chr98Xn7ygXV5Fp';
 
     try {
         $pdo = new PDO($dsn, $username, $password);
