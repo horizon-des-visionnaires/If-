@@ -1,40 +1,85 @@
 <?php
 
-namespace home; // Déclare le namespace pour ce fichier.
+namespace home;
 
-use PDO; // Importe la classe PDO pour la connexion à la base de données.
-use Twig\Environment; // Importe la classe Environment de Twig pour gérer l'environnement de templates.
-use Twig\Loader\FilesystemLoader; // Importe la classe FilesystemLoader de Twig pour charger les templates à partir du système de fichiers.
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
-require 'vendor/autoload.php'; // Charge automatiquement les classes installées via Composer.
+require 'vendor/autoload.php';
 
-require_once __DIR__ . '/../model/homeModel.php'; // Inclut le fichier contenant la classe homeModel.
+require_once __DIR__ . '/../model/homeModel.php';
 
 class homeController
 {
-    protected $twig; // Propriété pour l'objet Twig.
-    private $loader; // Propriété pour le loader de Twig.
-    private $homeModel; // Propriété pour l'objet homeModel.
-    private $dsn; // Propriété pour l'objet PDO (connexion à la base de données).
+    protected $twig;
+    private $loader;
+    private $homeModel;
+    private $notificationModel;
 
     public function __construct()
     {
-        $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates'); // Initialise le loader de Twig avec le répertoire des templates.
-        $this->twig = new Environment($this->loader); // Initialise l'environnement Twig avec le loader.
-        $this->homeModel = new \home\homeModel(); // Crée une instance de la classe homeModel.
-    }
-
-    public function connectDB()
-    {
-        // Crée une nouvelle connexion PDO à la base de données MySQL.
-        $this->dsn = new PDO("mysql:host=mysql;dbname=ifa_database", "ifa_user", "ifa_password");
-        $this->dsn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Définit le mode d'erreur de PDO pour lancer des exceptions.
+        $this->loader = new FilesystemLoader(__DIR__ . '/../views/templates');
+        $this->twig = new Environment($this->loader);
+        $this->homeModel = new \home\homeModel();
+        $this->notificationModel = new \notification\notificationModel();
     }
 
     public function home()
     {
-        // Utilise Twig pour rendre le template 'home/home.html.twig' et l'affiche.
-        echo $this->twig->render('home/home.html.twig');
+        session_start();
+
+        $isConnected = false;
+        $userId = null;
+        if (isset($_SESSION['IdUser'])) {
+            $isConnected = true;
+            $userId = $_SESSION['IdUser'];
+        }
+
+        $IsAdmin = false;
+        if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin'] == 1) {
+            $IsAdmin = true;
+        }
+
+        $this->logOut();
+        $userProData = $this->homeModel->get5UserProRandom();
+        $randomPosts = $this->homeModel->get5RandomPostsFromTop10();
+        $userAdmin = $this->homeModel->getUserAdmin();
+        $this->getConversationData();
+
+        foreach ($userProData as &$user) {
+            $ratingData = $this->homeModel->getAverageRating($user['IdUser']);
+            $user['averageNote'] = $ratingData['averageNote'];
+            $user['ratingCount'] = $ratingData['ratingCount'];
+        }
+
+        $unreadCount = $this->notificationModel->getUnreadNotificationCount($userId);
+
+        echo $this->twig->render('home/home.html.twig', [
+            'isConnected' => $isConnected,
+            'userId' => $userId,
+            'IsAdmin' => $IsAdmin,
+            'userProData' => $userProData,
+            'randomPosts' => $randomPosts,
+            'userAdmin' => $userAdmin,
+            'unreadCount' => $unreadCount
+        ]);
+    }
+
+    public function logOut()
+    {
+        if (isset($_POST['logOut'])) {
+            session_unset();
+            header("Location: /login");
+        }
+    }
+
+    public function getConversationData()
+    {
+        if (isset($_POST['conversation'])) {
+            $idUser_1 = $_POST['idUser_1'];
+            $IdUser_2 = $_SESSION['IdUser'];
+
+            $this->homeModel->addConversation($idUser_1, $IdUser_2);
+        }
     }
 }
-

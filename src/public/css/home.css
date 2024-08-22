@@ -1,3 +1,549 @@
-p {
+/* Palette de couleurs */
+:root {
+    --primary-color: #1DBF73;
+    --secondary-color: #404145;
+    --background-color: #f7f7f7;
+    --text-color: #1C1C1C;
+}
+
+/* Style global */
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-family: 'Poppins', Arial, sans-serif;
+    text-align: center;
+    color: var(--secondary-color);
+}
+.title {
+    margin-top: 8.5em;
+    margin-left: 20%;
+    margin-right: 20%;
+    text-align: center;
+    color: #ffffff; /* Text color */
+    background: linear-gradient(to right, #416f45 0%, #1DBF73 100%); /* Gradient background */
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite; /* Background animation */
+    padding: 4.5em 1em; /* Padding adjusted for better responsiveness */
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden;   
+}
+
+@keyframes gradientBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.title h1 {
+    font-size: 3em;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0;
+    animation: textFadeIn 3s ease forwards;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Text shadow */
+    color: #ffffff; /* Text color for better contrast */
+}
+
+@keyframes textFadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+
+.title img {
+    width: 100%;
+    height: auto;
+    opacity: 0.15;
+
+}
+
+
+
+/* Profil et Post Containers */
+.ProfilContainer,
+.postContainer ,
+.adminContainer{
+    margin-top: 4em;
+    padding: 1em 2em;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Disposition en grille */
+.allProfil,
+.allPosts ,
+.allAdmin {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28em, 1fr));
+    gap: 1em;
+    justify-items: center;
+    width: 100%;
+}
+
+/* Style des Profils et Posts */
+.profil,
+.post, 
+.admin {
+    padding: 1em;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    width: 25em;
+}
+.post{
+    display: flex;
+    flex-direction: column;
+}
+.head{
+    display: flex;
+    justify-content: space-between;
+}
+.admin button {
+    border:none;
+    background-color: var(--background-color);
+}
+
+.profil h1,
+.post h1, 
+.admin h1{
+    font-size: 1.3em;
+}
+
+.profil:hover,
+.post:hover {
+    transform: scale(1.02);
+}
+
+.profilPictureName {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+#certifIcon {
+    padding-left: 0.5em;
+    color: #38B6FF;
+}
+
+.profilPictureName h1,
+.user-details h1 {
+    padding-left: 0.5em;
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    color: var(--secondary-color);
+    display: flex;
+}
+
+#icon {
+    height: 4em;
+    border-radius: 50%;
+}
+#icon3 {
+    height: 3em;
+    border-radius: 50%;
+}
+
+.adminContainer h1{
+    font-size: 2em;
+}
+.admin h1{
+    font-size: 1.5em;
+}
+
+.promotion p,
+.description p,
+.contentPost p {
+    font-size: 1em;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--secondary-color);
+}
+
+.contentPost h2 {
+    text-align: center;
+    margin-top: 1em;
+    font-size: 1.3em;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--secondary-color);
+}
+
+
+.hover-text {
+    position: absolute;
+    top: 20%; /* Positionner au-dessus de l'élément */
+    left: 50%;
+    transform: translateX(-50%); /* Centrer horizontalement */
+    background-color: #333;
+    color: #fff;
+    padding: 0.5em;
+    border-radius: 4px;
+    white-space: pre-wrap; /* Permet les retours à la ligne dans le texte */
+    max-width: 400px; /* Ajuster la largeur pour le texte */
+    word-wrap: break-word; /* Permet de couper les mots longs */
+    visibility: hidden; /* Masquer par défaut */
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-align: center; /* Alignement du texte à gauche */
+    z-index: 2;
+}
+
+/* Apparition du texte au survol */
+.promotion:hover .hover-text, .contentPost:hover .hover-text {
+    visibility: visible; /* Rendre visible */
+    opacity: 1; /* Rendre opaque */
+}
+
+
+/* Liens */
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* Boutons */
+.beautiful-button {
+    display: inline-block;
+    background: var(--primary-color);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 28px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    width: 200px; /* Taille fixe */
+    
+    height: 35px;
+    align-self: center;
+}
+
+.beautiful-button:hover {
+    background: #1a9b6e; /* Couleur alternative au survol, légèrement plus foncée */
+    transform: translateY(-2px);
+}
+
+.beautiful-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Détails utilisateur et contenu des posts */
+.user-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.name1 {
+    color: var(--primary-color);
+}
+
+.name2 {
+    color: var(--secondary-color);
+}
+
+
+
+
+.post .name1, .admin .name1{
+    font-size: 1.2em;
+}
+/* Style pour les étoiles de notation */
+.rating {
+    display: flex;
+    align-items: center;
+}
+
+
+.stars {
+    display: flex;
+    font-size: 1.2em; 
+    color: #febb3e;
+}
+.ratings{
+    margin-right: 5px;
+    color: #febb3e;
+}
+.stars .fa-star,
+.stars .fa-star-half-alt,
+.stars .fa-stars {
+    margin-right: 2px; /* Espacement entre les étoiles */
+}
+.stars .fa-star-half-alt {
+    color: #febb3e;
+}
+.rating-count {
+    font-size: 1em;
+    color: #000000;
+}
+/* Conteneur principal */
+.advice-number {
+    display: flex;
+    justify-content: space-between; /* Espace entre les enfants */
+    align-items: center; /* Alignement vertical des enfants */
+    gap: 15px; /* Espacement entre les enfants */
+    justify-content: center;
+}
+.price{
+    margin-right: 7%;
+}
+.advice{
+    word-wrap: break-word;
+}
+
+.swipe-item.portrait , .swipe-item2.portrait2 {
+    height: 50vh;
+    width: auto;
+}
+.swipe-item2.portrait2{
+    height: 20vh;
+}
+
+/* Styles pour le conteneur swipe */
+.swipe, .swipe2 {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 80vh; 
+    margin-top: 1em;
+}
+.swipe2 {
+    max-height: 32vh;
+}
+
+.swipe-inner, .swipe-inner2 {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Conteneur de chaque image dans le swipe */
+.swipe-item, .swipe-item2 {
+    position: relative;
+    width: 100%; /* Assure que l'image prend toute la largeur disponible */
+    height: auto;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    display: none;
+    overflow: hidden; /* Empêche l'image de dépasser du conteneur */
+    
+}
+
+/* Conteneur actif (visible) */
+.swipe-item.active , .swipe-item2.active {
+    display: flex;
+    opacity: 1;
+    align-items: center;
+}
+
+/* Images dans le swipe */
+.swipe-item img , .swipe-item2 img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Garde les proportions de l'image */
+    border-radius: 5%; /* Coins arrondis pour l'image */
+    display: block; /* Supprime les espaces blancs en bas de l'image */
+}
+
+.swipe-control-prev, .swipe-control-next, .swipe-control-prev2, .swipe-control-next2 {
+    background-color: rgba(225, 225, 225, 0.77); /* Assurez-vous qu'ils sont visibles */
+    border: none;
+    color: rgb(109, 109, 109);
+    font-size: 1em;
+    padding: 0.75em 1em;
+    cursor: pointer;
+    position: absolute; /* Positionner les boutons */
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    z-index: 10; /* Assurez-vous qu'ils sont au-dessus des autres éléments */
+    opacity: 0;
+}
+
+.swipe-control-prev, .swipe-control-prev2 {
+    left: 1%;
+}
+
+.swipe-control-next, .swipe-control-next2 {
+    right: 1%;
+}
+
+.swipe:hover .swipe-control-prev, .swipe:hover .swipe-control-next, .swipe2:hover .swipe-control-prev2, .swipe2:hover .swipe-control-next2 {
+    opacity: 1;
+}
+
+/* Bullets */
+.bullets {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 1;
+}
+
+.bullet {
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.bullet.active {
+    background-color: #333;
+}
+
+#icon2 {
+    height: 2em;
+
+}
+.icon_commentaire{
+    width: 16px;
+    height: auto;
+}
+i.fas {
     color: red;
 }
+#interact {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Montserrat', sans-serif;
+    justify-content: space-between; /* Répartit les éléments de manière égale */
+    align-items: center; /* Centre verticalement les éléments */
+    font-size: 1em;
+    padding-top: 0.5em;
+    width: 100%;
+    padding-right: 1em;
+}
+#interact span{
+    margin-left: 5px;
+}
+.interaction {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Montserrat', sans-serif;
+    justify-content: space-between; /* Répartit les éléments de manière égale */
+    align-items: center; /* Centre verticalement les éléments */
+    font-size: 1em;
+    padding-top: 0.5em;
+    padding-left: 3em;
+}
+#copyLinkButton{
+    background: var(--background-color);
+    border: none;
+    margin-top: 0.7em;
+}
+@media (max-width: 540px) {
+    .title{
+        margin-top: 6em;
+    }
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 510px) {
+
+    .title h1 {
+        font-size: 2em;
+        width:fit-content;
+    }
+    .title{
+        padding: 3.5em 1em;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .ProfilContainer,
+    .postContainer ,
+    .adminContainer{
+        padding: 1em 0.5em;
+        font-size: 0.9em;
+    }
+
+    .allProfil,
+    .allPosts ,
+    .allAdmin {     
+        grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+        justify-items: center;
+    }
+}
+
+@media (max-width: 410px) {
+    .title h1 {
+        font-size: 1.8em;
+    }
+    .title{
+        padding: 3em 1em;
+    }
+    .allProfil,
+    .allPosts ,
+    .allAdmin {     
+        grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+    }
+    .profil,
+    .post, 
+    .admin {
+        padding: 1em 0.5em;
+        width: 23em;
+    }
+    .profil h1,
+    .post h1, 
+    .admin h1{
+        font-size: 1.5em;
+    }
+    #icon {
+        height: 4em;
+    }
+    .interaction{
+        padding-left: 0em;
+    }
+    
+}
+
+@media (max-width: 345px) {
+    .title h1 {
+        font-size: 1.6em;
+    }
+    .profil,
+    .post, 
+    .admin {
+        padding: 1em 0.5em;
+        width: 20em;
+    }
+    .profil h1,
+    .post h1, 
+    .admin h1{
+        font-size: 1.5em;
+    }
+    #icon {
+        height: 3.7em;
+    }
+}
+
+
+

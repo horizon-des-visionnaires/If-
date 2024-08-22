@@ -1,20 +1,229 @@
 {% extends "default.html.twig" %}
 
-{% block title %}home
-{% endblock %}
+{% block title %}Page d'Accueil de IFÀ{% endblock %}
 
 {% block stylesheet %}
 <link href="/../public/css/home.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 {% endblock %}
 
 {% block header %}
+{% include 'header.html.twig' %}
 {% endblock %}
 
 {% block body %}
-<p>test link</p>
+<div class="title">
+    <h1> L'éducation financière <br> accessible à tous</h1>
+    <!--<img id="icon" src="/../public/image/home.css">-->
+</div>
+<div class="ProfilContainer">
+    <h1>Découvrez des professionnels</h1>
+    <div class="allProfil">
+        {% for user in userProData %}
+
+        <div class="profil">
+            <a href="profile-{{ user.IdUser }}">
+                <div class="profilPictureName">
+                    {% if user.ProfilPicture == null %}
+                    <img id="icon" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                    <img id="icon" src="data:image;base64,{{ user.ProfilPicture }}" alt="icon">
+                    {% endif %}
+                    <h1>{{ user.FirstName }} {{ user.LastName }}</h1> <i id="certifIcon"
+                        class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="advice-number">
+                    <div class="rating">
+                        {% set rating = user.averageNote|number_format(1) %}
+                        <span class="ratings">{{ rating }} </span>
+                        <div class="stars">
+                            {% set fullStars = rating|round(0, 'floor') %}
+                            {% set decimalPart = rating - fullStars %}
+                            {% set hasHalfStar = decimalPart >= 0.5 %}
+                
+                            {% for i in 1..5 %}
+                                {% if i <= fullStars %} 
+                                <i class="fa fa-star"></i>
+                                {% elseif i == fullStars + 1 and hasHalfStar %}
+                                <i class="fa fa-star-half-alt"></i>
+                                {% else %}
+                                <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <span class="rating-count">({{ user.ratingCount }})</span>
+                    </div>
+                    
+                </div>
+                {#
+                <div class="promotion">
+                    {% set text = user.ProfilPromotion %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    <div class="hover-text">{{ text }}</div>
+                </div>#}
+            </a>
+            <a href="advice">
+                <div class="advice">
+                    <h2>{{ user.AdviceType }}</h2>
+                    {% set text = user.AdviceDescription %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    <div class="hover-text">{{ text }}</div>
+                </div>
+            </a>
+            <!-- Swipe des images Advice -->
+            {% if user.Pictures|length > 0 %}
+            <div class="swipe">
+                {% if user.Pictures|length > 1 %}
+                <button class="swipe-control-prev">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in user.Pictures %}
+                    <div class="swipe-item {% if loop.first %}active{% endif %} portrait">
+                        <img src="data:image;base64,{{ picture }}" alt="Advice Image" >
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if user.Pictures|length > 1 %}
+                <button class="swipe-control-next">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(user.Pictures|length - 1) %}
+                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        {% endfor %}
+        <a href="/advice" class="beautiful-button">Découvrir d'autres professionnels</a>
+    </div>
+</div>
+
+<div class="postContainer">
+    <h1>Publications populaires</h1>
+    <div class="allPosts">
+        {% for post in randomPosts %}
+        {% if post.Pictures is not empty %}
+        <div class="post">
+            <a href="postDetails-{{ post.IdPost }}">
+                <div class="user-details">
+                    {% if post.ProfilPicture == null %}
+                    <img id="icon3" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                    <img id="icon3" src="data:image;base64,{{post.ProfilPicture}}" alt="icon">
+                    {% endif %}
+                    {% if post.IsPro == 1 %}
+                    <h1 class="name1">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    <i id="certifIcon" class="fas fa-check-circle"></i>
+                    {% else %}
+                    <h1 class="name2">{{ post.FirstName }} {{ post.LastName }} </h1>
+                    {% endif %}
+                </div>
+                <div class="contentPost">
+                    {% set text = post.TitlePost %}
+                    {% set truncatedText = text|length > 32 ? text|slice(0, 32) ~ '...' : text %}
+                    {% set isTruncated = text|length > 32 %}
+                    <h2 class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</h2>
+                    <div class="hover-text">{{ text }}</div>
+                </div>
+            </a>
+
+            {% if post.Pictures|length > 0 %}
+            <div class="swipe2">
+                {% if post.Pictures|length > 1 %}
+                <button class="swipe-control-prev2">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in post.Pictures %}
+                    <div class="swipe-item2 {% if loop.first %}active{% endif %} portrait2">
+                        <img src="data:image;base64,{{ picture }}" alt="Post Image">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if post.Pictures|length > 1 %}
+                <button class="swipe-control-next2">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(post.Pictures|length - 1) %}
+                    <span class="bullet2 {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+            <div class="interaction">
+                <a href="postDetails-{{ post.IdPost }}" id="interact">
+                    <p id="date">{{ post.RelativeDatePost }}</p>
+                    <p id="views">{{ post.Views }} Vues</p>
+                    <div>
+                        <i class="fas fa-heart"></i>
+                        <span class="total-likes">{{ post.TotalLikes }}</span>
+                    </div>
+                    <div >
+                        <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                        <span class="commentCount">{{ post.commentCount }}</span>
+                    </div>
+                </a>
+                <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <a href="/allPost" class="beautiful-button">Découvrir d'autres publications</a>
+    </div>
+</div>
+
+<div class="adminContainer">
+    <h1>admin du site</h1>
+    <div class="allAdmin">
+        {% for User in userAdmin %}
+        <a href="profile-{{ User.IdUser }}">
+            <div class="admin">
+                <div class="head">
+                    <div class="user-details">
+                        {% if User.ProfilPicture == null %}
+                        <img id="icon3" src="/../public/image/user.png" alt="icon">
+                        {% else %}
+                        <img id="icon3" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon">
+                        {% endif %}
+                        <h1 class="name1">{{ User.FirstName }} {{ User.LastName }} </h1>
+                    </div>
+                    {% if isConnected and userId != User.IdUser %}
+                    <div class="message">
+                        <form action="/" method="post">
+                            <input type="hidden" name="idUser_1" value="{{ User.IdUser }}">
+                            <button type="submit" name="conversation" id="messageButton">
+                                <img id="icon2" src="/../public/image/messenger.png" alt="icon">
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+                <p id="help">Je peux vous aider n'hésitez pas à me contacter</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
 
 {% block footer %}{% endblock %}
 
 {% block scripts %}
+<script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
 {% endblock %}

@@ -1,0 +1,303 @@
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | Post de {{ firstName }} {{ lastName }}{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/postDetails.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="postContainer">
+        <div class="PagePost">
+            {% for Post in postData %}
+            <div class="post">
+                <div class="user-info">
+                    <a href="/profile-{{ Post.IdUser }}">
+                        {% if Post.ProfilPicture == null %}
+                        <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                        {% else %}
+                        <img class="user-picture" src="data:image;base64,{{Post.ProfilPicture}}" alt="profile picture">
+                        {% endif %}
+                        {% if Post.IsPro == 1 %}
+                        <div class ="pro">
+                            <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                        </div> 
+                        {% else %}
+                        <div class ="notpro">
+                            <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2>
+                        </div>
+                        {% endif %}
+                    </a>
+                    {% if (isConnected and ( userId == Post.IdUser or isAdmin)) %}
+                    <div class="changements" id="Toshow2">
+                        <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePost">
+                            <button type="submit" name="deletePost" id="deleteButton">
+                                <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                                <div class="Delete">
+                                    <img src="/../public/image/bin.png" id="deleteImage">
+                                </div>
+                            </button>
+                        </form>
+
+                        <button id="openModalButton">
+                            <img class="icon_commentaire" src="/../public/image/icon/edit_profil.png">
+                        </button>
+                        <button id="copyLinkButton">
+                            <img class="icon_commentaire" src="/../public/image/icon/share.png">
+                        </button>
+                    </div>
+                    <button class="filter" id="toggleEditButton2">
+                        <img class="icon_commentaire" src="/../public/image/icon/3dots.png">
+                    </button>
+                    {% else %}
+                    <button id="copyLinkButton">
+                        <img class="icon_commentaire" src="/../public/image/icon/share.png">
+                    </button>
+                    {% endif %}
+                    
+                </div>
+                {% if Post.IsPro == 1 %}
+                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                    {% set text =  Post.ProfilPromotion %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    {# <div class="hover-text">{{ text }}</div> #}
+                </div> 
+                {% endif %}
+                
+                <div class="contentPost">
+                    <h2>{{ Post.TitlePost }}</h2>
+                    <p>
+                        {% set contentLines = Post.ContentPost | split("\n") %}
+                        {% if contentLines %}
+                            {% for i in 0..2 %}
+                                {% if contentLines[i] is defined %}
+                                    {{ contentLines[i] }}<br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if contentLines | length > 3 %}
+                        <span id="moreContentPost{{ loop.index }}" style="display:none;">
+                            {% for i in 3..(contentLines | length - 1) %}
+                            {{ contentLines[i] }}<br>
+                            {% endfor %}
+                        </span>
+                        <button id="btn-voir-plus-post-{{ loop.index }}" class="btn-voir-plus"
+                            onclick="toggleVisibility('moreContentPost{{ loop.index }}', 'btn-voir-plus-post-{{ loop.index }}')">Voir
+                            plus</button>
+                        {% endif %}
+                    </p>
+                </div>
+  
+                {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+                <div class="swipe">
+                    {% if Post.PicturesPost|length > 1 %}
+                    <button class="swipe-control-prev">
+                        <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                    </button>
+                    {% endif %}
+                    <div class="swipe-inner">
+                        {% for picture in Post.PicturesPost %}
+                        <div class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                            <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if Post.PicturesPost|length > 1 %}
+                    <button class="swipe-control-next">
+                        <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                    </button>
+                    <div class="bullets">
+                        {% for i in 0..(Post.PicturesPost|length - 1) %}
+                        <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                {% if isConnected %}
+                {% for Post in postData %}
+                <div class="interaction">
+                    <form action="/postDetails-{{ Post.IdPost }}" method="post">
+                        <input type="hidden" name="AddLike" value="1">
+                        <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                        <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                            {% if Post.IsLike %}
+                            <i class="fas fa-heart"></i>
+                            {% else %}
+                            <i class="far fa-heart"></i>
+                            {% endif %}
+                        </button>
+                        <span class="total-likes">{{ Post.TotalLikes }}</span>
+                    </form>
+                    <div class="Comments">
+                        <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                        <span class="commentCount">{{ Post.commentCount }}</span>
+                    </div>
+                    <form action="/postDetails-{{ Post.IdPost }}" method="post">
+                        <input type="hidden" name="AddFavorite" value="1">
+                        <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                        <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                            {% if Post.IsFavorites %}
+                            <i class="fas fa-solid fa-flag"></i>
+                            {% else %}
+                            <i class="far fa-regular fa-flag"></i>
+                            {% endif %}
+                        </button>
+                    </form>
+                    <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                    <p class="viewsPost">{{ Post.Views }} Vues</p>
+                    
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="interaction">
+                    <button class="heart" disabled>
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="total-likes3">{{ Post.TotalLikes }}</span>
+                    <a href="/postDetail-{{Post.IdPost}}" >
+                        <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                        <span class="commentCount">{{ Post.commentCount }}</span>
+                    </a>
+                    <button class="favorite" disabled>
+                        <i class="far fa-regular fa-flag"></i>
+                    </button>
+                    <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                    <p class="viewsPost">{{ Post.Views }} Vues</p>
+                    
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="commentContainer">
+        {% if commentsData is not empty or isConnected %}    
+        {% for Comment in commentsData %}
+        <div class="comment">
+            <div class="user-info">
+                <a href="/profile-{{ Comment.IdUser }}">
+                    {% if Comment.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{Comment.ProfilPicture}}" alt="profile picture">
+                    {% endif %}
+                    {% if Comment.IsPro == 1 %}
+                    <div class ="pro">
+                        <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                    </div> 
+                    {% else %}
+                    <div class ="notpro">
+                        <h2>{{ Comment.FirstName }} {{ Comment.LastName }}</h2>
+                    </div>
+                    {% endif %}
+                </a>
+                {% if isConnected and (userId == Comment.IdUser or isAdmin) %}
+                {% for Post in postData %}
+                <form action="/postDetails-{{ Post.IdPost }}" method="post" class="formDeletePostComment">
+                    <button type="submit" name="deletePostComment" id="deleteButton">
+                        <input type="hidden" name="idComment" value="{{ Comment.IdComment }}">
+                        <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                        <div class="Delete">
+                            <img src="/../public/image/bin.png" id="deleteImage">
+                        </div>
+                    </button>
+                </form>
+                {% endfor %}
+                {% endif %}
+            </div>
+            {# {% if Comment.IsPro == 1 %}
+            <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                {% set text =  user.ProfilPromotion %}
+                {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                {% set isTruncated = text|length > 60 %}
+                <p class="truncated-text" data-full-text="{{ text }}">Je peux t'aider à {{ truncatedText }}</p>
+                <div class="hover-text">Je peux t'aider à {{ text }}</div>
+            </div> 
+            {% endif %}  #}
+            <div class="contentComment">
+                <p>{{ Comment.ContentComment | nl2br }}</p>
+            </div>
+            <p class="dateComment">{{ Comment.RelativeDateComment }}</p>
+        </div>
+        {% endfor %}
+
+
+        {% if isConnected %}
+        <div class="new_post">
+            <div class="user-info">
+                <a href="/profile-{{ userId}}">
+                    {% if user.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
+                    {% endif %}
+                </a>
+            </div>
+            {% for Post in postData %}
+            <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formAddComment"
+                enctype="multipart/form-data">
+                <input id="postInputField" class="postInput" type="text" name="ContentComment" placeholder="Commentaire..." required>
+                <input type="hidden" name="IdUser" value="{{ userId }}">
+                <button class="post_button" id="postButton" type="submit" name="addComment">Poster</button>
+            </form>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <p class="aucun_dispo">Aucun Commentaire disponible.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+
+{% for Post in postData %}
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/postDetails-{{ Post.IdPost }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
+            <input type="text" name="TitlePost" placeholder="{{ Post.TitlePost }}" id="inputField" value="{{ Post.TitlePost }}">
+
+            <textarea name="ContentPost" placeholder="{{ Post.ContentPost }}" id="inputFieldDesc">{{ Post.ContentPost }}</textarea>
+
+            <label for="PicturePost">Ajout d'images (Max. 6):</label>
+            <input type="file" name="PicturePost[]" id="PicturePost" accept="image/*" multiple>
+
+            <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+            <input type="hidden" name="IdUser" value="{{ Post.IdUser }}">
+
+            <button type="submit" name="updatePost" id="inputField2">Valider les changements</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/modalUser.js"></script>
+<script src="/../public/js/viewMore.js"></script>
+<script src="/../public/js/modalImage.js"></script>
+<script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
+<script src="/../public/js/showProfileButton.js"></script>
+{% endblock %}

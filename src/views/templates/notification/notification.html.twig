@@ -1,0 +1,47 @@
+{% extends "default.html.twig" %}
+
+{% block title %}Notification - {{ userFirstName }} {{ userLastName }}{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/notification.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+
+<div class="notification-container">
+    <h1>Notification non lues</h1>
+    {% if notifications is not empty %}
+        {% for notification in notifications %}
+        <div class="notification">
+            {% if notification.IsRead == 0 %}
+            <p>{{ notification.MessageNotif }}</p>
+            <span>{{ notification.CreatedAt|date("d/m/Y H:i") }}</span>
+            <form method="post" action="/notification">
+                <input type="hidden" name="IdNotification" value="{{ notification.IdNotification }}">
+                <button type="submit">Marquer comme lu</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+    <p>Aucune nouvelle notification</p>
+    {% endif %}
+</div>
+
+<div id="scroll-target"></div>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/ScrollDownMessage.js"></script>
+<script src="/../public/js/loadFunctions.js"></script>
+{% endblock %}

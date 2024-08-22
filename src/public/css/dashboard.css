@@ -1,0 +1,331 @@
+/* Conteneur de la demande */
+.requestContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    margin-top: 3em;
+}
+
+
+/* Chaque demande */
+.request,.refundRequest {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+.refundRequest
+ {
+    padding: 1px 20px;
+    text-align: center;
+}
+.refundRequest p
+ {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.refundRequest p img
+ {
+    margin-left: 10px;
+}
+.buyerInfo, .sellerInfo {
+    border-bottom: 1px solid rgb(182, 182, 182);
+}
+.requestbutton{
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* Informations utilisateur */
+.infoUser {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    margin-bottom: 15px;
+    flex-direction: column;
+}
+
+.infoUser .name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.infoUser .name h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.infoUser p {
+    margin: 0;
+    color: #555;
+}
+
+/* Description de la demande */
+.description h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.description p {
+    white-space: pre-line;
+    line-height: 1.5;
+}
+
+/* Carte d'identité */
+.identityCard {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Icônes et images */
+.icon,
+.icon2 {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.icon:hover,
+.icon2:hover {
+    transform: scale(1.1);
+}
+
+/* Boutons */
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.button button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    transition: background 0.3s;
+}
+
+.buttonValid button {
+    background-color: #28a745;
+}
+
+.buttonValid button:hover {
+    background-color: #218838;
+}
+
+.buttonInvalid form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.buttonInvalid textarea {
+    border: 2px solid #2e7d32;
+    /* Bordure vert foncé */
+    font-family: 'Montserrat', sans-serif;
+    padding: 1em;
+    resize: none;
+    /* Empêcher le redimensionnement */
+    color: black;
+    width: auto;
+    /* Ajuste la largeur */
+    height: auto;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    /* Ensures padding is included in the height/width */
+}
+
+.buttonInvalid textarea:hover {
+    border: 2px solid #1b5e20;
+    /* Bordure vert foncé */
+}
+
+.buttonInvalid button {
+    background-color: #dc3545;
+    display: flex;
+    align-items: center;
+    /* Center content vertically */
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #fff;
+    cursor: pointer;
+}
+
+.buttonInvalid button:hover {
+    background-color: #c82333;
+}
+
+.DownloadPdf button {
+    background-color: #20b2bd;
+}
+
+.DownloadPdf button:hover {
+    background-color: #197b82;
+}
+
+
+
+
+/* Table des utilisateurs professionnels */
+.tableUserPro,
+.tableUser,
+.tableCategory,
+.tableStat,
+.Categorie_form, .refundRequests
+ {
+    margin: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    padding-bottom: 0em;
+    overflow-x: scroll;
+}
+
+
+.tableUserPro table,
+.tableUser table,
+.tableCategory table,
+.tableStat table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableUserPro th,
+.tableUserPro td,
+.tableUser th,
+.tableUser td,
+.tableCategory th,
+.tableCategory td,
+.tableStat th,
+.tableStat td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.tableUserPro th,
+.tableUser th,
+.tableCategory th,
+.tableStat th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+}
+
+.tableUserPro tr:hover,
+.tableUser tr:hover,
+.tableCategory tr:hover,
+.tableStat tr:hover {
+    background-color: #f1f1f1;
+}
+
+.tableUserPro img.icon,
+.tableUser img.icon  {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.tableUserPro img.icon:hover,
+.tableUser img.icon:hover {
+    transform: scale(1.1);
+}
+
+.tableUserPro button,
+.tableUser button,
+.tableCategory button, 
+.Categorie_form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    transition: background 0.3s;
+}
+
+.tableUserPro button,
+.tableUser button,
+.tableCategory button {
+    background-color: #dc3545;
+}
+
+.tableUserPro button:hover,
+.tableUser button:hover,
+.tableCategory button:hover {
+    background-color: #c82333;
+}
+.Categorie_form button{
+    background-color: #2f9321;
+}
+.Categorie_form button:hover{
+    background-color: #248117;
+}
+/* Modal pour l'image */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 11;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Remplace "auto" par "hidden" pour éviter le scroll */
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(1em);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    margin-top: 8em;
+    max-width: 80%; /* Garde une marge par rapport aux bords de l'écran */
+    max-height: 80%; /* Assure que l'image ne dépasse pas 80% de la hauteur de l'écran */
+    object-fit: contain; /* Garde les proportions de l'image */
+}
+
+.close {
+    position: absolute;
+    top: 2em;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+@media (max-width: 550px) {
+    .button button {
+        font-size: 0.8em;
+    }
+    .button  {
+        flex-direction: column;
+    }
+}

@@ -49,16 +49,20 @@
     ```bash
     sudo chmod -R 777 src
     ```
-    cette commande vous demanderz votre mot de passe
+    cette commande vous demandera votre mot de passe
 
-  - Cinquième étape: Aller dans le dossier src et éxecuter la commande suivant
+  - Cinquième étape: Aller dans le dossier src et éxecuter les commandes suivantes
     ```bash
     composer require "twig/twig:^3.0"
     ```
-   
+    ```bash
+    composer require phpmailer/phpmailer
+    ``` 
+    ```bash
+    composer require tecnickcom/tcpdf
+    ```
   - Sixième étape: dans le dossier src placé le fichier .htaccess télécharger précédemment 
     
   - Septième étape: Aller sur ce lien pour voir le site
-    ```bash
+
     http://localhost:8080/
-    ```

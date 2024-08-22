@@ -1,0 +1,289 @@
+
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | Post{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/allPost.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link  href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
+    
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="allPostContainer">
+    <div class="allPostFiltre" id="allPostFiltre">
+        <div class="searchBar">
+            <form action="/allPost" method="get" class="search-form">
+                <div class="group-search">
+                    <svg class="iconSearch" aria-hidden="true" viewBox="0 0 24 24">
+                        <g>
+                            <path
+                                d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                            </path>
+                        </g>
+                    </svg>
+                    <input placeholder="Cherchez un nom, un titre" type="search" value="{{ searchQuery }}" class="search" name="search">
+                </div>
+            </form>
+        </div>
+        <div class="filterBar" >
+            <form action="/allPost" method="get" class="filter-form">
+                <div class="groups">
+                    <div class="group1">
+                        <label for="sortBy">Trié par:</label>
+                        <select name="sortBy" id="sortBy">
+                            <option value="" disabled {% if not sortBy %}selected{% endif %}>Choisissez un critère</option>
+                            <option value="date" {% if sortBy == 'date' %}selected{% endif %}>Date</option>
+                            <option value="likes" {% if sortBy == 'likes' %}selected{% endif %}>J'aime</option>
+                            <option value="views" {% if sortBy == 'views' %}selected{% endif %}>Vues</option>
+                            <option value="comments" {% if sortBy == 'comments' %}selected{% endif %}>Commentaires</option>
+                        </select>
+                    </div>
+                    <div class="group2">
+                        <label for="order">Ordre :</label>
+                        <select name="order" id="order">
+                            <option value="DESC" {% if order=='DESC' %}selected{% endif %}>Les plus récents en premier</option>
+                            <option value="ASC" {% if order=='ASC' %}selected{% endif %}>Les plus anciens en premier</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit">Appliquer les Filtres</button>
+            </form>
+            
+            <form action="/allPost" method="get" class="reset-form">
+                <input type="hidden" name="search" value="{{ searchQuery }}">
+                <button type="submit">Réinitialiser les Filtres</button>
+            </form>
+        </div>
+
+        
+    </div>
+    <div class="filter-toggle">
+        <button id="toggleFilterBarButton" class="beautiful-button">Filtres de Recherche</button>
+    </div>
+
+
+
+
+
+    <div class="allPostPost">
+        {% if isConnected %}
+        <div class="new_post">
+            <div class="user-info2">
+                <a href="/profile-{{ userId}}">
+                    {% if user.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
+                    {% endif %}
+                </a>
+                <input id="postInputField" class="postInput" type="text" name="" placeholder="Quoi de neuf ?">
+            </div>
+            <div class="post_button">
+                <button id="postButton">Poster</button>
+            </div>
+        </div>
+        {% endif %}
+
+
+        {% for Post in postData %}
+        <div class="post">
+            <div class="user-info">
+                <a href="/profile-{{ Post.IdUser }}">
+                    {% if Post.ProfilPicture == null %}
+                    <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                    {% else %}
+                    <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                    {% endif %}
+                    {% if Post.IsPro == 1 %}
+                    <div class ="pro">
+                        <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2> <i id="certifIcon1" class="fas fa-check-circle"></i>
+                    </div> 
+                    {% else %}
+                    <div <div class ="pro">
+                        <h2>{{ Post.FirstName }} {{ Post.LastName }}</h2>
+                    </div>
+                    {% endif %}
+                </a>
+                {% if Post.IsPro == 1 %}
+                <div class="promotion">  <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+                    {% set text = Post.ProfilPromotion   %}
+                    {% set truncatedText = text|length > 60 ? text|slice(0, 60) ~ '...' : text %}
+                    {% set isTruncated = text|length > 60 %}
+                    <p class="truncated-text" data-full-text="{{ text }}">{{ truncatedText }}</p>
+                    <div class="hover-text"> {{ text }}</div>
+                </div>
+                {% endif %}
+            </div>
+            
+
+            <div class="contentPost">
+                <h2>{{ Post.TitlePost }}</h2>
+                <p>
+                    {% set contentLines = Post.ContentPost | split("\n") %}
+                    {% if contentLines %}
+                        {% for i in 0..2 %}
+                            {% if contentLines[i] is defined %}
+                                {{ contentLines[i] }}<br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </p>
+                <form action="/allPost" method="post">
+                    <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                    <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+                </form>
+                
+            </div>
+            {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+            <div class="swipe">
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-prev">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in Post.PicturesPost %}
+                    <div class="swipe-item portrait active ">
+                        <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-next">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(Post.PicturesPost|length - 1) %}
+                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if isConnected %}
+            <div class="interaction">
+                <form action="/allPost" method="post">
+                    <input type="hidden" name="AddLike" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                        {% if Post.IsLike %}
+                        <i class="fas fa-heart"></i>
+                        {% else %}
+                        <i class="far fa-heart"></i>
+                        {% endif %}
+                    </button>
+                    <span class="total-likes">{{ Post.TotalLikes }}</span>
+                </form>
+                <a href="/postDetails-{{Post.IdPost}}" >
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                
+                <form action="/allPost" method="post">
+                    <input type="hidden" name="AddFavorite" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                        {% if Post.IsFavorites %}
+                        <i class="fas fa-solid fa-flag"></i>
+                        {% else %}
+                        <i class="far fa-regular fa-flag"></i>
+                        {% endif %}
+                    </button>
+                </form>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
+            </div>
+            {% else %}
+            <div class="interaction">
+                <div>
+                    <button class="heart" disabled>
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <span class="total-likes3">{{ Post.TotalLikes }}</span>
+                </div>
+                <a href="/postDetails-{{Post.IdPost}}" >
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
+                    <i class="far fa-regular fa-flag"></i>
+                </button>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+                <button id="copyLinkButton"><img class="icon_commentaire" src="/../public/image/icon/share.png"></button>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+
+
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/allPost" method="post" id="formAddPost" enctype="multipart/form-data">
+            <input id="modalTitlePost" type="text" name="TitlePost" placeholder="Titre de la Publication" class="inputField" required>
+            <textarea id="modalContentPost" name="ContentPost" placeholder="Contenu de la Publication" class="inputFieldDesc" required></textarea>
+            <input type="file" id="images" name="PicturePost[]" multiple accept="image/*" onchange="openCropperModal(this)">
+            <button type="submit" name="addPost" class="inputField2">Ajouter une Publication</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de découpe d'image -->
+<div id="cropperModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCropperModal()">&times;</span>
+        <div class="crop-container">
+            <img id="imageToCrop" src="" alt="Image to crop">
+        </div>
+        <div class="crop-buttons">
+            <button onclick="setAspectRatio(16 / 9)">Paysage (16:9)</button>
+            <button onclick="setAspectRatio(3 / 4)">Portrait (3:4)</button>
+            <button onclick="setAspectRatio(1)">Carré (1:1)</button>
+            <button onclick="cropImage()">Validation</button>
+        </div>
+    </div>
+</div>
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+
+
+
+
+
+<button class="filter" id="toggleFilterBarButton2">
+    <img src="/../public/image/icon/gear.png">
+</button>
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/modalUser.js"></script>
+<script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/filterText.js"></script>
+<script src="/../public/js/TogglesFilters.js"></script>
+<script src="/../public/js/modalImage.js"></script>
+<script src="/../public/js/NewPost.js"></script>
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+<script src="/../public/js/ImageCrop.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
+{% endblock %}

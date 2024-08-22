@@ -1,0 +1,57 @@
+
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | Conversation de {{ user.FirstName }} {{ user.LastName }}{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/conversation.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="convContainer">
+    {% if conversationUsers is not empty %}
+        {% for user in conversationUsers %}
+        <a href="/conversationChat-{{user.IdConversations}}">
+            <div class="conv">
+                <p>{% if user.IsAdmin == 1 %}
+                    Conversation avec un admin :
+                    {% else %}
+                    Conversation avec :
+                    {% endif %}
+                </p>
+                <div class="conv-info">
+                    {% if Post.ProfilPicture == null %}
+                    <img id="icon2" src="/../public/image/user.png" alt="icon">
+                    {% else %}
+                    <img id="icon2" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                    {% endif %}
+                    {% if user.IsPro == 1 %}
+                    <div class="pro">
+                        <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                    </div>   
+                    {% else %}
+                    <div class="notpro">
+                        <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    {% else %}
+    <p class="aucun_dispo">Aucune Conversation.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}{% endblock %}

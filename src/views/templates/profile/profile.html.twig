@@ -1,0 +1,676 @@
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | Profile de {{ user.FirstName }} {{ user.LastName }}{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/profile.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+
+
+{% block body %}
+{% if messages is not empty and isConnected and userId == user.IdUser%}
+<div class="alert">
+    {% for message in messages %}
+    <h1>{{ message }}</h1>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<div class="ProfilContainer">
+    <div class="allprofil">
+        <div class="profil">
+            <div class="ProfilUser">
+                {% if user.ProfilPicture == null %}
+                <img id="icon" src="/../public/image/user.png" alt="icon">
+                {% else %}
+                <img id="icon" src="data:image;base64,{{user.ProfilPicture}}" alt="icon">
+                {% endif %}
+
+                {% if user.IsPro == 1 %}
+                <div class="pro">
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon"
+                        class="fas fa-check-circle"></i>
+                </div>
+                {% else %}
+                <div <div class="notpro">
+                    <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                </div>
+                {% endif %}
+            </div>
+            <div class="flex2">
+            
+                {% if isConnected and userId != user.IdUser %}
+                <div class="message">
+                    <form action="/profile-{{ user.IdUser }}" method="post">
+                        <input type="hidden" name="idUser_1" value="{{ user.IdUser }}">
+                        <button type="submit" name="conversation">
+                            <img id="icon2" src="/../public/image/messenger.png" alt="icon">
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+                <div class="flex">
+                    <div class="EditButton">
+                        {% if isConnected and userId == user.IdUser %}
+                        {% if userId == user.IdUser and user.IsPro == 0 %}
+                        <div class="passProButton" id="Toshow">
+                            <button id="openModalButtonPro" class="beautiful-button">Passer Professionnel</button>
+                        </div>
+                        {% endif %}
+                        <div class="profilButton" id="Toshow2">
+                            <button id="openModalButton" class="beautiful-button">Editer le Profil</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if isConnected and userId == user.IdUser %}
+                    <button class="filter beautiful-button" id="toggleEditButton2">
+                            <img src="/../public/image/icon/edit_profil.png">
+                    </button>
+                    {% endif %}
+                </div>
+                
+                <button id="copyLinkButton"  class="beautiful-button"><img class="share" src="/../public/image/icon/share.png"></button>
+            </div>
+        </div>
+
+
+        <div class="country">
+            <p>Pays : {{ user.Location }}</p>
+            <p >inscrit depuis : {{ user.RelativeDateUser }}</p>
+        </div>
+        {% if user.IsPro == 1 %}
+        <div class="promotion">
+            <!--"acheter tes premières actions dans un monde en plein developpement et hyperactif dans la cryptographie "-->
+            <p>{{ user.ProfilPromotion| nl2br }}</p><!--"temp car pas encore le champ dans bdd "-->
+        </div>
+        {% endif %}
+        <div class="description">
+            <p>{{ user.ProfilDescription | nl2br }}</p>
+        </div>
+    </div>
+    
+
+    
+    <div class="button-container">
+        <button id="showPosts" class="beautiful-button">
+            <img src="/../public/image/icon/post2.png">
+        </button>
+        {% if user.IsPro == 1 %}
+        <button id="showNotations" class="beautiful-button">
+            <i class="fa fa-star"></i>
+        </button>
+        {% endif %}
+        {% if isConnected and userId == user.IdUser %}
+        <button id="showFavorites" class="beautiful-button">
+            <i class="fas fa-solid fa-flag"></i>
+        </button>
+        <button id="showPlanning" class="beautiful-button">
+            <img src="/../public/image/icon/planning.png">
+        </button>
+        {% endif %}
+    </div>
+    
+</div>    
+
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <div class="deleteProfilButton" id="Toshow3">
+            <button id="openModalDeleteButton" class="beautiful-button">
+                <img src="/../public/image/bin.png">
+            </button>
+        </div>
+        <span class="close">&times;</span>
+        <form action="/profile-{{ user.IdUser }}" method="post" id="formUpdateUser" enctype="multipart/form-data">
+            <input type="text" name="FirstName" placeholder="{{ user.FirstName }}" id="inputField" value="{{ user.FirstName }}">
+
+            <input type="text" name="LastName" placeholder="{{ user.LastName }}" id="inputField" value="{{ user.LastName }}">
+
+            {% if user.Location == null %}
+            <input type="text" name="Location" placeholder="Localisation (ex: france, espagne, ...)" id="inputField">
+            {% else %}
+            <input type="text" name="Location" placeholder="{{ user.Location }}" id="inputField" value="{{ user.Location }}">
+            {% endif %}
+            {% if user.IsPro == 1 %}
+            {% if user.ProfilPromotion == null %}
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="ProfilPromotion (ex: Je peux t'aider à ...)"
+                    id="inputFieldPromotion" maxlength="100"></textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
+            {% else %}
+            <div style="position: relative;">
+                <textarea name="ProfilPromotion" placeholder="{{ user.ProfilPromotion }}"
+                    id="inputFieldPromotion" maxlength="100">{{ user.ProfilPromotion }}</textarea>
+                <div id="charCount2" class="char-count">0/100</div>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% if user.ProfilDescription == null %}
+            <div style="position: relative;">
+                <textarea name="ProfilDescription" placeholder="Description du profil" id="inputFieldDesc"
+                    maxlength="255"></textarea>
+                <div id="charCount" class="char-count">0/255</div>
+            </div>
+            {% else %}
+            <div style="position: relative;">
+                <textarea name="ProfilDescription" placeholder="{{ user.ProfilDescription }}" id="inputFieldDesc"
+                    maxlength="255">{{ user.ProfilDescription }}</textarea>
+                <div id="charCount" class="char-count">0/255</div>
+            </div>
+            {% endif %}
+
+            <input type="file" id="images" name="ProfilPicture" onchange="openCropperModal(this)">
+
+            <button type="submit" name="updateProfile" id="inputField2">Valider les changements</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal2" id="ProModal">
+    <div class="modal-content2">
+        <span class="close2">&times;</span>
+        <form action="/profile-{{ user.IdUser }}" method="post" id="formPassPro" enctype="multipart/form-data">
+            <input type="text" name="Job" placeholder="Métier" id="inputField" required>
+            <input type="text" name="Adress" placeholder="Adresse (ex: Lyon, Paris)" id="inputField" required>
+            <input type="number" name="Age" placeholder="Age (minimum 18 ans)" min="18" id="inputField" required>
+
+            <div style="position: relative;">
+                <textarea name="Description" placeholder="Parcours, étude, pourquoi vouloir être pro, expérience"
+                    id="inputFieldDesc2" required></textarea>
+            </div>
+
+            <label for="images" id="labelText">Carte d'identité recto :</label>
+            <input type="file" id="images" name="identityCardRecto" accept="image/*" aria-label="Carte d'identité recto"
+                required />
+
+            <label for="images" id="labelText">Carte d'identité verso :</label>
+            <input type="file" id="images" name="identityCardVerso" accept="image/*" aria-label="Carte d'identité recto"
+                required />
+
+            <label for="images" id="labelText">Photo d'identité :</label>
+            <input type="file" id="images" name="UserPicture" accept="image/*" aria-label="Photo d'identité" required />
+
+            <input type="hidden" name="idUser" value="{{ user.IdUser }}">
+
+            <button type="submit" name="pushRequest" id="inputField2">Envoyer la demande</button>
+        </form>
+    </div>
+</div>
+
+<div class="modal3" id="deleteModal">
+    <div class="modal-content3">
+        <span class="close3">&times;</span>
+        <form action="/profile-{{ user.IdUser }}" method="post" id="formPassPro" enctype="multipart/form-data">
+
+            <p>Attention cette action supprimeras définitivement toutes vos données.
+                Êtes vous sur de vouloir supprimer votre compte ?
+            </p>
+            <input type="hidden" name="IdUser" value="{{ user.IdUser }}">
+
+            <button type="submit" name="deleteUser" id="inputField2">supprimer le profil</button>
+        </form>
+    </div>
+</div>
+
+
+<div class="profilPost">
+    {% if userPost is not empty %}
+    {% for Post in userPost %}
+    <div class="post">
+        <div class="user-info">
+            <div class="flex">
+                {% if Post.ProfilPicture == null %}
+                <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+                {% else %}
+                <img class="user-picture" src="data:image;base64,{{ Post.ProfilPicture }}" alt="profile picture">
+                {% endif %}
+                {% if userId == user.IdUser and user.IsPro == 0 %}
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+                {% else %}
+                <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+                {% endif %}
+            </div>
+            {% if isConnected and (userId == user.IdUser or isAdmin) %}
+            <form action="/profile-{{ user.IdUser }}" method="post" class="formDeletePost">
+                <button type="submit" name="deletePost" id="deleteButton">
+                    <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                    <input type="hidden" name="idUser" value="{{ user.IdUser }}">
+                    <div class="hover-text">
+                        <img src="/../public/image/bin.png" id="deleteImage">
+                    </div>
+                </button>
+            </form>
+            {% endif %}
+        </div>
+
+            
+            <div class="contentPost">
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <h2>{{ Post.TitlePost }}</h2>
+                    <p>
+                        {% set contentLines = Post.ContentPost | split("\n") %}
+                        {% if contentLines %}
+                        {% for i in 0..2 %}
+                        {% if contentLines[i] is defined %}
+                        {{ contentLines[i] }}<br>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </p>
+                </a>
+                <form action="/profile-{{ Post.IdUser }}" method="post">
+                    <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                    <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+                </form>
+            </div>
+               
+                
+            
+
+            {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+            <div class="swipe">
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-prev">
+                    <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+                </button>
+                {% endif %}
+                <div class="swipe-inner">
+                    {% for picture in Post.PicturesPost %}
+                    <div class="swipe-item portrait active">
+                        <img src="data:image/jpeg;base64,{{ picture }}" class="icon" >
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if Post.PicturesPost|length > 1 %}
+                <button class="swipe-control-next">
+                    <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+                </button>
+                <div class="bullets">
+                    {% for i in 0..(Post.PicturesPost|length - 1) %}
+                    <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+
+        {% if isConnected %}
+        <div class="interaction">
+            <form action="/profile-{{ user.IdUser }}" method="post">
+                <input type="hidden" name="AddLike" value="1">
+                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                    {% if Post.IsLike %}
+                    <i class="fas fa-heart"></i>
+                    {% else %}
+                    <i class="far fa-heart"></i>
+                    {% endif %}
+                </button>
+                <span class="total-likes">{{ Post.TotalLikes }}</span>
+            </form>
+            <a href="/postDetail-{{Post.IdPost}}">
+                <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                <span class="commentCount">{{ Post.commentCount }}</span>
+            </a>
+
+            <form action="/profile-{{ user.IdUser }}" method="post">
+                <input type="hidden" name="AddFavorite" value="1">
+                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                    {% if Post.IsFavorites %}
+                    <i class="fas fa-solid fa-flag"></i>
+                    {% else %}
+                    <i class="far fa-regular fa-flag"></i>
+                    {% endif %}
+                </button>
+            </form>
+            <p class="datePost">{{ Post.RelativeDatePost }}</p>
+            <p class="viewsPost">{{ Post.Views }} Vues</p>
+        </div>
+        {% else %}
+        <div class="interaction">
+            <button class="heart" disabled>
+                <i class="far fa-heart"></i>
+            </button>
+            <span class="total-likes">{{ Post.TotalLikes }}</span>
+            <a href="/postDetail-{{Post.IdPost}}">
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
+                    <i class="far fa-regular fa-flag"></i>
+                </button>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="aucun_dispo">Aucune Publication</p>
+    {% endif %} 
+</div>
+
+
+
+{% if isConnected and userId == user.IdUser %}
+<div class="profilFavorites" style="display: none;">
+    {% if postFav is not empty %}
+    {% for Post in postFav %}
+    <div class="post">
+        <div class="user-info2">
+            {% if Post.ProfilPicture == null %}
+            <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+            {% else %}
+            <img class="user-picture" src="data:image;base64,{{ user.ProfilPicture }}" alt="profile picture">
+            {% endif %}
+
+            {% if userId == user.IdUser and user.IsPro == 0 %}
+            <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
+            {% else %}
+            <h2>{{ user.FirstName }} {{ user.LastName }}</h2> <i id="certifIcon" class="fas fa-check-circle"></i>
+            {% endif %}
+        </div>
+
+        <div class="contentPost">
+            <h2>{{ Post.TitlePost }}</h2>
+            <p>
+                {% set contentLines = Post.ContentPost | split("\n") %}
+                {% if contentLines %}
+                {% for i in 0..2 %}
+                {% if contentLines[i] is defined %}
+                {{ contentLines[i] }}<br>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+
+            <form action="/profile-{{ Post.IdUser }}" method="post">
+                <input type="hidden" name="idPost" value="{{ Post.IdPost }}">
+                <button type="submit" name="viewMore" class="beautiful-button2">Voir Plus</button>
+            </form>
+            </p>
+        </div>
+        {% if Post.PicturesPost|length > 0 %} <!-- user.Pictures -->
+        <div class="swipe">
+            {% if Post.PicturesPost|length > 1 %}
+            <button class="swipe-control-prev">
+                <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+            </button>
+            {% endif %}
+            <div class="swipe-inner">
+                {% for picture in Post.PicturesPost %}
+                <div
+                    class="swipe-item {% if picture.format == 'landscape' %}landscape{% elseif picture.format == 'portrait' %}portrait{% else %}portrait{% endif %} {% if loop.first %}active{% endif %}">
+                    <img class="icon" src="data:image;base64,{{ picture }}" alt="icon">
+                </div>
+                {% endfor %}
+            </div>
+            {% if Post.PicturesPost|length > 1 %}
+            <button class="swipe-control-next">
+                <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+            </button>
+            <div class="bullets">
+                {% for i in 0..(Post.PicturesPost|length - 1) %}
+                <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if isConnected %}
+        <div class="interaction">
+            <form action="/profile-{{ Post.IdUser }}" method="post">
+                <input type="hidden" name="AddLike" value="1">
+                <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                <button class="heart {% if Post.IsLike %}active{% endif %}" type="submit">
+                    {% if Post.IsLike %}
+                    <i class="fas fa-heart"></i>
+                    {% else %}
+                    <i class="far fa-heart"></i>
+                    {% endif %}
+                </button>
+                <span class="total-likes">{{ Post.TotalLikes }}</span>
+            </form>
+            <a href="/postDetail-{{Post.IdPost}}">
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <form action="/profile-{{ Post.IdUser }}" method="post">
+                    <input type="hidden" name="AddFavorite" value="1">
+                    <input type="hidden" name="IdPost" value="{{ Post.IdPost }}">
+                    <button class="favorite {% if Post.IsFavorites %}active{% endif %}" type="submit">
+                        {% if Post.IsFavorites %}
+                        <i class="fas fa-solid fa-flag"></i>
+                        {% else %}
+                        <i class="far fa-regular fa-flag"></i>
+                        {% endif %}
+                    </button>
+                </form>
+                <p class="datePost">{{ Post.RelativeDatePost }}</p>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+        </div>
+        {% else %}
+        <div class="interaction">
+            <button class="heart" disabled>
+                <i class="far fa-heart"></i>
+            </button>
+            <span class="total-likes">{{ Post.TotalLikes }}</span>
+            <a href="/postDetail-{{Post.IdPost}}">
+                <a href="/postDetail-{{Post.IdPost}}">
+                    <img class="icon_commentaire" src="/../public/image/icon/message.png">
+                    <span class="commentCount">{{ Post.commentCount }}</span>
+                </a>
+                <button class="favorite" disabled>
+                    <i class="far fa-regular fa-flag"></i>
+                </button>
+                <p class="viewsPost">{{ Post.Views }} Vues</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="aucun_dispo">Aucune Publication enregistrée.</p>
+    {% endif %} 
+</div>
+{% endif %}
+
+{% if isConnected and userId == user.IdUser %}
+<div class="profilePlanning" style="display: none;">
+    {% if adviceData is not empty %}
+    {% for advice in adviceData %}
+    <h2>Détails de la Consultation {{ loop.index }}</h2>
+
+    <p><strong>Type:</strong> {{ advice.AdviceType }}</p>
+    <p><strong>Description:</strong> {{ advice.AdviceDescription }}</p>
+    <p><strong>Catégorie :</strong> {{ advice.CategoryName }}</p>
+
+    <p><strong>Date:</strong> {{ advice.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Heure de début:</strong> {{ advice.BuyAdviceStartTime }}</p>
+    <p><strong>Heure de fin:</strong> {{ advice.BuyAdviceEndTime }}</p>
+
+    <h3>Images de la Consultation</h3>
+    {% if advice.adviceImages|length > 0 %}
+    <div class="swipe">
+        {% if advice.adviceImages|length > 1 %}
+        <button class="swipe-control-prev">
+            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+        </button>
+        {% endif %}
+        <div class="swipe-inner">
+            {% for picture in advice.adviceImages %}
+            <div class="swipe-item portrait active">
+                <img src="data:image;base64,{{ picture.PictureAdvice }}">
+            </div>
+            {% endfor %}
+        </div>
+        {% if advice.adviceImages|length > 1 %}
+        <button class="swipe-control-next">
+            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+        </button>
+        <div class="bullets">
+            {% for i in 0..(advice.adviceImages|length - 1) %}
+            <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <p>Pas d'images disponible.</p>
+    {% endif %}
+
+    <a href="/adviceMeeting-{{ advice.IdBuyAdvice }}" class="meeting_link">lien du meeting</a>
+
+        <h4>Information sur {{ userId == advice.SellerId ? 'l\'acheteur' : 'le consultant' }}</h4>
+        {% if userId == advice.SellerId %}
+            <p><strong>Nom:</strong> 
+            <a href="/profile-{{ advice.BuyerId}}">
+                {{ advice.BuyerFirstName }} {{ advice.BuyerLastName }}</p>
+                {% if advice.BuyerProfilPicture %}
+                <img class="icon2" src="data:image;base64,{{ advice.BuyerProfilPicture }}" alt="profile picture">
+                {% else %}
+                <p>Pas de photo de profile disponible.</p>
+                {% endif %}
+            </a>
+        {% else %}
+            <p><strong>Nom:</strong> 
+            <a href="/profile-{{ advice.SellerId }}">
+                {{ advice.SellerFirstName }} {{ advice.SellerLastName }}</p>
+                {% if advice.SellerProfilPicture %}
+                <img class="icon2" src="data:image;base64,{{ advice.SellerProfilPicture }}" alt="profile picture">
+                {% else %}
+                <p>Pas de photo de profile disponible.</p>
+                {% endif %}
+            </a>
+        {% endif %}
+        {% endfor %}
+    {% else %}
+    <p class="aucun_dispo">Aucune Consultation disponible.</p>
+    {% endif %}
+</div>
+{% endif %}
+
+
+<div class="profilNotations" style="display: none;">
+    {% if notations|length > 0 %}
+    <div class="average-note">
+        {% set rating = averageNote|number_format(1) %}
+        <p>Moyenne des notes: </p>
+        <div class="rating">
+            <span>{{ rating }} </span>
+            <div class="stars">
+                {% set fullStars = rating|round(0, 'floor') %}
+                {% set decimalPart = rating - fullStars %}
+                {% set hasHalfStar = decimalPart >= 0.5 %}
+
+                {% for i in 1..5 %}
+                {% if i <= fullStars %} <i class="fa fa-star"></i>
+                    {% elseif i == fullStars + 1 and hasHalfStar %}
+                    <i class="fa fa-star-half-alt"></i>
+                    {% else %}
+                    <i class="far fa-star"></i>
+                    {% endif %}
+                    {% endfor %}
+            </div>
+            <span class="rating-count"> ({{ notations|length }})</span>
+        </div>
+    </div>
+    {% for Notations in notations %}
+    <div class="notation">
+        <div class="user-info2">
+            {% if Notations.ProfilPicture is empty %}
+            <img class="user-picture" src="/../public/image/user.png" alt="profile picture">
+            {% else %}
+            <img class="user-picture" src="data:image/jpeg;base64,{{ Notations.ProfilPicture }}" alt="profile picture">
+            {% endif %}
+            {% if userId == Notations.IdUser and Notations.IsPro == 0 %}
+            <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2>
+            {% else %}
+            <h2>{{ Notations.FirstName }} {{ Notations.LastName }}</h2> <i id="certifIcon"
+                class="fas fa-check-circle"></i>
+            {% endif %}
+        </div>
+
+
+        <div class="rating">
+            <p>Note: {{ Notations.Note }}</p>
+            {% set rating = Notations.Note %}
+            <div class="stars">
+                {% set fullStars = rating|round(0, 'floor') %}
+                {% set decimalPart = rating - fullStars %}
+                {% set hasHalfStar = decimalPart >= 0.5 %}
+
+                {% for i in 1..5 %}
+                {% if i <= fullStars %} <i class="fa fa-star"></i>
+                    {% elseif i == fullStars + 1 and hasHalfStar %}
+                    <i class="fa fa-star-half-alt"></i>
+                    {% else %}
+                    <i class="far fa-star"></i>
+                    {% endif %}
+                    {% endfor %}
+            </div>
+        </div>
+
+
+
+
+        <p>Comment: {{ Notations.CommentNote }}</p>
+        <p class="datePost">{{ Notations.RelativeDateNotations }}</p>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <p class="aucun_dispo">Aucune Notation trouvée.</p>
+    {% endif %}
+</div>
+
+
+<!-- Modal de découpe d'image -->
+<div id="cropperModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCropperModal()">&times;</span>
+        <div class="crop-container">
+            <img id="imageToCrop" src="" alt="Image to crop">
+        </div>
+        <div class="crop-buttons">
+            <button onclick="setAspectRatio(1)">Carré (1:1)</button>
+            <button onclick="cropImage()">Validation</button>
+        </div>
+    </div>
+</div>
+
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/modalUser.js"></script>
+<script src="/../public/js/profilDesc.js"></script>
+<script src="/../public/js/profilPromotion.js"></script>
+<script src="/../public/js/modalImage.js"></script>
+<script src="/../public/js/ImageCrop.js"></script>
+<script src="/../public/js/showContent.js"></script>
+<script src="/../public/js/swipePicturePost.js"></script>
+<script src="/../public/js/copyLinkPage.js"></script>
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+<script src="/../public/js/showProfileButton.js"></script>
+{% endblock %}

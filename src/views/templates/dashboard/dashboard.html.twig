@@ -1,0 +1,276 @@
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | Panel Admin{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/dashboard.css" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="requestContainer">
+    {% for RequestPassPro in requestPassProData %}
+    {% set requestId = RequestPassPro.IdRequest %}
+    <div class="request">
+        <div class="infoUser">
+            <div class="name">
+                <img class="icon2" src="data:image;base64,{{ RequestPassPro.UserPicture }}" alt="icon"
+                    onclick="openModal(this)">
+                <h1>{{ RequestPassPro.FirstName }}</h1>
+                <h1>{{ RequestPassPro.LastName }}</h1>
+            </div>
+            <p>{{ RequestPassPro.UserAge }} ans</p>
+            <div class="job">
+                <p>Métier : {{ RequestPassPro.UserJob }}</p>
+            </div>
+            <div class="email">
+                <p>Email : {{ RequestPassPro.Email }}</p>
+            </div>
+            <div class="adresse">
+                <p>Adresse : {{ RequestPassPro.UserAdress }}</p>
+            </div>
+        </div>
+        <div class="description">
+            <h3>Contenu de la demande pour passez Professionnel :</h3>
+            <p>{{ RequestPassPro.Description | nl2br }}</p>
+        </div>
+        <div class="identityCard">
+            <img class="icon" src="data:image;base64,{{ RequestPassPro.IdentityCardRecto }}" alt="icon"
+                onclick="openModal(this)">
+            <img class="icon" src="data:image;base64,{{ RequestPassPro.IdentityCardVerso }}" alt="icon"
+                onclick="openModal(this)">
+        </div>
+        <div class="button">
+            <div class="buttonValid">
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdRequest" value="{{ RequestPassPro.IdRequest }}">
+                    <button name="requestValid" type="submit" id="inputField2">Valider</button>
+                </form>
+            </div>
+            <div class="buttonInvalid">
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdRequest" value="{{ RequestPassPro.IdRequest }}">
+                    <textarea name="rejectReason" placeholder="Raison du refus" rows="1" cols="30"></textarea>
+                    <button name="requestInvalid" type="submit" id="inputField2">Refuser</button>
+                </form>
+            </div>
+            <div class="DownloadPdf">
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdRequest" value="{{ requestId }}">
+                    <button type="submit" name="downloadPDFAndImages" id="inputField2">Télécharger PDF et
+                        Images</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="tableUserPro">
+    <h2>Tableau des pro</h2>
+    <table>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom de Famille</th>
+            <th>Photo de Profil</th>
+            <th>Supprimer Professionnel</th>
+        </tr>
+        {% for User in userPro %}
+        <tr>
+            <td>{{ User.FirstName }}</td>
+            <td>{{ User.LastName }}</td>
+            <td>
+                {% if User.ProfilPicture == null %}
+                <img class="icon" src="/../public/image/user.png" alt="icon" onclick="openModal(this)">
+                {% else %}
+                <img class="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon" onclick="openModal(this)">
+                {% endif %}
+            </td>
+            <td>
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdUser" value="{{ User.IdUser }}">
+                    <button type="submit" name="deletePro">Suppr. Pro</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="tableUser">
+    <h2>Tableau des Utilisateurs</h2>
+    <table>
+        <tr>
+            <th>Prénom</th>
+            <th>Nom de Famille</th>
+            <th>Email</th>
+            <th>Inscris depuis</th>
+            <th>Photo de Profil</th>
+            <th>Lien page profile</th>
+            <th>Supprimer user</th>
+        </tr>
+        {% for User in user %}
+        <tr>
+            <td>{{ User.FirstName }}</td>
+            <td>{{ User.LastName }}</td>
+            <td>{{ User.Email }}</td>
+            <td>{{ User.RelativeDateUser }}</td>
+            <td>
+                {% if User.ProfilPicture == null %}
+                <img class="icon" src="/../public/image/user.png" alt="icon" onclick="openModal(this)">
+                {% else %}
+                <img class="icon" src="data:image;base64,{{ User.ProfilPicture }}" alt="icon" onclick="openModal(this)">
+                {% endif %}
+            </td>
+            <td>
+                <a href="/profile-{{ User.IdUser }}">page profile</a>
+            </td>
+            <td>
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdUser" value="{{ User.IdUser }}">
+                    <button type="submit" name="deleteUser">Suppr. Utilisateur</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+<div class="Categorie_form">
+    <form action="/dashboard" method="post">
+        <input type="text" name="CategoryName" placeholder="Nom de la Categorie" class="input_name">
+        <button type="submit" name="addCategory">Ajouter Catégories</button>
+    </form>
+</div>
+
+<div class="tableCategory">
+    <h2>Tableau des catégories</h2>
+    <table>
+        <tr>
+            <th>Nom de la catégories</th>
+            <th>Supprimer catégories</th>
+        </tr>
+        {% for Category in getCategory %}
+        <tr>
+            <td>{{ Category.CategoryName }}</td>
+            <td>
+                <form action="/dashboard" method="post">
+                    <input type="hidden" name="IdCategory" value="{{ Category.IdCategory }}">
+                    <button type="submit" name="deleteCategory">Suppr. Catégories</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="tableStat">
+    <h2>Tableau des Statistiques</h2>
+    <table>
+        <tr>
+            <th>Nom de la statistiques</th>
+            <th>Nombre</th>
+        </tr>
+
+        <tr>
+            <td>Utilisateurs</td>
+            <td>{{ countUser }}</td>
+        </tr>
+        <tr>
+            <td>Conseils Vendus</td>
+            <td>{{ countAdvice }}</td>
+        </tr>
+        <tr>
+            <td>Publications</td>
+            <td>{{ countPost }}</td>
+        </tr>
+        <tr>
+            <td>Commentaires</td>
+            <td>{{ countComment }}</td>
+        </tr>
+    </table>
+</div>
+
+<div class="refundRequests">
+    <h2>Demandes de Remboursement</h2>
+    {% for request in refundRequests %}
+    <div class="refundRequest">
+        <h3>Demandes de Remboursement N°: {{ request.RequestId }}</h3>
+        <div class="buyerInfo">
+            <h4>Acheteur:</h4>
+            <p>Prénom: {{ request.Buyer.FirstName }}</p>
+            <p>Nom: {{ request.Buyer.LastName }}</p>
+            <p>
+                Photo:
+                {% if request.Buyer.ProfilePicture %}
+                <img class="icon" src="data:image/jpeg;base64,{{ request.Buyer.ProfilePicture }}" alt="Buyer Picture">
+                {% else %}
+                <img class="icon" src="/../public/image/user.png" alt="Buyer Picture">
+                {% endif %}
+            </p>
+        </div>
+        <div class="sellerInfo">
+            <h4>Vendeur:</h4>
+            <p>Prénom: {{ request.Seller.FirstName }}</p>
+            <p>Nom: {{ request.Seller.LastName }}</p>
+            <p>
+                Photo:
+                {% if request.Seller.ProfilePicture %}
+                <img class="icon" src="data:image/jpeg;base64,{{ request.Seller.ProfilePicture }}" alt="Seller Picture">
+                {% else %}
+                <img class="icon" src="/../public/image/user.png" alt="Seller Picture">
+                {% endif %}
+            </p>
+        </div>
+        <div class="adviceInfo">
+            <p>Titre de la Consulation: {{ request.Advice.Title }}</p>
+            <p>Date: {{ request.Advice.Date }}</p>
+            <p>Heure Début: {{ request.Advice.StartTime }}</p>
+            <p>Heure Fin: {{ request.Advice.EndTime }}</p>
+        </div>
+        <div class="requestContent">
+            <p>Contenu de la Demande: {{ request.ContentRequest | nl2br }}</p>
+            <p>
+                Photos Preuve:
+                {% if request.Pictures %}
+                {% for picture in request.Pictures %}
+                <img class="icon" src="data:image/jpeg;base64,{{ picture }}" alt="Request Picture" onclick="openModal(this)">
+                {% endfor %}
+                {% else %}
+                Aucune photo
+                {% endif %}
+            </p>
+        </div>        
+    </div>
+    <div class="requestbutton button">
+        <div class="buttonValid ">
+            <form action="/dashboard" method="post">
+                <input type="hidden" name="IdRequestForRefund" value="{{ request.RequestId }}">
+                <button type="submit" name="validRequest">Valider la requete</button>
+            </form>
+        </div> 
+        <div class="buttonInvalid">
+            <form action="/dashboard" method="post">
+                <input type="hidden" name="IdRequestForRefund" value="{{ request.RequestId }}">
+                <button type="submit" name="refuseRequest">Refuser la requete</button>
+            </form>
+        </div> 
+    </div>
+    {% endfor %}
+</div>
+
+<div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="img01">
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/modalImageRequest.js"></script>
+{% endblock %}

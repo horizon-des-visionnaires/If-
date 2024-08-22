@@ -1,0 +1,236 @@
+{% extends "default.html.twig" %}
+
+{% block title %}IFÀ | advice meeting{% endblock %}
+
+{% block stylesheet %}
+<link href="/../public/css/adviceMeeting.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block header %}
+{% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+<div class="advice-meeting-container">
+    {% if adviceData %}
+    {% if showJoinButton %}
+    <button onclick="window.open('https://meet.jit.si/{{ roomName }}', '_blank')" class="beautiful-button">Rejoindre la réunion</button>
+    {% else %}
+        {% if not showSatisfactionForm %}
+        <p>Le bouton pour rejoindre la réunion apparaîtra lorsque l'heure de début aura commencé.</p>
+        {% endif %}
+    {% endif %}
+    <h1>Détails de la Consultation</h1>
+
+    <p><strong>Type:</strong> {{ adviceData.AdviceType }}</p>
+    <p><strong>Description:</strong> {{ adviceData.AdviceDescription }}</p>
+    <p><strong>Catégorie :</strong> {{ adviceData.CategoryName }}</p>
+
+    <p><strong>Date:</strong> {{ adviceData.BuyAdviceDate|date('d-m-Y') }}</p>
+    <p><strong>Heure de début:</strong> {{ adviceData.BuyAdviceStartTime }}</p>
+    <p><strong>Heure de fin:</strong> {{ adviceData.BuyAdviceEndTime }}</p>
+
+    <h2>Images de la Consultation</h2>
+
+    {% if adviceImages|length > 0 %}
+    <div class="swipe">
+        {% if adviceImages|length > 1 %}
+        <button class="swipe-control-prev">
+            <span class="swipe-control-prev-icon" aria-hidden="true">&lt;</span>
+        </button>
+        {% endif %}
+        <div class="swipe-inner">
+            {% for picture in adviceImages %}
+            <div class="swipe-item portrait active">
+                <img src="data:image;base64,{{ picture.PictureAdvice }}" class="icon">
+            </div>
+            {% endfor %}
+        </div>
+        {% if adviceImages|length > 1 %}
+        <button class="swipe-control-next">
+            <span class="swipe-control-next-icon" aria-hidden="true">&gt;</span>
+        </button>
+        <div class="bullets">
+            {% for i in 0..(adviceImages|length - 1) %}
+            <span class="bullet {% if i == 0 %}active{% endif %}"></span>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <p>Pas d'images disponible.</p>
+    {% endif %}
+
+    <h2>Information sur le consulteur</h2>
+    <p><strong>Nom:</strong> {{ adviceData.BuyerFirstName }} {{ adviceData.BuyerLastName }}</p>
+    {% if adviceData.BuyerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.BuyerProfilPicture }}" alt="profile picture" id="icon">
+    {% else %}
+    <p>Pas de photo de profil disponible.</p>
+    {% endif %}
+
+    <h2>Information sur le consultant</h2>
+    <p><strong>Nom:</strong> {{ adviceData.SellerFirstName }} {{ adviceData.SellerLastName }}</p>
+    {% if adviceData.SellerProfilPicture %}
+    <img class="icon" src="data:image;base64,{{ adviceData.SellerProfilPicture }}" alt="profile picture" id="icon">
+    {% else %}
+    <p>Pas de photo de profil disponible.</p>
+    {% endif %}
+
+
+    {% if showSatisfactionForm and userId == adviceData.BuyerId and adviceData.IsAdviceValid == null %}
+    <div class="reminder-div">
+        <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+            <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+            <div>
+                <label for="satisfaction">Êtes-vous satisfait du conseil?</label>
+                <select name="satisfaction" id="satisfaction" required>
+                    <option value="1">Oui</option>
+                    <option value="2">Non</option>
+                </select>
+            </div>
+            <button type="submit" name="isSatisfactoryAdvice" id="inputField2">Valider</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if adviceData.IsAdviceValid == 1 and userId == adviceData.BuyerId %}
+    {% if not adviceData.hasUserNotated %}
+    <h2>Veuillez mettre un avis</h2>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+        <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
+        <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
+        <div class="flex">
+            <label for="Note">Mettre une note : </label>
+            <select name="Note" id="Note" type="note" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div style="position: relative;">
+            <textarea name="CommentNote" placeholder="Commentaire sur la consultation..." id="inputFieldDesc"
+                required></textarea>
+        </div>
+
+        <button type="submit" name="addNotations" id="inputField2">Valider la Notation</button>
+    </form>
+    {% else %}
+    <p>Vous avez déjà donné un avis pour cette consultation.</p>
+    {% endif %}
+    {% endif %}
+
+    {% if adviceData.IsAdviceValid == 2 and userId == adviceData.BuyerId %}
+    {% if not adviceData.hasUserNotated %}
+    <h2>Veuillez mettre un avis</h2>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+        <input type="hidden" name="IdUserIsPro" value="{{ adviceData.SellerId }}">
+        <input type="hidden" name="IdUser" value="{{ adviceData.BuyerId }}">
+        <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+        <label for="Note">Mettre une note : </label>
+        <select name="Note" id="Note" type="note" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <div style="position: relative;">
+            <textarea name="CommentNote" placeholder="Mettre un commentaire sur le Consultant" id="inputFieldDesc"
+                required></textarea>
+        </div>
+
+        <button type="submit" name="addNotations" id="inputField2">Valider la Notation</button>
+    </form>
+    {% else %}
+    <p>Vous avez déjà donné un avis pour cette consultation.</p>
+    {% endif %}
+
+    {% if userId == adviceData.BuyerId and adviceData.WantRefund == null %}
+    <div class="reminder-div">
+        <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post">
+            <input type="hidden" name="idBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+            <div>
+                <label for="wantRefund">Au vu de votre insatisfaction, 
+                    <br> souhaitez-vous faire une demande de remboursement ? 
+                    <br> Attention, le remboursement n'est pas assuré ; vous devrez fournir des preuves.
+                </label>
+                <select name="wantRefund" id="wantRefund" required>
+                    <option value="2">Non</option>
+                    <option value="1">Oui</option>
+                </select>
+            </div>
+            <button type="submit" name="wantRefundButton" id="inputField2">Valider</button>
+        </form>
+    </div>
+    {% endif %}
+
+    {% if adviceData.WantRefund == 1 and userId == adviceData.BuyerId and not isRequestAlreadyMade %}
+    <p>Voulez vous, vous faire rembourser ? <br>si oui veuillez nous indiquer les raisons et apporter des
+        raisons/preuves (photos, ...)</p>
+    <form action="/adviceMeeting-{{ adviceData.IdBuyAdvice }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="IdBuyAdvice" value="{{ adviceData.IdBuyAdvice }}">
+        <input type="hidden" name="IdBuyer" value="{{ adviceData.BuyerId }}">
+        <input type="hidden" name="IdSeller" value="{{ adviceData.SellerId }}">
+
+        <div style="position: relative;">
+            <textarea name="ContentRequest" placeholder="Contenue de la Réclamation" id="inputFieldPromotion"
+                required></textarea>
+        </div>
+
+        <input type="file" id="images" name="PictureRequestForRefund[]" multiple accept="image/*">
+
+        <button type="submit" name="addRequestForRefund" id="inputField2">Soumettre le dossier</button>
+    </form>
+    {% endif %}
+    {% endif %}
+
+    {% else %}
+    <p>Pas d'information sur la Consultation disponible.</p>
+    {% endif %}
+</div>
+
+<div id="imageModal" class="image-modal">
+    <span class="close-image-modal">&times;</span>
+    <img class="image-modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block scripts %}
+<script src="/../public/js/modalImage.js"></script>
+<script src="/../public/js/swipePicturePost.js"></script>
+
+<script src='https://meet.jit.si/external_api.js'></script>
+<script>
+    const domain = "meet.jit.si";
+    const roomName = "{{ roomName }}"; // Récupération du nom de la réunion
+    const options = {
+        roomName: roomName,
+        parentNode: document.querySelector('#meet'),
+        interfaceConfigOverwrite: {
+            filmStripOnly: false,
+            SHOW_JITSI_WATERMARK: false
+        },
+        configOverwrite: {
+            startWithVideoMuted: true,
+            startWithAudioMuted: true
+        }
+    };
+    const api = new JitsiMeetExternalAPI(domain, options);
+
+    // Fin de l'appel après 1 heure
+    setTimeout(() => {
+        api.executeCommand('hangup');
+        alert("La réunion est terminée après 1 heure.");
+    }, 3600000); // 1 heure en millisecondes
+</script>
+
+{% endblock %}
