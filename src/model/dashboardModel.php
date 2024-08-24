@@ -314,7 +314,6 @@ class dashboardModel
         }
     }
 
-    // fonction pour supprimer un user
     public function deleteUser($IdUser)
     {
         try {
@@ -336,35 +335,42 @@ class dashboardModel
             $stmt = $this->dsn->prepare("DELETE FROM Post WHERE IdUser = :IdUser");
             $stmt->execute([':IdUser' => $IdUser]);
 
-            // 5. Supprimer les achats d'avis associés à l'utilisateur
-            $stmt = $this->dsn->prepare("DELETE FROM BuyAdvice WHERE IdBuyer = :IdUser");
-            $stmt->execute([':IdUser' => $IdUser]);
-
-            // 6. Supprimer les notations faites par l'utilisateur
+            // 5. Supprimer les notations faites par l'utilisateur
             $stmt = $this->dsn->prepare("DELETE FROM Notations WHERE IdUser = :IdUser");
             $stmt->execute([':IdUser' => $IdUser]);
 
-            // 7. Supprimer les photos associées aux conseils de l'utilisateur
+            // 6. Supprimer les photos associées aux conseils de l'utilisateur
             $stmt = $this->dsn->prepare("DELETE FROM PictureAdvice WHERE IdAdvice IN (SELECT IdAdvice FROM Advice WHERE IdUser = :IdUser)");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 7. Supprimer les achats d'avis associés aux conseils de l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM BuyAdvice WHERE IdAdvice IN (SELECT IdAdvice FROM Advice WHERE IdUser = :IdUser)");
             $stmt->execute([':IdUser' => $IdUser]);
 
             // 8. Supprimer les conseils associés à l'utilisateur
             $stmt = $this->dsn->prepare("DELETE FROM Advice WHERE IdUser = :IdUser");
             $stmt->execute([':IdUser' => $IdUser]);
 
-            // 9. Supprimer les messages de conversation envoyés par l'utilisateur
-            $stmt = $this->dsn->prepare("DELETE FROM ConversationMessages WHERE IdSender = :IdUser");
+            // 9. Supprimer les demandes de remboursement associées à l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM RequestForRefundPicture WHERE IdRequestForRefund IN (SELECT IdRequestForRefund FROM RequestForRefund WHERE IdBuyer = :IdUser OR IdSeller = :IdUser)");
             $stmt->execute([':IdUser' => $IdUser]);
 
-            // 10. Supprimer les conversations où l'utilisateur est participant
+            $stmt = $this->dsn->prepare("DELETE FROM RequestForRefund WHERE IdBuyer = :IdUser OR IdSeller = :IdUser");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 10. Supprimer les messages de conversation envoyés par l'utilisateur
+            $stmt = $this->dsn->prepare("DELETE FROM ConversationMessages WHERE IdConversations IN (SELECT IdConversations FROM Conversations WHERE IdUser_1 = :IdUser OR IdUser_2 = :IdUser)");
+            $stmt->execute([':IdUser' => $IdUser]);
+
+            // 11. Supprimer les conversations où l'utilisateur est participant
             $stmt = $this->dsn->prepare("DELETE FROM Conversations WHERE IdUser_1 = :IdUser OR IdUser_2 = :IdUser");
             $stmt->execute([':IdUser' => $IdUser]);
 
-            // 11. Supprimer les messages de l'utilisateur
+            // 12. Supprimer les messages de l'utilisateur
             $stmt = $this->dsn->prepare("DELETE FROM UserMessages WHERE IdUser = :IdUser");
             $stmt->execute([':IdUser' => $IdUser]);
 
-            // 12. Supprimer les demandes de passage au statut pro de l'utilisateur
+            // 13. Supprimer les demandes de passage au statut pro de l'utilisateur
             $stmt = $this->dsn->prepare("DELETE FROM RequestPassPro WHERE IdUser = :IdUser");
             $stmt->execute([':IdUser' => $IdUser]);
 
@@ -384,6 +390,7 @@ class dashboardModel
             echo "Erreur : " . $e->getMessage();
         }
     }
+
 
     // fonction pour ajouter une catégories
     public function insertCategory($CategoryName)
